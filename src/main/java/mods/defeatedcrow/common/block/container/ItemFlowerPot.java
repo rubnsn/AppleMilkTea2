@@ -1,11 +1,11 @@
 package mods.defeatedcrow.common.block.container;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import mods.defeatedcrow.api.ICompressedItem;
-import wa.block.Blocks;
 
 public class ItemFlowerPot extends ItemBlock implements ICompressedItem {
 

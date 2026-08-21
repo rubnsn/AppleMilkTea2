@@ -42,7 +42,7 @@ dependencies {
     devOnlyNonPublishable(rfg.deobf("curse.maven:chunkapi-844484:8609071"))
     devOnlyNonPublishable(rfg.deobf("curse.maven:endlessids-665730:8169819"))
 
-    // Optional plugins — compileOnly.
+    // Optional plugins ? compileOnly.
     compileOnly("com.github.GTNewHorizons:NotEnoughItems:2.8.125-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:CodeChickenCore:1.4.17:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:AppleCore:3.3.11:dev") { transitive = false }
@@ -60,6 +60,6 @@ dependencies {
     compileOnly(rfg.deobf("curse.maven:sextiarysector2-244083:2294538")) { transitive = false }
 
     // Japanese mods not on CurseMaven; jars live outside the repo.
-    compileOnly(rfg.deobf(files("${propMods}/Bamboo-2.6.8.5.jar")))
-    compileOnly(rfg.deobf(files("${propMods}/Wa-1.7.10.17.jar")))
+    devOnlyNonPublishable(rfg.deobf(files("${propMods}/Bamboo-3.0.0.9.jar")))
+    devOnlyNonPublishable(rfg.deobf(files("${propMods}/wa_1.7.10.10_1180.jar")))
 }

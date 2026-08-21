@@ -1,12 +1,12 @@
 package mods.defeatedcrow.common.block.container;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import mods.defeatedcrow.api.ICompressedItem;
 import mods.defeatedcrow.common.DCsAppleMilk;
-import wa.block.Blocks;
 
 public class ItemHedge extends ItemBlock implements ICompressedItem {
 
