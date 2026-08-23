@@ -51,7 +51,8 @@
 | **WT0 Bootstrap** *(先行, 1人が担当)* | `feature/1.20.1-bootstrap` | `DCsAppleMilk.java:127`, `MaterialRegister.java:213`, `CommonProxy.java:70`, `ClientProxy.java:198`, `common/config/*`, `asm/*`, `mods.toml`, `build.gradle`, `gradle.properties`, **`common/registry/Mod*.java` 新設** | — | `doc/build.md:22`, `doc/config/migration-guide.md`, `doc/tile-entities/migration-guide.md:12` |
 | **WT-A Blocks+Items** | `feature/blocks-items` | `common/block/**/*` 128 + `common/block/**/Item*.java` 30種 + `common/item/**/*` 59 + `CreativeTab*.java`×5 + `common/item/edible/*` `magic/*` | HotSpot / `common/tile/*` / `client/*` / `common/fluid/*` | `doc/blocks/migration-guide.md:1`, `doc/items/migration-guide.md:17` |
 | **WT-B Tiles+Fluids+World** | `feature/tiles-fluids-world` | `common/tile/**/*` 52 + `common/tile/appliance/*` `energy/*` + `common/fluid/*` 12 + `handler/FluidContMap.java` + `event/BucketFillEvent.java` + `common/entity/*` 23 + `common/world/*` 8 + `event/*`12 + `handler/*` 12 | HotSpot / `client/*` / `common/block/*` | `doc/tile-entities/migration-guide.md:16`, `doc/fluids/migration-guide.md:12`, `doc/worldgen/migration-guide.md:1`, `doc/entities/migration-guide.md:1` |
-| **WT-C Client+Cross** | `feature/client-cross` | `client/**/*` 180 (`model:86`, `renderblocks:46` etc.) + `potion/*`7 + `recipe/*`15 + `network/*`3 + `plugin/*`66(大半削除) | HotSpot / `common/block/*` / `common/tile/*` | `doc/network/migration-guide.md:14`, `doc/recipes/migration-guide.md`, `doc/potions/migration-guide.md`, `doc/plugins/migration-guide.md:78` |
+| **WT-C Client+Cross** | `feature/client-cross` | `client/**/*` 180 (`model:86`, `renderblocks:46` etc.) + `potion/*`7 + `network/*`3 + `plugin/*`66(大半削除) | HotSpot / `common/block/*` / `common/tile/*` / `recipe/*`はWT-Dへ移管済 | `doc/network/migration-guide.md:14`, `doc/potions/migration-guide.md`, `doc/plugins/migration-guide.md:78` |
+| **WT-D Recipe+Advancement** | `feature/recipe-advancement` | `recipe/**/*`15 + `common/registry/ModRecipes.java` + `common/datagen/AMT*Provider.java` + `common/DCsRecipeRegister.java` + `common/ReceivingIMCEvent.java` + `common/AchievementRegister.java` + `data/defeatedcrow/recipes/**` + `data/defeatedcrow/advancements/**` | HotSpot / `common/block/*` / `common/tile/*` / `client/*` | `doc/recipes/migration-guide.md:34`, `doc/achievements/migration-guide.md:43`, `doc/oredict-to-tagkey.md` |
 
 * `api/*` 68fileは全WTで**凍結読取専用**。変更が必要なら WT0にエスカレーション。
 * 共有 `common/registry/Mod*.java` は WT0が雛形を作成、各WTは自分のセクション（`// --- BLOCKS-A: APPLIANCE ---` 等）にのみ追記。
@@ -134,31 +135,31 @@ DOC: doc/blocks/migration-guide.md と doc/items/migration-guide.md の1.20.1追
 > 対象: `plan.md:3.2` WT-B 所有 120 java (`common/tile 52`/`fluid 12`/`entity 23`/`world 8`/`event 12`/`handler 13`) + `registry/ModBlockEntities|ModFluidTypes|ModFluids|ModEntities|ModMenuTypes` WT-Bセクション
 > 手法: `master..dev` 1495 files差分 + `scripts/lint-migration.ps1 -Check wtb` 14ルール + `rg -n` 拡張lint + 実ファイル読解。HotSpot `DCsAppleMilk.java:31`/`CommonProxy.java:70` 等はWT-B禁止編集。
 
-### 7.1 現状
+### 7.1 現状 — 2026-08-24 `dev:7569016` 追記（WT-B Phase1 `6b31c34` → `dev:3fda022` マージ後）
 
-* `9fdb3b4`/`9b62fb3` で `BlockEntityType.Builder.of` 47件 / `FluidType` 19件 / `FlowingFluid` 39件 / `EntityType` 21件 / `MenuType` 5件の雛形登録は完了。`S35PacketUpdateTileEntity`→`ClientboundBlockEntityDataPacket` 等表層lintはPASS。
-* だが `ItemStack`/`Level`/`Potion`/`WorldGen`/`Village` の旧APIが200+件残存し `javac` 不通過。最大は `WorldGenYuzuTrees.java:54`（1.7.10 `WorldGenAbstractTree` のまま）、`ComponentVillageCafe.java:47`（`StructureVillagePieces.Village`）、`DCsLivingEvent.java:44`（`Potion.potionTypes`）。
-* 追加検証で0件にすべき拡張grep: `rg -n "xCoord|stackSize|isItemEqual|getItemDamage|Potion\.potionTypes|func_147447|IWorldGenerator"` → 現WT-Bで80+件ヒット（本文7.2参照）。
+* `9fdb3b4`/`9b62fb3` → `6b31c34` で `BlockEntityType.Builder.of` 47件 / `FluidType` 19件 / `FlowingFluid` 39件 / `EntityType` 21件 / `MenuType` 5件 + `WorldGen` datapack 9件 (`ModBiomeModifiers.java:1` + `configured_feature`3 + `placed_feature`3 + `forge/biome_modifier`3) は完了。`S35` 等表層は残存あり。
+* `dev:7569016` 時点 `lint wtb` は `S35:3` / `FluidContainerRegistry:1` / `worldObj:8` / `xCoord:1` の **13件FAIL**（`TileBrewingBarrel.java:7,68,72,113`）。`stackSize/isItemEqual/getItemDamage/func_147447/Potion` はWT-B所有内で0件まで改善（Phase1でT1/T5/T6の主要80件を解消）。
+* `lint all` では `cpw.mods.fml:13` / `S35:3` / `FluidContainerRegistry:3` / `OreDictionary:5` / `net.minecraft.init:46` / `NBTTagCompound:96` / `stackSize:13` / `isItemEqual:7` / `getItemDamage:87` / `worldObj:8` / `xCoord:1` が残存。多くはWT-C (`client/*` 180) と `DCsRecipeRegister.java:930` 等のWT-D/B境界由来で `javac` は `3311` エラーから `wtd` 解消後は `ModelPart`/`ItemStack` パッケージ等のWT-C未移行が支配的。
 
-### 7.2 残存タスク — 7群 / P0=ビルドブロッカー
+### 7.2 残存タスク — 7群 / P0=ビルドブロッカー（2026-08-24 `dev:7569016` 時点で更新）
 
-| 群 | 件数 | P | 対象ファイル (例) | 移行内容 | 正本 |
-|---|---|---|---|---|---|
-| **T1 Tile Container/Inventory** | 80 | P0 | `TileEvaporator.java:112` `stackSize/isItemEqual/getItemDamage` 12件 / `TileProcessor.java:77` 10件 / `TileIceMaker.java:160` `decrStackSize` / `TileIncenseBase.java:120` `ash.stackSize++` / `Container* 5件` `sendProgressBarUpdate` / `TileFilledSoupPan.java:111` `String getDisplayName()` | `stackSize`→`getCount/setCount`/`isItemEqual`→`isSameItemSameTags`/`getItemDamage`→`getDamageValue`/`decrStackSize`→`removeItem`+`setChanged`/`getDisplayName():Component`/`Container→AbstractContainerMenu+ContainerData` | `tile-entities:57` `handler:15` |
-| **T2 TileDummy 型** | 1 | P0 | `TileDummy.java:8` `super(null,pos,state)` + `TileAlcoholCup.java:3` 等6stub | `super(ModBlockEntities.TILE_XXX.get(), pos, state)` に。`TileDummy` 自体は `ModBlockEntities.TILE_DUMMY.get()` | `tile-entities:17` |
-| **T3 Fluid** | 0 | P2 | `BlockOilFluid.java:1`/`DCsTank.java:1` は置換済 | 残は `ItemDummyFluid` stub登録不要確認のみ | `fluids:73` |
-| **T4A WorldGenYuzu** | 1 | P0 | `WorldGenYuzuTrees.java:54` 全面1.7.10 | `WorldGenAbstractTree`→`Feature` / `world.getBlock(int)`→`level.getBlockState(pos)` / `func_150523_a`→`BlockState.isAir/isLeaves` / `WorldgenTeaTree.java:17` 型に縮退 | `worldgen:54` |
-| **T4B datapack BiomeModifier** | 5 | P0 | `data/defeatedcrow/worldgen/*` 0件 / `registry/ModBiomeModifiers.java` 未作成 | `configured_feature/tea_tree.json` / `placed_feature` / `forge/biome_modifier/add_tea_tree.json` / `global_loot_modifiers.json` + `DeferredRegister<BiomeModifier>` を `DCsAppleMilk.java:39` に登録 (WT0へエスカレ ※WT-Bで雛形作成) | `worldgen:70` |
-| **T4C Village** | 2 | P1 | `ComponentVillageCafe.java:47` `fillWithBlocks/placeBlockAtCurrentPosition/getMetadataWithOffset/Blocks.brick_block/WeightedRandomChestContent` / `ComponentVillageWarehouse.java:37` 同 | `StructureVillagePieces.Village`→`StructurePiece` (`BoundingBox`/`BlockState`) or 一時スタブ化→将来Jigsaw (`TemplatePool`+`nbt`) | `worldgen:105` |
-| **T5 Entity** | 6 | P0 | `EntityAnchorMissile.java:310` `func_147447/xCoord/blockX/motionX/getBlock` / `EntityMelonBomb.java:339` `getActivePotionEffect` / `PlaceableFoods.java:64` `getItemDamage` / `VillagerCafe.java:75` `ItemStack(Blocks.pumpkin,3,0)` | `func_147447`→`level.clip(ClipContext)`/`hitVec.xCoord`→`hitResult.getLocation().x`/`motionX`→`setDeltaMovement(Vec3)`/`getActivePotionEffect`→`getEffect`/`Villager`は`ModVillagers`新設 | `entities:56` |
-| **T6 Event** | 5 | P0 | `DCsLivingEvent.java:44` `Potion.potionTypes/getPotionID/getActivePotionEffects/ammount/EntityDamageSource/posX/provider` / `EntityMoreDropEvent.java:25` 同 / `SpawnCancelEvent.java:16` `LivingSpawnEvent.CheckSpawn` / `CraftingEvent.java:38` `getItemDamage` | `Potion.potionTypes`→`BuiltInRegistries.MOB_EFFECT`+`getActiveEffects`/`EntityDamageSource`→`damageSources()`/`posX`→`getX()`/`LivingSpawnEvent.CheckSpawn`→`MobSpawnEvent.FinalizeSpawn` | `events:38` |
-| **T7 Handler/lint** | 1 | P2 | `Coord.java:1` 等軽微 / `scripts/lint-migration.ps1` 14ルールのみ | `lint` に `stackSize/isItemEqual/getItemDamage/func_147447` 拡張ルールをWT-B用に追加 | `handler:62` |
+| 群 | 当初件数 | 残件 (dev:7569016) | P | 対象ファイル (例) | 移行内容 | 正本 |
+|---|---|---|---|---|---|---|
+| **T1 Tile Container/Inventory** | 80 | **0 (WT-B所有内)** / `all`では `stackSize:13` はWT-C/D由来 | P0→P2 | `TileEvaporator.java:112` 等は `6b31c34` で `getCount/removeItem/ContainerData` 化済。残 `stackSize:13` は `DCsRecipeRegister.java:930` 等WT-D境界 | `stackSize`→`getCount/setCount` 等はWT-B分完了、残はWT-D/Cで対応 | `tile-entities:57` |
+| **T2 TileDummy 型** | 1 | **0** | P0→完了 | `TileDummy.java:8` `super(null)` 6件は `ModBlockEntities` 束ねで解消 | 完了 | `tile-entities:17` |
+| **T3 Fluid** | 0 | **0** | P2 | 置換済 | — | `fluids:73` |
+| **T4A WorldGenYuzu** | 1 | **0** | P0→完了 | `WorldGenYuzuTrees.java:54` は `WorldgenTeaTree.java:17` 型に縮退済、`Feature`化は `ModBiomeModifiers` でdatapack補完 | 完了、残 `worldObj:8` はT1由来 | `worldgen:54` |
+| **T4B datapack BiomeModifier** | 5 | **0** | P0→完了 | `ModBiomeModifiers.java:1` + `configured_feature`3 + `placed_feature`3 + `forge/biome_modifier`3 + `loot_modifiers`2 を `6b31c34` で生成、 `DCsAppleMilk.java:39` 登録済 | 完了 | `worldgen:70` |
+| **T4C Village** | 2 | **2** | P1 | `ComponentVillageCafe.java:47` / `Warehouse.java:37` は未着手（`StructureVillagePieces`）| `StructurePiece` 一時スタブ → Jigsaw | `worldgen:105` |
+| **T5 Entity** | 6 | **0-1** | P0→P1 | `func_147447/motionX/blockX` 80件は `6b31c34` で `level.clip`/`setDeltaMovement` 化済。残は `PlaceableFoods.java:64` `getItemDamage` 等軽微 | ほぼ完了、残 `isItemEqual:0` はWT-B内0 | `entities:56` |
+| **T6 Event** | 5 | **0** | P0→完了 | `DCsLivingEvent.java:44` `Potion`→`MobEffect` / `SpawnCancelEvent.java:16` `LivingSpawnEvent.CheckSpawn`→`MobSpawnEvent` は `6b31c34` で解消 | 完了 | `events:38` |
+| **T7 Handler/lint+残13** | 1 | **13** | P2→P0 | `S35:3` (`TileBrewingBarrel.java:7,68,72`) / `FluidContainerRegistry:1` (`FluidContainerRegisterEvent.java:10` コメント内) / `worldObj:8` / `xCoord:1` | `S35`→`ClientboundBlockEntityDataPacket` + `getUpdatePacket/getUpdateTag` / `worldObj`→`level` / `xCoord`→`BlockPos` | `handler:62` |
 
-### 7.3 優先順位（依存順）
+### 7.3 優先順位（依存順）— 2026-08-24 更新
 
-**Phase 1 — ビルド止血 (2-3日)**: T4A(Yuzu縮退) → T5-Projectile(`func_147447`) → T6-Living/Hurt(`Potion`) → T2(`super(null)`) → T1(`stackSize`一括) → `SpawnCancelEvent` リネーム  
-**Phase 2 — 機能復旧 (1週)**: T4C(村最小移行) → T5-Melon/Placeable → T6-MoreDrop/Crafting → T4B(datapack+ModBiomeModifiers)  
-**Phase 3 — 磨き**: 村Jigsaw化 / `AddChestGen` の `GlobalLootModifierProvider` / `lint`拡張
+**Phase 1 — ビルド止血 (完了: `6b31c34`→`3fda022`)**: T4A → T5-Projectile → T6-Living/Hurt → T2 → T1 → `SpawnCancelEvent` — WT-B所有内では `stackSize/isItemEqual/getItemDamage/func_147447` 0件化を達成  
+**Phase 2 — 残13と村 (1-2日)**: T7残 `S35:3`/`worldObj:8`/`FluidContainerRegistry:1` を `TileBrewingBarrel.java:113`/`FluidContainerRegisterEvent.java:10` で解消 → `lint wtb` PASS。T4C `ComponentVillageCafe/Warehouse:47,37` を `StructurePiece` スタブ化 → 次にJigsaw。  
+**Phase 3 — 磨き**: 村Jigsaw化 / `AddChestGen` の `GlobalLootModifierProvider` / `DCsRecipeRegister.java:930` 等の `all` 残 `stackSize:13`/`OreDictionary:5` はWT-D/Cで分担
 
 ### 7.4 検証 — 拡張grep（WT-B所有内で0件が正）
 
@@ -175,8 +176,26 @@ Test-Path src/main/resources/data/defeatedcrow/worldgen/configured_feature/tea_t
 Test-Path src/main/resources/data/defeatedcrow/forge/biome_modifier/add_tea_tree.json # True
 ```
 
-### 7.5 次の3手
+### 7.5 次の3手 — 2026-08-24 `dev:7569016` 時点
 
-1. T1 Container一括 — `rg stackSize` 80件を `TileEvaporator/Processor/ChargerBase` から現代化
-2. T4A Yuzu縮退 — `WorldGenYuzuTrees.java:1` を `WorldgenTeaTree.java:17` 倣いに縮退
-3. T6 Living/Hurt — `DCsHurtEvent.java:31`/`DCsLivingEvent.java:44` の `Potion` → `MobEffectInstance` 置換
+1. **T7残13解消 (WT-B Phase2, 0.5日)** — `TileBrewingBarrel.java:7,68,72` `S35`→`ClientboundBlockEntityDataPacket`/`getUpdatePacket`、`worldObj`→`level`、`xCoord`→`BlockPos` で `lint wtb` PASSへ。`FluidContainerRegisterEvent.java:10` コメント内 `FluidContainerRegistry` は `ForgeCapabilities.FLUID_HANDLER` へ置換またはコメント除去。
+2. **T4C村スタブ (P1, 1日)** — `ComponentVillageCafe.java:47` `fillWithBlocks` 等を `StructurePiece` 最小実装でビルド通過、将来 `VillageCreateHandleCafe.java:4` と併せてJigsawへ。
+3. **all残 `OreDictionary:5`/`net.minecraft.init:46`/`NBTTagCompound:96` (WT-C/D境界)** — `DCsRecipeRegister.java:930,1637` 等の `stackSize/getItemDamage` 残はWT-D/Cで `getCount/getDamageValue` 化。`client/*` 180の `S35/IIcon` 等はWT-Cで集約対応。
+
+---
+
+## 8. WT-A / WT-C / WT-D 進捗 — 2026-08-24 `dev:7569016` 時点
+
+> `dev` は `WT-A(f11cf83)` + `WT-D(df8734f+b99feb3)` + `WT-B(6b31c34→3fda022)` + `7569016` fix を統合。`lint all` では `WT-C` 未移行が支配的で `3311` コンパイルエラー。
+
+| Worktree | ブランチ | 最終統合 `dev` | lint | 状態 | 残課題 |
+|---|---|---|---|---|---|
+| **WT-A Blocks+Items** | `feature/blocks-items:7423621` (`f11cf83`) | `7423621` Merge済（`Already up to date`）| `wta` PASS | **完了** | なし。`ModItems.java:192` 61 BlockItems追加 (`70`件) 済。将来 `DataComponents` は1.20.5で別WT |
+| **WT-B Tiles+Fluids+World+Entity+Event** | `feature/tiles-fluids-world:6b31c34` | `3fda022` Merge済 | `wtb` **FAIL 13** (`S35:3`/`FluidContainer:1`/`worldObj:8`/`xCoord:1`) | **Phase1完了、Phase2残13** | 上記7.5のT7残13 + T4C村2件。完了で `lint wtb` PASS |
+| **WT-C Client+Cross** | `feature/client-cross:20e8b6c` | 未マージ（`dev`は `20e8b6c` より `7569016` が5世代先行）| `wtc` PASS（14ルール）| **進行中** | `client/*` 180 (`model:86`, `render:46`等) の `S35/IIcon/BlockContainer` 等は `lint all` の `cpw:13`/`S35:3`/`OreDictionary:5` 等に含まれる。`plugin/*`66は大半削除方針 `doc/plugins:78`。別途worktree最新化要 |
+| **WT-D Recipe+Advancement** | `feature/recipe-advancement:df8734f` | `74016c2` + `b99feb3` + `7569016` で統合 | `wtd` PASS | **完了** | `ModRecipes.java:1` 11種 `DeferredRegister` + `AMTRecipeProvider.java:1`/`AMTAdvancementProvider.java:1` + `data/.../recipes`3 + `advancements`2 + BOM/連結/Javadoc修正済。残 `stackSize:13` のうち `recipe/*`分はWT-Dで `TagHelper` 化済、 `DCsRecipeRegister.java` 残はWT-C境界で共有対応。`runData`/`JEI`検証は `dev` 全WT完了後 |
+
+**次ステップ（全体）**
+1. WT-B Phase2（13件）→ `dev` へ再マージで `lint wtb` PASS
+2. WT-C 最新化: `git -C ../AMT2-WT-C merge dev` 後 `client/*` 180 の `1.20.1` 移行（WT-C所有内で `S35/IIcon/SimpleNetworkWrapper` 0件化）
+3. `dev` で `lint all` 0件化 → `./gradlew runData` → `./gradlew build`（`3311`→0）

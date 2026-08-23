@@ -149,4 +149,12 @@ DOC: doc/recipes/migration-guide.md の1.20.1追補 (RecipeType/MapCodec/TagKey/
 * ゲーム内 JEIでTea/Ice等表示、`/advancement grant @p only defeatedcrow:get_tea_leaves` 動作、`minecraft:story/root` からのツリー表示 `doc/achievements/migration-guide.md:138`
 
 ---
-承認後、上記を `dev` にコミットし、WT-D作成までをサポート。
+
+## 9. 完了記録 — 2026-08-24 `dev` 統合
+
+> `feature/recipe-advancement:df8734f` → `dev:74016c2` Merge → `b99feb3` BOM/連結修正 → `3fda022` WT-B統合時の `lint-migration.ps1` 競合解消 → `7569016` windows-31j修正 で `dev:7569016` に統合完了。
+
+* **成果**: `ModRecipes.java:1` 11種 `DeferredRegister` / `AMTRecipeProvider.java:1` `AMTAdvancementProvider.java:1` / `AchievementRegister.java:1` 382行削除 / `DCsRecipeRegister.java:1` `ReceivingIMCEvent.java:1` 現代化 (`TagHelper`+`CompoundTag`) / `data/defeatedcrow/recipes`3件 + `advancements`2件 + `.gitkeep` 雛形。
+* **検証**: `E:/AMT2-WT-D` で `lint wtd` PASS（`OreDictionary:0`/`net.minecraft.init:0`/`NBTTagCompound:0`/`Achievement:0`）。`dev:7569016` でも `wtd` PASS。`wta/wtc/bootstrap` PASS。`wtb` は `6b31c34` 由来の13件残存で `dev` では `wtd` には影響なし。
+* **不具合対応**: `df8734f` 由来の `BOM (EF BB BF)` 13件 / `// ...        RecipeRegisterManager` 連結5件 / `OreCrushRecipe.java:211` `} else` / `AMTRecipeProvider.java:21` Javadoc `**/*.json` 内 `*/` / `—` (windows-31j不正) 92件を `b99feb3`/`7569016` で修正。`plan.md:8` にWT-D完了を反映。
+* **残**: `lint all` では `WT-C` 未移行が支配的で `cpw:13`/`OreDictionary:5`/`NBTTagCompound:96` 等残存、`compileJava` は `WT-C` 180ファイル起因で `3311` エラー。WT-D単独では `runData`/`build` の完全成功は次フェーズ（WT-C統合後）。
