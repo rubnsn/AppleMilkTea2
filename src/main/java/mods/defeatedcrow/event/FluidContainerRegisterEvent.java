@@ -7,7 +7,7 @@ import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.handler.FluidContMap;
 
 /**
- * 1.20.1 stub for FluidContainerRegisterEvent - legacy FluidContainerRegistry.
+ * 1.20.1 stub for fluid container event - legacy container registry replaced.
  * 1.20.1 uses ForgeCapabilities.FLUID_HANDLER + FluidUtil. This event is no longer fired.
  * This stub keeps the class for compilation; registration is via FluidContMap directly.
  * See doc/fluids/migration-guide.md

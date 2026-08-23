@@ -51,4 +51,13 @@ public class DCsTank extends FluidTank {
         // No-op: fluid IDs removed in 1.20.1 (use Registry lookup)
         this.setFluid(FluidStack.EMPTY);
     }
+
+    // 1.20.1 bridge for BlockEntity NBT (TileEvaporator/Barrel use load/saveAdditional wrappers)
+    public void load(net.minecraft.nbt.CompoundTag tag) {
+        this.readFromNBT(tag);
+    }
+
+    public void saveAdditional(net.minecraft.nbt.CompoundTag tag) {
+        this.writeToNBT(tag);
+    }
 }
