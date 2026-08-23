@@ -1,269 +1,154 @@
 package mods.defeatedcrow.common.block.brewing;
 
-import java.util.Random;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.BlockIconRegister;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockTexture;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import mods.defeatedcrow.common.DCsAppleMilk;
-import mods.defeatedcrow.common.tile.TileLargeBottle;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * 酒瓶。空カップを持って右クリックすると、ロック・ストレートで頂ける <br>
- * キャニスターを別ブロックに分離。
+ * WT-A 1.20.1 mojmap migration for BlockLargeBottle.
+ * Original 1.7.10 logic preserved as TODO; stub compiles under Forge 47 + mojmap.
+ * Properties are supplied by ModBlocks (BlockBehaviour.Properties.of()...).
+ * Former BlockContainer/TileEntity logic: see Tile* migration (WT-B).
+ * Textures: JSON models under assets/defeatedcrow/models/block/ + blockstates/
  */
-public class BlockLargeBottle extends Block {
+public class BlockLargeBottle extends Block implements EntityBlock {
 
-    private static final String[] contents = new String[] { "_shothu", "_sake", "_beer", "_wine", "_gin", "_rum",
-        "_vodka", "_whiskey", "_brandy" };
-
-    
-    private BlockTexture[] boxTex;
-    
-    private BlockTexture[] sideTex;
-    
-    private BlockTexture[] itemTex;
-
-    public BlockLargeBottle() {
-        super(Material.circuits);
-        this.setStepSound(Block.soundTypeGlass);
-        this.setHardness(0.2F);
-        this.setResistance(1.0F);
+    public BlockLargeBottle(BlockBehaviour.Properties properties) {
+        super(properties);
     }
 
-    // 回収動作
+    // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox
     @Override
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer,
-        int par6, float par7, float par8, float par9) {
-        ItemStack itemstack = par5EntityPlayer.inventory.getCurrentItem();
-        int currentMeta = par1World.getBlockMetadata(par2, par3, par4);
-        TileLargeBottle tile = (TileLargeBottle) par1World.getTileEntity(par2, par3, par4);
-
-        if (itemstack == null)// 素手では何もしない
-        {
-            return false;
-        } else if (itemstack.getItem() == Item.getItemFromBlock(DCsAppleMilk.emptyCup))// カップでストレートのお酒を汲む
-        {
-            short i = tile.getRemainShort();
-            int type = currentMeta;
-            int rem = checkRemain(i);
-
-            boolean flag = false;
-
-            if (i > 0) {
-                tile.setRemainShort((short) (i - 1));
-                flag = true;
-            } else {
-
-            }
-
-            if (flag) {
-                int meta = 0;
-                if (type == 0) meta = 11;
-                else if (type == 8) meta = 12;
-                else {
-                    meta = type - 1;
-                }
-
-                if (!par5EntityPlayer.capabilities.isCreativeMode) {
-                    --itemstack.stackSize;
-                }
-
-                if (!par1World.isRemote) {
-                    EntityItem drop = new EntityItem(
-                        par1World,
-                        par5EntityPlayer.posX,
-                        par5EntityPlayer.posY,
-                        par5EntityPlayer.posZ,
-                        new ItemStack(DCsAppleMilk.alcoholCup, 1, meta));
-                    par1World.spawnEntityInWorld(drop);
-                }
-
-                par1World.playSoundAtEntity(par5EntityPlayer, "random.pop", 0.4F, 1.8F);
-            }
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    // 設置動作
-    @Override
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase,
-        ItemStack par6ItemStack) {
-        short l = (short) par6ItemStack.getItemDamage();
-        int playerFacing = MathHelper.floor_double((double) ((par5EntityLivingBase.rotationYaw * 4F) / 360F) + 0.5D)
-            & 3;
-
-        boolean facing = false;
-        if (playerFacing == 1 || playerFacing == 3) {
-            facing = false;
-        } else {
-            facing = true;
-        }
-
-        super.onBlockPlacedBy(par1World, par2, par3, par4, par5EntityLivingBase, par6ItemStack);
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, (l & 15), 3);
-        // メタデータ自体はタイプに対応している。RenderBlockクラスでメタデータごとのテクスチャを振り分けるためだが、他にも方法はある気がする。
-
-        // damageから残量だけを取り出す
-        int i = l >> 4;
-        i = i & 7;
-        TileLargeBottle tile = (TileLargeBottle) par1World.getTileEntity(par2, par3, par4);
-        if (tile != null) {
-            tile.setRemainShort((short) i);
-            tile.setSide(facing);
-        }
-    }
-
-    // 破壊
-    @Override
-    public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
-        TileLargeBottle tile = (TileLargeBottle) par1World.getTileEntity(par2, par3, par4);
-        int type = par1World.getBlockMetadata(par2, par3, par4);
-
-        if (tile != null) {
-            // ブロックのメタデータとTileのShort値から新しいダメージ値を生成
-            short l = (short) (tile.getRemainShort());
-
-            int damage = (l << 4) + par6;
-
-            if (l >= 0 && l <= 5000)// 上限については余り考えていない
-            {
-                float f = par1World.rand.nextFloat() * 0.8F + 0.1F;
-                float f1 = par1World.rand.nextFloat() * 0.8F + 0.1F;
-                float f2 = par1World.rand.nextFloat() * 0.8F + 0.1F;
-
-                // アイテム版の酒瓶をドロップ
-                ItemStack itemstack = new ItemStack(DCsAppleMilk.itemLargeBottle, 1, damage);
-                EntityItem entityitem = new EntityItem(
-                    par1World,
-                    (double) ((float) par2 + f),
-                    (double) ((float) par3 + f1),
-                    (double) ((float) par4 + f2),
-                    itemstack);
-
-                float f3 = 0.05F;
-                entityitem.motionX = (double) ((float) par1World.rand.nextGaussian() * f3);
-                entityitem.motionY = (double) ((float) par1World.rand.nextGaussian() * f3 + 0.2F);
-                entityitem.motionZ = (double) ((float) par1World.rand.nextGaussian() * f3);
-                par1World.spawnEntityInWorld(entityitem);
-            }
-
-            par1World.func_147453_f(par2, par3, par4, par5);
-        }
-
-        super.breakBlock(par1World, par2, par3, par4, par5, par6);
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+        return Shapes.block(); // TODO: restore original bounds via Block.box() per meta/state
     }
 
     @Override
-    public int damageDropped(int par1) {
-        return par1;
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+        return getShape(state, level, pos, ctx);
     }
 
+    // 1.7.10 onBlockActivated -> 1.20.1 use (BlockPos + BlockHitResult)
     @Override
-    public Item getItemDropped(int metadata, Random rand, int fortune) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        // TODO: restore original onBlockActivated logic
+        // Original used: world.getBlockMetadata(x,y,z), player.inventory, MinecraftForge.EVENT_BUS.post(AMTBlockRightClickEvent)
+        // Migration: use state, level.getBlockEntity(pos), player.getItemInHand(hand), Component
+        return InteractionResult.PASS;
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        // TODO: return new Tile* (pos, state) — requires WT-B BlockEntityType registration
         return null;
     }
 
     @Override
-    public int quantityDropped(Random random) {
-        return 0;
+    public void appendHoverText(ItemStack stack, BlockGetter level, java.util.List<Component> tooltip, TooltipFlag flag) {
+        // TODO: restore addInformation logic with Component.translatable
+        super.appendHoverText(stack, level, tooltip, flag);
     }
 
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-    // 外見
-    @Override
-    public int getRenderType() {
-        return DCsAppleMilk.modelLargeBottle;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
-        this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
-        return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
-    }
-
-    @Override
-    
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
-        this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
-        return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
-    }
-
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-        this.thisBoundingBox(par1IBlockAccess.getBlockMetadata(par2, par3, par4));
-    }
-
-    public void thisBoundingBox(int par1) {
-        float f = 0.25F;
-        this.setBlockBounds(0.0F + f, 0.0F, 0.0F + f, 1.0F - f, 1.0F, 1.0F - f);
-    }
-
-    @Override
-    
-    public BlockTexture getBlockTexture(int par1, int par2) {
-        int i = par2;
-        if (i > 8) i = 8;
-        if (par1 == 2) {
-            return this.boxTex[i];
-        } else if (par1 == 3) {
-            return this.sideTex[i];
-        } else {
-            return this.itemTex[i];
-        }
-
-    }
-
-    @Override
-    
-    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
-        this.sideTex = new BlockTexture[9];
-        this.boxTex = new BlockTexture[9];
-        this.itemTex = new BlockTexture[9];
-        this.blockIcon = par1IconRegister.registerIcon("defeatedcrow:bottle" + "_shothu");
-
-        for (int i = 0; i < 9; ++i) {
-            this.sideTex[i] = par1IconRegister.registerIcon("defeatedcrow:bottleside" + contents[i]);
-            this.boxTex[i] = par1IconRegister.registerIcon("defeatedcrow:bottle" + contents[i]);
-            this.itemTex[i] = par1IconRegister.registerIcon("defeatedcrow:itembottle" + contents[i]);
-        }
-    }
-
-    // Tile
-    @Override
-    public TileEntity createNewTileEntity(World world, int a) {
-
-        return new TileLargeBottle();
-    }
-
-    public static int checkRemain(short par1)// Remain値の16、32、64の位が残量の管理用バイト
-    {
-        int m = (par1 & 7);// シフトを不要にした
-        return m;
-    }
-
+    /*
+     * Original 1.7.10 source (kept for reference, SJIS -> UTF-8):
+     * package mods.defeatedcrow.common.block.brewing;
+     * 
+     * import java.util.Random;
+     * 
+     * import net.minecraft.block.Block;
+     * import net.minecraft.block.Block;
+     * import net.minecraft.block.material.Material;
+     * import net.minecraft.client.renderer.texture.BlockIconRegister;
+     * import net.minecraft.entity.EntityLivingBase;
+     * import net.minecraft.entity.item.EntityItem;
+     * import net.minecraft.entity.player.EntityPlayer;
+     * import net.minecraft.item.Item;
+     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.tileentity.TileEntity;
+     * import net.minecraft.util.AxisAlignedBB;
+     * import net.minecraft.util.BlockTexture;
+     * import net.minecraft.util.MathHelper;
+     * import net.minecraft.world.IBlockAccess;
+     * import net.minecraft.world.World;
+     * import mods.defeatedcrow.common.DCsAppleMilk;
+     * import mods.defeatedcrow.common.tile.TileLargeBottle;
+     * 
+     * /**
+     *  * 酒瓶。空カップを持って右クリックすると、ロック・ストレートで頂ける <br>
+     *  * キャニスターを別ブロックに分離。
+     *  * /
+     * public class BlockLargeBottle extends Block {
+     * 
+     *     private static final String[] contents = new String[] { "_shothu", "_sake", "_beer", "_wine", "_gin", "_rum",
+     *         "_vodka", "_whiskey", "_brandy" };
+     * 
+     *     
+     *     private BlockTexture[] boxTex;
+     *     
+     *     private BlockTexture[] sideTex;
+     *     
+     *     private BlockTexture[] itemTex;
+     * 
+     *     public BlockLargeBottle() {
+     *         super(Material.circuits);
+     *         this.setStepSound(Block.soundTypeGlass);
+     *         this.setHardness(0.2F);
+     *         this.setResistance(1.0F);
+     *     }
+     * 
+     *     // 回収動作
+     *     @Override
+     *     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer,
+     *         int par6, float par7, float par8, float par9) {
+     *         ItemStack itemstack = par5EntityPlayer.inventory.getCurrentItem();
+     *         int currentMeta = par1World.getBlockMetadata(par2, par3, par4);
+     *         TileLargeBottle tile = (TileLargeBottle) par1World.getTileEntity(par2, par3, par4);
+     * 
+     *         if (itemstack == null)// 素手では何もしない
+     *         {
+     *             return false;
+     *         } else if (itemstack.getItem() == Item.getItemFromBlock(DCsAppleMilk.emptyCup))// カップでストレートのお酒を汲む
+     *         {
+     *             short i = tile.getRemainShort();
+     *             int type = currentMeta;
+     *             int rem = checkRemain(i);
+     * 
+     *             boolean flag = false;
+     * 
+     *             if (i > 0) {
+     *                 tile.setRemainShort((short) (i - 1));
+     *                 flag = true;
+     *             } else {
+     * 
+     *             }
+     * 
+     *             if (flag) {
+     *                 int meta = 0;
+     *                 if (type == 0) meta = 11;
+     *                 else if (type == 8) meta = 12;
+     *                 else {
+     *                     meta = type - 1;
+     *                 }
+     * 
+     *                 if (!par5EntityPlayer.capabilities.isCreativeMode) {
+     * ... (full original retained in git history: git show HEAD:"src/main/java/mods/defeatedcrow/common/block/brewing/BlockLargeBottle.java")
+     */
 }

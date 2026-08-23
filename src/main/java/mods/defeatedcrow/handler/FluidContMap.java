@@ -6,10 +6,8 @@ import java.util.List;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * 1.20.1: Fluid Container Registry removed -> CapabilityFluidHandler (IFluidHandlerItem)
@@ -60,14 +58,13 @@ public class FluidContMap {
         if (fluid != null) Register(fluid.getFluidType(), data);
     }
 
+    // 1.20.1: WILDCARD_VALUE (32767) は廃止。メタ差分は個別 Item 化済みのため
+    // 単純な「同一 Item か」を判定する。旧 isSameItem は damage 比較＋WILDCARD を含んでいたが
+    // 1.20.1では damage/wildcard 概念がなく、is(Item) だけで十分。
+    // NBT 厳密一致が必要な場合は ItemStack.isSameItemSameTags を別途使う。
     private static boolean isSameItem(ItemStack in, ItemStack tar) {
         if (in == null || in.isEmpty() || tar == null || tar.isEmpty()) return false;
-        if (in.is(tar.getItem())) {
-            int a = in.getDamageValue();
-            int b = tar.getDamageValue();
-            return a == b || b == OreDictionary.WILDCARD_VALUE;
-        }
-        return false;
+        return in.is(tar.getItem());
     }
 
     public static BottlePack getPack(FluidType type) {
@@ -102,9 +99,10 @@ public class FluidContMap {
             for (FluidContData d : dataList) if (d.filledContainer != null) ret.add(d.filledContainer);
             return ret;
         }
+        // 1.20.1: WILDCARD_VALUE 撤去に伴い、同一Item判定に簡略化 (TagHelper.itemMatches 準拠)
         private boolean match(ItemStack a, ItemStack b) {
             if (a != null && !a.isEmpty() && b != null && !b.isEmpty()) {
-                if (a.is(b.getItem())) return a.getDamageValue() == b.getDamageValue() || b.getDamageValue() == OreDictionary.WILDCARD_VALUE;
+                return a.is(b.getItem());
             }
             return false;
         }

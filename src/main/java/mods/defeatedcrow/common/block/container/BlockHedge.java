@@ -1,263 +1,143 @@
 package mods.defeatedcrow.common.block.container;
 
-import java.util.List;
-import java.util.Random;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.BlockIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.BlockTexture;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import mods.defeatedcrow.common.DCsAppleMilk;
-import mods.defeatedcrow.handler.Util;
-
+/**
+ * WT-A 1.20.1 mojmap migration for BlockHedge.
+ * Original 1.7.10 logic preserved as TODO; stub compiles under Forge 47 + mojmap.
+ * Properties are supplied by ModBlocks (BlockBehaviour.Properties.of()...).
+ * Textures: JSON models under assets/defeatedcrow/models/block/ + blockstates/
+ */
 public class BlockHedge extends Block {
 
-    private static final String[] leaves = new String[] { "_boxwood_n", "_podocarp", "_photinia", "_snakegourd",
-        "_osmanthus", "_boxwood_g", "_tatibana_n" };
-
-    
-    private BlockTexture[] baseTex;
-    
-    private BlockTexture[] leafTex;
-    
-    private BlockTexture tamazusaN;
-    
-    private BlockTexture tamazusaC;
-    
-    private BlockTexture tatibanaF;
-    
-    private BlockTexture tatibanaL;
-    
-    private BlockTexture boxW;
-
-    public BlockHedge() {
-        super(Material.wood);
-        this.setStepSound(Block.soundTypeGrass);
-        this.setHardness(0.1F);
-        this.setTickRandomly(true);
+    public BlockHedge(BlockBehaviour.Properties properties) {
+        super(properties);
     }
 
-    // テクスチャの更新
+    // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox
     @Override
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-        if (!par1World.isRemote) {
-            int meta = par1World.getBlockMetadata(par2, par3, par4);
-            if (meta == 3 || meta == 6) {
-                par1World.markBlockForUpdate(par2, par3, par4);
-            }
-        }
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+        return Shapes.block(); // TODO: restore original bounds via Block.box() per meta/state
     }
 
     @Override
-    public boolean isOpaqueCube() {
-        return false;
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+        return getShape(state, level, pos, ctx);
+    }
+
+    // 1.7.10 onBlockActivated -> 1.20.1 use (BlockPos + BlockHitResult)
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        // TODO: restore original onBlockActivated logic
+        // Original used: world.getBlockMetadata(x,y,z), player.inventory, MinecraftForge.EVENT_BUS.post(AMTBlockRightClickEvent)
+        // Migration: use state, level.getBlockEntity(pos), player.getItemInHand(hand), Component
+        return InteractionResult.PASS;
     }
 
     @Override
-    public boolean renderAsNormalBlock() {
-        return false;
+    public void appendHoverText(ItemStack stack, BlockGetter level, java.util.List<Component> tooltip, TooltipFlag flag) {
+        // TODO: restore addInformation logic with Component.translatable
+        super.appendHoverText(stack, level, tooltip, flag);
     }
 
-    @Override
-    
-    public BlockTexture getBlockTexture(int par1, int par2) {
-        int i = par2 & 7;
-        boolean flag = par2 > 7;
-        if (i > 7) i = 7;
-        if (par1 == 0) {
-            return this.leafTex[i];
-        } else if (par1 == 1) {
-            return this.baseTex[0];
-        } else if (par1 == 2) {
-            return this.baseTex[1];
-        } else if (par1 == 3) {
-            return this.baseTex[2];
-        } else if (par1 == 4) {
-            return this.tamazusaC;
-        } else if (par1 == 5) {
-            return this.tamazusaN;
-        } else if (par1 == 6) {
-            return this.tatibanaL;
-        } else if (par1 == 7) {
-            return this.tatibanaF;
-        } else if (par1 == 8) {
-            return this.boxW;
-        } else {
-            return this.baseTex[0];
-        }
-
-    }
-
-    @Override
-    public int damageDropped(int par1) {
-        return par1 & 7;
-    }
-
-    @Override
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase,
-        ItemStack par6ItemStack) {
-        int l = MathHelper.floor_double(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int meta = par6ItemStack.getItemDamage();
-        byte facing = 0;
-
-        if (l == 0) {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, meta, 3);
-        }
-
-        if (l == 1) {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, meta | 8, 3);
-        }
-
-        if (l == 2) {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, meta, 3);
-        }
-
-        if (l == 3) {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, meta | 8, 3);
-        }
-    }
-
-    @Override
-    
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
-        par3List.add(new ItemStack(par1, 1, 2));
-        par3List.add(new ItemStack(par1, 1, 3));
-        par3List.add(new ItemStack(par1, 1, 4));
-        par3List.add(new ItemStack(par1, 1, 6));
-
-    }
-
-    @Override
-    public int getRenderType() {
-        return DCsAppleMilk.modelHedge;
-    }
-
-    // meta6のみ、接触ダメージ判定がある
-    @Override
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity par5Entity) {
-        if (world.getBlockMetadata(x, y, z) == 6 && par5Entity instanceof EntityLiving && par5Entity instanceof IMob) {
-            EntityLiving living = (EntityLiving) par5Entity;
-            if (!living.hasCustomNameTag()) living.attackEntityFrom(DamageSource.cactus, 1.0F);
-        }
-    }
-
-    @Override
-    
-    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
-        this.blockIcon = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge_base1");
-        this.tamazusaN = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge_snakegourd_f");
-        this.tamazusaC = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge_snakegourd_c");
-        this.tatibanaF = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge_tatibana_f");
-        this.tatibanaL = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge_tatibana_l");
-        this.boxW = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge_boxwood_w");
-        this.baseTex = new BlockTexture[3];
-        this.leafTex = new BlockTexture[7];
-
-        for (int i = 0; i < 3; ++i) {
-            this.baseTex[i] = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge_base" + (i + 1));
-        }
-
-        for (int i = 0; i < 7; ++i) {
-            this.leafTex[i] = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge" + leaves[i]);
-        }
-
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
-        this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
-        return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
-    }
-
-    @Override
-    
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
-        this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
-        return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
-    }
-
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int par2, int par3, int par4) {
-        this.thisBoundingBox(world, par2, par3, par4, world.getBlockMetadata(par2, par3, par4));
-    }
-
-    public void thisBoundingBox(IBlockAccess world, int x, int y, int z, int par1) {
-        float f = 0.0625F;
-        int meta = par1 & 7;
-        HedgeType type = getType(meta);
-        float height = 1.0F;
-        if (type == HedgeType.LOW && world.getBlock(x, y + 1, z) != this) height = 0.5F;
-        boolean side = par1 > 7;
-        int mX = 3;
-        int mZ = 3;
-        int xX = 13;
-        int xZ = 13;
-
-        if (world.getBlock(x, y, z + 1) == this) {
-            xZ = 16;
-        }
-        if (world.getBlock(x, y, z - 1) == this) {
-            mZ = 0;
-        }
-        if (world.getBlock(x + 1, y, z) == this) {
-            xX = 16;
-        }
-        if (world.getBlock(x - 1, y, z) == this) {
-            mX = 0;
-        }
-
-        if (type == HedgeType.LATTICE) {
-            if (side) {
-                this.setBlockBounds(0.0F, 0.0F, f * 3, 1.0F, 1.0F, f * 13);
-            } else {
-                this.setBlockBounds(f * 3, 0.0F, 0.0F, f * 13, 1.0F, 1.0F);
-            }
-        } else {
-            this.setBlockBounds(f * mX, 0.0F, f * mZ, f * xX, height, f * xZ);
-        }
-
-    }
-
-    public HedgeType getType(int meta) {
-        switch (meta) {
-            case 2:
-            case 4:
-            case 6:
-                return HedgeType.FENCE;
-            case 3:
-                return HedgeType.LATTICE;
-            case 0:
-            case 5:
-                return HedgeType.LOW;
-            default:
-                return HedgeType.NORMAL;
-        }
-    }
-
-    public static enum HedgeType {
-
-        NORMAL,
-
-        LATTICE,
-
-        FENCE,
-
-        LOW
-
-    }
-
+    /*
+     * Original 1.7.10 source (kept for reference, SJIS -> UTF-8):
+     * package mods.defeatedcrow.common.block.container;
+     * 
+     * import java.util.List;
+     * import java.util.Random;
+     * 
+     * import net.minecraft.block.Block;
+     * import net.minecraft.block.material.Material;
+     * import net.minecraft.client.renderer.texture.BlockIconRegister;
+     * import net.minecraft.creativetab.CreativeTabs;
+     * import net.minecraft.entity.Entity;
+     * import net.minecraft.entity.EntityLiving;
+     * import net.minecraft.entity.EntityLivingBase;
+     * import net.minecraft.entity.monster.IMob;
+     * import net.minecraft.item.Item;
+     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.util.AxisAlignedBB;
+     * import net.minecraft.util.DamageSource;
+     * import net.minecraft.util.BlockTexture;
+     * import net.minecraft.util.MathHelper;
+     * import net.minecraft.world.IBlockAccess;
+     * import net.minecraft.world.World;
+     * import mods.defeatedcrow.common.DCsAppleMilk;
+     * import mods.defeatedcrow.handler.Util;
+     * 
+     * public class BlockHedge extends Block {
+     * 
+     *     private static final String[] leaves = new String[] { "_boxwood_n", "_podocarp", "_photinia", "_snakegourd",
+     *         "_osmanthus", "_boxwood_g", "_tatibana_n" };
+     * 
+     *     
+     *     private BlockTexture[] baseTex;
+     *     
+     *     private BlockTexture[] leafTex;
+     *     
+     *     private BlockTexture tamazusaN;
+     *     
+     *     private BlockTexture tamazusaC;
+     *     
+     *     private BlockTexture tatibanaF;
+     *     
+     *     private BlockTexture tatibanaL;
+     *     
+     *     private BlockTexture boxW;
+     * 
+     *     public BlockHedge() {
+     *         super(Material.wood);
+     *         this.setStepSound(Block.soundTypeGrass);
+     *         this.setHardness(0.1F);
+     *         this.setTickRandomly(true);
+     *     }
+     * 
+     *     // テクスチャの更新
+     *     @Override
+     *     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
+     *         if (!par1World.isRemote) {
+     *             int meta = par1World.getBlockMetadata(par2, par3, par4);
+     *             if (meta == 3 || meta == 6) {
+     *                 par1World.markBlockForUpdate(par2, par3, par4);
+     *             }
+     *         }
+     *     }
+     * 
+     *     @Override
+     *     public boolean isOpaqueCube() {
+     *         return false;
+     *     }
+     * 
+     *     @Override
+     *     public boolean renderAsNormalBlock() {
+     *         return false;
+     *     }
+     * 
+     *     @Override
+     *     
+     *     public BlockTexture getBlockTexture(int par1, int par2) {
+     *         int i = par2 & 7;
+     *         boolean flag = par2 > 7;
+     *         if (i > 7) i = 7;
+     *         if (par1 == 0) {
+     *             return this.leafTex[i];
+     * ... (full original retained in git history: git show HEAD:"src/main/java/mods/defeatedcrow/common/block/container/BlockHedge.java")
+     */
 }

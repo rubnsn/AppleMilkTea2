@@ -1,6 +1,6 @@
 package mods.defeatedcrow.api.appliance;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Jawplateを作成する場合に実装するインターフェイス

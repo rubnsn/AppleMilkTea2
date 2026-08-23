@@ -6,18 +6,17 @@ import java.util.List;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraftforge.oredict.OreDictionary;
 
 import mods.defeatedcrow.api.appliance.IProcessorPanel;
 import mods.defeatedcrow.api.appliance.IProcessorRecipeTool;
 import mods.defeatedcrow.api.recipe.IProcessorRecipe;
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
 import mods.defeatedcrow.common.AMTLogger;
+import mods.defeatedcrow.handler.TagHelper;
 
 public class TileProcessor extends MachineBase {
     public TileProcessor(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) { super(pos, state); }
@@ -177,14 +176,14 @@ public class TileProcessor extends MachineBase {
                         int count = 1;
 
                         if (next instanceof ItemStack) {
-                            count = ((ItemStack) next).stackSize;
-                            match = OreDictionary.itemMatches((ItemStack) next, slot, false) && slot.stackSize >= count;
+                            count = ((ItemStack) next).getCount();
+                            match = TagHelper.itemMatches((ItemStack) next, slot, false) && slot.getCount() >= count;
                         } else if (next instanceof ArrayList) {
                             ArrayList<ItemStack> list = new ArrayList<ItemStack>((ArrayList<ItemStack>) next);
                             count = 1;
                             if (list != null && !list.isEmpty()) {
                                 for (ItemStack item : list) {
-                                    boolean f = OreDictionary.itemMatches(item, slot, false) && slot.stackSize > 0;
+                                    boolean f = TagHelper.itemMatches(item, slot, false) && !slot.isEmpty() && slot.getCount() > 0;
                                     if (f) match = true;
                                 }
                             }

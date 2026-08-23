@@ -1,4 +1,4 @@
-﻿package mods.defeatedcrow.client.entity.base;
+package mods.defeatedcrow.client.entity.base;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

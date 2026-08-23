@@ -1,21 +1,18 @@
 package mods.defeatedcrow.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
+import java.util.List;
 
-import mods.defeatedcrow.api.ICompressedItem;
-
-public class ItemFlintBlock extends ItemBlock implements ICompressedItem {
-
-    public ItemFlintBlock(Block block) {
-        super(block);
+/**
+ * WT-A 1.20.1: ItemFlintBlock -> BlockItem (formerly ItemBlock).
+ * Registration: ModItems + ModBlocks DeferredRegister (see ModItems.java:192)
+ */
+public class ItemFlintBlock extends BlockItem {
+    public ItemFlintBlock(Block block, Properties properties) {
+        super(block, properties);
     }
-
-    @Override
-    public ItemStack getDisassembledItem(ItemStack cont) {
-        return new ItemStack(Items.flint, 4, 0);
-    }
-
 }

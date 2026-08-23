@@ -1,6 +1,6 @@
 package mods.defeatedcrow.api.energy;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * 充電可能なバッテリーアイテムのインターフェイス

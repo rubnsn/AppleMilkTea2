@@ -1,90 +1,98 @@
 package mods.defeatedcrow.api.edibles;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 
 /**
  * 食べられるブロックの作成を補助するためのクラス。 <br>
  * ブロックのItemBlockクラスに継承させることで、そのブロックを食べられるようにする。 <br>
- * デフォルト動作では、返却容器はなし、飲食時の効果は空腹度回復のポーション効果である。
+ * デフォルト動作では、返却容器はなし、飲食時の効果は空腹度回復のポーション効果である。 <br>
+ * 1.20.1: onEaten/onItemRightClick → finishUsingItem/use, EnumAction → UseAnim.
  */
-public class EdibleItemBlock extends ItemBlock implements IEdibleItem {
+public class EdibleItemBlock extends BlockItem implements IEdibleItem {
 
-    public EdibleItemBlock(Block block) {
-        super(block);
+    public EdibleItemBlock(Block block, Item.Properties properties) {
+        super(block, properties);
     }
 
     /**
      * 食べる動作
      */
-    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-        int meta = par1ItemStack.getItemDamage();
+    @Override
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
+        int meta = stack.getDamageValue();
 
-        if (!par3EntityPlayer.capabilities.isCreativeMode) {
-            --par1ItemStack.stackSize;
-        }
-        this.returnItemStack(par3EntityPlayer, meta);
+        if (entity instanceof Player player) {
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1);
+            }
+            this.returnItemStack(player, meta);
 
-        if (!par2World.isRemote) {
-            if (this.effectOnEaten(par3EntityPlayer, meta) != null) {
-                ArrayList<PotionEffect> potion = this.effectOnEaten(par3EntityPlayer, meta);
+            if (!level.isClientSide) {
+                List<MobEffectInstance> potion = this.effectOnEaten(player, meta);
                 if (potion != null && !potion.isEmpty()) {
-                    for (PotionEffect ret : potion) {
-                        par3EntityPlayer.addPotionEffect(ret);
+                    for (MobEffectInstance ret : potion) {
+                        player.addEffect(ret);
                     }
                 }
-            }
 
-            if (this.hungerOnEaten(meta) != null) {
                 int[] h = this.hungerOnEaten(meta);
-                par3EntityPlayer.getFoodStats()
-                    .addStats(h[0], h[1]);
+                if (h != null && h.length >= 2) {
+                    player.getFoodData().eat(h[0], h[1]);
+                }
             }
         }
 
-        return par1ItemStack;
+        return stack;
     }
 
     /**
      * ガリガリ咀嚼する時間
      */
-    public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+    @Override
+    public int getUseDuration(ItemStack stack) {
         return 32;
     }
 
     /**
      * 飲食時のエフェクト。
      */
-    public EnumAction getItemUseAction(ItemStack par1ItemStack) {
-        return EnumAction.eat;
+    @Override
+    public UseAnim getUseAnimation(ItemStack stack) {
+        return UseAnim.EAT;
     }
 
     /**
      * 右クリック動作時に飲食効果を呼び出すメソッド。 <br>
-     * カーソルが特定のブロックをターゲットしている時は呼び出されないので、
-     * 何もない方向を向いておく必要がある。
+     * ブロック設置より優先して飲食動作を行いたいため、use をオーバーライドする。
      */
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-        par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-        return par1ItemStack;
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        player.startUsingItem(hand);
+        return InteractionResultHolder.consume(stack);
     }
 
     /**
      * 空容器の返却を行うメソッド。
      */
-    protected boolean returnItemStack(EntityPlayer player, int meta) {
+    protected boolean returnItemStack(Player player, int meta) {
         ItemStack ret = this.getReturnContainer(meta);
-        if (ret != null) {
-            if (!player.inventory.addItemStackToInventory(ret)) {
-                player.entityDropItem(ret, 1);
+        if (ret != null && !ret.isEmpty()) {
+            if (!player.getInventory().add(ret)) {
+                player.drop(ret, false);
                 return true;
             }
         }
@@ -92,12 +100,11 @@ public class EdibleItemBlock extends ItemBlock implements IEdibleItem {
     }
 
     /**
-     * 返却される空容器をメタデータ毎に定義する。
+     * 返却される空容器をメタデータ毎に定義する。デフォルトでは返却なし。
      */
     @Override
     public ItemStack getReturnContainer(int meta) {
-
-        return null;
+        return ItemStack.EMPTY;
     }
 
     /**
@@ -106,16 +113,28 @@ public class EdibleItemBlock extends ItemBlock implements IEdibleItem {
      * ポーション効果のSaturationを利用して空腹度回復を行っている。
      */
     @Override
-    public ArrayList<PotionEffect> effectOnEaten(EntityPlayer player, int meta) {
+    public List<MobEffectInstance> effectOnEaten(Player player, int meta) {
 
-        ArrayList<PotionEffect> ret = new ArrayList<PotionEffect>();
-        ret.add(new PotionEffect(Potion.field_76443_y.id, 2, 2));
+        List<MobEffectInstance> ret = new ArrayList<MobEffectInstance>();
+        // 1.7.10: Potion.field_76443_y == Saturation
+        ret.add(new MobEffectInstance(MobEffects.SATURATION, 2, 2));
         return ret;
     }
 
     @Override
     public int[] hungerOnEaten(int meta) {
         return new int[] { 4, 2 };
+    }
+
+    /**
+     * 設置可能判定の参考実装。飲食用ブロックは設置後に食べ残し状態を BlockState で管理すること。
+     */
+    protected static BlockPos placePos(Level level, Player player) {
+        return player.blockPosition();
+    }
+
+    protected BlockState defaultPlaceState(Block block) {
+        return block.defaultBlockState();
     }
 
 }

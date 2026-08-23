@@ -2,7 +2,7 @@ package mods.defeatedcrow.api.recipe;
 
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public interface IEvaporatorRecipeRegister {

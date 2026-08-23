@@ -1,131 +1,143 @@
 package mods.defeatedcrow.common.block.edible;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import mods.defeatedcrow.common.AchievementRegister;
-import mods.defeatedcrow.common.config.DCsConfigCocktail;
-import mods.defeatedcrow.common.entity.edible.PlaceableCocktailSP;
+/**
+ * WT-A 1.20.1 mojmap migration for EntityItemCocktailSP.
+ * Original 1.7.10 logic preserved as TODO; stub compiles under Forge 47 + mojmap.
+ * Properties are supplied by ModBlocks (BlockBehaviour.Properties.of()...).
+ * Textures: JSON models under assets/defeatedcrow/models/block/ + blockstates/
+ */
+public class EntityItemCocktailSP extends Block {
 
-public class EntityItemCocktailSP extends EdibleEntityItemBlock2 {
+    public EntityItemCocktailSP(BlockBehaviour.Properties properties) {
+        super(properties);
+    }
 
-    private static final String[] type = new String[] { "_original1", "_original2", "_original3" };
-
-    public EntityItemCocktailSP(Block block) {
-        super(block, false, true);
-        setMaxDamage(0);
-        setHasSubtypes(true);
+    // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+        return Shapes.block(); // TODO: restore original bounds via Block.box() per meta/state
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
-        int m = (par1ItemStack.getItemDamage());
-        if (m < 10) return super.getUnlocalizedName() + type[m];
-        else return super.getUnlocalizedName() + m;
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+        return getShape(state, level, pos, ctx);
+    }
+
+    // 1.7.10 onBlockActivated -> 1.20.1 use (BlockPos + BlockHitResult)
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        // TODO: restore original onBlockActivated logic
+        // Original used: world.getBlockMetadata(x,y,z), player.inventory, MinecraftForge.EVENT_BUS.post(AMTBlockRightClickEvent)
+        // Migration: use state, level.getBlockEntity(pos), player.getItemInHand(hand), Component
+        return InteractionResult.PASS;
     }
 
     @Override
-    public String getItemStackDisplayName(ItemStack item) {
-        int meta = Math.min(item.getItemDamage(), 2);
-        return DCsConfigCocktail.name[meta];
+    public void appendHoverText(ItemStack stack, BlockGetter level, java.util.List<Component> tooltip, TooltipFlag flag) {
+        // TODO: restore addInformation logic with Component.translatable
+        super.appendHoverText(stack, level, tooltip, flag);
     }
 
-    @Override
-    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-        if (!par2World.isRemote) {
-            this.addSSMoisture(4, 3F, par3EntityPlayer);
-        }
-        par3EntityPlayer.triggerAchievement(AchievementRegister.drinkCocktail);
-
-        return super.onEaten(par1ItemStack, par2World, par3EntityPlayer);
-    }
-
-    @Override
-    public int[] hungerOnEaten(int meta) {
-        return new int[] { 0, 0 };
-    }
-
-    @Override
-    public ArrayList<PotionEffect> effectOnEaten(EntityPlayer par1EntityPlayer, int meta) {
-        PotionEffect potion = new PotionEffect(Potion.digSpeed.id, 2400, 2);
-        int i = MathHelper.clamp_int(meta, 0, 2);
-        int dur = DCsConfigCocktail.potionDur[i];
-        int amp = DCsConfigCocktail.potionAmp[i];
-
-        boolean flag = false;
-
-        ArrayList<PotionEffect> ret = new ArrayList<PotionEffect>();
-        ret.add(new PotionEffect(Potion.hunger.id, 300, 1));
-
-        if (this.getCustomEffect(meta) != null) {
-            if (par1EntityPlayer.isPotionActive(this.getCustomEffect(meta).id)) {
-                dur = par1EntityPlayer.getActivePotionEffect(this.getCustomEffect(meta))
-                    .getDuration() + dur;
-                potion = new PotionEffect(this.getCustomEffect(meta).id, dur, amp);
-                flag = true;
-            } else {
-                potion = new PotionEffect(this.getCustomEffect(meta).id, dur, amp);
-            }
-        }
-
-        if (potion != null) ret.add(potion);
-
-        if (flag) {
-            ret.add(new PotionEffect(Potion.confusion.id, 300, 1));
-        }
-
-        return ret;
-    }
-
-    private Potion getCustomEffect(int meta) {
-        int i = MathHelper.clamp_int(meta, 0, 2);
-        int id = DCsConfigCocktail.potionIds[i];
-
-        if (id < Potion.potionTypes.length && Potion.potionTypes[id] != null) {
-            return Potion.potionTypes[id];
-        }
-
-        return Potion.regeneration;
-    }
-
-    public EnumAction getItemUseAction(ItemStack par1ItemStack) {
-        return EnumAction.drink;
-    }
-
-    @Override
-    public int getMetadata(int par1) {
-        return par1;
-    }
-
-    @Override
-    protected boolean spownEntityFoods(World world, EntityPlayer player, ItemStack item, double x, double y, double z) {
-        PlaceableCocktailSP entity = new PlaceableCocktailSP(world, item, x, y, z);
-        entity.rotationYaw = player.rotationYaw - 180.0F;
-
-        if (!world.isRemote && item != null) {
-            return world.spawnEntityInWorld(entity);
-        }
-
-        return false;
-    }
-
-    
-    // マウスオーバー時の表示情報
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-        super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-        int l = Math.min(par1ItemStack.getItemDamage(), 2);
-        String message = DCsConfigCocktail.massage[l];
-        if (message != null) {
-            par3List.add(message);
-        }
-    }
-
+    /*
+     * Original 1.7.10 source (kept for reference, SJIS -> UTF-8):
+     * package mods.defeatedcrow.common.block.edible;
+     * 
+     * import java.util.ArrayList;
+     * import java.util.List;
+     * 
+     * import net.minecraft.block.Block;
+     * import net.minecraft.entity.player.EntityPlayer;
+     * import net.minecraft.item.EnumAction;
+     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.potion.Potion;
+     * import net.minecraft.potion.PotionEffect;
+     * import net.minecraft.util.MathHelper;
+     * import net.minecraft.world.World;
+     * import mods.defeatedcrow.common.AchievementRegister;
+     * import mods.defeatedcrow.common.config.DCsConfigCocktail;
+     * import mods.defeatedcrow.common.entity.edible.PlaceableCocktailSP;
+     * 
+     * public class EntityItemCocktailSP extends EdibleEntityItemBlock2 {
+     * 
+     *     private static final String[] type = new String[] { "_original1", "_original2", "_original3" };
+     * 
+     *     public EntityItemCocktailSP(Block block) {
+     *         super(block, false, true);
+     *         setMaxDamage(0);
+     *         setHasSubtypes(true);
+     *     }
+     * 
+     *     @Override
+     *     public String getUnlocalizedName(ItemStack par1ItemStack) {
+     *         int m = (par1ItemStack.getItemDamage());
+     *         if (m < 10) return super.getUnlocalizedName() + type[m];
+     *         else return super.getUnlocalizedName() + m;
+     *     }
+     * 
+     *     @Override
+     *     public String getItemStackDisplayName(ItemStack item) {
+     *         int meta = Math.min(item.getItemDamage(), 2);
+     *         return DCsConfigCocktail.name[meta];
+     *     }
+     * 
+     *     @Override
+     *     public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
+     *         if (!par2World.isRemote) {
+     *             this.addSSMoisture(4, 3F, par3EntityPlayer);
+     *         }
+     *         par3EntityPlayer.triggerAchievement(AchievementRegister.drinkCocktail);
+     * 
+     *         return super.onEaten(par1ItemStack, par2World, par3EntityPlayer);
+     *     }
+     * 
+     *     @Override
+     *     public int[] hungerOnEaten(int meta) {
+     *         return new int[] { 0, 0 };
+     *     }
+     * 
+     *     @Override
+     *     public ArrayList<PotionEffect> effectOnEaten(EntityPlayer par1EntityPlayer, int meta) {
+     *         PotionEffect potion = new PotionEffect(Potion.digSpeed.id, 2400, 2);
+     *         int i = MathHelper.clamp_int(meta, 0, 2);
+     *         int dur = DCsConfigCocktail.potionDur[i];
+     *         int amp = DCsConfigCocktail.potionAmp[i];
+     * 
+     *         boolean flag = false;
+     * 
+     *         ArrayList<PotionEffect> ret = new ArrayList<PotionEffect>();
+     *         ret.add(new PotionEffect(Potion.hunger.id, 300, 1));
+     * 
+     *         if (this.getCustomEffect(meta) != null) {
+     *             if (par1EntityPlayer.isPotionActive(this.getCustomEffect(meta).id)) {
+     *                 dur = par1EntityPlayer.getActivePotionEffect(this.getCustomEffect(meta))
+     *                     .getDuration() + dur;
+     *                 potion = new PotionEffect(this.getCustomEffect(meta).id, dur, amp);
+     *                 flag = true;
+     *             } else {
+     *                 potion = new PotionEffect(this.getCustomEffect(meta).id, dur, amp);
+     *             }
+     *         }
+     * 
+     *         if (potion != null) ret.add(potion);
+     * 
+     * ... (full original retained in git history: git show HEAD:"src/main/java/mods/defeatedcrow/common/block/edible/EntityItemCocktailSP.java")
+     */
 }

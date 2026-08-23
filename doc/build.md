@@ -359,6 +359,57 @@ jar tf build/libs/AppleMilkTea2-1.20.1-2.9m.jar | Select-String "mods.toml|pack.
 - **FG6は非推奨寄りだが1.20.1の豊富なMod資産互換で選択**。FG7/Gradle9は 1.20.1(47.x)非対応。
 - `minecraft { mappings channel:'official', version:'1.20.1' }` はFG6デフォルトで mojmap。MCP/`parchment` は任意だが本移行は `official` に統一。
 
+### 難読化解除済み公式ソースの場所 (mojmap) <a id="deobf-sources"></a>
+
+> `mappings channel:'official'` は Mojang が配布する ProGuard マッピングを FG6 が自動適用した **難読化解除済み (deobfuscated) 公式ソース**。旧MCP `stable 12` の `func_149663_c` ではなく `BlockBehaviour.Properties` / `VoxelShape` 等の正式名で読める。
+
+**1. 本命 — Gradle キャッシュの `-sources.jar` (IDEで直接読むファイル)**
+
+`minecraft 'net.minecraftforge:forge:1.20.1-47.3.0'` を初回 `build`/`genIntellijRuns` すると FG6 が Mojang 公式マッピングを適用した sources を生成・キャッシュする:
+
+```text
+%USERPROFILE%\.gradle\caches\forge_gradle\minecraft_user_repo\net\minecraftforge\forge\1.20.1-47.3.0_mapped_official_1.20.1\
+  forge-1.20.1-47.3.0_mapped_official_1.20.1-sources.jar  (7.2 MB, 本命)
+  forge-1.20.1-47.3.0_mapped_official_1.20.1.jar          (18.4 MB, バイナリ)
+  forge-1.20.1-47.3.0_mapped_official_1.20.1-recomp.jar   (18.3 MB, 再コンパイル用)
+```
+
+*中身の検証*:
+```powershell
+jar tf $env:USERPROFILE\.gradle\caches\forge_gradle\minecraft_user_repo\net\minecraftforge\forge\1.20.1-47.3.0_mapped_official_1.20.1\forge-1.20.1-47.3.0_mapped_official_1.20.1-sources.jar | Select-String "net/minecraft/world/level/block/Block\.java"
+# → net/minecraft/world/level/block/Block.java
+# → net/minecraft/world/level/block/Blocks.java  (MCPの func_149663_c ではなく公式名)
+```
+
+Windows 例: `C:\Users\white\.gradle\caches\...` / macOS/Linux 例: `~/.gradle/caches/...`。Forge バージョン (47.3.0) やマッピング (`_mapped_official_1.20.1`) が変わるとディレクトリ名も変わる。
+
+**2. 補助 — Mojang 配布の生マッピング (FGが内部で使用)**
+
+```text
+%USERPROFILE%\.gradle\caches\forge_gradle\minecraft_repo\versions\1.20.1\
+  client_mappings.txt  (8.0 MB, `com.mojang.blaze3d.Blaze3D -> ega:` 形式)
+  server_mappings.txt  (6.1 MB)
+  mcp_mappings.tsrg    (5.6 MB, TSRG 形式)
+```
+
+これらは FG が `client.jar` ↔ 公式名 の変換に使う中間ファイル。**通常は直接開かず、上記 `-sources.jar` を見る**。`client_mappings.txt` の先頭は Mojang EULA コメント + `com.mojang.blaze3d -> ega` のような ProGuard 形式。
+
+**3. IDE での開き方**
+
+*IntelliJ*: `.\gradlew genIntellijRuns` 実行後、Project Tool Window → External Libraries → `Gradle: net.minecraftforge:forge:1.20.1-47.3.0_mapped_official_1.20.1` → `net/minecraft/...` を展開。`-sources.jar` が自動アタッチされ `Block.java:1` 等が公式名で表示される。Run Configuration は `.idea/runConfigurations/runClient.xml` に生成済み。
+
+*Eclipse/VSCode*: `.\gradlew genEclipseRuns` / `genVSCodeRuns` 同様に `-sources.jar` が参照ライブラリに追加される。
+
+**4. 旧MCPとの違い**
+
+| 旧 (1.7.10) | 新 (1.20.1 mojmap) |
+|---|---|
+| `~/.gradle/caches/minecraft/net/minecraft/minecraftSrc/1.7.10/srgs/stable_12` + `joined.srg` | 上記 `..._mapped_official_1.20.1-sources.jar` のみに統一 |
+| `func_149663_c` (SRG) / `field_149764_J` | `BlockBehaviour.Properties` / `VoxelShape` 等の可読名 |
+| `gradle.properties` で `mappingsChannel=stable` + `mappingsVersion=12` が必要 | `build.gradle:12` の `mappings channel:'official', version:'1.20.1'` のみに簡略化 |
+
+> **Tips**: `build/` 配下の `build/createMcpToSrg/output.tsrg` / `build/reobfJar/output.jar` は **当MOD自身の reobf** 用で Minecraft 本体の公式ソースではない。Minecraft 公式ソースは常に上記 **Gradle User Cache の `-sources.jar`** を参照すること。
+
 ### ソース移行との分担
 
 - 本書は**ビルド枠組み**のみ。以下はソース移行（別エージェント/DOC各論）担当でGradleでは依存削除のみ:

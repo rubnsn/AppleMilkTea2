@@ -13,7 +13,8 @@ import net.minecraft.core.registries.Registries;
 
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
 import mods.defeatedcrow.common.AMTLogger;
-import mods.defeatedcrow.common.DCsAppleMilk;
+import mods.defeatedcrow.common.registry.ModFluids;
+import mods.defeatedcrow.common.registry.ModItems;
 
 /**
  * タグ (旧OreDictionary) に登録されているアイテムを、使う分だけゲームのロード時にまとめて読み込み、
@@ -88,8 +89,8 @@ public class LoadOreDicHandler {
             if (!soy.isEmpty()) {
 
                 RecipeRegisterManager.evaporatorRecipe.addRecipe(
-                    new ItemStack(DCsAppleMilk.dustWood, 3),
-                    new net.minecraft.world.level.material.FluidStack(DCsAppleMilk.vegitableOil, 25),
+                    new ItemStack(ModItems.WOOD_DUST.get(), 3),
+                    new net.minecraft.world.level.material.FluidStack(ModFluids.VEGITABLE_OIL_SOURCE.get(), 25),
                     soy);
             }
         }

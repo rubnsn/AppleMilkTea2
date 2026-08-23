@@ -1,63 +1,67 @@
 package mods.defeatedcrow.api.edibles;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 
 /**
  * 食べられるアイテムの作成を補助するためのクラス。 <br>
  * 同じ処理（容器返却処理）を複数のアイテムに重複して追加するのは面倒だし見た目も良くないので作成。 <br>
- * デフォルト動作では、返却容器はなし、飲食時の効果は空腹度回復のポーション効果である。
+ * デフォルト動作では、返却容器はなし、飲食時の効果は空腹度回復のポーション効果である。 <br>
+ * 1.20.1: onEaten/onItemRightClick → finishUsingItem/use, EnumAction → UseAnim.
  */
 public class EdibleItem extends Item implements IEdibleItem {
 
-    public EdibleItem() {
-        super();
+    public EdibleItem(Properties properties) {
+        super(properties);
     }
 
     /**
      * 食べる動作
      */
     @Override
-    public ItemStack onEaten(ItemStack item, World world, EntityPlayer player) {
-        int meta = item.getItemDamage();
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
+        int meta = stack.getDamageValue();
 
-        if (!player.capabilities.isCreativeMode) {
-            --item.stackSize;
-        }
-        this.returnItemStack(player, meta);
+        if (entity instanceof Player player) {
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1);
+            }
+            this.returnItemStack(player, meta);
 
-        if (!world.isRemote) {
-            if (this.effectOnEaten(player, meta) != null) {
-                ArrayList<PotionEffect> potion = this.effectOnEaten(player, meta);
+            if (!level.isClientSide) {
+                List<MobEffectInstance> potion = this.effectOnEaten(player, meta);
                 if (potion != null && !potion.isEmpty()) {
-                    for (PotionEffect ret : potion) {
-                        player.addPotionEffect(ret);
+                    for (MobEffectInstance ret : potion) {
+                        player.addEffect(ret);
                     }
                 }
-            }
 
-            if (this.hungerOnEaten(meta) != null) {
                 int[] h = this.hungerOnEaten(meta);
-                player.getFoodStats()
-                    .addStats(h[0], h[1]);
+                if (h != null && h.length >= 2) {
+                    player.getFoodData().eat(h[0], h[1]);
+                }
             }
         }
 
-        return item;
+        return stack;
     }
 
     /**
      * ガリガリ咀嚼する時間
      */
     @Override
-    public int getMaxItemUseDuration(ItemStack item) {
+    public int getUseDuration(ItemStack stack) {
         return 32;
     }
 
@@ -65,29 +69,28 @@ public class EdibleItem extends Item implements IEdibleItem {
      * 飲食時のエフェクト。
      */
     @Override
-    public EnumAction getItemUseAction(ItemStack item) {
-        return EnumAction.eat;
+    public UseAnim getUseAnimation(ItemStack stack) {
+        return UseAnim.EAT;
     }
 
     /**
-     * 右クリック動作時に飲食効果を呼び出すメソッド。 <br>
-     * カーソルが特定のブロックをターゲットしている時は呼び出されないので、
-     * 何もない方向を向いておく必要がある。
+     * 右クリック動作時に飲食効果を呼び出すメソッド。
      */
     @Override
-    public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
-        player.setItemInUse(item, this.getMaxItemUseDuration(item));
-        return item;
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        player.startUsingItem(hand);
+        return InteractionResultHolder.consume(stack);
     }
 
     /**
      * 空容器の返却を行うメソッド。
      */
-    protected boolean returnItemStack(EntityPlayer player, int meta) {
+    protected boolean returnItemStack(Player player, int meta) {
         ItemStack ret = this.getReturnContainer(meta);
-        if (ret != null) {
-            if (!player.inventory.addItemStackToInventory(ret)) {
-                player.entityDropItem(ret, 1);
+        if (ret != null && !ret.isEmpty()) {
+            if (!player.getInventory().add(ret)) {
+                player.drop(ret, false);
                 return true;
             }
         }
@@ -95,12 +98,11 @@ public class EdibleItem extends Item implements IEdibleItem {
     }
 
     /**
-     * 返却される空容器をメタデータ毎に定義する。
+     * 返却される空容器をメタデータ毎に定義する。デフォルトでは返却なし。
      */
     @Override
     public ItemStack getReturnContainer(int meta) {
-
-        return null;
+        return ItemStack.EMPTY;
     }
 
     /**
@@ -109,10 +111,11 @@ public class EdibleItem extends Item implements IEdibleItem {
      * ポーション効果のSaturationを利用して空腹度回復を行っている。
      */
     @Override
-    public ArrayList<PotionEffect> effectOnEaten(EntityPlayer player, int meta) {
+    public List<MobEffectInstance> effectOnEaten(Player player, int meta) {
 
-        ArrayList<PotionEffect> ret = new ArrayList<PotionEffect>();
-        ret.add(new PotionEffect(Potion.field_76443_y.id, 2, 2));
+        List<MobEffectInstance> ret = new ArrayList<MobEffectInstance>();
+        // 1.7.10: Potion.field_76443_y == Saturation
+        ret.add(new MobEffectInstance(MobEffects.SATURATION, 2, 2));
         return ret;
     }
 

@@ -13,7 +13,7 @@ Block/Item以外の全カテゴリについても、1.12.2以降への移行を�
 | ドキュメント | 内容 | 件数 | 個別ページ | 移行ガイド | 主要ソース |
 |---|---|---|---|---|---|
 | [概要](./overview.md) | MOD全体像、統計、連携MOD、1.20.1目標像 | — | — | — | `DCsAppleMilk.java:127` |
-| [ビルド / Gradle](./build.md) | **1.7.10 GTNH → 1.20.1 FG6 移行: Gradle 8.x / JDK17 / mappings / mods.toml** | — | — | **本ガイドがビルド移行の正本** | `build.gradle` / `gradle.properties` / `settings.gradle` |
+| [ビルド / Gradle](./build.md) | **1.7.10 GTNH → 1.20.1 FG6 移行: Gradle 8.x / JDK17 / mappings / mods.toml / 難読化解除済み公式ソース場所** | — | — | **本ガイドがビルド移行の正本** ([公式ソース場所](./build.md#deobf-sources)) | `build.gradle` / `gradle.properties` / `settings.gradle` |
 | [Block 一覧](./blocks.md) | 全ブロックを9カテゴリで表解 | **74** | [74件](./blocks/README.md) | [→](./blocks/migration-guide.md)（1.20.1追記） | `MaterialRegister.java:316-411` |
 | [Item 一覧](./items.md) | 全アイテムを8カテゴリで表解 | **64+2** | [53件](./items/README.md) | [→](./items/migration-guide.md)（1.20.1 NBT≠DataComponents明記） | `MaterialRegister.java:247-314` |
 | [ItemBlock 一覧](./items/item-blocks.md) | ItemBlock 36種 | **36** | — | — | `MaterialRegister.java:316` |

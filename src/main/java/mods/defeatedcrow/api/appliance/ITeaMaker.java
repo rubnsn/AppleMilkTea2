@@ -1,6 +1,6 @@
 package mods.defeatedcrow.api.appliance;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 import mods.defeatedcrow.api.recipe.ITeaRecipe;
 

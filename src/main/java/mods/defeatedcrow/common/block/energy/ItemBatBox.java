@@ -1,46 +1,18 @@
 package mods.defeatedcrow.common.block.energy;
 
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import mods.defeatedcrow.api.charge.ChargeItemManager;
-import mods.defeatedcrow.common.DCsAppleMilk;
-import mods.defeatedcrow.common.config.PropertyHandler;
-
-public class ItemBatBox extends ItemBlock {
-
-    public ItemBatBox(Block block) {
-        super(block);
-    }
-
-    @Override
-    
-    // マウスオーバー時の表示情報
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-        super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-        NBTTagCompound nbt = par1ItemStack.getTagCompound();
-        int s = 0;
-        if (nbt != null && nbt.hasKey("charge")) {
-            s = nbt.getInteger("charge");
-        } else {
-            s = ChargeItemManager.chargeItem.getChargeAmount(new ItemStack(this));
-        }
-        par3List.add("Charge Amount : " + s);
-
-        if (DCsAppleMilk.proxy.isShiftKeyDown()) { // shiftキー押下時
-            int vsRF = s * PropertyHandler.rateRF();
-            int vsEU = s * PropertyHandler.rateEU();
-            int vsGF = s * PropertyHandler.rateGF();
-            par3List.add(vsRF + " RF");
-            par3List.add(vsEU + " EU");
-            par3List.add(vsGF + " GF");
-        } else {
-            par3List.add(EnumChatFormatting.ITALIC + "LShift: Expand tooltip.");
-        }
+/**
+ * WT-A 1.20.1: ItemBatBox -> BlockItem (formerly ItemBlock).
+ * Registration: ModItems + ModBlocks DeferredRegister (see ModItems.java:192)
+ */
+public class ItemBatBox extends BlockItem {
+    public ItemBatBox(Block block, Properties properties) {
+        super(block, properties);
     }
 }

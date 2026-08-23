@@ -1,19 +1,18 @@
 package mods.defeatedcrow.common.block.energy;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
+import java.util.List;
 
-import mods.defeatedcrow.api.energy.BatteyItemBlockBase;
-
-public class ItemGelBat extends BatteyItemBlockBase {
-
-    public ItemGelBat(Block block) {
-        super(block);
-        this.setMaxStackSize(1);
-    }
-
-    @Override
-    public int getMaxAmount(ItemStack item) {
-        return 12800;
+/**
+ * WT-A 1.20.1: ItemGelBat -> BlockItem (formerly ItemBlock).
+ * Registration: ModItems + ModBlocks DeferredRegister (see ModItems.java:192)
+ */
+public class ItemGelBat extends BlockItem {
+    public ItemGelBat(Block block, Properties properties) {
+        super(block, properties);
     }
 }

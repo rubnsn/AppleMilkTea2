@@ -1,38 +1,18 @@
 package mods.defeatedcrow.common.block.container;
 
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-
-public class ItemContainerBase extends ItemBlock {
-
-    public ItemContainerBase(Block block) {
-        super(block);
-        setMaxDamage(0);
-        setHasSubtypes(true);
+/**
+ * WT-A 1.20.1: ItemContainerBase -> BlockItem (formerly ItemBlock).
+ * Registration: ModItems + ModBlocks DeferredRegister (see ModItems.java:192)
+ */
+public class ItemContainerBase extends BlockItem {
+    public ItemContainerBase(Block block, Properties properties) {
+        super(block, properties);
     }
-
-    @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
-        return super.getUnlocalizedName();
-    }
-
-    @Override
-    public int getMetadata(int par1) {
-        return par1;
-    }
-
-    @Override
-    
-    // マウスオーバー時の表示情報
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-        super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-        int l = par1ItemStack.getItemDamage();
-        int rem = (l & 7) + 1;
-        par3List.add(new String("Number: " + rem));
-    }
-
 }

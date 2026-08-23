@@ -1,29 +1,18 @@
 package mods.defeatedcrow.common.block.appliance;
 
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-
-public class ItemAppliance extends ItemBlock {
-
-    public ItemAppliance(Block block) {
-        super(block);
+/**
+ * WT-A 1.20.1: ItemAppliance -> BlockItem (formerly ItemBlock).
+ * Registration: ModItems + ModBlocks DeferredRegister (see ModItems.java:192)
+ */
+public class ItemAppliance extends BlockItem {
+    public ItemAppliance(Block block, Properties properties) {
+        super(block, properties);
     }
-
-    @Override
-    
-    // マウスオーバー時の表示情報
-    public void addInformation(ItemStack item, EntityPlayer player, List list, boolean b) {
-        super.addInformation(item, player, list, b);
-        boolean flag = Loader.isModLoaded("NotEnoughItems") && Loader.isModLoaded("DCsNEIPluginAMT");
-        if (flag) {
-            list.add(EnumChatFormatting.ITALIC + "Push NEI Usage key : display recipes");
-        }
-
-    }
-
 }

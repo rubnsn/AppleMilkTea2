@@ -1,6 +1,6 @@
 package mods.defeatedcrow.api.appliance;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Food ProcessorやJaw Crusherの材料欄に入れて使えるアイテム。

@@ -1,7 +1,7 @@
 package mods.defeatedcrow.common.entity.edible;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util./*IconREMOVED migrated*/;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Level;
 
 import mods.defeatedcrow.common.DCsAppleMilk;
@@ -40,8 +40,14 @@ public class PlaceableBaseSoup extends FoodBaseEntity {
     }
 
     @Override
-    public /*IconREMOVED migrated*/ getSoupIcon(int meta) {
-        return DCsAppleMilk.baseSoupBowl.getIconFromDamage(meta + 16);
+    public ResourceLocation getSoupIcon(int meta) {
+        // 1.20.1: former atlas icon (meta+16 innerType) -> ResourceLocation.
+        // ItemBaseSoupBowl had iconType[0..8] = foods/basesoupitem_<TYPE> and innerType = contents/basesoup_<TYPE>.
+        // Entity soup quad now uses entityCutout with this texture; fallback is bowlJP_inner.png in RenderFoodEntityBase.
+        int m = meta & 15;
+        String[] names = { "WATER", "CHOCO", "OIL", "DASHI", "SHOYU", "TONKOTU", "BLOOD", "PURPLE", "CHEESE" };
+        if (m < 0 || m >= names.length) m = 0;
+        return new ResourceLocation("defeatedcrow", "textures/items/contents/basesoup_" + names[m] + ".png");
     }
 
     @Override

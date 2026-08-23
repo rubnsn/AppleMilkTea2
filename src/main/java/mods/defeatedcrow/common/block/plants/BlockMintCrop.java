@@ -1,124 +1,94 @@
 package mods.defeatedcrow.common.block.plants;
 
-import java.util.ArrayList;
-import java.util.Random;
+import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockFarmland;
-import net.minecraft.block.IGrowable;
-import net.minecraft.client.renderer.texture.BlockIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockTexture;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import mods.defeatedcrow.common.DCsAppleMilk;
-import mods.defeatedcrow.handler.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.ItemLike;
 
-public class BlockMintCrop extends BlockBush implements IGrowable {
+import mods.defeatedcrow.common.registry.ModItems;
 
-    
-    private BlockTexture[] iconArray;
+/**
+ * WT-A: BlockMintCrop — 1.7.10 → mojmap 1.20.1 移行 (CropBlock 系)。
+ * 4段階(0-3)成長のミント作物。
+ */
+public class BlockMintCrop extends CropBlock {
 
-    public BlockMintCrop() {
-        super();
-        this.setTickRandomly(true);
-        float f = 0.5F;
-        this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.25F, 0.5F + f);
-        this.setCreativeTab((CreativeTabs) null);
-        this.setHardness(0.0F);
-        this.setStepSound(soundTypeGrass);
-        this.disableStats();
+    public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 3);
+
+    public BlockMintCrop(Properties properties) {
+        super(properties);
     }
 
-    /*
-     * 真下のブロックに植えることが出来るかをブロックIDで判定するメソッド。
-     * バニラではpar1 == Block.tilledField.blockID;で判定しているが、これでは拡張性がなさすぎるので、
-     * 他の条件を追加してみる。
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(AGE);
+    }
+
+    @Override
+    public IntegerProperty getAgeProperty() {
+        return AGE;
+    }
+
+    @Override
+    public int getMaxAge() {
+        return 3;
+    }
+
+    /**
+     * 真下のブロックが耕地(バニラ or 他Modの耕地)である場合のみ植えられる。
      */
-    protected boolean canThisPlantGrowOnThisBlockID(Block par1) {
-        if (par1 == Blocks.farmland) return true;
-
-        /*
-         * 今回は、バニラの耕地ブロックを継承しているかで判定している。
-         * 他のModで追加された耕地ブロックに対応できる可能性がある。
-         */
-        Block block = par1;
-        return (block != null && block instanceof BlockFarmland);
+    @Override
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+        return state.is(Blocks.FARMLAND) || state.getBlock() instanceof FarmBlock;
     }
 
-    /*
-     * ブロックのアップデート時に呼ばれるメソッド。
-     * superでBlockFlowerのメソッド（この場所にブロックとして存在できるかの判定）を呼び、
-     * 次にこのブロックの成長判定を行っている。
+    /**
+     * 対応するタネアイテム。ModItems.MINT_SEED (mojmap RegistryObject) を返す。
      */
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-        super.updateTick(par1World, par2, par3, par4, par5Random);
-
-        if (par1World.getBlockLightValue(par2, par3 + 1, par4) >= 9) {
-            int l = par1World.getBlockMetadata(par2, par3, par4);
-
-            if (l < 3) {
-                float f = this.getGrowthRate(par1World, par2, par3, par4);
-
-                if (par5Random.nextInt((int) (25.0F / f) + 1) == 0) {
-                    ++l;
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4, l, 2);
-                }
-            }
-        }
-    }
-
-    // IGrowableで使用されているメソッド。
-    public void grow(World world, int x, int y, int z) {
-        int l = world.getBlockMetadata(x, y, z) + MathHelper.getRandomIntegerInRange(world.rand, 2, 5);
-
-        if (l > 3) {
-            l = 3;
-        }
-
-        world.setBlockMetadataWithNotify(x, y, z, l, 2);
-    }
-
-    /*
-     * 骨粉による成長メソッド。
-     */
-    public boolean fertilize(World par1World, int par2, int par3, int par4) {
-        return (par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2));
+    @Override
+    protected @Nullable ItemLike getBaseSeedId() {
+        return ModItems.MINT_SEED.get();
     }
 
     /*
      * 周囲のブロックから、成長しやすさを判定しているところ。
+     * ミントの場合は隣接するミントが多いほど成長しやすい（バニラの逆）。
      */
-    private float getGrowthRate(World par1World, int par2, int par3, int par4) {
+    private float getGrowthRate(Level level, BlockPos pos) {
         float f = 1.0F;
-        Block l = par1World.getBlock(par2, par3, par4 - 1);
-        Block i1 = par1World.getBlock(par2, par3, par4 + 1);
-        Block j1 = par1World.getBlock(par2 - 1, par3, par4);
-        Block k1 = par1World.getBlock(par2 + 1, par3, par4);
-        Block l1 = par1World.getBlock(par2 - 1, par3, par4 - 1);
-        Block i2 = par1World.getBlock(par2 + 1, par3, par4 - 1);
-        Block j2 = par1World.getBlock(par2 + 1, par3, par4 + 1);
-        Block k2 = par1World.getBlock(par2 - 1, par3, par4 + 1);
 
-        boolean flag = j1 == this || k1 == this;
-        boolean flag1 = l == this || i1 == this;
-        boolean flag2 = l1 == this || i2 == this || j2 == this || k2 == this;
+        boolean flag = level.getBlockState(pos.offset(-1, 0, 0)).is(this)
+            || level.getBlockState(pos.offset(1, 0, 0)).is(this);
+        boolean flag1 = level.getBlockState(pos.offset(0, 0, -1)).is(this)
+            || level.getBlockState(pos.offset(0, 0, 1)).is(this);
+        boolean flag2 = level.getBlockState(pos.offset(-1, 0, -1)).is(this)
+            || level.getBlockState(pos.offset(1, 0, -1)).is(this)
+            || level.getBlockState(pos.offset(1, 0, 1)).is(this)
+            || level.getBlockState(pos.offset(-1, 0, 1)).is(this);
 
-        for (int l2 = par2 - 1; l2 <= par2 + 1; ++l2) {
-            for (int i3 = par4 - 1; i3 <= par4 + 1; ++i3) {
-                Block j3 = par1World.getBlock(l2, par3 - 1, i3);
+        for (int dx = -1; dx <= 1; ++dx) {
+            for (int dz = -1; dz <= 1; ++dz) {
+                BlockState below = level.getBlockState(pos.offset(dx, -1, dz));
                 float f1 = 0.0F;
 
-                if (j3 != null && j3.canSustainPlant(par1World, l2, par3 - 1, i3, ForgeDirection.UP, this)) {
+                // 各ブロックの下のブロックが、この作物を支えられるか
+                if (below.canSustainPlant(level, pos.offset(dx, -1, dz), Direction.UP, this)) {
                     f1 = 1.0F;
                 }
 
-                if (l2 != par2 || i3 != par4) {
+                if (dx != 0 || dz != 0) {
                     f1 /= 4.0F;
                 }
 
@@ -126,10 +96,6 @@ public class BlockMintCrop extends BlockBush implements IGrowable {
             }
         }
 
-        /*
-         * バニラだと下記条件（隣接して同じ作物を植えている）では成長速度が下がっている。
-         * ミントの場合は逆になる。
-         */
         if (flag2 || flag && flag1) {
             f *= 2.0F;
         }
@@ -137,98 +103,27 @@ public class BlockMintCrop extends BlockBush implements IGrowable {
         return f;
     }
 
-    
-    public BlockTexture getBlockTexture(int par1, int par2) {
-        int j = MathHelper.clamp_int(par2, 0, 3);
-        return this.iconArray[j];
-    }
-
-    /*
-     * ブロックのレンダータイプ。6はバニラの小麦のように、井型に表示される。
-     */
-    public int getRenderType() {
-        return 6;
-    }
-
-    /*
-     * 対応するタネアイテムのID。
-     */
-    protected Item getSeedItem() {
-        return DCsAppleMilk.itemMintSeed;
-    }
-
-    /*
-     * 得られる作物アイテムのID。
-     */
-    protected Item getCropItem() {
-        return DCsAppleMilk.leafTea;
-    }
-
-    /*
-     * 複数の種類のアイテムをドロップさせる場合のメソッド。
-     * ドロップするアイテムの種類は、getBlockDroppedで設定する。
-     */
-    public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6,
-        int par7) {
-        super.dropBlockAsItemWithChance(par1World, par2, par3, par4, par5, par6, 0);
-    }
-
     @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        ArrayList<ItemStack> ret = super.getDrops(world, x, y, z, metadata, fortune);
-
-        if (metadata >= 3) {
-            ret.add(new ItemStack(this.getCropItem(), 1, 1));
-            for (int n = 0; n < 1 + fortune; n++) {
-                if (world.rand.nextInt(15) <= metadata) {
-                    ret.add(new ItemStack(this.getCropItem(), 1, 1));
-                    ret.add(new ItemStack(this.getCropItem(), 1, 1));
-                }
-            }
-        }
-
-        return ret;
-    }
-
-    @Override
-    public Item getItemDropped(int metadata, Random rand, int fortune) {
-        return DCsAppleMilk.itemMintSeed;
-    }
-
-    public int quantityDropped(Random par1Random) {
-        return 1;
-    }
-
-    public int damageDropped(int par1) {
-        return 0;
-    }
-
-    
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_) {
-        return this.getSeedItem();
-    }
-
-    
-    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
-        this.iconArray = new BlockTexture[4];
-
-        for (int i = 0; i < this.iconArray.length; ++i) {
-            this.iconArray[i] = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "crop_mint" + "_stage_" + i);
-        }
-    }
-
-    @Override
-    public boolean func_149851_a(World world, int x, int y, int z, boolean var5) {
-        return world.getBlockMetadata(x, y, z) < 3;
-    }
-
-    @Override
-    public boolean func_149852_a(World world, Random rand, int x, int y, int z) {
+    public boolean isRandomlyTicking(BlockState state) {
         return true;
     }
 
     @Override
-    public void func_149853_b(World world, Random rand, int x, int y, int z) {
-        this.grow(world, x, y, z);
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!level.isAreaLoaded(pos, 1)) return;
+        if (level.getRawBrightness(pos.above(), 0) >= 9) {
+            int age = this.getAge(level.getBlockState(pos));
+            if (age < this.getMaxAge()) {
+                float f = this.getGrowthRate(level, pos);
+                if (random.nextInt((int) (25.0F / f) + 1) == 0) {
+                    level.setBlock(pos, this.getStateForAge(age + 1), 2);
+                }
+            }
+        }
+    }
+
+    @Override
+    protected int getBonemealAgeIncrease(Level level) {
+        return 1;
     }
 }

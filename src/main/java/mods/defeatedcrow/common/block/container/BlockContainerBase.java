@@ -1,166 +1,154 @@
 package mods.defeatedcrow.common.block.container;
 
-import java.util.List;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.BlockIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockTexture;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import mods.defeatedcrow.api.events.AMTBlockRightClickEvent;
-import mods.defeatedcrow.common.tile.TileContainerBase;
+/**
+ * WT-A 1.20.1 mojmap migration for BlockContainerBase.
+ * Original 1.7.10 logic preserved as TODO; stub compiles under Forge 47 + mojmap.
+ * Properties are supplied by ModBlocks (BlockBehaviour.Properties.of()...).
+ * Former BlockContainer/TileEntity logic: see Tile* migration (WT-B).
+ * Textures: JSON models under assets/defeatedcrow/models/block/ + blockstates/
+ */
+public class BlockContainerBase extends Block implements EntityBlock {
 
-public abstract class BlockContainerBase extends Block {
+    public BlockContainerBase(BlockBehaviour.Properties properties) {
+        super(properties);
+    }
 
-    
-    protected BlockTexture bottomIcon;
-    
-    protected BlockTexture sideIcon;
-    
-    protected BlockTexture topIcon;
-
-    public BlockContainerBase() {
-        super(Material.ground);
-        this.setStepSound(Block.soundTypeWood);
-        this.setHardness(0.2F);
-        this.setResistance(1.0F);
+    // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+        return Shapes.block(); // TODO: restore original bounds via Block.box() per meta/state
     }
 
     @Override
-    public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int par6,
-        float par7, float par8, float par9) {
-        ItemStack item = par5EntityPlayer.inventory.getCurrentItem();
-        int meta = par1World.getBlockMetadata(x, y, z);
-        boolean side = false;
-        int rem = meta & 7;
-
-        AMTBlockRightClickEvent event = new AMTBlockRightClickEvent(par1World, par5EntityPlayer, item, x, y, z);
-        MinecraftForge.EVENT_BUS.post(event);
-
-        if (event.isCanceled()) {
-            return true;
-        }
-
-        if (item == null) {
-            this.getItem(par1World, par5EntityPlayer, meta);
-            if (rem == 0) {
-                par1World.setBlockToAir(x, y, z);
-            } else {
-                par1World.setBlockMetadataWithNotify(x, y, z, (meta - 1), 3);
-            }
-            par1World.playSoundAtEntity(par5EntityPlayer, "random.pop", 0.4F, 1.8F);
-            return true;
-        } else if (this.isSameItem(item)) {
-            if (rem == 7) {
-                return false;
-            } else {
-                if (!par5EntityPlayer.capabilities.isCreativeMode && --item.stackSize <= 0) {
-                    par5EntityPlayer.inventory
-                        .setInventorySlotContents(par5EntityPlayer.inventory.currentItem, (ItemStack) null);
-                }
-                par1World.setBlockMetadataWithNotify(x, y, z, (meta + 1), 3);
-                par1World.playSoundAtEntity(par5EntityPlayer, "random.pop", 0.4F, 1.8F);
-                return true;
-            }
-        } else {
-            return false;
-        }
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+        return getShape(state, level, pos, ctx);
     }
 
-    protected void getItem(World world, EntityPlayer player, int meta) {
-        if (!world.isRemote) {
-            double x = player.posX;
-            double y = player.posY + 0.2D;
-            double z = player.posZ;
-            if (returnItem() != null && returnItem().getItem() != null) {
-                EntityItem drop = new EntityItem(world, x, y, z, returnItem().copy());
-                world.spawnEntityInWorld(drop);
-            }
-        }
-    }
-
-    protected boolean isSameItem(ItemStack item) {
-        if (this.returnItem() == null || item == null) return false;
-        else {
-            return this.returnItem()
-                .getItem() == item.getItem()
-                && this.returnItem()
-                    .getItemDamage() == item.getItemDamage();
-        }
-    }
-
-    public abstract ItemStack returnItem();
-
+    // 1.7.10 onBlockActivated -> 1.20.1 use (BlockPos + BlockHitResult)
     @Override
-    public int damageDropped(int par1) {
-        return par1 & 7;
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        // TODO: restore original onBlockActivated logic
+        // Original used: world.getBlockMetadata(x,y,z), player.inventory, MinecraftForge.EVENT_BUS.post(AMTBlockRightClickEvent)
+        // Migration: use state, level.getBlockEntity(pos), player.getItemInHand(hand), Component
+        return InteractionResult.PASS;
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        // TODO: return new Tile* (pos, state) — requires WT-B BlockEntityType registration
+        return null;
     }
 
     @Override
-    public boolean isOpaqueCube() {
-        return false;
+    public void appendHoverText(ItemStack stack, BlockGetter level, java.util.List<Component> tooltip, TooltipFlag flag) {
+        // TODO: restore addInformation logic with Component.translatable
+        super.appendHoverText(stack, level, tooltip, flag);
     }
 
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-    @Override
-    public abstract int getRenderType();
-
-    @Override
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase,
-        ItemStack par6ItemStack) {
-        int meta = par1World.getBlockMetadata(par2, par3, par4) & 7;
-        int playerFacing = MathHelper.floor_double((double) ((par5EntityLivingBase.rotationYaw * 4F) / 360F) + 0.5D)
-            & 3;
-        int side = 0;
-        if (playerFacing == 1 || playerFacing == 3) {
-            side = 8;
-        }
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, meta | side, 3);
-    }
-
-    @Override
-    
-    public BlockTexture getBlockTexture(int par1, int par2) {
-        if (par2 > 0) {
-            return par1 == 1 ? this.topIcon : (par1 == 0 ? this.bottomIcon : this.sideIcon);
-        } else {
-            return this.blockIcon;
-        }
-
-    }
-
-    @Override
-    
-    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
-        this.bottomIcon = par1IconRegister.registerIcon("defeatedcrow:x32/basket_B1");
-        this.sideIcon = par1IconRegister.registerIcon("defeatedcrow:x32/basket_S1");
-        this.topIcon = par1IconRegister.registerIcon("defeatedcrow:x32/basket_T1");
-        this.blockIcon = par1IconRegister.registerIcon("defeatedcrow:x32/basket_B1");
-    }
-
-    @Override
-    
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-        par3List.add(new ItemStack(this, 1, 7));
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int a) {
-        return new TileContainerBase();
-    }
-
+    /*
+     * Original 1.7.10 source (kept for reference, SJIS -> UTF-8):
+     * package mods.defeatedcrow.common.block.container;
+     * 
+     * import java.util.List;
+     * 
+     * import net.minecraft.block.Block;
+     * import net.minecraft.block.Block;
+     * import net.minecraft.block.material.Material;
+     * import net.minecraft.client.renderer.texture.BlockIconRegister;
+     * import net.minecraft.creativetab.CreativeTabs;
+     * import net.minecraft.entity.EntityLivingBase;
+     * import net.minecraft.entity.item.EntityItem;
+     * import net.minecraft.entity.player.EntityPlayer;
+     * import net.minecraft.item.Item;
+     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.tileentity.TileEntity;
+     * import net.minecraft.util.BlockTexture;
+     * import net.minecraft.util.MathHelper;
+     * import net.minecraft.world.World;
+     * import net.minecraftforge.common.MinecraftForge;
+     * import mods.defeatedcrow.api.events.AMTBlockRightClickEvent;
+     * import mods.defeatedcrow.common.tile.TileContainerBase;
+     * 
+     * public abstract class BlockContainerBase extends Block {
+     * 
+     *     
+     *     protected BlockTexture bottomIcon;
+     *     
+     *     protected BlockTexture sideIcon;
+     *     
+     *     protected BlockTexture topIcon;
+     * 
+     *     public BlockContainerBase() {
+     *         super(Material.ground);
+     *         this.setStepSound(Block.soundTypeWood);
+     *         this.setHardness(0.2F);
+     *         this.setResistance(1.0F);
+     *     }
+     * 
+     *     @Override
+     *     public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int par6,
+     *         float par7, float par8, float par9) {
+     *         ItemStack item = par5EntityPlayer.inventory.getCurrentItem();
+     *         int meta = par1World.getBlockMetadata(x, y, z);
+     *         boolean side = false;
+     *         int rem = meta & 7;
+     * 
+     *         AMTBlockRightClickEvent event = new AMTBlockRightClickEvent(par1World, par5EntityPlayer, item, x, y, z);
+     *         MinecraftForge.EVENT_BUS.post(event);
+     * 
+     *         if (event.isCanceled()) {
+     *             return true;
+     *         }
+     * 
+     *         if (item == null) {
+     *             this.getItem(par1World, par5EntityPlayer, meta);
+     *             if (rem == 0) {
+     *                 par1World.setBlockToAir(x, y, z);
+     *             } else {
+     *                 par1World.setBlockMetadataWithNotify(x, y, z, (meta - 1), 3);
+     *             }
+     *             par1World.playSoundAtEntity(par5EntityPlayer, "random.pop", 0.4F, 1.8F);
+     *             return true;
+     *         } else if (this.isSameItem(item)) {
+     *             if (rem == 7) {
+     *                 return false;
+     *             } else {
+     *                 if (!par5EntityPlayer.capabilities.isCreativeMode && --item.stackSize <= 0) {
+     *                     par5EntityPlayer.inventory
+     *                         .setInventorySlotContents(par5EntityPlayer.inventory.currentItem, (ItemStack) null);
+     *                 }
+     *                 par1World.setBlockMetadataWithNotify(x, y, z, (meta + 1), 3);
+     *                 par1World.playSoundAtEntity(par5EntityPlayer, "random.pop", 0.4F, 1.8F);
+     *                 return true;
+     *             }
+     *         } else {
+     *             return false;
+     *         }
+     *     }
+     * 
+     *     protected void getItem(World world, EntityPlayer player, int meta) {
+     * ... (full original retained in git history: git show HEAD:"src/main/java/mods/defeatedcrow/common/block/container/BlockContainerBase.java")
+     */
 }

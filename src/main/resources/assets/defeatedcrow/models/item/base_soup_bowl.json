@@ -1,0 +1,7 @@
+{
+  "_comment": "1.20.1 migration for ItemBaseSoupBowl / FoodBaseEntity soup icon — replaces atlas (iconType/innerType). outer bowl + inner contents are now entity/item textures resolved via ResourceLocation in FoodBaseEntity.getSoupIcon and RenderFoodEntityBase. Variants 0..8 map via NBT/CustomModelData if split; see doc/items/migration-guide.md#10",
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "defeatedcrow:item/foods/basesoupitem_WATER"
+  }
+}

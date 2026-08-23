@@ -2,33 +2,43 @@ package mods.defeatedcrow.api.energy;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 
 /**
  * 充電可能アイテムのItemBlock版のベースクラス
  * 注意!このクラスを継承したItemBlockは、設置するとチャージ情報がリセットされてしまいます。
- * TileEntityなどを利用して、別途で情報保存用の処理を行う必要あり。
+ * TileEntityなどを利用して、別途で情報保存用の処理を行う必要あり。 <br>
+ * 1.20.1: BlockItem 継承、NBT維持、capability ブリッジ ({@code ForgeCapabilities.ENERGY}) を内蔵。
  */
-public abstract class BatteyItemBlockBase extends ItemBlock implements IBattery {
+public abstract class BatteyItemBlockBase extends BlockItem implements IBattery {
 
-    public BatteyItemBlockBase(Block block) {
-        super(block);
+    public static final String TAG_CHARGE = "charge";
+
+    public BatteyItemBlockBase(Block block, Item.Properties properties) {
+        super(block, properties);
     }
 
     @Override
     public int getChargeAmount(ItemStack item) {
-        NBTTagCompound nbt = item.getTagCompound();
-        if (nbt != null && nbt.hasKey("charge")) {
-            int charge = nbt.getInteger("charge");
-            return charge;
+        CompoundTag nbt = item.getTag();
+        if (nbt != null && nbt.contains(TAG_CHARGE)) {
+            return nbt.getInt(TAG_CHARGE);
         }
         return 0;
     }
@@ -38,106 +48,123 @@ public abstract class BatteyItemBlockBase extends ItemBlock implements IBattery 
 
     @Override
     public boolean isFullCharged(ItemStack item) {
-        NBTTagCompound nbt = item.getTagCompound();
-        if (nbt != null && nbt.hasKey("charge")) {
-            int charge = nbt.getInteger("charge");
-            return charge >= this.getMaxAmount(item);
-        }
-        return false;
+        return this.getChargeAmount(item) >= this.getMaxAmount(item);
     }
 
     @Override
     public int charge(ItemStack item, int amount, boolean flag) {
 
-        if (item == null) return 0;
+        if (item == null || item.isEmpty()) return 0;
 
-        NBTTagCompound nbt = item.getTagCompound();
-        int charge = 0;
-        int increase = 0;
-        if (nbt != null && nbt.hasKey("charge")) {
-            charge = nbt.getInteger("charge");
+        int charge = this.getChargeAmount(item);
+        int i = Math.max(this.getMaxAmount(item) - charge, 0);
+        int increase = Math.min(amount, i);
+
+        if (flag && increase > 0) {
+            item.getOrCreateTag().putInt(TAG_CHARGE, charge + increase);
         }
-
-        int i = this.getMaxAmount(item) - charge;
-        Math.min(i, 0);
-
-        increase = Math.min(amount, i);
-
-        if (flag) {
-            if (nbt != null) {
-                nbt.setInteger("charge", (charge + increase));
-                item.setTagCompound(nbt);
-            } else {
-                NBTTagCompound nbt2 = new NBTTagCompound();
-                nbt2.setInteger("charge", (charge + increase));
-                item.setTagCompound(nbt2);
-            }
-        }
-
         return increase;
     }
 
     @Override
     public int discharge(ItemStack item, int amount, boolean flag) {
 
-        if (item == null) return 0;
+        if (item == null || item.isEmpty()) return 0;
 
-        NBTTagCompound nbt = item.getTagCompound();
-        int charge = 0;
-        int reduce = 0;
-        if (nbt != null && nbt.hasKey("charge")) {
-            charge = nbt.getInteger("charge");
+        int charge = this.getChargeAmount(item);
+        int reduce = Math.min(amount, charge);
+
+        if (flag && reduce > 0) {
+            item.getOrCreateTag().putInt(TAG_CHARGE, charge - reduce);
         }
-
-        reduce = Math.min(amount, charge);
-
-        if (flag) {
-            if (nbt != null) {
-                nbt.setInteger("charge", (charge - reduce));
-                item.setTagCompound(nbt);
-            } else {
-                NBTTagCompound nbt2 = new NBTTagCompound();
-                nbt2.setInteger("charge", (charge - reduce));
-                item.setTagCompound(nbt2);
-            }
-        }
-
         return reduce;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
     // マウスオーバー時の表示情報
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-        super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-        NBTTagCompound nbt = par1ItemStack.getTagCompound();
-        int charge = 0;
-        int max = this.getMaxAmount(par1ItemStack);
-        if (nbt != null && nbt.hasKey("charge")) {
-            charge = nbt.getInteger("charge");
-        }
-
-        String s = new String("charge amount : " + charge + "/" + max);
-        par3List.add(s);
+    @Override
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, level, tooltip, flagIn);
+        int max = this.getMaxAmount(stack);
+        tooltip.add(Component.literal("charge amount : " + this.getChargeAmount(stack) + "/" + max)
+            .withStyle(ChatFormatting.GRAY));
     }
 
     @Override
-    public boolean showDurabilityBar(ItemStack stack) {
+    public boolean isBarVisible(ItemStack stack) {
         return true;
     }
 
     @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
-        NBTTagCompound nbt = stack.getTagCompound();
-        int charge = 0;
+    public int getBarWidth(ItemStack stack) {
         int max = this.getMaxAmount(stack);
-        if (nbt != null && nbt.hasKey("charge")) {
-            charge = nbt.getInteger("charge");
-            charge = MathHelper.clamp_int(charge, 0, max);
+        int charge = Mth.clamp(this.getChargeAmount(stack), 0, max);
+        return Math.round(13.0F * (float) charge / (float) max);
+    }
+
+    /**
+     * ForgeEnergy bridge. 旧 IBattery の charge/discharge を IEnergyStorage 経由に中継する。
+     */
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
+        return new EnergyCapabilityProvider(stack);
+    }
+
+    private class EnergyCapabilityProvider implements ICapabilityProvider {
+
+        private final ItemStack container;
+        private final LazyOptional<IEnergyStorage> energy;
+
+        EnergyCapabilityProvider(ItemStack stack) {
+            this.container = stack;
+            this.energy = LazyOptional.of(() -> new EnergyStorageBridge(this.container));
         }
 
-        int i = max - charge;
-        return (double) i / (double) max;
+        @Override
+        public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+            if (cap == ForgeCapabilities.ENERGY) {
+                return energy.cast();
+            }
+            return LazyOptional.empty();
+        }
+    }
+
+    private class EnergyStorageBridge implements IEnergyStorage {
+
+        private final ItemStack container;
+
+        EnergyStorageBridge(ItemStack stack) {
+            this.container = stack;
+        }
+
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate) {
+            return BatteyItemBlockBase.this.charge(container, maxReceive, !simulate);
+        }
+
+        @Override
+        public int extractEnergy(int maxExtract, boolean simulate) {
+            return BatteyItemBlockBase.this.discharge(container, maxExtract, !simulate);
+        }
+
+        @Override
+        public int getEnergyStored() {
+            return BatteyItemBlockBase.this.getChargeAmount(container);
+        }
+
+        @Override
+        public int getMaxEnergyStored() {
+            return BatteyItemBlockBase.this.getMaxAmount(container);
+        }
+
+        @Override
+        public boolean canExtract() {
+            return true;
+        }
+
+        @Override
+        public boolean canReceive() {
+            return true;
+        }
     }
 
 }

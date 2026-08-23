@@ -1,4 +1,4 @@
-﻿package mods.defeatedcrow.client.entity;
+package mods.defeatedcrow.client.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;

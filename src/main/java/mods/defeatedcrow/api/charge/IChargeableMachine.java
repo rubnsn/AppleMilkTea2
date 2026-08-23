@@ -1,12 +1,13 @@
 package mods.defeatedcrow.api.charge;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
- * chargeを消費するTileEntityに実装されているメソッド。 <br>
+ * chargeを消費するBlockEntityに実装されているメソッド。 <br>
  * あくまでチャージ消費Tileの情報閲覧用であり、このインターフェイスを継承しても、チャージを受け取れるようにはならないので注意。 <br>
  * チャージ消費装置を他MODから追加する手段は今のところ用意していない。 <br>
- * (利用は可能ですが推奨しません。あくまでdefeatedcrow製の装置のためのインターフェイスです。)
+ * (利用は可能ですが推奨しません。あくまでdefeatedcrow製の装置のためのインターフェイスです。) <br>
+ * 1.20.1: TileEntity → BlockEntity (実装側)。ItemStack は net.minecraft.world.item.ItemStack。
  */
 public interface IChargeableMachine {
 

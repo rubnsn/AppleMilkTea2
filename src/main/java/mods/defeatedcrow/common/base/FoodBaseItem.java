@@ -3,13 +3,11 @@ package mods.defeatedcrow.common.base;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
@@ -41,12 +39,9 @@ public class FoodBaseItem extends EdibleEntityItem2 {
         return list;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1) {
-        return this.itemIcon;
-    }
-
+    // 1.20.1 migration: former atlas icon methods removed — texture is now JSON model.
+    // Model: assets/defeatedcrow/models/item/appletart.json (parent=item/generated, layer0=defeatedcrow:item/appletart)
+    // See doc/items/migration-guide.md#3 and doc/blocks/migration-guide.md
     @Override
     public int getMetadata(int par1) {
         return par1;
@@ -61,12 +56,6 @@ public class FoodBaseItem extends EdibleEntityItem2 {
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(this, 1, 0));
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
-        this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:appletart");
     }
 
     /**

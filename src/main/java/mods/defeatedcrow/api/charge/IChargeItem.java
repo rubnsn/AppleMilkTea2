@@ -1,6 +1,6 @@
 package mods.defeatedcrow.api.charge;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * 充電不可の使い捨て電池アイテムのインターフェイス

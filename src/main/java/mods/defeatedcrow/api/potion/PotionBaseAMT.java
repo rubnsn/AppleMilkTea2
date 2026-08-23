@@ -1,13 +1,18 @@
 package mods.defeatedcrow.api.potion;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class PotionBaseAMT extends Potion {
+/**
+ * AMT2 の MobEffect ベースクラス。 <br>
+ * 1.20.1: Potion(int id) 廃止 → {@link MobEffect#MobEffect(MobEffectCategory, int)}。
+ * setIconIndex/getStatusIconIndex は 1.20.1 で削除されたため、
+ * アイコン座標 (indexX/indexY) のみを保持し、描画は Forge クライアント拡張
+ * ({@code IClientMobEffectExtensions}) を実装するクライアント側 (WT-C) に委ねる。 <br>
+ * テクスチャ: {@code defeatedcrow:textures/gui/icons_potion.png}
+ */
+public class PotionBaseAMT extends MobEffect {
 
     protected static final ResourceLocation texture = new ResourceLocation(
         "defeatedcrow:textures/gui/icons_potion.png");
@@ -15,35 +20,24 @@ public class PotionBaseAMT extends Potion {
     private final int indexX;
     private final int indexY;
 
-    public PotionBaseAMT(int id, boolean flag, int color, int x, int y) {
-        super(id, flag, color);
+    public PotionBaseAMT(MobEffectCategory category, int color, int x, int y) {
+        super(category, color);
         indexX = x;
         indexY = y;
-        this.setIconIndex(x, y);
     }
 
-    // @Override
-    // @SideOnly(Side.CLIENT)
-    // public void renderInventoryEffect(int x, int y, PotionEffect effect,
-    // net.minecraft.client.Minecraft mc) {
-    // mc.getTextureManager().bindTexture(texture);
-    // if (mc.currentScreen != null)
-    // mc.currentScreen.drawTexturedModalRect(x + 6, y + 7, indexX * 18, indexY * 18, 18, 18);
-    // }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getStatusIconIndex() {
-        Minecraft.getMinecraft()
-            .getTextureManager()
-            .bindTexture(texture);
-        return super.getStatusIconIndex();
+    /** legacy icon atlas position (x). kept for client rendering. */
+    public int getStatusIconIndexX() {
+        return indexX;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean hasStatusIcon() {
-        return true;
+    /** legacy icon atlas position (y). kept for client rendering. */
+    public int getStatusIconIndexY() {
+        return indexY;
+    }
+
+    public static ResourceLocation getIconsTexture() {
+        return texture;
     }
 
 }

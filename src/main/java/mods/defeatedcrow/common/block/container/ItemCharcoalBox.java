@@ -1,21 +1,18 @@
 package mods.defeatedcrow.common.block.container;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
+import java.util.List;
 
-import mods.defeatedcrow.api.ICompressedItem;
-
-public class ItemCharcoalBox extends ItemBlock implements ICompressedItem {
-
-    public ItemCharcoalBox(Block block) {
-        super(block);
+/**
+ * WT-A 1.20.1: ItemCharcoalBox -> BlockItem (formerly ItemBlock).
+ * Registration: ModItems + ModBlocks DeferredRegister (see ModItems.java:192)
+ */
+public class ItemCharcoalBox extends BlockItem {
+    public ItemCharcoalBox(Block block, Properties properties) {
+        super(block, properties);
     }
-
-    @Override
-    public ItemStack getDisassembledItem(ItemStack container) {
-        return new ItemStack(Items.coal, 9, 1);
-    }
-
 }

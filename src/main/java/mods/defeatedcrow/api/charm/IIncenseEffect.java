@@ -1,11 +1,13 @@
 package mods.defeatedcrow.api.charm;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 
 /**
  * Incenseの効果を定義するインターフェイス。 <br>
- * Item側に実装し、IncenseBaseがTick毎の処理で、入っているお香アイテムの実装を確認して効果をつくる。
+ * Item側に実装し、IncenseBaseがTick毎の処理で、入っているお香アイテムの実装を確認して効果をつくる。 <br>
+ * 1.20.1: formEffect(World,int x,int y,z,...) → formEffect(Level, BlockPos, ...) (doc/api/migration-guide.md)
  */
 public interface IIncenseEffect {
 
@@ -31,7 +33,7 @@ public interface IIncenseEffect {
      * 処理の実行部分。
      * IncenseBaseのアップデート処理でこれを呼ぶ。
      */
-    public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense);
+    public boolean formEffect(Level level, BlockPos pos, LivingEntity entity, IIncenseEffect incense);
 
     /**
      * パーティクル関係。

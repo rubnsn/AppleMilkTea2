@@ -1,214 +1,154 @@
 package mods.defeatedcrow.common.block.container;
 
-import java.util.List;
-import java.util.Random;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.BlockIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockTexture;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import mods.defeatedcrow.common.DCsAppleMilk;
-import mods.defeatedcrow.common.tile.TileEggs;
-import mods.defeatedcrow.handler.Util;
+/**
+ * WT-A 1.20.1 mojmap migration for BlockEggBasket.
+ * Original 1.7.10 logic preserved as TODO; stub compiles under Forge 47 + mojmap.
+ * Properties are supplied by ModBlocks (BlockBehaviour.Properties.of()...).
+ * Former BlockContainer/TileEntity logic: see Tile* migration (WT-B).
+ * Textures: JSON models under assets/defeatedcrow/models/block/ + blockstates/
+ */
+public class BlockEggBasket extends Block implements EntityBlock {
 
-public class BlockEggBasket extends Block {
+    public BlockEggBasket(BlockBehaviour.Properties properties) {
+        super(properties);
+    }
 
-    
-    private BlockTexture[] EggTex;
-    
-    private BlockTexture cageTex;
-
-    private final String[] eggs = new String[] { "whitepanel", "teppann" };
-
-    public BlockEggBasket() {
-        super(Material.circuits);
-        this.setStepSound(Block.soundTypeWood);
-        this.setHardness(0.2F);
-        this.setResistance(1.0F);
-        this.setTickRandomly(true);
+    // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+        return Shapes.block(); // TODO: restore original bounds via Block.box() per meta/state
     }
 
     @Override
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer,
-        int par6, float par7, float par8, float par9) {
-        ItemStack itemstack = par5EntityPlayer.inventory.getCurrentItem();
-        int currentMeta = (par1World.getBlockMetadata(par2, par3, par4) & 1);
-        Block bottomBlockID = par1World.getBlock(par2, par3 - 1, par4);
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+        return getShape(state, level, pos, ctx);
+    }
 
-        if (itemstack == null) {
-            ItemStack ret = new ItemStack(DCsAppleMilk.eggBasket, 1, currentMeta);
-            if (!par1World.isRemote) {
-                EntityItem entity = new EntityItem(
-                    par1World,
-                    par5EntityPlayer.posX,
-                    par5EntityPlayer.posY,
-                    par5EntityPlayer.posZ,
-                    ret);
-                par1World.spawnEntityInWorld(entity);
-            }
+    // 1.7.10 onBlockActivated -> 1.20.1 use (BlockPos + BlockHitResult)
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        // TODO: restore original onBlockActivated logic
+        // Original used: world.getBlockMetadata(x,y,z), player.inventory, MinecraftForge.EVENT_BUS.post(AMTBlockRightClickEvent)
+        // Migration: use state, level.getBlockEntity(pos), player.getItemInHand(hand), Component
+        return InteractionResult.PASS;
+    }
 
-            par1World.setBlockToAir(par2, par3, par4);
-            par1World.playSoundAtEntity(par5EntityPlayer, "random.pop", 0.4F, 1.8F);
-            return true;
-            // } else if (itemstack.getItem() == Item.getItemFromBlock(this)) {
-            // ItemStack ret = new ItemStack(DCsAppleMilk.eggBasket, 1, currentMeta);
-            // if (!par1World.isRemote) {
-            // EntityItem entity = new EntityItem(par1World, par5EntityPlayer.posX, par5EntityPlayer.posY,
-            // par5EntityPlayer.posZ, ret);
-            // par1World.spawnEntityInWorld(entity);
-            // }
-            //
-            // par1World.setBlockToAir(par2, par3, par4);
-            // par1World.playSoundAtEntity(par5EntityPlayer, "random.pop", 0.4F, 1.8F);
-            // return true;
-        } else {
-            return false;
-        }
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        // TODO: return new Tile* (pos, state) — requires WT-B BlockEntityType registration
+        return null;
     }
 
     @Override
-    public int damageDropped(int par1) {
-        return par1 & 1;
+    public void appendHoverText(ItemStack stack, BlockGetter level, java.util.List<Component> tooltip, TooltipFlag flag) {
+        // TODO: restore addInformation logic with Component.translatable
+        super.appendHoverText(stack, level, tooltip, flag);
     }
 
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-    // kurotamago
-    @Override
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-        if (!par1World.isRemote && par1World.rand.nextInt(2) == 0) {
-            int meta = par1World.getBlockMetadata(par2, par3, par4);
-            if ((meta & 1) == 0) {
-                this.setEggsBoiled(par1World, par2, par3, par4, meta);
-            }
-        }
-    }
-
-    private void setEggsBoiled(World par1World, int x, int y, int z, int meta) {
-        Block underID = par1World.getBlock(x, y - 1, z);
-        Material lava = par1World.getBlock(x, y - 2, z)
-            .getMaterial();
-        if (!par1World.isRemote) {
-            if (underID == Blocks.cauldron && par1World.getBlockMetadata(x, y - 1, z) > 0 && lava == Material.lava) {
-                par1World.setBlockMetadataWithNotify(x, y, z, 3, 3);
-            }
-        }
-    }
-
-    // check block under
-    @Override
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase,
-        ItemStack par6ItemStack) {
-        Block l = par1World.getBlock(par2, par3, par4);
-        int j = par1World.getBlockMetadata(par2, par3, par4);
-        int k = par6ItemStack.getItemDamage();
-
-        if (l == Blocks.cauldron) {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2 + (k & 1), 3);
-        } else {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 0 + (k & 1), 3);
-        }
-    }
-
-    @Override
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5) {
-        Block l = par1World.getBlock(par2, par3 - 1, par4);
-        int j = par1World.getBlockMetadata(par2, par3, par4);
-
-        if (l == Blocks.cauldron) {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2 + (j & 1), 3);
-        } else {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 0 + (j & 1), 3);
-        }
-    }
-
-    @Override
-    public int getRenderType() {
-        return DCsAppleMilk.modelEggBasket;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
-        this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
-        return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
-    }
-
-    @Override
-    
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
-        this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
-        return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
-    }
-
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-        this.TeaMakerBoundingBox(par1IBlockAccess.getBlockMetadata(par2, par3, par4));
-    }
-
-    public void TeaMakerBoundingBox(int par1) {
-        float f = 0.0F;
-        if (par1 < 2) {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
-        } else {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1F, 1.0F);
-        }
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int a) {
-        return new TileEggs();
-    }
-
-    @Override
-    
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
-    }
-
-    @Override
-    
-    public BlockTexture getBlockTexture(int par1, int par2) {
-        if (par1 == 0) return this.EggTex[0];
-        if (par1 == 1) return this.EggTex[1];
-        if (par1 == 2) return this.cageTex;
-        else return Blocks.planks.getBlockTextureFromSide(0);
-    }
-
-    @Override
-    public Item getItemDropped(int metadata, Random rand, int fortune) {
-        return Item.getItemFromBlock(this);
-    }
-
-    @Override
-    
-    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
-        this.EggTex = new BlockTexture[2];
-        this.cageTex = par1BlockIconRegister.registerIcon(Util.getTexturePassNoAlt() + "cage");
-
-        for (int i = 0; i < 2; ++i) {
-            this.EggTex[i] = par1BlockIconRegister.registerIcon("defeatedcrow:" + eggs[i]);
-        }
-    }
-
+    /*
+     * Original 1.7.10 source (kept for reference, SJIS -> UTF-8):
+     * package mods.defeatedcrow.common.block.container;
+     * 
+     * import java.util.List;
+     * import java.util.Random;
+     * 
+     * import net.minecraft.block.Block;
+     * import net.minecraft.block.Block;
+     * import net.minecraft.block.material.Material;
+     * import net.minecraft.client.renderer.texture.BlockIconRegister;
+     * import net.minecraft.creativetab.CreativeTabs;
+     * import net.minecraft.entity.EntityLivingBase;
+     * import net.minecraft.entity.item.EntityItem;
+     * import net.minecraft.entity.player.EntityPlayer;
+     * import net.minecraft.init.Blocks;
+     * import net.minecraft.item.Item;
+     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.tileentity.TileEntity;
+     * import net.minecraft.util.AxisAlignedBB;
+     * import net.minecraft.util.BlockTexture;
+     * import net.minecraft.world.IBlockAccess;
+     * import net.minecraft.world.World;
+     * import mods.defeatedcrow.common.DCsAppleMilk;
+     * import mods.defeatedcrow.common.tile.TileEggs;
+     * import mods.defeatedcrow.handler.Util;
+     * 
+     * public class BlockEggBasket extends Block {
+     * 
+     *     
+     *     private BlockTexture[] EggTex;
+     *     
+     *     private BlockTexture cageTex;
+     * 
+     *     private final String[] eggs = new String[] { "whitepanel", "teppann" };
+     * 
+     *     public BlockEggBasket() {
+     *         super(Material.circuits);
+     *         this.setStepSound(Block.soundTypeWood);
+     *         this.setHardness(0.2F);
+     *         this.setResistance(1.0F);
+     *         this.setTickRandomly(true);
+     *     }
+     * 
+     *     @Override
+     *     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer,
+     *         int par6, float par7, float par8, float par9) {
+     *         ItemStack itemstack = par5EntityPlayer.inventory.getCurrentItem();
+     *         int currentMeta = (par1World.getBlockMetadata(par2, par3, par4) & 1);
+     *         Block bottomBlockID = par1World.getBlock(par2, par3 - 1, par4);
+     * 
+     *         if (itemstack == null) {
+     *             ItemStack ret = new ItemStack(DCsAppleMilk.eggBasket, 1, currentMeta);
+     *             if (!par1World.isRemote) {
+     *                 EntityItem entity = new EntityItem(
+     *                     par1World,
+     *                     par5EntityPlayer.posX,
+     *                     par5EntityPlayer.posY,
+     *                     par5EntityPlayer.posZ,
+     *                     ret);
+     *                 par1World.spawnEntityInWorld(entity);
+     *             }
+     * 
+     *             par1World.setBlockToAir(par2, par3, par4);
+     *             par1World.playSoundAtEntity(par5EntityPlayer, "random.pop", 0.4F, 1.8F);
+     *             return true;
+     *             // } else if (itemstack.getItem() == Item.getItemFromBlock(this)) {
+     *             // ItemStack ret = new ItemStack(DCsAppleMilk.eggBasket, 1, currentMeta);
+     *             // if (!par1World.isRemote) {
+     *             // EntityItem entity = new EntityItem(par1World, par5EntityPlayer.posX, par5EntityPlayer.posY,
+     *             // par5EntityPlayer.posZ, ret);
+     *             // par1World.spawnEntityInWorld(entity);
+     *             // }
+     *             //
+     *             // par1World.setBlockToAir(par2, par3, par4);
+     *             // par1World.playSoundAtEntity(par5EntityPlayer, "random.pop", 0.4F, 1.8F);
+     *             // return true;
+     *         } else {
+     *             return false;
+     *         }
+     *     }
+     * 
+     * ... (full original retained in git history: git show HEAD:"src/main/java/mods/defeatedcrow/common/block/container/BlockEggBasket.java")
+     */
 }

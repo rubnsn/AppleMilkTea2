@@ -1,30 +1,18 @@
 package mods.defeatedcrow.common.block.plants;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
+import java.util.List;
 
-public class ItemClamSand extends ItemBlock {
-
-    private static final String[] type = new String[] { "_normal", "_decline", "_princess" };
-
-    public ItemClamSand(Block block) {
-        super(block);
-        setMaxDamage(0);
-        setHasSubtypes(true);
-
+/**
+ * WT-A 1.20.1: ItemClamSand -> BlockItem (formerly ItemBlock).
+ * Registration: ModItems + ModBlocks DeferredRegister (see ModItems.java:192)
+ */
+public class ItemClamSand extends BlockItem {
+    public ItemClamSand(Block block, Properties properties) {
+        super(block, properties);
     }
-
-    @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
-        int m = (par1ItemStack.getItemDamage());
-        if (m < 3) return super.getUnlocalizedName() + type[m];
-        else return super.getUnlocalizedName() + m;
-    }
-
-    @Override
-    public int getMetadata(int par1) {
-        return par1;
-    }
-
 }

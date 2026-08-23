@@ -1,28 +1,18 @@
 package mods.defeatedcrow.common.block.appliance;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
+import java.util.List;
 
-import mods.defeatedcrow.api.appliance.SoupType;
-
-public class ItemFilledSoupPan extends ItemBlock {
-
-    public ItemFilledSoupPan(Block block) {
-        super(block);
-        setMaxDamage(0);
-        setHasSubtypes(true);
+/**
+ * WT-A 1.20.1: ItemFilledSoupPan -> BlockItem (formerly ItemBlock).
+ * Registration: ModItems + ModBlocks DeferredRegister (see ModItems.java:192)
+ */
+public class ItemFilledSoupPan extends BlockItem {
+    public ItemFilledSoupPan(Block block, Properties properties) {
+        super(block, properties);
     }
-
-    @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
-        int i = Math.min(par1ItemStack.getItemDamage(), SoupType.types.length);
-        return super.getUnlocalizedName() + "_" + SoupType.getType(i);
-    }
-
-    @Override
-    public int getMetadata(int par1) {
-        return par1;
-    }
-
 }

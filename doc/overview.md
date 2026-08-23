@@ -73,6 +73,7 @@
 
 - **JDK**: 17（`JAVA_HOME` をローカルJDK17に、`gradle-daemon-jvm.properties` のJDK25撤去）— [build.md#jdk](./build.md#jdk)
 - **Gradle**: 8.x (`gradle-wrapper.properties` の `distributionUrl` を 8.1.1系) — FG6はGradle9非対応 — [build.md#wrapper](./build.md#wrapper)
+- **Mojmap公式ソース**: `mappings channel:'official'` の難読化解除済みソースは `%USERPROFILE%\.gradle\caches\forge_gradle\minecraft_user_repo\...\forge-1.20.1-47.3.0_mapped_official_1.20.1-sources.jar` に生成 (`Block.java:1` 等が `BlockBehaviour.Properties` で読める)。詳細は [build.md#deobf-sources](./build.md#deobf-sources)
 - **検証コマンド**: `$env:JAVA_HOME="<JDK17>"; .\gradlew build` が `BUILD SUCCESSFUL` / `genIntellijRuns`/`genEclipseRuns` 成功 / `runClient` でタイトル画面 도달 / 生成jarがForge47でロード可能 — [build.md#verification](./build.md#verification)
 
 ## ディレクトリ構成（抜粋）

@@ -2,7 +2,7 @@ package mods.defeatedcrow.api.recipe;
 
 import java.util.ArrayList;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 import mods.defeatedcrow.api.appliance.SoupType;
 

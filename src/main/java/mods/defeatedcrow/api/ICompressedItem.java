@@ -1,6 +1,6 @@
 package mods.defeatedcrow.api;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * 圧縮レシピのためのインターフェイス。

@@ -1,107 +1,91 @@
 package mods.defeatedcrow.common.item.magic;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.BlockIconRegister;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import mods.defeatedcrow.api.charm.EffectType;
-import mods.defeatedcrow.api.charm.IIncenseEffect;
-import mods.defeatedcrow.common.tile.TileBrewingBarrel;
-import mods.defeatedcrow.common.tile.TileCordial;
-import mods.defeatedcrow.plugin.AddonIntegration;
-import mods.defeatedcrow.plugin.HandleDryingRack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
-// 熟成のインセンス
-public class ItemIncenseVanilla extends Item implements IIncenseEffect {
-
-    public ItemIncenseVanilla() {
-        super();
-        this.setMaxStackSize(64);
+/**
+ * WT-A 1.20.1 mojmap migration for ItemIncenseVanilla.
+ * Former 1.7.10 IItem with subtypes/meta -> NBT or split RegistryObject (see ModItems).
+ * Textures: JSON models under assets/defeatedcrow/models/item/
+ */
+public class ItemIncenseVanilla extends Item {
+    public ItemIncenseVanilla(Properties properties) {
+        super(properties);
     }
 
     @Override
-    
-    public void registerIcons(BlockIconRegister par1IconRegister) {
-
-        this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:incense_vanilla");
+    public void appendHoverText(ItemStack stack, Level level, java.util.List<Component> tooltip, TooltipFlag flag) {
+        // TODO: restore addInformation logic
+        super.appendHoverText(stack, level, tooltip, flag);
     }
 
     /*
-     * 以下はIncenseの効果を定義する部分。
-     * Item側に実装したほうが追加が容易だと思う。
+     * Original 1.7.10 source (truncated, full in git history):
+     * package mods.defeatedcrow.common.item.magic;
+     * 
+     * import net.minecraft.block.Block;
+     * import net.minecraft.client.renderer.texture.BlockIconRegister;
+     * import net.minecraft.entity.EntityLivingBase;
+     * import net.minecraft.item.Item;
+     * import net.minecraft.tileentity.TileEntity;
+     * import net.minecraft.world.World;
+     * import mods.defeatedcrow.api.charm.EffectType;
+     * import mods.defeatedcrow.api.charm.IIncenseEffect;
+     * import mods.defeatedcrow.common.tile.TileBrewingBarrel;
+     * import mods.defeatedcrow.common.tile.TileCordial;
+     * import mods.defeatedcrow.plugin.AddonIntegration;
+     * import mods.defeatedcrow.plugin.HandleDryingRack;
+     * 
+     * // 熟成のインセンス
+     * public class ItemIncenseVanilla extends Item implements IIncenseEffect {
+     * 
+     *     public ItemIncenseVanilla() {
+     *         super();
+     *         this.setMaxStackSize(64);
+     *     }
+     * 
+     *     @Override
+     *     
+     *     public void registerIcons(BlockIconRegister par1IconRegister) {
+     * 
+     *         this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:incense_vanilla");
+     *     }
+     * 
+     *     /*
+     *      * 以下はIncenseの効果を定義する部分。
+     *      * Item側に実装したほうが追加が容易だと思う。
+     *      * /
+     * 
+     *     @Override
+     *     public int effectAreaRange() {
+     *         return 3;
+     *     }
+     * 
+     *     @Override
+     *     public EffectType getEffectType() {
+     *         return EffectType.Block;
+     *     }
+     * 
+     *     @Override
+     *     public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {
+     * 
+     *         if (incense.getEffectType() == this.getEffectType()) {
+     *             Block block = world.getBlock(x, y, z);
+     *             int meta = world.getBlockMetadata(x, y, z);
+     *             TileEntity tile = world.getTileEntity(x, y, z);
+     *             boolean flag = false;
+     *             if (tile != null) {
+     *                 if (tile instanceof TileBrewingBarrel) {
+     *                     TileBrewingBarrel barrel = (TileBrewingBarrel) tile;
+     *                     int age = barrel.getAgingStage();
+     *                     if (age < 4) {
+     *                         barrel.setAgingStage(age + 1);
+     *                         flag = true;
      */
-
-    @Override
-    public int effectAreaRange() {
-        return 3;
-    }
-
-    @Override
-    public EffectType getEffectType() {
-        return EffectType.Block;
-    }
-
-    @Override
-    public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {
-
-        if (incense.getEffectType() == this.getEffectType()) {
-            Block block = world.getBlock(x, y, z);
-            int meta = world.getBlockMetadata(x, y, z);
-            TileEntity tile = world.getTileEntity(x, y, z);
-            boolean flag = false;
-            if (tile != null) {
-                if (tile instanceof TileBrewingBarrel) {
-                    TileBrewingBarrel barrel = (TileBrewingBarrel) tile;
-                    int age = barrel.getAgingStage();
-                    if (age < 4) {
-                        barrel.setAgingStage(age + 1);
-                        flag = true;
-                    }
-                }
-                if (tile instanceof TileCordial) {
-                    TileCordial cor = (TileCordial) tile;
-                    int age = cor.getAgingStage();
-                    if (age < 4) {
-                        cor.setAgingStage(age + 1);
-                        flag = true;
-                    }
-                }
-                if (AddonIntegration.loadedJP() && HandleDryingRack.isDryingRack(tile)) {
-                    HandleDryingRack.addDays(tile, 1, false);
-                    flag = true;
-                }
-            }
-
-            if (flag) {
-                world.playAuxSFX(2005, x, y, z, 0);
-                world.markBlockForUpdate(x, y, z);
-                return true;
-            }
-
-        }
-        return false;
-    }
-
-    @Override
-    public String particleIcon() {
-        return "flower";
-    }
-
-    @Override
-    public float particleColorR() {
-        return 1.0F;
-    }
-
-    @Override
-    public float particleColorG() {
-        return 0.8F;
-    }
-
-    @Override
-    public float particleColorB() {
-        return 0.3F;
-    }
-
 }

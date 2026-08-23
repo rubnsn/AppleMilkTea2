@@ -2,7 +2,7 @@ package mods.defeatedcrow.api.recipe;
 
 import java.util.Map;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * This API has migrated to IFondueRecipe.

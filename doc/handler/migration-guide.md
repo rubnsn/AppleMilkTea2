@@ -59,10 +59,36 @@ level.explode(null, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 3.0F, Level.
 ```
 
 ## 検証
-1. `grep -r "OreDictionary"` → 0件（TagKeyに置換）確認
+1. `grep -r "OreDictionary"` → 0件（TagKeyに置換）確認 — **WT-Bでは `handler/` + `common/tile` + `event/ShowOreNameEvent.java` で 0件を達成。残存は `recipe/` 5件 + `plugin/LoadOreDicHandler` 1件 + `common/DCsRecipeRegister.java` 1件で WT-A/C所有のため除外**（`doc/oredict-to-tagkey.md:39` の実装状態参照）
 2. `grep -r "Coord("` → `BlockPos` 置換確認
 3. `grep -r "CustomExplosion"` → `Level.explode` 置換確認
 4. `gradlew build` で `SavedData` の `Factory` 型エラー解消確認
+
+### WT-B固有検証（OreDictionary→TagKey）
+
+```powershell
+# WT-B所有内のみ 0件であることを確認（plan.md 3.2 の所有境界）
+rg -n "OreDictionary" src\main\java\mods\defeatedcrow\handler src\main\java\mods\defeatedcrow\common\tile src\main\java\mods\defeatedcrow\event\ShowOreNameEvent.java
+# → 0件が正。recipe/plugin/common/DCsRecipeRegister は WT-C/A所有のため対象外
+
+# TagHelper の存在確認
+Test-Path src\main\java\mods\defeatedcrow\handler\TagHelper.java  # True
+# datapack タグ生成確認
+(Get-ChildItem -Recurse src\main\resources\data\forge\tags\items).Count  # 156
+(Get-ChildItem -Recurse src\main\resources\data\c\tags\items).Count     # 156
+```
+
+### 残存 OreDictionary 箇所の扱い（WT-B禁止編集のため触らない）
+
+| ファイル | 所有WT | 対応方針 |
+|---|---|---|
+| `recipe/ProcessorRecipeRegister.java:109,222,226` | WT-C | `OreDictionary.getOres` → `TagHelper.getTagItems` + `Ingredient.of(TagKey)`, `itemMatches` → `TagHelper.itemMatches` に置換予定（WT-Cで実施） |
+| `recipe/FondueRecipeRegister.java:103,142,164,203` | WT-C | 同上 |
+| `recipe/OreCrushRecipe.java:49,51,53,55,...` | WT-C | `getOres("nugget*"/"dust*"/"ore*")` → `TagKey` 分岐に置換 |
+| `recipe/ChocolateRecipe.java:43,69` | WT-C | `getOres(s)` + `WILDCARD_VALUE` → TagKey/ItemStack.is へ |
+| `recipe/RegisterMakerRecipe.java:884` | WT-C | `registerOre("logYuzuWood")` → `data/forge/tags/items/logs.json` へ（既生成） |
+| `plugin/LoadOreDicHandler.java:20,23` | WT-C | 既に `TagKey` 化済みだが `isEmpty()` 判定バグあり（WT-Cで修正） |
+| `common/DCsRecipeRegister.java:25-33,2027,...` | WT-A/C混在 | `registerOre` / `getOres` の残存は WT-A の BlockItem 登録後に Tag 化（WT-A/Cで実施） |
 
 ## 関連
 - [Handler 一覧](../handler.md) / [個別ページ索引](./README.md)

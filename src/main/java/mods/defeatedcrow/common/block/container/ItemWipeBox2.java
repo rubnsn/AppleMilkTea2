@@ -1,30 +1,18 @@
 package mods.defeatedcrow.common.block.container;
 
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-
-public class ItemWipeBox2 extends ItemBlock {
-
-    public ItemWipeBox2(Block block) {
-        super(block);
-        setMaxDamage(5000);
-        setHasSubtypes(false);
-        this.setMaxStackSize(1);
+/**
+ * WT-A 1.20.1: ItemWipeBox2 -> BlockItem (formerly ItemBlock).
+ * Registration: ModItems + ModBlocks DeferredRegister (see ModItems.java:192)
+ */
+public class ItemWipeBox2 extends BlockItem {
+    public ItemWipeBox2(Block block, Properties properties) {
+        super(block, properties);
     }
-
-    
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-        super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-        short l = (short) (5000 - par1ItemStack.getItemDamage());
-        if (l < 0) l = 0;
-        par3List.add(new String("count: " + l));
-    }
-
 }

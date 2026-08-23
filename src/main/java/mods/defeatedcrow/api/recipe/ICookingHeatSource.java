@@ -1,6 +1,6 @@
 package mods.defeatedcrow.api.recipe;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 
 public interface ICookingHeatSource {
 
