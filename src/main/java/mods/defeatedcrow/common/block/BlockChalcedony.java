@@ -6,22 +6,19 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.*;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public class BlockChalcedony extends BlockBreakable {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] color;
+    
+    private BlockTexture[] color;
 
     public BlockChalcedony(Material material, boolean flag) {
         super("defeatedcrow:chalcedony", material, flag);
@@ -40,7 +37,7 @@ public class BlockChalcedony extends BlockBreakable {
         return par1;
     }
 
-    @SideOnly(Side.CLIENT)
+    
     public int getRenderBlockPass() {
         return 1;
     }
@@ -63,14 +60,14 @@ public class BlockChalcedony extends BlockBreakable {
         return 0;
     }
 
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = MathHelper.clamp_int(par2, 0, 3);
         return color[i];
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         for (int i = 0; i < 4; ++i) {
             par3List.add(new ItemStack(this, 1, i));
@@ -78,9 +75,9 @@ public class BlockChalcedony extends BlockBreakable {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.color = new IIcon[4];
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
+        this.color = new BlockTexture[4];
 
         for (int i = 0; i < 4; ++i) {
             if (i == 0) this.color[i] = par1IconRegister.registerIcon("defeatedcrow:chalcedony");

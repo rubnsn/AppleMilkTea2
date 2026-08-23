@@ -1,11 +1,8 @@
 package mods.defeatedcrow.common.item.edible;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.item.ItemFood;
 import net.minecraft.src.*;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.*;
 
 public class ItemToffyApple extends ItemFood {
@@ -17,8 +14,8 @@ public class ItemToffyApple extends ItemFood {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
         this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:toffyapple");
     }
 

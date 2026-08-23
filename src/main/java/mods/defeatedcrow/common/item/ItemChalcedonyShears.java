@@ -5,7 +5,7 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStem;
 import net.minecraft.block.IGrowable;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,9 +17,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 
 import com.google.common.collect.Sets;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.plants.IRightClickHarvestable;
 
 public class ItemChalcedonyShears extends ItemTool {
@@ -62,8 +59,8 @@ public class ItemChalcedonyShears extends ItemTool {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
         this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:tools/chalcedonyshears");
     }
 

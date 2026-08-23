@@ -3,9 +3,9 @@ package mods.defeatedcrow.common.block.appliance;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -15,17 +15,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.client.particle.EntityBlinkFX;
 import mods.defeatedcrow.client.particle.ParticleTex;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.DCsConfig;
 import mods.defeatedcrow.common.tile.appliance.*;
 
-public class BlockIceMaker extends BlockContainer {
+public class BlockIceMaker extends Block {
 
     protected Random rand = new Random();
 
@@ -42,7 +38,7 @@ public class BlockIceMaker extends BlockContainer {
         return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
     }
 
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -144,12 +140,12 @@ public class BlockIceMaker extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = par1IconRegister.registerIcon("defeatedcrow:icemaker_body");
     }
 
-    @SideOnly(Side.CLIENT)
+    
     @Override
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         int l = par1World.getBlockMetadata(par2, par3, par4);
@@ -171,7 +167,7 @@ public class BlockIceMaker extends BlockContainer {
             EntityBlinkFX cloud = new EntityBlinkFX(par1World, d0, d1, d2, 0.0D, d4, 0.0D);
             cloud.setParticleIcon(
                 ParticleTex.getInstance()
-                    .getIcon("blink"));
+                    .getBlockTexture("blink"));
             FMLClientHandler.instance()
                 .getClient().effectRenderer.addEffect(cloud);
         }

@@ -7,9 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public class ItemWipeBox2 extends ItemBlock {
 
     public ItemWipeBox2(Block block) {
@@ -19,7 +16,7 @@ public class ItemWipeBox2 extends ItemBlock {
         this.setMaxStackSize(1);
     }
 
-    @SideOnly(Side.CLIENT)
+    
     /**
      * allows items to add custom lines of information to the mouseover description
      */

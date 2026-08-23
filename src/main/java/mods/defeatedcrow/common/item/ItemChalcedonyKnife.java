@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,10 +20,6 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.google.common.collect.Sets;
-
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.events.KnifeCutEvent;
 
 public class ItemChalcedonyKnife extends ItemTool {
@@ -146,8 +142,8 @@ public class ItemChalcedonyKnife extends ItemTool {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
         this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:tools/chalcedonyknife");
     }
 

@@ -1,27 +1,23 @@
 package mods.defeatedcrow.common.block.energy;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
-
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.tile.energy.*;
 import mods.defeatedcrow.plugin.SSector.LoadSSectorPlugin;
 
-public class BlockHandleEngine extends BlockContainer {
+public class BlockHandleEngine extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] thisIcon;
+    
+    private BlockTexture[] thisIcon;
 
     public BlockHandleEngine() {
         super(Material.clay);
@@ -89,14 +85,14 @@ public class BlockHandleEngine extends BlockContainer {
         return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
     }
 
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
     }
 
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         return par1 == 0 ? this.thisIcon[0] : this.thisIcon[1];
     }
 
@@ -115,7 +111,7 @@ public class BlockHandleEngine extends BlockContainer {
         return -1;
     }
 
-    @SideOnly(Side.CLIENT)
+    
     public int getRenderBlockPass() {
         return 1;
     }
@@ -126,9 +122,9 @@ public class BlockHandleEngine extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.thisIcon = new IIcon[2];
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
+        this.thisIcon = new BlockTexture[2];
         for (int i = 0; i < 2; ++i) {
             if (i == 0) this.thisIcon[i] = par1IconRegister.registerIcon("defeatedcrow:teppann");
             else this.thisIcon[i] = par1IconRegister.registerIcon("defeatedcrow:lampside_burst_0");

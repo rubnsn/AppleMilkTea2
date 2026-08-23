@@ -2,8 +2,6 @@ package mods.defeatedcrow.common.item.edible;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-
-import cpw.mods.fml.common.Optional;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.plugin.LoadAppleCorePlugin;
 import squeek.applecore.api.food.FoodValues;

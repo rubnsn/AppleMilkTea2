@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,28 +14,25 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.events.AMTBlockRightClickEvent;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.tile.TileCocktail2;
 
-public class BlockCocktail2 extends BlockContainer {
+public class BlockCocktail2 extends Block {
 
     // 魔晄割り、パナシェ、スプリッツァー、スクリュードライバー、ゴッドファーザー、ホットエッグノック、アレキサンダー、ズーム、アマレットミルクティー、スノー・サローノ
     // ロング、ワイン、ワイン、ロング、ロング、ロング、ショート、ショート、ロング、ワイン
     public static final String[] contents = new String[] { "_soda", "_juice", "_lemon", "_orange", "_tea", "_maple",
         "_maple", "_juice_milk", "_tea_milk", "_tea" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon boxTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] contentsTex;
+    
+    private BlockTexture boxTex;
+    
+    private BlockTexture[] contentsTex;
 
     public BlockCocktail2() {
         super(Material.glass);
@@ -128,7 +125,7 @@ public class BlockCocktail2 extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -145,8 +142,8 @@ public class BlockCocktail2 extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = Math.min(par2, 9);
         if (par1 == 1) {
             return this.contentsTex[i];
@@ -157,7 +154,7 @@ public class BlockCocktail2 extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         for (int i = 0; i < 10; ++i) {
             par3List.add(new ItemStack(this, 1, i));
@@ -170,12 +167,12 @@ public class BlockCocktail2 extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.boxTex = par1IIconRegister.registerIcon("defeatedcrow:blueglass");
-        this.contentsTex = new IIcon[10];
+    
+    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
+        this.boxTex = par1BlockIconRegister.registerIcon("defeatedcrow:blueglass");
+        this.contentsTex = new BlockTexture[10];
         for (int i = 0; i < 10; ++i) {
-            this.contentsTex[i] = par1IIconRegister.registerIcon("defeatedcrow:contents" + contents[i]);
+            this.contentsTex[i] = par1BlockIconRegister.registerIcon("defeatedcrow:contents" + contents[i]);
         }
     }
 

@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -18,14 +18,10 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.events.AMTBlockRightClickEvent;
 import mods.defeatedcrow.client.particle.EntityBlinkFX;
 import mods.defeatedcrow.client.particle.ParticleTex;
@@ -33,15 +29,15 @@ import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.DCsConfig;
 import mods.defeatedcrow.common.tile.TileIceCream;
 
-public class BlockIceCream extends BlockContainer {
+public class BlockIceCream extends Block {
 
     private static final String[] contents = new String[] { "_milk", "_tea_milk", "_greentea_milk", "_cocoa",
         "_cocoa_milk", "_juice", "_lemon", "_lime", "_tomato", "_berry", "_grape", "_mint", "_orange", "_soda" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon boxTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] contentsTex;
+    
+    private BlockTexture boxTex;
+    
+    private BlockTexture[] contentsTex;
 
     public BlockIceCream() {
         super(Material.glass);
@@ -204,7 +200,7 @@ public class BlockIceCream extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -221,8 +217,8 @@ public class BlockIceCream extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         if (par1 == 1) {
             return this.contentsTex[par2];
         } else {
@@ -232,7 +228,7 @@ public class BlockIceCream extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         for (int i = 0; i < 14; ++i) {
             par3List.add(new ItemStack(this, 1, i));
@@ -245,10 +241,10 @@ public class BlockIceCream extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.boxTex = par1IconRegister.registerIcon("defeatedcrow:blueglass");
-        this.contentsTex = new IIcon[14];
+        this.contentsTex = new BlockTexture[14];
         for (int i = 0; i < 14; ++i) {
             this.contentsTex[i] = par1IconRegister.registerIcon("defeatedcrow:contents" + contents[i]);
         }
@@ -259,7 +255,7 @@ public class BlockIceCream extends BlockContainer {
         return new TileIceCream();
     }
 
-    @SideOnly(Side.CLIENT)
+    
     @Override
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         int l = par1World.getBlockMetadata(par2, par3, par4);
@@ -276,7 +272,7 @@ public class BlockIceCream extends BlockContainer {
             EntityBlinkFX cloud = new EntityBlinkFX(par1World, d0, d1, d2, 0.0D, d4, 0.0D);
             cloud.setParticleIcon(
                 ParticleTex.getInstance()
-                    .getIcon("blink"));
+                    .getBlockTexture("blink"));
             FMLClientHandler.instance()
                 .getClient().effectRenderer.addEffect(cloud);
         }

@@ -10,8 +10,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.google.common.collect.Multimap;
-
-import cpw.mods.fml.common.Loader;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.plugin.IC2.LoadIC2Plugin;
 

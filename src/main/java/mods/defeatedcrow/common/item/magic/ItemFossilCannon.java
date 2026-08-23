@@ -2,7 +2,7 @@ package mods.defeatedcrow.common.item.magic;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,12 +16,9 @@ import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.energy.IBattery;
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.common.entity.EntityAnchorMissile;
@@ -42,8 +39,8 @@ public class ItemFossilCannon extends ItemBow implements IBattery {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
 
         this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:purple_scale");
     }
@@ -187,11 +184,11 @@ public class ItemFossilCannon extends ItemBow implements IBattery {
         return par1ItemStack;
     }
 
-    @SideOnly(Side.CLIENT)
+    
     /*
      * 右クリックでタメている時のアイコンを変えられる。今回は特に変えていない。
      */
-    public IIcon getItemIconForUseDuration(int par1) {
+    public BlockTexture getItemIconForUseDuration(int par1) {
         return this.itemIcon;
     }
 
@@ -276,7 +273,7 @@ public class ItemFossilCannon extends ItemBow implements IBattery {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     // マウスオーバー時の表示情報
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
         super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
@@ -310,12 +307,12 @@ public class ItemFossilCannon extends ItemBow implements IBattery {
         return (double) i / (double) max;
     }
 
-    @SideOnly(Side.CLIENT)
+    
     public boolean isFull3D() {
         return true;
     }
 
-    // @SideOnly(Side.CLIENT)
+    // 
     // public boolean shouldRotateAroundWhenRendering()
     // {
     // return true;

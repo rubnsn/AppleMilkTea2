@@ -14,9 +14,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.edibles.EdibleItemBlock;
 import mods.defeatedcrow.common.*;
 import mods.defeatedcrow.handler.Util;
@@ -156,7 +153,7 @@ public class ItemIceBlock extends EdibleItemBlock {
         return par1;
     }
 
-    @SideOnly(Side.CLIENT)
+    
     // マウスオーバー時の表示情報
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
         super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);

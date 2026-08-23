@@ -5,14 +5,11 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.BlockTexture;
 import mods.defeatedcrow.handler.Util;
 
 public class BlockWoodBox extends Block {
@@ -20,10 +17,10 @@ public class BlockWoodBox extends Block {
     private static final String[] boxType = new String[] { "_oak", "_spruse", "_birch", "_jungle", "_rubber", "_great",
         "_silver", "_force", "_sakura", "_momizi", "_JPcedar", "_darkoak", "_acacia" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] boxTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] boxSideTex;
+    
+    private BlockTexture[] boxTex;
+    
+    private BlockTexture[] boxSideTex;
 
     public BlockWoodBox() {
         super(Material.wood);
@@ -37,8 +34,8 @@ public class BlockWoodBox extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = par2;
         if (i > 12) i = 12;
         if (par1 == 4 || par1 == 5) {
@@ -49,7 +46,7 @@ public class BlockWoodBox extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
@@ -72,10 +69,10 @@ public class BlockWoodBox extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.boxTex = new IIcon[13];
-        this.boxSideTex = new IIcon[13];
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
+        this.boxTex = new BlockTexture[13];
+        this.boxSideTex = new BlockTexture[13];
 
         for (int i = 0; i < 13; ++i) {
             this.boxTex[i] = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "WoodBox" + boxType[i]);

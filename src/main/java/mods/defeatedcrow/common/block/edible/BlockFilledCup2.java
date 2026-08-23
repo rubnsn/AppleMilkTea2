@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -15,27 +15,24 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.events.AMTBlockRightClickEvent;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.DCsConfig;
 import mods.defeatedcrow.common.tile.TileCupHandle;
 
-public class BlockFilledCup2 extends BlockContainer {
+public class BlockFilledCup2 extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon itemIIcon;
-    @SideOnly(Side.CLIENT)
-    private IIcon boxIIcon;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] contentsIIcon;
+    
+    private BlockTexture itemBlockTexture;
+    
+    private BlockTexture boxBlockTexture;
+    
+    private BlockTexture[] contentsBlockTexture;
 
     public static final String[] contents = new String[] { "_earlgray", "_tea_milk", "_appletea", "_tea_milk", "_lime",
         "_tomato", "_berry", "_berry_milk", "_grape", "_mint", "_lemon", "_orange", "_soda" };
@@ -111,7 +108,7 @@ public class BlockFilledCup2 extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -167,7 +164,7 @@ public class BlockFilledCup2 extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         for (int i = 0; i < 13; ++i) {
             par3List.add(new ItemStack(this, 1, i));
@@ -175,16 +172,16 @@ public class BlockFilledCup2 extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = par2;
         if (i > 12) i = 12;
         if (par1 == 2) {
-            return this.boxIIcon;
+            return this.boxBlockTexture;
         } else if (par1 == 1) {
-            return this.itemIIcon;
+            return this.itemBlockTexture;
         } else {
-            return this.contentsIIcon[i];
+            return this.contentsBlockTexture[i];
         }
     }
 
@@ -194,15 +191,15 @@ public class BlockFilledCup2 extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.boxIIcon = par1IIconRegister.registerIcon("defeatedcrow:porcelain");
+    
+    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
+        this.boxBlockTexture = par1BlockIconRegister.registerIcon("defeatedcrow:porcelain");
 
-        this.contentsIIcon = new IIcon[13];
+        this.contentsBlockTexture = new BlockTexture[13];
         for (int i = 0; i < 13; ++i) {
-            this.blockIcon = par1IIconRegister.registerIcon("defeatedcrow:contents" + contents[i]);
-            this.itemIIcon = par1IIconRegister.registerIcon("defeatedcrow:contents" + contents[i]);
-            this.contentsIIcon[i] = par1IIconRegister.registerIcon("defeatedcrow:contents" + contents[i]);
+            this.blockIcon = par1BlockIconRegister.registerIcon("defeatedcrow:contents" + contents[i]);
+            this.itemBlockTexture = par1BlockIconRegister.registerIcon("defeatedcrow:contents" + contents[i]);
+            this.contentsBlockTexture[i] = par1BlockIconRegister.registerIcon("defeatedcrow:contents" + contents[i]);
         }
     }
 

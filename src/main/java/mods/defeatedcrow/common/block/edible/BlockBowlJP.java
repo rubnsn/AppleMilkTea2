@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,14 +17,10 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.events.AMTBlockRightClickEvent;
 import mods.defeatedcrow.client.particle.EntityDCCloudFX;
 import mods.defeatedcrow.client.particle.ParticleTex;
@@ -34,15 +30,15 @@ import mods.defeatedcrow.common.tile.TileJPBowl;
 import mods.defeatedcrow.handler.Util;
 import mods.defeatedcrow.plugin.LoadBambooPlugin;
 
-public class BlockBowlJP extends BlockContainer {
+public class BlockBowlJP extends Block {
 
     private static final String[] contents = new String[] { "_milk", "_tea_milk", "_soup", "_zousui", "_kayaku", "_soi",
         "_juice", "_BLTsoup", "_misosoup", "_clamsoup" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon boxTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] contentsTex;
+    
+    private BlockTexture boxTex;
+    
+    private BlockTexture[] contentsTex;
 
     public BlockBowlJP() {
         super(Material.circuits);
@@ -202,7 +198,7 @@ public class BlockBowlJP extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -226,8 +222,8 @@ public class BlockBowlJP extends BlockContainer {
 
     // icon
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = par2;
         if (i > 9) i = 9;
         if (par1 == 1) {
@@ -238,7 +234,7 @@ public class BlockBowlJP extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         for (int i = 0; i < 10; ++i) {
             par3List.add(new ItemStack(this, 1, i));
@@ -252,9 +248,9 @@ public class BlockBowlJP extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.contentsTex = new IIcon[10];
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
+        this.contentsTex = new BlockTexture[10];
         this.boxTex = par1IconRegister.registerIcon("defeatedcrow:porcelain");
 
         for (int i = 0; i < 10; ++i) {
@@ -262,7 +258,7 @@ public class BlockBowlJP extends BlockContainer {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    
     @Override
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         int l = par1World.getBlockMetadata(par2, par3, par4);
@@ -277,7 +273,7 @@ public class BlockBowlJP extends BlockContainer {
             EntityDCCloudFX cloud = new EntityDCCloudFX(par1World, d0, d1, d2, 0.0D, d3, 0.0D);
             cloud.setParticleIcon(
                 ParticleTex.getInstance()
-                    .getIcon("cloud"));
+                    .getBlockTexture("cloud"));
             FMLClientHandler.instance()
                 .getClient().effectRenderer.addEffect(cloud);
         }

@@ -3,9 +3,9 @@ package mods.defeatedcrow.common.block.appliance;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -16,16 +16,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fluids.FluidHandlerHelper;
 import mods.defeatedcrow.api.appliance.SoupType;
 import mods.defeatedcrow.api.recipe.IFondueRecipe;
 import mods.defeatedcrow.api.recipe.IFondueSource;
@@ -36,10 +32,10 @@ import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.DCsConfig;
 import mods.defeatedcrow.common.tile.appliance.TileFilledSoupPan;
 
-public class BlockFilledSoupPan extends BlockContainer {
+public class BlockFilledSoupPan extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] contentsTex;
+    
+    private BlockTexture[] contentsTex;
 
     public BlockFilledSoupPan() {
         super(Material.ground);
@@ -105,8 +101,8 @@ public class BlockFilledSoupPan extends BlockContainer {
                 world.playSoundAtEntity(entity, "random.pop", 0.4F, 1.8F);
 
                 ItemStack container = null;
-                if (FluidContainerRegistry.isFilledContainer(input)) {
-                    container = FluidContainerRegistry.drainFluidContainer(input);
+                if (FluidHandlerHelper.isFilledContainer(input)) {
+                    container = FluidHandlerHelper.drainFluidContainer(input);
                 } else {
                     container = input.getItem()
                         .getContainerItem(input);
@@ -139,8 +135,8 @@ public class BlockFilledSoupPan extends BlockContainer {
         ItemStack result) {
         if (input == null || input.getItem() == null) return;
         ItemStack container = null;
-        if (FluidContainerRegistry.isFilledContainer(input)) {
-            container = FluidContainerRegistry.drainFluidContainer(input);
+        if (FluidHandlerHelper.isFilledContainer(input)) {
+            container = FluidHandlerHelper.drainFluidContainer(input);
         } else {
             container = input.getItem()
                 .getContainerItem(input);
@@ -237,7 +233,7 @@ public class BlockFilledSoupPan extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -259,8 +255,8 @@ public class BlockFilledSoupPan extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
+    
+    public BlockTexture getBlockTexture(int side, int meta) {
         int i = Math.min(meta, this.contentsTex.length - 1);
         if (side == 1) {
             return this.contentsTex[i];
@@ -270,17 +266,17 @@ public class BlockFilledSoupPan extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = Blocks.hardened_clay.getBlockTextureFromSide(1);
         int lim = SoupType.types.length;
-        this.contentsTex = new IIcon[lim];
+        this.contentsTex = new BlockTexture[lim];
         for (int i = 0; i < lim; i++) {
             this.contentsTex[i] = par1IconRegister.registerIcon(SoupType.getType(i).blockTexture);
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    
     @Override
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         int l = par1World.getBlockMetadata(par2, par3, par4);
@@ -295,7 +291,7 @@ public class BlockFilledSoupPan extends BlockContainer {
             EntityDCCloudFX cloud = new EntityDCCloudFX(par1World, d0, d1, d2, 0.0D, d3, 0.0D);
             cloud.setParticleIcon(
                 ParticleTex.getInstance()
-                    .getIcon("cloud"));
+                    .getBlockTexture("cloud"));
             FMLClientHandler.instance()
                 .getClient().effectRenderer.addEffect(cloud);
         }

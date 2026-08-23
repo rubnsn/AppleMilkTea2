@@ -2,22 +2,19 @@ package mods.defeatedcrow.common.item;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.*;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.*;
 
 public class ItemLeafTea extends Item {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon iconItemType[];
+    
+    private BlockTexture iconItemType[];
 
     public ItemLeafTea() {
         super();
@@ -27,8 +24,8 @@ public class ItemLeafTea extends Item {
 
     }
 
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1) {
+    
+    public BlockTexture getBlockTextureFromDamage(int par1) {
         int j = MathHelper.clamp_int(par1, 0, 4);
         return this.iconItemType[j];
     }
@@ -44,7 +41,7 @@ public class ItemLeafTea extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(this, 1, 0));
         par3List.add(new ItemStack(this, 1, 1));
@@ -54,9 +51,9 @@ public class ItemLeafTea extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
-        this.iconItemType = new IIcon[5];
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
+        this.iconItemType = new BlockTexture[5];
         this.iconItemType[0] = par1IconRegister.registerIcon("defeatedcrow:leaf_raw");
         this.iconItemType[1] = par1IconRegister.registerIcon("defeatedcrow:leaf_mint");
         this.iconItemType[2] = par1IconRegister.registerIcon("defeatedcrow:cassis");

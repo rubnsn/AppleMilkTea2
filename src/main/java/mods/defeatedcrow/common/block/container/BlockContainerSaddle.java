@@ -1,11 +1,8 @@
 package mods.defeatedcrow.common.block.container;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 
 public class BlockContainerSaddle extends BlockContainerBase {
@@ -25,8 +22,8 @@ public class BlockContainerSaddle extends BlockContainerBase {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.bottomIcon = par1IconRegister.registerIcon("defeatedcrow:x32/basket_B1");
         this.sideIcon = par1IconRegister.registerIcon("defeatedcrow:x32/basket_S1");
         this.topIcon = par1IconRegister.registerIcon("defeatedcrow:x32/basket_T1");

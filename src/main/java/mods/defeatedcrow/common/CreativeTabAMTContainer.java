@@ -1,26 +1,28 @@
 package mods.defeatedcrow.common;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
+import net.minecraftforge.registries.RegistryObject;
+import mods.defeatedcrow.common.registry.ModCreativeTabs;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+/**
+ * Legacy CreativeTab stub — 1.20.1 migration.
+ * Original 1.7.10 CreativeTabs is replaced by DeferredRegister<CreativeModeTab> in ModCreativeTabs.
+ * This stub is retained for save-compat reference; actual registration is in ModCreativeTabs.
+ * See doc/creative-tabs/migration-guide.md
+ */
+public class CreativeTabAMTContainer {
+    // 1.20.1: use ModCreativeTabs.TABS instead of static CreativeTabs field
+    // This class is deprecated — do not instantiate directly
+    @Deprecated
+    public CreativeTabAMTContainer(String label) {}
 
-public class CreativeTabAMTContainer extends CreativeTabs {
-
-    public CreativeTabAMTContainer(String type) {
-        super(type);
+    public Component getDisplayName() {
+        return Component.translatable("itemGroup.defeatedcrow.applemilkContainer");
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public String getTranslatedTabLabel() {
-        return "Apple&Milk&Tea:Decorations";
+    public ItemStack makeIcon() {
+        return ItemStack.EMPTY;
     }
-
-    @Override
-    public Item getTabIconItem() {
-        return Item.getItemFromBlock(DCsAppleMilk.appleBox);
-    }
-
 }

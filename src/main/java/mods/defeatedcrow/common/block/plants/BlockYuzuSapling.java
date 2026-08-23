@@ -6,11 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.world.*;
@@ -91,8 +88,8 @@ public class BlockYuzuSapling extends BlockBush implements IGrowable {
         return 0;
     }
 
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1) {
+    
+    public void registerBlockTextures(BlockIconRegister par1) {
         this.blockIcon = par1.registerIcon(Util.getTexturePassNoAlt() + "sapling_yuzu");
     }
 

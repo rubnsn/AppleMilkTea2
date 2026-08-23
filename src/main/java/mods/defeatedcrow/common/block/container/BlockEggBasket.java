@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -16,22 +16,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.tile.TileEggs;
 import mods.defeatedcrow.handler.Util;
 
-public class BlockEggBasket extends BlockContainer {
+public class BlockEggBasket extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] EggTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon cageTex;
+    
+    private BlockTexture[] EggTex;
+    
+    private BlockTexture cageTex;
 
     private final String[] eggs = new String[] { "whitepanel", "teppann" };
 
@@ -157,7 +154,7 @@ public class BlockEggBasket extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -183,15 +180,15 @@ public class BlockEggBasket extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         if (par1 == 0) return this.EggTex[0];
         if (par1 == 1) return this.EggTex[1];
         if (par1 == 2) return this.cageTex;
@@ -204,13 +201,13 @@ public class BlockEggBasket extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.EggTex = new IIcon[2];
-        this.cageTex = par1IIconRegister.registerIcon(Util.getTexturePassNoAlt() + "cage");
+    
+    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
+        this.EggTex = new BlockTexture[2];
+        this.cageTex = par1BlockIconRegister.registerIcon(Util.getTexturePassNoAlt() + "cage");
 
         for (int i = 0; i < 2; ++i) {
-            this.EggTex[i] = par1IIconRegister.registerIcon("defeatedcrow:" + eggs[i]);
+            this.EggTex[i] = par1BlockIconRegister.registerIcon("defeatedcrow:" + eggs[i]);
         }
     }
 

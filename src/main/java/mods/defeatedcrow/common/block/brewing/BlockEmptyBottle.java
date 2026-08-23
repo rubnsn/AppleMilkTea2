@@ -3,9 +3,9 @@ package mods.defeatedcrow.common.block.brewing;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,14 +14,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.events.AMTBlockRightClickEvent;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.tile.TileEmptyBottle;
 
-public class BlockEmptyBottle extends BlockContainer {
+public class BlockEmptyBottle extends Block {
 
     public BlockEmptyBottle() {
         super(Material.circuits);
@@ -97,7 +94,7 @@ public class BlockEmptyBottle extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -124,9 +121,9 @@ public class BlockEmptyBottle extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.blockIcon = par1IIconRegister.registerIcon("defeatedcrow:bottle_empty");
+    
+    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
+        this.blockIcon = par1BlockIconRegister.registerIcon("defeatedcrow:bottle_empty");
     }
 
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,13 +15,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.DCsConfig;
@@ -31,8 +28,8 @@ public class ItemPrincessClam extends Item {
     private static final String[] clamType = new String[] { "princessclam", "raden_flower", "raden_butterfly",
         "raden_wing", "raden_moon" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon iconclamType[];
+    
+    private BlockTexture iconclamType[];
 
     public ItemPrincessClam() {
         super();
@@ -363,7 +360,7 @@ public class ItemPrincessClam extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     // マウスオーバー時の表示情報
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
         super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
@@ -405,15 +402,15 @@ public class ItemPrincessClam extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     // エフェクト
     public boolean hasEffect(ItemStack par1ItemStack) {
         return par1ItemStack.getItemDamage() > 0;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1) {
+    
+    public BlockTexture getBlockTextureFromDamage(int par1) {
         int j = MathHelper.clamp_int(par1, 0, 4);
         return this.iconclamType[j];
     }
@@ -429,7 +426,7 @@ public class ItemPrincessClam extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(this, 1, 0));
         par3List.add(new ItemStack(this, 1, 1));
@@ -439,10 +436,10 @@ public class ItemPrincessClam extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
 
-        this.iconclamType = new IIcon[5];
+        this.iconclamType = new BlockTexture[5];
 
         for (int i = 0; i < 5; ++i) {
             this.iconclamType[i] = par1IconRegister.registerIcon("defeatedcrow:" + clamType[i]);

@@ -1,6 +1,6 @@
 package mods.defeatedcrow.common.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -14,9 +14,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 import com.google.common.collect.Multimap;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 
 public class ItemOnixSword extends ItemSword {
@@ -41,8 +38,8 @@ public class ItemOnixSword extends ItemSword {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
         this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:tools/onixsword");
     }
 

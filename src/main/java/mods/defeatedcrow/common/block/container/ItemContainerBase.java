@@ -7,9 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public class ItemContainerBase extends ItemBlock {
 
     public ItemContainerBase(Block block) {
@@ -29,7 +26,7 @@ public class ItemContainerBase extends ItemBlock {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     // マウスオーバー時の表示情報
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
         super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);

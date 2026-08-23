@@ -7,9 +7,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.ICompressedItem;
 import mods.defeatedcrow.common.config.DCsConfig;
 import mods.defeatedcrow.common.entity.EntityKinoko;
@@ -133,7 +130,7 @@ public class ItemMushBox extends ItemBlock implements ICompressedItem {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public boolean func_150936_a(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item) {
         Block block = world.getBlock(x, y, z);
 

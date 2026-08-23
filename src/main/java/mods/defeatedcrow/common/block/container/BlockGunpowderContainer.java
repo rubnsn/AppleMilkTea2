@@ -6,24 +6,20 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.BonemealEvent;
-
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.config.DCsConfig;
 import mods.defeatedcrow.handler.Util;
 
@@ -31,10 +27,10 @@ public class BlockGunpowderContainer extends Block {
 
     private static final String[] boxType = new String[] { "gunpowder", "kayaku", "clay", "clam" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] boxTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon boxSideTex;
+    
+    private BlockTexture[] boxTex;
+    
+    private BlockTexture boxSideTex;
 
     public BlockGunpowderContainer() {
         super(Material.ground);
@@ -46,8 +42,8 @@ public class BlockGunpowderContainer extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = par2 & 3;
         if (i > 3) i = 3;
         if (par1 == 1) {
@@ -150,7 +146,7 @@ public class BlockGunpowderContainer extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
@@ -164,10 +160,10 @@ public class BlockGunpowderContainer extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.boxSideTex = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "container_S");
-        this.boxTex = new IIcon[4];
+        this.boxTex = new BlockTexture[4];
 
         for (int i = 0; i < 4; ++i) {
             this.boxTex[i] = par1IconRegister
@@ -212,7 +208,7 @@ public class BlockGunpowderContainer extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);

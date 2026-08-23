@@ -3,36 +3,33 @@ package mods.defeatedcrow.common.block.container;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.tile.TileCardBoard;
 import mods.defeatedcrow.handler.Util;
 
-public class BlockCardboard extends BlockContainer {
+public class BlockCardboard extends Block {
 
     private static final String[] bagVegi = new String[] { "_mint", "_cassis", "_yuzu", "_camellia", "_coffee",
         "_bamboo", "_tomato", "_grape" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon texTop;
-    @SideOnly(Side.CLIENT)
-    private IIcon texBottom;
-    @SideOnly(Side.CLIENT)
-    private IIcon texFront;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] texSide;
+    
+    private BlockTexture texTop;
+    
+    private BlockTexture texBottom;
+    
+    private BlockTexture texFront;
+    
+    private BlockTexture[] texSide;
 
     public BlockCardboard() {
         super(Material.wood);
@@ -51,8 +48,8 @@ public class BlockCardboard extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = par2 & 7;
         boolean flag = par2 > 7;
         if (par1 == 1) {
@@ -107,7 +104,7 @@ public class BlockCardboard extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
@@ -120,13 +117,13 @@ public class BlockCardboard extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "cardboard_S_yuzu");
         this.texFront = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "cardboard_F");
         this.texTop = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "cardboard_T");
         this.texBottom = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "cardboard_B");
-        this.texSide = new IIcon[8];
+        this.texSide = new BlockTexture[8];
 
         for (int i = 0; i < 8; ++i) {
             this.texSide[i] = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "cardboard_S" + bagVegi[i]);

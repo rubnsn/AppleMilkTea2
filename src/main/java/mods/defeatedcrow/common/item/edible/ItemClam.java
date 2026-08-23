@@ -3,27 +3,24 @@ package mods.defeatedcrow.common.item.edible;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 
 public class ItemClam extends ItemFood {
 
     private static final String[] clamType = new String[] { "clam", "clam_cooked", "burntmeat", "blackegg" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon iconclamType[];
+    
+    private BlockTexture iconclamType[];
 
     public ItemClam() {
         super(5, 5, false);
@@ -91,8 +88,8 @@ public class ItemClam extends ItemFood {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1) {
+    
+    public BlockTexture getBlockTextureFromDamage(int par1) {
         int j = MathHelper.clamp_int(par1, 0, 3);
         return this.iconclamType[j];
     }
@@ -108,7 +105,7 @@ public class ItemClam extends ItemFood {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(this, 1, 0));
         par3List.add(new ItemStack(this, 1, 1));
@@ -117,10 +114,10 @@ public class ItemClam extends ItemFood {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
 
-        this.iconclamType = new IIcon[4];
+        this.iconclamType = new BlockTexture[4];
 
         for (int i = 0; i < 4; ++i) {
             this.iconclamType[i] = par1IconRegister.registerIcon("defeatedcrow:" + clamType[i]);

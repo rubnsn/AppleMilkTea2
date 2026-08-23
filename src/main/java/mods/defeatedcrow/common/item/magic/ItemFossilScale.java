@@ -2,7 +2,7 @@ package mods.defeatedcrow.common.item.magic;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityTameable;
@@ -13,12 +13,9 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.common.entity.EntityAnchorMissile;
 
@@ -32,8 +29,8 @@ public class ItemFossilScale extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
 
         this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:purple_scale");
     }
@@ -155,11 +152,11 @@ public class ItemFossilScale extends Item {
         return par1ItemStack;
     }
 
-    @SideOnly(Side.CLIENT)
+    
     /*
      * 右クリックでタメている時のアイコンを変えられる。今回は特に変えていない。
      */
-    public IIcon getItemIconForUseDuration(int par1) {
+    public BlockTexture getItemIconForUseDuration(int par1) {
         return this.itemIcon;
     }
 

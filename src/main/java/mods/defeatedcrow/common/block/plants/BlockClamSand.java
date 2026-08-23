@@ -6,7 +6,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,11 +21,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.plants.IRightClickHarvestable;
 import mods.defeatedcrow.api.plants.PlantsClickEvent;
 import mods.defeatedcrow.client.particle.EntityOrbFX;
@@ -252,7 +247,7 @@ public class BlockClamSand extends Block implements IRightClickHarvestable {
         return 20;
     }
 
-    @SideOnly(Side.CLIENT)
+    
     @Override
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         int l = par1World.getBlockMetadata(par2, par3, par4);
@@ -281,7 +276,7 @@ public class BlockClamSand extends Block implements IRightClickHarvestable {
                 EntityOrbFX cloud = new EntityOrbFX(par1World, d0, d1 + k, d2, 0.0D, d3, 0.0D);
                 cloud.setParticleIcon(
                     ParticleTex.getInstance()
-                        .getIcon("orb"));
+                        .getBlockTexture("orb"));
                 FMLClientHandler.instance()
                     .getClient().effectRenderer.addEffect(cloud);
             }
@@ -292,19 +287,19 @@ public class BlockClamSand extends Block implements IRightClickHarvestable {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(Item.getItemFromBlock(this), 1, 0));
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public int getBlockColor() {
         return 0x979797;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public int getRenderColor(int par1) {
         return 0x979797;
     }
@@ -321,8 +316,8 @@ public class BlockClamSand extends Block implements IRightClickHarvestable {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = Blocks.sand.getBlockTextureFromSide(1);
 
     }

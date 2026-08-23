@@ -12,9 +12,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.potion.AMTPotionManager;
 import mods.defeatedcrow.common.AchievementRegister;
 import mods.defeatedcrow.common.DCsAppleMilk;
@@ -135,7 +132,7 @@ public class EntityItemIceCream extends EdibleEntityItemBlock2 {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     // マウスオーバー時の表示情報
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
         int l = par1ItemStack.getItemDamage();

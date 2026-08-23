@@ -4,21 +4,18 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.util.IIcon;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.BlockTexture;
 import mods.defeatedcrow.common.DCsAppleMilk;
 
 public class BlockYuzuBat extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon texTop;
-    @SideOnly(Side.CLIENT)
-    private IIcon texSide;
+    
+    private BlockTexture texTop;
+    
+    private BlockTexture texSide;
 
     public BlockYuzuBat() {
         super(Material.ground);
@@ -32,8 +29,8 @@ public class BlockYuzuBat extends Block {
         return Item.getItemFromBlock(this);
     }
 
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         return par1 == 1 ? this.texTop : this.texSide;
     }
 
@@ -53,11 +50,11 @@ public class BlockYuzuBat extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
         this.blockIcon = Blocks.iron_bars.getBlockTextureFromSide(2);
         this.texTop = Blocks.iron_bars.getBlockTextureFromSide(2);
-        this.texSide = par1IIconRegister.registerIcon("defeatedcrow:container_yuzubat_S");
+        this.texSide = par1BlockIconRegister.registerIcon("defeatedcrow:container_yuzubat_S");
 
     }
 

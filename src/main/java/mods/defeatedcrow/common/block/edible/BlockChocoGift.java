@@ -5,18 +5,15 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.events.AMTBlockRightClickEvent;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.handler.Util;
@@ -25,10 +22,10 @@ public class BlockChocoGift extends Block {
 
     private static final String[] boxType = new String[] { "", "_heartfelt" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] boxTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] boxSideTex;
+    
+    private BlockTexture[] boxTex;
+    
+    private BlockTexture[] boxSideTex;
 
     public BlockChocoGift() {
         super(Material.circuits);
@@ -109,8 +106,8 @@ public class BlockChocoGift extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = par2;
         if (i > 2) i = 2;
         if (par1 == 1) {
@@ -121,7 +118,7 @@ public class BlockChocoGift extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(DCsAppleMilk.chocoBlock, 1, 0));
         par3List.add(new ItemStack(DCsAppleMilk.chocoBlock, 1, 1));
@@ -133,14 +130,14 @@ public class BlockChocoGift extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.boxTex = new IIcon[2];
-        this.boxSideTex = new IIcon[2];
+    
+    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
+        this.boxTex = new BlockTexture[2];
+        this.boxSideTex = new BlockTexture[2];
 
         for (int i = 0; i < 2; ++i) {
-            this.boxTex[i] = par1IIconRegister.registerIcon(Util.getTexturePassNoAlt() + "chocogift" + boxType[i]);
-            this.boxSideTex[i] = par1IIconRegister
+            this.boxTex[i] = par1BlockIconRegister.registerIcon(Util.getTexturePassNoAlt() + "chocogift" + boxType[i]);
+            this.boxSideTex[i] = par1BlockIconRegister
                 .registerIcon(Util.getTexturePassNoAlt() + "chocogiftside" + boxType[i]);
         }
     }
