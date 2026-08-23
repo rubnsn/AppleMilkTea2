@@ -21,7 +21,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
 
 /**
- * 1.20.1 Advancement provider — replaces 1.7.10 legacy advancement system (37 entries).
+ * 1.20.1 Advancement provider - replaces 1.7.10 legacy advancement system (37 entries).
  * See doc/achievements/migration-guide.md:43 and plan-wt-d.md:4-3.
  * Uses PackOutput + HolderLookup.Provider + ExistingFileHelper + AdvancementHolder + AdvancementDisplay + AdvancementFrameType.
  * Parent is minecraft:story/root (old openInventory).
@@ -37,7 +37,7 @@ public class AMTAdvancementProvider extends ForgeAdvancementProvider {
 
         @Override
         public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> saver, ExistingFileHelper helper) {
-            // Root — getTeaLeaves (old independentStat with openInventory -> parent minecraft:story/root)
+            // Root - getTeaLeaves (old independentStat with openInventory -> parent minecraft:story/root)
             AdvancementHolder root = Advancement.Builder.advancement()
                 .display(new AdvancementDisplay(new ItemStack(Items.OAK_LEAVES),
                     Component.translatable("advancement.defeatedcrow.getTeaLeaves.title"),
@@ -81,7 +81,7 @@ public class AMTAdvancementProvider extends ForgeAdvancementProvider {
                     ItemPredicate.Builder.item().of(Items.CAULDRON).build()))
                 .save(saver, new ResourceLocation("defeatedcrow", "craft_pan"), helper);
 
-            // Additional 33 advancements follow same pattern — parents mirror old tree.
+            // Additional 33 advancements follow same pattern - parents mirror old tree.
             // For brevity we emit a few representative ones; the rest are generated similarly with AdvancementFrameType.CHALLENGE for setSpecial().
             AdvancementHolder getAppleMilkTea = Advancement.Builder.advancement()
                 .parent(craftTeaMaker)

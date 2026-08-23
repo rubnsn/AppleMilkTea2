@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 
 /**
- * 1.20.1 stub for ComponentVillageWarehouse — see ComponentVillageCafe.java
+ * 1.20.1 stub for ComponentVillageWarehouse - see ComponentVillageCafe.java
  */
 public class ComponentVillageWarehouse extends StructurePiece {
 

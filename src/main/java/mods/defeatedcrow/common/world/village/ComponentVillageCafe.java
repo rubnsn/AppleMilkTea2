@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 
 /**
- * 1.20.1 stub for ComponentVillageCafe — legacy StructureVillagePieces.Village.
+ * 1.20.1 stub for ComponentVillageCafe - legacy StructureVillagePieces.Village.
  * 1.20.1 uses Jigsaw + TemplatePool + Structure (datapack). This stub keeps the class for registry compat
  * and provides minimal StructurePiece implementation so the project compiles.
  * Full Jigsaw migration is TODO (requires data/defeatedcrow/worldgen/structure/village_cafe.nbt + template_pool).

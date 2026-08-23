@@ -9,7 +9,7 @@ import mods.defeatedcrow.api.potion.PotionProtectionEX;
 import mods.defeatedcrow.api.potion.PotionReflexBase;
 
 /**
- * 1.20.1 stub for DCsHurtEvent — handles PotionProtectionEX / PotionReflexBase damage prevention.
+ * 1.20.1 stub for DCsHurtEvent - handles PotionProtectionEX / PotionReflexBase damage prevention.
  * Original used PotionReg-old (old), EntityDamageSource, DamageSource.anvil, ammount, getActiveEffects.
  * 1.20.1: MobEffectInstance + level.damageSources(), DamageSource tags, LivingHurtEvent.getSource/getAmount/setAmount.
  * See doc/events/migration-guide.md

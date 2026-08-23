@@ -8,7 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * 1.20.1 CreativeModeTab registry — replaces CreativeTabs (1.19.3+ Registry化).
+ * 1.20.1 CreativeModeTab registry - replaces CreativeTabs (1.19.3+ Registry化).
  * See doc/creative-tabs/migration-guide.md:1
  * WT-A owns displayItems. Bootstrap owns registration shell.
  */

@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
 /**
- * 1.20.1 stub for EntitySilkyMelon — silky melon (faster, lily/water handling).
+ * 1.20.1 stub for EntitySilkyMelon - silky melon (faster, lily/water handling).
  * See EntityMelonBomb.java for migration notes.
  */
 public class EntitySilkyMelon extends Entity {

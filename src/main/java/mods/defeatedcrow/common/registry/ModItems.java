@@ -73,7 +73,7 @@ import mods.defeatedcrow.common.block.brewing.ItemEmptyBottle;
 import mods.defeatedcrow.common.block.brewing.ItemLargeBottle;
 
 /**
- * 1.20.1 Item registry — DeferredRegister + Item.Properties.
+ * 1.20.1 Item registry - DeferredRegister + Item.Properties.
  * Bootstrap-owned skeleton. See doc/items/migration-guide.md:33
  * NBT維持: DataComponentsは1.20.5+なので1.20.1では導入しない (doc/items/migration-guide.md:220).
  */
@@ -112,7 +112,7 @@ public class ModItems {
     public static final RegistryObject<Item> WALL_MUG = ITEMS.register("wall_mug",
         () -> new ItemWallMug(new Item.Properties().stacksTo(1)));
 
-    // leafTea splits — 1.13+個別Item化 (doc/items/migration-guide.md:60)
+    // leafTea splits - 1.13+個別Item化 (doc/items/migration-guide.md:60)
     public static final RegistryObject<Item> LEAF_TEA = ITEMS.register("leaf_tea",
         () -> new ItemLeafTea(new Item.Properties()));
     public static final RegistryObject<Item> LEAF_MINT = ITEMS.register("leaf_mint",
@@ -189,7 +189,7 @@ public class ModItems {
     public static final RegistryObject<Item> DUMMY_TEPPAN = ITEMS.register("dummy_teppan",
         () -> new ItemDummyForTeppan(new Item.Properties()));
 
-    // --- WT-A: BLOCK-ITEMS (teaMakerNext, woodBox, etc. — BlockItem wrappers) ---
+    // --- WT-A: BLOCK-ITEMS (teaMakerNext, woodBox, etc. - BlockItem wrappers) ---
     public static final RegistryObject<Item> TEA_MAKER_NEXT_ITEM = ITEMS.register("tea_maker_next",
         () -> new BlockItem(ModBlocks.TEA_MAKER_NEXT.get(), new Item.Properties()));
     public static final RegistryObject<Item> TEA_MAKER_BLACK_ITEM = ITEMS.register("tea_maker_black",
@@ -333,7 +333,7 @@ public class ModItems {
     public static final RegistryObject<Item> EMPTY_BOTTLE_ITEM = ITEMS.register("empty_bottle",
         () -> new ItemEmptyBottle(ModBlocks.EMPTY_BOTTLE.get(), new Item.Properties().stacksTo(16)));
 
-    // --- WT-C: INCENSE (incenseApple..incenseVanilla 11種) — may stay in ModItems or move to WT-C section ---
+    // --- WT-C: INCENSE (incenseApple..incenseVanilla 11種) - may stay in ModItems or move to WT-C section ---
     public static final RegistryObject<Item> INCENSE_APPLE = ITEMS.register("incense_apple",
         () -> new ItemIncenseApple(new Item.Properties()));
     public static final RegistryObject<Item> INCENSE_ROSE = ITEMS.register("incense_rose",

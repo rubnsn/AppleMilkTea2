@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import mods.defeatedcrow.common.registry.ModItems;
 
 /**
- * 1.20.1 stub for VillagerYome — trades for storage boxes, chalcedony, batteries.
+ * 1.20.1 stub for VillagerYome - trades for storage boxes, chalcedony, batteries.
  * See VillagerCafe.java for migration notes.
  */
 public class VillagerYome {

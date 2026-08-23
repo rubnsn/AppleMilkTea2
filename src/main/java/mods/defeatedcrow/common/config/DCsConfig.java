@@ -7,7 +7,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
- * 1.20.1 ForgeConfigSpec — replaces 1.7.10 Configuration (INI) → TOML.
+ * 1.20.1 ForgeConfigSpec - replaces 1.7.10 Configuration (INI) -> TOML.
  * COMMON: world/difficulty/setting/entity, CLIENT: render.
  * PotionID / EntityID 削除 (1.13+ Registry化で整数ID不要, doc/config/migration-guide.md 1.20.1追補)。
  * 手動クランプは defineInRange で自動。
@@ -265,7 +265,7 @@ public class DCsConfig {
         }
     }
 
-    // Legacy Configuration helper — retained only for call sites that expect config(Configuration) before sync,
+    // Legacy Configuration helper - retained only for call sites that expect config(Configuration) before sync,
     // but now no-ops. Leaf code that still calls new DCsConfig().config(cfg) will compile until WT migrates.
     @Deprecated
     public void config(Object cfg) {}

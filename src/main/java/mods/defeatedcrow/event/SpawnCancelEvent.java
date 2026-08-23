@@ -14,7 +14,7 @@ import mods.defeatedcrow.handler.Coord;
 import mods.defeatedcrow.handler.CoordListRegister;
 
 /**
- * 1.20.1 stub for SpawnCancelEvent — cancels spawns in CoordListRegister chunks.
+ * 1.20.1 stub for SpawnCancelEvent - cancels spawns in CoordListRegister chunks.
  * Original used MobSpawnEvent.FinalizeSpawn (old CheckSpawn), level-old, getX()/getY()/getZ(), ridingEntity, Mth.floor_double.
  * 1.20.1: MobSpawnEvent.FinalizeSpawn / PositionCheck, Level, BlockPos, Mth.floor, getVehicle/getPassengers, discard().
  * See doc/events/migration-guide.md:41
@@ -49,7 +49,7 @@ public class SpawnCancelEvent {
 
     @SubscribeEvent
     public void onSpawnPositionCheck(MobSpawnEvent.PositionCheck event) {
-        // Fallback for older callers that used CheckSpawn — deny same coords
+        // Fallback for older callers that used CheckSpawn - deny same coords
         Entity entity = event.getEntity();
         Level level = event.getLevel().getLevel();
         if (level.isClientSide || !(entity instanceof Enemy)) return;

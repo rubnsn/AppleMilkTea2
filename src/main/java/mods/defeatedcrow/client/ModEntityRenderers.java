@@ -32,7 +32,7 @@ import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.registry.ModEntities;
 
 /**
- * 1.20.1 client registration — replaces ClientProxy.registerEntityRenderingHandler.
+ * 1.20.1 client registration - replaces ClientProxy.registerEntityRenderingHandler.
  * WT-C owned: entity renderers + model layers for client/entity/** and client/model/model/**.
  *
  * Entity renderer registration mapping (former RenderingRegistry order):

@@ -6,7 +6,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
- * 1.20.1 stub for CraftingEvent — handles container returns for largeBottle/cordial and achievement triggers.
+ * 1.20.1 stub for CraftingEvent - handles container returns for largeBottle/cordial and achievement triggers.
  * Original used getStackInSlot, getDamageValue-old, triggerAchievement, potionitem, emptyBottle etc.
  * 1.20.1: Achievements -> Advancements (AdvancementHolder), ItemStack NBT, Inventory, getDamageValue.
  * See doc/events/migration-guide.md and doc/achievements/migration-guide.md

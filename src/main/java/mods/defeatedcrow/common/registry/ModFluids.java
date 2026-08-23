@@ -10,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * 1.20.1 Fluid registry — FlowingFluid Source/Flowing + FluidType separation.
+ * 1.20.1 Fluid registry - FlowingFluid Source/Flowing + FluidType separation.
  * See doc/fluids/migration-guide.md:12
  * WT-B owns all fluids (18種: vegitable_oil, camellia_oil + 16 brewing). Bootstrap owns the DeferredRegister shells.
  */

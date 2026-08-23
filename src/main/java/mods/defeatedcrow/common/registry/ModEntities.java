@@ -7,7 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * 1.20.1 EntityType registry — replaces EntityRegistry.registerModEntity.
+ * 1.20.1 EntityType registry - replaces EntityRegistry.registerModEntity.
  * See doc/entities/migration-guide.md:1
  * WT-B owns all 20 ModEntity + Placeable 13.
  */

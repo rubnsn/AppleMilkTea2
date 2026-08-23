@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
 /**
- * 1.20.1 stub for EntityIllusionMobs — legacy 1.7.10 illusion mob.
+ * 1.20.1 stub for EntityIllusionMobs - legacy 1.7.10 illusion mob.
  * Original used isAABBInMaterial, motionX, yOffset, getCollisionBox with missing type.
  * This stub compiles via ModEntities. Full AI/particle logic TODO.
  */

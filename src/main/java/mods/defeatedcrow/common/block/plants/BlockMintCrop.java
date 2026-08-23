@@ -20,7 +20,7 @@ import net.minecraft.world.level.ItemLike;
 import mods.defeatedcrow.common.registry.ModItems;
 
 /**
- * WT-A: BlockMintCrop — 1.7.10 → mojmap 1.20.1 移行 (CropBlock 系)。
+ * WT-A: BlockMintCrop - 1.7.10 -> mojmap 1.20.1 移行 (CropBlock 系)。
  * 4段階(0-3)成長のミント作物。
  */
 public class BlockMintCrop extends CropBlock {

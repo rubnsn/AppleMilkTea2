@@ -39,7 +39,7 @@ public class FoodBaseItem extends EdibleEntityItem2 {
         return list;
     }
 
-    // 1.20.1 migration: former atlas icon methods removed — texture is now JSON model.
+    // 1.20.1 migration: former atlas icon methods removed - texture is now JSON model.
     // Model: assets/defeatedcrow/models/item/appletart.json (parent=item/generated, layer0=defeatedcrow:item/appletart)
     // See doc/items/migration-guide.md#3 and doc/blocks/migration-guide.md
     @Override

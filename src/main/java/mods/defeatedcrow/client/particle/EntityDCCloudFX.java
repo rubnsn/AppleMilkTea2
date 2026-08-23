@@ -12,7 +12,7 @@ import net.minecraft.core.particles.SimpleParticleType;
  * <p>
  * Grows from 0 to its initial size over the lifetime (old behaviour: scale factor
  * {@code age/maxAge * 32} clamped to 1) and damps motion by 0.96/tick. Also reused as the provider for
- * the "flower" sprite variant ({@code ModParticleTypes.FLOWER}) — the 1.7.10 codebase had no dedicated
+ * the "flower" sprite variant ({@code ModParticleTypes.FLOWER}) - the 1.7.10 codebase had no dedicated
  * flower FX class, only the icon.
  */
 public class EntityDCCloudFX extends TextureSheetParticle {
@@ -23,7 +23,7 @@ public class EntityDCCloudFX extends TextureSheetParticle {
         SpriteSet sprites) {
         super(level, x, y, z, 0.0D, 0.0D, 0.0D);
         float f = 2.5F;
-        // 旧実装: 初速0 → 0.1倍(恒等) → 入力速度を加算 = 入力速度そのまま
+        // 旧実装: 初速0 -> 0.1倍(恒等) -> 入力速度を加算 = 入力速度そのまま
         this.xd = vx;
         this.yd = vy;
         this.zd = vz;

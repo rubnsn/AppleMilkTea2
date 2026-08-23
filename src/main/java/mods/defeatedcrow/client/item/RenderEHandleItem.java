@@ -15,7 +15,7 @@ import mods.defeatedcrow.common.DCsAppleMilk;
  *
  * <ul>
  * <li>Short term: WT-A resources provides {@code assets/dcsapplemilk/models/block/handle_engine.json}
- * and the BlockItem inherits it — no code needed for this class.</li>
+ * and the BlockItem inherits it - no code needed for this class.</li>
  * <li>Long term (if a dynamic Java model is still wanted): implement Forge's
  * {@code IClientItemExtensions} returning a {@code BlockEntityWithoutLevelRenderer}
  * ({@code net.minecraftforge.client.rendering.BlockEntityWithoutLevelRenderer}) that delegates to the

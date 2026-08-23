@@ -10,7 +10,7 @@ import mods.defeatedcrow.common.entity.edible.PlaceableFoods;
  * AMT2のソースを利用して食べ物の見た目を持つEntityを追加する場合、このクラスをextendsして下さい。<br>
  * Entityの仕様はAMT2のEntity類(PlaceableFoods)に準拠します。<br>
  * 異なる仕様にしたい場合は、PlaceableFoodsのメソッドをオーバーライドして上書きして下さい。
- * <p>1.20.1 migration: former atlas icon removed — soup texture is now a ResourceLocation.
+ * <p>1.20.1 migration: former atlas icon removed - soup texture is now a ResourceLocation.
  * Former atlas sprite (meta -&gt; icon) is replaced by entity renderer using
  * {@link mods.defeatedcrow.client.entity.base.RenderFoodEntityBase} with
  * {@code RenderType.entityCutout(ResourceLocation)}.</p>

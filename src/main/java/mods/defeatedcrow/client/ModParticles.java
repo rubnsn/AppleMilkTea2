@@ -10,7 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * 1.20.1 client particle registration — replaces the 1.7.10 {@code ParticleTex}
+ * 1.20.1 client particle registration - replaces the 1.7.10 {@code ParticleTex}
  * (TextureStitchEvent.Pre icon stitching, now deleted; sprites come from the particle atlas via
  * {@code SpriteSet}) and the old {@code MinecraftForgeEventBus} spawn helpers.
  *
@@ -19,11 +19,11 @@ import net.minecraftforge.fml.common.Mod;
  * the following {@code RegistryObject<SimpleParticleType>} fields are assumed, registered under the
  * namespace {@code "defeatedcrow"} to match the other Mod* registries:
  * <ul>
- * <li>{@code BLINK = register("blink", ...)} — sprite textures/particle/blink.png</li>
- * <li>{@code ORB = register("orb", ...)} — sprite textures/particle/orb.png</li>
- * <li>{@code DC_CLOUD = register("cloud", ...)} — sprite textures/particle/cloud.png</li>
- * <li>{@code FLOWER = register("flower", ...)} — sprite textures/particle/flower.png</li>
- * <li>{@code FEATHER = register("feather", ...)} — sprite textures/particle/feather.png</li>
+ * <li>{@code BLINK = register("blink", ...)} - sprite textures/particle/blink.png</li>
+ * <li>{@code ORB = register("orb", ...)} - sprite textures/particle/orb.png</li>
+ * <li>{@code DC_CLOUD = register("cloud", ...)} - sprite textures/particle/cloud.png</li>
+ * <li>{@code FLOWER = register("flower", ...)} - sprite textures/particle/flower.png</li>
+ * <li>{@code FEATHER = register("feather", ...)} - sprite textures/particle/feather.png</li>
  * </ul>
  *
  * <p>

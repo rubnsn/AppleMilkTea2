@@ -8,7 +8,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * 1.20.1 MenuType registry — replaces IGuiHandler.
+ * 1.20.1 MenuType registry - replaces IGuiHandler.
  * See doc/tile-entities/migration-guide.md:40
  * WT-B owns (5 GUI: iceMaker, processor, advProcessor, evaporator, batBox).
  */

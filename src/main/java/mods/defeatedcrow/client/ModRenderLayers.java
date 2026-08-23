@@ -12,7 +12,7 @@ import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.registry.ModBlocks;
 
 /**
- * 1.20.1 RenderType registration — replaces ISBRH cutout layer setup (ClientProxy, 44 ISBRH blocks).
+ * 1.20.1 RenderType registration - replaces ISBRH cutout layer setup (ClientProxy, 44 ISBRH blocks).
  *
  * NOTE for WT-A: the RegistryObject field names below MUST match the fields declared in
  * {@link ModBlocks} (comment-section convention from ModClientEvents.java:52-59).

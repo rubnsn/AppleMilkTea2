@@ -11,7 +11,7 @@ import net.minecraft.core.particles.SimpleParticleType;
  *
  * <p>
  * Lifetime is passed by the spawner plus random 0-2 ticks; motion damps at 0.90 (X/Z) and 0.95 (Y) per
- * tick — the feather-like slow fall. Spawned from WT-B code via {@code ModParticleTypes.FEATHER}.
+ * tick - the feather-like slow fall. Spawned from WT-B code via {@code ModParticleTypes.FEATHER}.
  */
 public class EntityFeatherFX extends TextureSheetParticle {
 

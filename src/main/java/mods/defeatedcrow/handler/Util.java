@@ -77,7 +77,7 @@ public class Util {
     // コンフィグで規定範囲外の数値を入れた時に、安全に動かすためのメソッドその4
     // 各Block、Itemクラス側からコンフィグ内容を確認するための中継地点
     // altテクスチャが用意されていない物は下のメソッドを使う
-    // 1.20.1: TEX_PASS removed — ResourceLocation based. Return fixed namespace.
+    // 1.20.1: TEX_PASS removed - ResourceLocation based. Return fixed namespace.
     public static String getTexturePass() {
         return "defeatedcrow";
     }
@@ -124,7 +124,7 @@ public class Util {
     public static final int[] RAD = new int[] { 0, -90, 180, 90 };
 
     // FMLの機能を利用した他MOD様のアイテム取得メソッド。
-    // 1.20.1: GameRegistry.findItem/findBlock → ForgeRegistries / BuiltInRegistries
+    // 1.20.1: GameRegistry.findItem/findBlock -> ForgeRegistries / BuiltInRegistries
     public static Item getModItem(String modId, String name) {
         ResourceLocation key = new ResourceLocation(modId, name);
         return BuiltInRegistries.ITEM.getValue(key);
@@ -136,7 +136,7 @@ public class Util {
     }
 
     // 現在地のバイオームを確認。
-    // 1.20.1: BiomeGenBase → Holder<Biome> + Level#getBiome(BlockPos)
+    // 1.20.1: BiomeGenBase -> Holder<Biome> + Level#getBiome(BlockPos)
     // 現行ロジックは座標ベースの biome 取得だが、1.20.1では Level / BlockPos 化が必要。
     // 暫定: null を返さないよう plains を返すスタブ（WT-Bで WorldGen 側を別途 BlockPos 化）。
     // 呼び出し元は event/handler の一部のみで、将来的に Level#getBiome(pos) に置換。
@@ -149,7 +149,7 @@ public class Util {
     }
 
     // 新規追加ポーションを発生させる場合、ここのメソッドを中継する。（追加失敗対策）
-    // 1.20.1: Potion → MobEffect, PotionEffect → MobEffectInstance, 整数ID廃止で config 項目削除。
+    // 1.20.1: Potion -> MobEffect, PotionEffect -> MobEffectInstance, 整数ID廃止で config 項目削除。
     // 互換: 生存していればそのまま付与、失敗時は REGENERATION を付与（旧挙動維持）
     @Deprecated
     public static boolean addPotionEffectDC(net.minecraft.world.entity.LivingEntity living,
@@ -166,7 +166,7 @@ public class Util {
     }
 
     // OreNameから一つだけアイテムを得る
-    // 1.20.1: OreDict.getOres → TagHelper.getTagItems(TagKey) に置換。
+    // 1.20.1: OreDict.getOres -> TagHelper.getTagItems(TagKey) に置換。
     // 暫定: タグが未ロードなら null を返す。呼び出し元 (WT-A ItemWoodBox/ItemCardboard) は null fallback を持つ。
     public static ItemStack getOreStack(String ore) {
         java.util.List<ItemStack> list = TagHelper.getTagItems(ore);
@@ -175,7 +175,7 @@ public class Util {
             // 旧挙動では count=9 の ItemStack を返していた（圧縮レシピの解凍用）
             return new ItemStack(base.getItem(), 9);
         }
-        // タグ未登録 or 未ロード → null（旧 OreDict でも null 返しだった）
+        // タグ未登録 or 未ロード -> null（旧 OreDict でも null 返しだった）
         return null;
     }
 
@@ -185,7 +185,7 @@ public class Util {
         return !TagHelper.getTagItems(ore).isEmpty();
     }
 
-    // 1.20.1 追加: ore名 → TagKey 生成ヘルパ（レシピ側で Ingredient.of(TagKey) に使う想定）
+    // 1.20.1 追加: ore名 -> TagKey 生成ヘルパ（レシピ側で Ingredient.of(TagKey) に使う想定）
     public static TagKey<Item> getOreTag(String ore) {
         return TagHelper.forgeTag(ore);
     }

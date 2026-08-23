@@ -23,7 +23,7 @@ import mods.defeatedcrow.common.registry.ModMenuTypes;
 import mods.defeatedcrow.common.registry.ModMobEffects;
 
 /**
- * 1.20.1 entry point — DeferredRegister aggregation.
+ * 1.20.1 entry point - DeferredRegister aggregation.
  * 1.7.10 static Block/Item/Fluid/modelXXX fields, SidedProxy, GameRegistry, Tags.VERSION は削除。
  * 各登録は common/registry/Mod*.java の DeferredRegister に委譲 (doc/build.md:22, doc/blocks/migration-guide.md:174)。
  */
@@ -52,17 +52,17 @@ public class DCsAppleMilk {
 
         modBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
-        LOGGER.info("Apple&Milk&Tea! 1.20.1 bootstrap — DeferredRegister wired (Forge 47.3 / FG6 / mojmap / JDK17)");
+        LOGGER.info("Apple&Milk&Tea! 1.20.1 bootstrap - DeferredRegister wired (Forge 47.3 / FG6 / mojmap / JDK17)");
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             DCsConfig.sync();
-            LOGGER.debug("Common setup — config synced");
+            LOGGER.debug("Common setup - config synced");
         });
     }
 
-    // 1.20.1 compat shim — legacy static fields referenced by WT-B leaf code not yet migrated to ModBlocks/ModItems
+    // 1.20.1 compat shim - legacy static fields referenced by WT-B leaf code not yet migrated to ModBlocks/ModItems
     // Each field is a placeholder (Blocks.AIR / Items.AIR) so old code compiles; actual block is ModBlocks.* / ModItems.*
     // TODO: remove when all callers are migrated (plan.md:T1/T5/T6). See doc/blocks/migration-guide.md
     public static boolean debugMode = false;

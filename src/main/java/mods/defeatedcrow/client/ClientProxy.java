@@ -6,12 +6,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import mods.defeatedcrow.common.CommonProxy;
 
 /**
- * 1.20.1 stub — ClientProxy は ISBRH/TESR/EntityRenderer の旧登録を廃止。
+ * 1.20.1 stub - ClientProxy は ISBRH/TESR/EntityRenderer の旧登録を廃止。
  * SidedProxy は削除、DistExecutor / IEventBus の clientSetup に置換。
  *
  * 移行メモ（詳細は client/ModClientEvents.java を参照）:
  *
- * bind TESR 38件 → BlockEntityRenderers register (FMLClientSetupEvent / EntityRenderersEvent RegisterRenderers):
+ * bind TESR 38件 -> BlockEntityRenderers register (FMLClientSetupEvent / EntityRenderersEvent RegisterRenderers):
  *  TileCupHandle -> TileEntityCupHandleRenderer, TileBread -> TileEntityBreadRenderer,
  *  TileJPBowl -> TileEntityBowlJPRenderer, TileChopsticksBox -> TileEntityChopsticksRenderer,
  *  TileEggs -> TileEntityEggsRenderer, TileSteak -> TileEntitySteakRenderer,
@@ -31,9 +31,9 @@ import mods.defeatedcrow.common.CommonProxy;
  *  TileTeppanII -> TileEntityTeppanIIRenderer, TileCocktailSP -> TileEntityCocktailSPRenderer,
  *  TileHandleEngine -> TileEntityEHandleRenderer, TileBowlRack -> TileEntityBowlRackRenderer,
  *  TileContainerBase -> TileEntityContainerBaseRenderer, TileCrowDoll -> TileEntityCrowdollRenderer
- *  → 1.20.1: BlockEntityRenderers.register(ModBlockEntities.X.get(), Ctx::new)
+ *  -> 1.20.1: BlockEntityRenderers.register(ModBlockEntities.X.get(), Ctx::new)
  *
- * registerBlockHandler 44 ISBRH → BlockEntityRenderer + blockstate JSON + RenderType cutout (旧 RenderingRegistry handler はModClientEventsへ):
+ * registerBlockHandler 44 ISBRH -> BlockEntityRenderer + blockstate JSON + RenderType cutout (旧 RenderingRegistry handler はModClientEventsへ):
  *  RenderEmptyCup, RenderSoupPan, RenderTeaTree, RenderFilledCup, RenderFilledBowl,
  *  RenderBowlRack, RenderChalcedonyLamp, RenderBreadBasket, RenderFoodPlate, RenderTeppann,
  *  RenderFilledBowlJP, RenderCupSummer, RenderChopsticksBox, RenderEggsBasket, RenderKinoko,
@@ -43,9 +43,9 @@ import mods.defeatedcrow.common.CommonProxy;
  *  RenderCPanel, RenderIncenseBase, RenderYuzuBat, RenderGelBat, RenderChargerDevice,
  *  RenderFlowerPot, RenderYuzuFence, RenderEHandle, RenderWoodPanel, RenderCLampOp,
  *  RenderSoupPanFilled, RenderContainerWBottle, RenderFlowerVase, RenderHedge
- *  → 1.20.1: models/block/*.json + ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout()) in FMLClientSetupEvent
+ *  -> 1.20.1: models/block/*.json + ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout()) in FMLClientSetupEvent
  *
- * registerEntityRenderingHandler 23 → EntityRenderers.register (EntityRenderersEvent.RegisterRenderers):
+ * registerEntityRenderingHandler 23 -> EntityRenderers.register (EntityRenderersEvent.RegisterRenderers):
  *  EntityMelonBomb -> RenderMelonBomb, EntitySilkyMelon -> RenderSilkyMelon,
  *  PlaceableIcecream -> RenderIceCreamEntity, PlaceableSteak -> RenderSteakEntity,
  *  PlaceableAlcoholCup -> RenderAlcoholCupEntity, PlaceableCocktail -> RenderCocktailEntity,
@@ -56,11 +56,11 @@ import mods.defeatedcrow.common.CommonProxy;
  *  EntityStunEffect -> RenderStunEntity, EntityIllusionMobs -> RenderIllusionCreeper,
  *  EntityAnchorMissile -> RenderAnchorMissile, EntityYuzuBullet -> RenderYuzuBullet,
  *  PlaceableCocktailSP -> RenderCocktailSPEntity, PlaceableBaseSoup -> RenderFoodEntityBase
- *  → 1.20.1: EntityRenderers.register(ModEntities.X.get(), Ctx::new) + ModelLayerLocation
+ *  -> 1.20.1: EntityRenderers.register(ModEntities.X.get(), Ctx::new) + ModelLayerLocation
  *
- * ItemRenderer 5 → BlockEntityWithoutLevelRenderer / ItemProperties:
+ * ItemRenderer 5 -> BlockEntityWithoutLevelRenderer / ItemProperties:
  *  yuzuGatling, fossilCannon, eightEyesArm, cocktailSP, handleEngine
- * Villager skin 2 → VillagerRenderer via EntityRenderersEvent
+ * Villager skin 2 -> VillagerRenderer via EntityRenderersEvent
  */
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy extends CommonProxy {

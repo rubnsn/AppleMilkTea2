@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
 /**
- * 1.20.1 stub for EntityMelonBomb — compressed melon bomb (storage + explosion).
+ * 1.20.1 stub for EntityMelonBomb - compressed melon bomb (storage + explosion).
  * Original used isAABBInMaterial, getBlock, getActivePotionEffect, stackSize, etc.
  * This stub retains registry and basic NBT; full water/lily/potion/break logic TODO.
  */

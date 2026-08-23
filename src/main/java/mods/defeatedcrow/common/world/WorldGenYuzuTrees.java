@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 /**
- * 1.20.1: WorldGenYuzuTrees — legacy WorldGenAbstractTree -> Feature + BiomeModifier datapack.
+ * 1.20.1: WorldGenYuzuTrees - legacy WorldGenAbstractTree -> Feature + BiomeModifier datapack.
  * Old 1.7.10 WorldGenAbstractTree / WorldGen_old / int x,y,z / getBlock(int) is removed.
  * Now ResourceKey<ConfiguredFeature> + PlacedFeature + BiomeModifier (Holder + datapack).
  * Actual generation is datapack-driven: data/defeatedcrow/worldgen/configured_feature/yuzu_tree.json
@@ -30,7 +30,7 @@ public class WorldGenYuzuTrees {
     public static boolean placeYuzuTree(LevelAccessor level, BlockPos pos, RandomSource rand) {
         if (!level.isEmptyBlock(pos)) return false;
         if (!level.getBlockState(pos.below()).is(Blocks.GRASS_BLOCK) && !level.getBlockState(pos.below()).is(Blocks.DIRT)) return false;
-        // In 1.20.1, actual yuzu log/leaves are ModBlocks.YUZU_LOG / YUZU_LEAVES — use oak as placeholder to avoid circular dep
+        // In 1.20.1, actual yuzu log/leaves are ModBlocks.YUZU_LOG / YUZU_LEAVES - use oak as placeholder to avoid circular dep
         // Real feature is configured via datapack; this helper just places a sapling for quick verification
         level.setBlock(pos, Blocks.OAK_SAPLING.defaultBlockState(), 2);
         return true;

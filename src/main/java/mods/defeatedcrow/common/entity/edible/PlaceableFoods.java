@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 /**
- * 1.20.1 stub for PlaceableFoods — base for 13 edible placeable entities (cup/bowl/steak etc.).
+ * 1.20.1 stub for PlaceableFoods - base for 13 edible placeable entities (cup/bowl/steak etc.).
  * Original 1.7.10 extended Entity with custom NBT, DataWatcher, isItemEqual, DCsAppleMilk references, etc.
  * 1.20.1: EntityType + SynchedEntityData + ItemStack NBT + BlockPos. Full interaction logic is TODO.
  * This stub retains the inheritance chain so all 13 subclasses compile via ModEntities registry.
@@ -27,7 +27,7 @@ public abstract class PlaceableFoods extends Entity {
         super(type, level);
     }
 
-    // Legacy constructors for 1.7.10 subclass calls — delegate to new type
+    // Legacy constructors for 1.7.10 subclass calls - delegate to new type
     @Deprecated
     public PlaceableFoods(Level level) {
         this(getDefaultType(), level);
@@ -47,7 +47,7 @@ public abstract class PlaceableFoods extends Entity {
     }
 
     private static EntityType<?> getDefaultType() {
-        // Fallback for legacy constructors — registry not yet available at static init, use generic
+        // Fallback for legacy constructors - registry not yet available at static init, use generic
         try {
             return mods.defeatedcrow.common.registry.ModEntities.PLACEABLE_CUP1.get();
         } catch (Exception e) {

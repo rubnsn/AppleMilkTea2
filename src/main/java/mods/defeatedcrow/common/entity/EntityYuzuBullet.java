@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
 /**
- * 1.20.1 stub for EntityYuzuBullet — legacy 1.7.10 projectile used by Yuzu Gatling.
+ * 1.20.1 stub for EntityYuzuBullet - legacy 1.7.10 projectile used by Yuzu Gatling.
  * Original used level.clip (old rayTrace), motionX/Y/Z, xTile, getBlock, EntityDamageSource.
  * Migration: level.clip, Vec3, BlockPos, damageSources(). See doc/entities/migration-guide.md
  */
@@ -65,7 +65,7 @@ public class EntityYuzuBullet extends Entity {
     @Override
     public void tick() {
         super.tick();
-        // TODO: restore projectile logic (rayTrace, hitVec, inTile, damage) — stub just falls and discards
+        // TODO: restore projectile logic (rayTrace, hitVec, inTile, damage) - stub just falls and discards
         if (!this.level().isClientSide) {
             if (this.tickCount > 80) this.discard();
             this.setDeltaMovement(this.getDeltaMovement().add(0, -0.03, 0));

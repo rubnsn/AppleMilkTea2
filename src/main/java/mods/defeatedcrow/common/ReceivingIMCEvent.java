@@ -1,4 +1,4 @@
-﻿package mods.defeatedcrow.common;
+package mods.defeatedcrow.common;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -8,7 +8,7 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
 
 /**
- * 1.20.1 IMC event handler — replaces legacy FML IMCEvent with InterModProcessEvent + modern tag.
+ * 1.20.1 IMC event handler - replaces legacy FML IMCEvent with InterModProcessEvent + modern tag.
  * See doc/recipes/migration-guide.md and doc/build.md.
  * NBT is kept (DataComponents are 1.20.5+), but old tag class -> CompoundTag.
  */

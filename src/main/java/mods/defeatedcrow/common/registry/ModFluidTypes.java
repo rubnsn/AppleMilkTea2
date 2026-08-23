@@ -13,7 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * 1.20.1 FluidType registry — separated from Fluid (Forge 1.19.3+).
+ * 1.20.1 FluidType registry - separated from Fluid (Forge 1.19.3+).
  * See doc/fluids/migration-guide.md:12
  * WT-B owns all types. ForgeFlowingFluid.Properties now takes (FluidType, Supplier<Fluid> still, Supplier<Fluid> flowing).
  */

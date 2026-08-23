@@ -83,7 +83,7 @@ import mods.defeatedcrow.common.block.plants.BlockYuzuLog;
 import mods.defeatedcrow.common.block.plants.BlockYuzuSapling;
 
 /**
- * 1.20.1 Block registry — FG6 + mojmap + DeferredRegister.
+ * 1.20.1 Block registry - FG6 + mojmap + DeferredRegister.
  * Bootstrap-owned skeleton. WT-A/B/C append inside their commented sections only.
  * Registry namespace is "defeatedcrow" for legacy world compat (1.7.10 GameRegistry used "defeatedcrow.*").
  * ModID remains "DCsAppleMilk" (mods.toml). DeferredRegister namespace != modId is intentional for save compat.
@@ -246,7 +246,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> HANDLE_ENGINE = BLOCKS.register("handle_engine",
         () -> new BlockHandleEngine(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.5F).sound(SoundType.METAL).noOcclusion()));
 
-    // --- WT-B: FLUID BLOCKS (blockVegitableOil, blockCamelliaOil) — LiquidBlock, see ModFluids ---
+    // --- WT-B: FLUID BLOCKS (blockVegitableOil, blockCamelliaOil) - LiquidBlock, see ModFluids ---
     public static final RegistryObject<net.minecraft.world.level.block.LiquidBlock> BLOCK_VEGI_OIL = BLOCKS.register("block_vegi_oil",
         () -> new mods.defeatedcrow.common.fluid.BlockOilFluid(ModFluids.VEGITABLE_OIL_SOURCE, BlockBehaviour.Properties.of().mapColor(MapColor.WATER).noCollission().strength(100.0F).noLootTable().liquid()));
     public static final RegistryObject<net.minecraft.world.level.block.LiquidBlock> BLOCK_CAMELLIA_OIL = BLOCKS.register("block_camellia_oil",

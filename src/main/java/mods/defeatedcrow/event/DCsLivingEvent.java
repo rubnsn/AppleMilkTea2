@@ -8,11 +8,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import mods.defeatedcrow.api.potion.PotionImmunityBase;
 
 /**
- * 1.20.1 stub for DCsLivingEvent — handles PotionImmunityBase prevention + charm warp key.
+ * 1.20.1 stub for DCsLivingEvent - handles PotionImmunityBase prevention + charm warp key.
  * Original 1.7.10 used PotionReg-old (old)[id], getActiveEffects, pID_old (old) -> getEffect, provider.getDimensionName, getX() etc.
  * 1.20.1: MobEffect + MobEffectInstance + LivingEntity.getActiveEffects() + level.dimension().location()
  * See doc/events/migration-guide.md:31
- * Full logic TODO — this stub keeps the class and event subscription so the mod loads.
+ * Full logic TODO - this stub keeps the class and event subscription so the mod loads.
  */
 public class DCsLivingEvent {
 

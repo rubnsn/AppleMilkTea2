@@ -11,7 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import mods.defeatedcrow.common.DCsAppleMilk;
 
 /**
- * 1.20.1 stub for EntityMoreDropEvent — princessClam bonus drops (flower/butterfly).
+ * 1.20.1 stub for EntityMoreDropEvent - princessClam bonus drops (flower/butterfly).
  * Original used EntityDamageSource, posX/Y/Z, world.rand, mainInventory, getDamageValue-old, count-old.
  * 1.20.1: DamageSource via level.damageSources(), player.getInventory(), ItemStack.getDamageValue/getCount/setCount, level.random
  * See doc/events/migration-guide.md

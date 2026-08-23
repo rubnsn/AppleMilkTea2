@@ -12,7 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * 1.20.1 Recipe registry — WT-D owns all 11 custom types.
+ * 1.20.1 Recipe registry - WT-D owns all 11 custom types.
  * See doc/recipes/migration-guide.md:34 and plan-wt-d.md:4-2.
  * Uses DeferredRegister + MapCodec (future-proof for 1.20.5 StreamCodec).
  * NBT is kept (CompoundTag), DataComponents are 1.20.5+ so not used here.
@@ -37,7 +37,7 @@ public class ModRecipes {
     public static final RegistryObject<RecipeType<?>> CHOCOLATE_TYPE = TYPES.register("chocolate", () -> new RecipeType<>() {});
     public static final RegistryObject<RecipeType<?>> CHARGE_TYPE = TYPES.register("charge", () -> new RecipeType<>() {});
 
-    // Serializers — dummy MapCodec/StreamCodec stubs until each recipe class provides its own Serializer.
+    // Serializers - dummy MapCodec/StreamCodec stubs until each recipe class provides its own Serializer.
     // Each concrete recipe (TeaRecipe, ProcessorRecipe, etc.) will replace its dummy with RecordCodecBuilder MapCodec.
     public static final RegistryObject<RecipeSerializer<?>> TEA_SERIALIZER = SERIALIZERS.register("tea", DummySerializer::new);
     public static final RegistryObject<RecipeSerializer<?>> ICE_SERIALIZER = SERIALIZERS.register("ice", DummySerializer::new);
@@ -57,7 +57,7 @@ public class ModRecipes {
     }
 
     /**
-     * Temporary dummy serializer — returns null codec/streamCodec.
+     * Temporary dummy serializer - returns null codec/streamCodec.
      * Will be replaced per-recipe with MapCodec<Recipe> via RecordCodecBuilder + Ingredient.CODEC + ItemStack.CODEC.
      * Keeping it here makes ModRecipes compile on 1.20.1 (MapCodec) and forward-compatible with 1.20.5 StreamCodec.
      */

@@ -9,10 +9,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * 1.20.1 BlockEntity registry — Builder.of + Holder.
+ * 1.20.1 BlockEntity registry - Builder.of + Holder.
  * See doc/tile-entities/migration-guide.md:12
  * WT-B owns all 47 BEs (CommonProxy.registerTileEntity 47件). Bootstrap owns the DeferredRegister shell.
- * 1.20.1 uses BlockBehaviour.Properties + BlockEntityType.Builder.of(Supplier, Block...) → build(null).
+ * 1.20.1 uses BlockBehaviour.Properties + BlockEntityType.Builder.of(Supplier, Block...) -> build(null).
  */
 public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, "defeatedcrow");

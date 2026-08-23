@@ -11,7 +11,7 @@ import mods.defeatedcrow.common.registry.ModBlocks;
 import mods.defeatedcrow.common.registry.ModItems;
 
 /**
- * 1.20.1 stub for VillagerCafe (Cafe master) — trades for tea/tart/soup/cups.
+ * 1.20.1 stub for VillagerCafe (Cafe master) - trades for tea/tart/soup/cups.
  * Original 1.7.10 used VillagerRegistry.registerVillagerId + VillagerTrades. 1.20.1 uses VillagerProfession + PoiType + VillagerTradesEvent.
  * Full profession registration is TODO (requires DeferredRegister<VillagerProfession> + PoiType). This stub registers trades via event.
  * See doc/entities/migration-guide.md:95 and doc/worldgen/migration-guide.md:105
@@ -21,7 +21,7 @@ public class VillagerCafe {
     @SubscribeEvent
     public static void onTrades(VillagerTradesEvent event) {
         // TODO: check profession == ModVillagers.CAFE.get() when profession registry is added
-        // For now, inject into any villager trades for compilation check — actual logic restored in Phase 2
+        // For now, inject into any villager trades for compilation check - actual logic restored in Phase 2
         if (event.getType() == VillagerProfession.LIBRARIAN) {
             var list = event.getTrades().get(2);
             if (list == null) return;

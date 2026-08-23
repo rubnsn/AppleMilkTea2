@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
 /**
- * 1.20.1 stub for EntityAnchorMissile — legacy 1.7.10 homing projectile.
+ * 1.20.1 stub for EntityAnchorMissile - legacy 1.7.10 homing projectile.
  * Original used level.clip (old rayTrace) (rayTrace), motionX/Y/Z, xTile/yTile/zTile, EntityDamageSource, S2BPacket.
  * 1.20.1 migration: level.clip(ClipContext), Vec3 deltaMovement, BlockPos, damageSources().
  * Full homing + CustomExplosion logic is TODO; this stub compiles and retains registry + NBT.
@@ -38,7 +38,7 @@ public class EntityAnchorMissile extends Entity {
         super(type, level);
     }
 
-    // Legacy constructor retained for callers (ItemYuzuGatling etc.) — delegates to new type
+    // Legacy constructor retained for callers (ItemYuzuGatling etc.) - delegates to new type
     public EntityAnchorMissile(Level level, LivingEntity shooter, LivingEntity target, float speed, float speed2, float yaw, float adjX, float adjY, float adjZ) {
         this(mods.defeatedcrow.common.registry.ModEntities.ANCHOR_MISSILE.get(), level);
         this.shootingEntity = shooter;

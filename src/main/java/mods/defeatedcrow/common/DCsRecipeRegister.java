@@ -1,4 +1,4 @@
-﻿package mods.defeatedcrow.common;
+package mods.defeatedcrow.common;
 
 import java.util.ArrayList;
 
@@ -729,7 +729,8 @@ public class DCsRecipeRegister {
                 new ItemStack(DCsAppleMilk.cocktail, 1, 0),
                 new Object[] { "foodLimejuice", "foodCrushedIce", "dustSugar", "bottleRum" }));
 
-        // 繧ｵ繧ｱ繝・ぅ繝ｼ繝・        RegistryHelper.addRecipe(
+        // 繧ｵ繧ｱ繝・ぅ繝ｼ繝・
+        RegistryHelper.addRecipe(
             new ShapelessRecipe(
                 new ItemStack(DCsAppleMilk.cocktail, 1, 2),
                 new Object[] { "bottleGin", "bottleSake" }));
@@ -768,7 +769,8 @@ public class DCsRecipeRegister {
                 new ItemStack(DCsAppleMilk.cocktail, 1, 6),
                 new Object[] { "bottleRum", "cropPineapple", "cropCoconut", "foodCrushedIce" }));
 
-        // 繧｢繝｡繝ｪ繧ｫ繝ｳ繝ｻ繝ｬ繝｢繝阪・繝・        RegistryHelper.addRecipe(
+        // 繧｢繝｡繝ｪ繧ｫ繝ｳ繝ｻ繝ｬ繝｢繝阪・繝・
+        RegistryHelper.addRecipe(
             new ShapelessRecipe(
                 new ItemStack(DCsAppleMilk.cocktail, 1, 7),
                 new Object[] { new ItemStack(DCsAppleMilk.teacupBlock, 1, 10), "bottleWine" }));
@@ -919,12 +921,14 @@ public class DCsRecipeRegister {
                 new ItemStack(DCsAppleMilk.cocktail2, 1, 8),
                 new Object[] { new ItemStack(DCsAppleMilk.teaCup2, 1, 1), "bottleAmarettoliqueur" }));
 
-        // 繧ｹ繝弱え繝ｻ繧ｵ繝ｭ繝ｼ繝・        RegistryHelper.addRecipe(
+        // 繧ｹ繝弱え繝ｻ繧ｵ繝ｭ繝ｼ繝・
+        RegistryHelper.addRecipe(
             new ShapelessRecipe(
                 new ItemStack(DCsAppleMilk.cocktail2, 1, 9),
                 new Object[] { "bucketMilk", "bottleAmarettoliqueur" }));
 
-        // 莉･荳九√せ繝医Ξ繝ｼ繝医〒鬟ｲ繧繝ｬ繧ｷ繝・        RegistryHelper.addRecipe(
+        // 莉･荳九√せ繝医Ξ繝ｼ繝医〒鬟ｲ繧繝ｬ繧ｷ繝・
+        RegistryHelper.addRecipe(
             new ShapelessRecipe(
                 new ItemStack(DCsAppleMilk.alcoholCup, 1, 0),
                 new Object[] { new ItemStack(DCsAppleMilk.emptyCup, 1, 0), "bottleSake", }));
@@ -1633,7 +1637,8 @@ public class DCsRecipeRegister {
                     Character.valueOf('Y'), new ItemStack(Blocks.ice, 1), Character.valueOf('Z'),
                     new ItemStack(Items.emerald, 1) }));
 
-        // oil縺ｮ隧ｰ繧∵崛縺医Ξ繧ｷ繝・        RegistryHelper.addShapelessRecipe(
+        // oil縺ｮ隧ｰ繧∵崛縺医Ξ繧ｷ繝・
+        RegistryHelper.addShapelessRecipe(
             new ItemStack(DCsAppleMilk.bottleCamOil, 5, 0),
             new ItemStack(DCsAppleMilk.emptyBottle, 1, 0),
             new ItemStack(DCsAppleMilk.emptyBottle, 1, 0),

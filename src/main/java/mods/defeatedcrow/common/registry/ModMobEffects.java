@@ -14,7 +14,7 @@ import mods.defeatedcrow.potion.PotionReflex;
 import mods.defeatedcrow.potion.PotionSuffocation;
 
 /**
- * 1.20.1 MobEffect registry — replaces Potion (int ID 128 拡張).
+ * 1.20.1 MobEffect registry - replaces Potion (int ID 128 拡張).
  * See doc/potions/migration-guide.md:1
  * WT-C owns all 10 effects.
  */
