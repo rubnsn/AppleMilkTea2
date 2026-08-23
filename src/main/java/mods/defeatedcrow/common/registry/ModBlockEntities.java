@@ -8,7 +8,8 @@ import net.minecraftforge.registries.RegistryObject;
 /**
  * 1.20.1 BlockEntity registry — Builder.of + Holder.
  * See doc/tile-entities/migration-guide.md:12
- * WT-B owns all 45 BEs. Bootstrap owns the DeferredRegister shell.
+ * WT-B owns all 47 BEs (CommonProxy.registerTileEntity 47件). Bootstrap owns the DeferredRegister shell.
+ * 1.20.1 uses BlockBehaviour.Properties + BlockEntityType.Builder.of(Supplier, Block...) → build(null).
  */
 public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, "defeatedcrow");
@@ -19,7 +20,7 @@ public class ModBlockEntities {
 
     // --- WT-B: ENERGY (TileChargerBase, TileChargerDevice, TileGelBat, TileHandleEngine) ---
 
-    // --- WT-B: CONTAINER/EDIBLE/BREWING/DECOR (TileCupHandle, TileBread, TileSteak, TileCocktail, TileLargeBottle, TileBowlRack, TileCrowDoll, etc. 45 total) ---
+    // --- WT-B: CONTAINER/EDIBLE/BREWING/DECOR (TileCupHandle, TileBread, TileSteak, TileCocktail, TileLargeBottle, TileBowlRack, TileCrowDoll, etc. 47 total) ---
 
     private ModBlockEntities() {}
 }

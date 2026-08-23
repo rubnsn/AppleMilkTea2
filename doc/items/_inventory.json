@@ -1,0 +1,2440 @@
+[
+  {
+    "field": "bakedApple",
+    "class": "ItemBakedApple",
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemBakedApple.java",
+    "reg_name": "defeatedcrow.bakedApple",
+    "reg_line": 262,
+    "dc_line": 240,
+    "category": "food",
+    "extends": "ItemFood",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkFood",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "appleTart",
+    "class": "ItemAppleTart",
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemAppleTart.java",
+    "reg_name": "defeatedcrow.appleTart",
+    "reg_line": 263,
+    "dc_line": 241,
+    "category": "food",
+    "extends": "EdibleEntityItem2",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkFood",
+    "methods": [
+      [
+        "hungerOnEaten",
+        " public int[] hungerOnEaten(int meta) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "spownEntityFoods",
+        " protected boolean spownEntityFoods(World world, EntityPlayer player, ItemStack item, double x, double y, double z) {"
+      ]
+    ]
+  },
+  {
+    "field": "toffyApple",
+    "class": "ItemToffyApple",
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemToffyApple.java",
+    "reg_name": "defeatedcrow.toffyApple",
+    "reg_line": 265,
+    "dc_line": 242,
+    "category": "food",
+    "extends": "ItemFood",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkFood",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "icyToffyApple",
+    "class": "ItemIcyToffyApple",
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemIcyToffyApple.java",
+    "reg_name": "defeatedcrow.icyToffyApple",
+    "reg_line": 266,
+    "dc_line": 243,
+    "category": "food",
+    "extends": "ItemFood",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkFood",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "onFoodEaten",
+        " protected void onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "appleSandwich",
+    "class": "ItemAppleSandwich",
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemAppleSandwich.java",
+    "reg_name": "defeatedcrow.appleSandwich",
+    "reg_line": 264,
+    "dc_line": 244,
+    "category": "food",
+    "extends": "EdibleEntityItem2",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkFood",
+    "methods": [
+      [
+        "hungerOnEaten",
+        " public int[] hungerOnEaten(int meta) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "spownEntityFoods",
+        " protected boolean spownEntityFoods(World world, EntityPlayer player, ItemStack item, double x, double y, double z) {"
+      ]
+    ]
+  },
+  {
+    "field": "chocolateFruits",
+    "class": "ItemChocoFruits",
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemChocoFruits.java",
+    "reg_name": "defeatedcrow.chocolateFruits",
+    "reg_line": 269,
+    "dc_line": 245,
+    "category": "food",
+    "extends": "ItemFood",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkFood",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "baseSoupBowl",
+    "class": "ItemBaseSoupBowl",
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemBaseSoupBowl.java",
+    "reg_name": "defeatedcrow.basesoupitem",
+    "reg_line": 284,
+    "dc_line": 246,
+    "category": "food",
+    "extends": "EdibleEntityItem2",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkFood",
+    "methods": [
+      [
+        "getReturnContainer",
+        " public ItemStack getReturnContainer(int meta) {"
+      ],
+      [
+        "hungerOnEaten",
+        " public int[] hungerOnEaten(int meta) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "spownEntityFoods",
+        " protected boolean spownEntityFoods(World world, EntityPlayer player, ItemStack item, double x, double y, double z) {"
+      ],
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ]
+    ]
+  },
+  {
+    "field": "leafTea",
+    "class": "ItemLeafTea",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemLeafTea.java",
+    "reg_name": "defeatedcrow.leafTea",
+    "reg_line": 272,
+    "dc_line": 249,
+    "category": "material",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkMaterial",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "gratedApple",
+    "class": "ItemGratedApple",
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemGratedApple.java",
+    "reg_name": "defeatedcrow.gratedApple",
+    "reg_line": 278,
+    "dc_line": 250,
+    "category": "material",
+    "extends": "ItemFood",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkMaterial",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "mincedFoods",
+    "class": "ItemMincedFoods",
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemMincedFoods.java",
+    "reg_name": "defeatedcrow.mincedFoods",
+    "reg_line": 279,
+    "dc_line": 251,
+    "category": "material",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkMaterial",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "condensedMIlk",
+    "class": "ItemCondensedMilk",
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemCondensedMilk.java",
+    "reg_name": "defeatedcrow.milkCandy",
+    "reg_line": 268,
+    "dc_line": 252,
+    "category": "material",
+    "extends": "ItemFood",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkMaterial",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "clam",
+    "class": "ItemClam",
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemClam.java",
+    "reg_name": "defeatedcrow.clam",
+    "reg_line": 274,
+    "dc_line": 253,
+    "category": "material",
+    "extends": "ItemFood",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkFood",
+    "methods": [
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "reduceMoisture",
+        "private void reduceMoisture(int par1, float par2, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "EXItems",
+    "class": "ItemEXItem",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemEXItem.java",
+    "reg_name": "defeatedcrow.condensedMilk",
+    "reg_line": 267,
+    "dc_line": 256,
+    "category": "material",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkMaterial",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getMaxItemUseDuration",
+        "public int getMaxItemUseDuration(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getItemUseAction",
+        "public EnumAction getItemUseAction(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onItemRightClick",
+        "public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "inkStick",
+    "class": "ItemInkStick",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemInkStick.java",
+    "reg_name": "defeatedcrow.inkStick",
+    "reg_line": 305,
+    "dc_line": 257,
+    "category": "material",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkMaterial",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "foodTea",
+    "class": "ItemFoodTea",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemFoodTea.java",
+    "reg_name": "defeatedcrow.foodTea",
+    "reg_line": 277,
+    "dc_line": 258,
+    "category": "material",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkMaterial",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "DCgrater",
+    "class": "ItemGrater",
+    "file": "src/main/java/mods/defeatedcrow/common/item/appliance/ItemGrater.java",
+    "reg_name": "defeatedcrow.grater",
+    "reg_line": 249,
+    "dc_line": 259,
+    "category": "tool",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "doesContainerItemLeaveCraftingGrid",
+        " public boolean doesContainerItemLeaveCraftingGrid(ItemStack par1ItemStack) {"
+      ],
+      [
+        "hasContainerItem",
+        " public boolean hasContainerItem(ItemStack stack) {"
+      ],
+      [
+        "getContainerItem",
+        " public ItemStack getContainerItem(ItemStack item) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "icyCrystal",
+    "class": "ItemIcyCrystal",
+    "file": "src/main/java/mods/defeatedcrow/common/item/appliance/ItemIcyCrystal.java",
+    "reg_name": "defeatedcrow.icyCrystal",
+    "reg_line": 306,
+    "dc_line": 260,
+    "category": "material",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkMaterial",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "itemMintSeed",
+    "class": "ItemMintSeed",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemMintSeed.java",
+    "reg_name": "defeatedcrow.seedMint",
+    "reg_line": 273,
+    "dc_line": 261,
+    "category": "material",
+    "extends": "ItemSeeds",
+    "implements": "IPlantable",
+    "tab": "DCsAppleMilk.applemilkMaterial",
+    "methods": [
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "getPlantType",
+        " public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z) {"
+      ],
+      [
+        "getPlant",
+        " public Block getPlant(IBlockAccess world, int x, int y, int z) {"
+      ],
+      [
+        "getPlantMetadata",
+        " public int getPlantMetadata(IBlockAccess world, int x, int y, int z) {"
+      ]
+    ]
+  },
+  {
+    "field": "stickCarbon",
+    "class": "ItemCarbonStick",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemCarbonStick.java",
+    "reg_name": "defeatedcrow.stickCarbon",
+    "reg_line": 308,
+    "dc_line": 262,
+    "category": "material",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkMaterial",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "oreDust",
+    "class": "ItemOreDust",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemOreDust.java",
+    "reg_name": "defeatedcrow.oreDust",
+    "reg_line": 309,
+    "dc_line": 263,
+    "category": "material",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkMaterial",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "chalcedonyKnife",
+    "class": "ItemChalcedonyKnife",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemChalcedonyKnife.java",
+    "reg_name": "defeatedcrow.chalcedonyKnife",
+    "reg_line": 252,
+    "dc_line": 266,
+    "category": "tool",
+    "extends": "ItemTool",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "onBlockDestroyed",
+        " EntityLivingBase par7EntityLivingBase) {"
+      ],
+      [
+        "func_150897_b",
+        " public boolean func_150897_b(Block par1Block) {"
+      ],
+      [
+        "func_150893_a",
+        " public float func_150893_a(ItemStack par1ItemStack, Block par2Block) {"
+      ],
+      [
+        "itemInteractionForEntity",
+        " public boolean itemInteractionForEntity(ItemStack itemstack, EntityPlayer player, EntityLivingBase entity) {"
+      ],
+      [
+        "onBlockStartBreak",
+        " public boolean onBlockStartBreak(ItemStack itemstack, int x, int y, int z, EntityPlayer player) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "firestarter",
+    "class": "ItemFireStarter",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemFireStarter.java",
+    "reg_name": "defeatedcrow.firestarter",
+    "reg_line": 250,
+    "dc_line": 267,
+    "category": "tool",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "chalcedonyHammer",
+    "class": "ItemChalcedonyHammer",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemChalcedonyHammer.java",
+    "reg_name": "defeatedcrow.chalcedonyStoneCutter",
+    "reg_line": 251,
+    "dc_line": 268,
+    "category": "tool",
+    "extends": "ItemPickaxe",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "onBlockDestroyed",
+        " EntityLivingBase par7EntityLivingBase) {"
+      ],
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "monocle",
+    "class": "ItemChalcedonyMonocle",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemChalcedonyMonocle.java",
+    "reg_name": "defeatedcrow.monocle",
+    "reg_line": 254,
+    "dc_line": 269,
+    "category": "tool",
+    "extends": "ItemArmor",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "getArmorTexture",
+        " public String getArmorTexture(ItemStack item, Entity entity, int slot, String type) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "field": "onixSword",
+    "class": "ItemOnixSword",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemOnixSword.java",
+    "reg_name": "defeatedcrow.onixSword",
+    "reg_line": 255,
+    "dc_line": 270,
+    "category": "tool",
+    "extends": "ItemSword",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "getItemAttributeModifiers",
+        " public Multimap getItemAttributeModifiers() {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getMaxItemUseDuration",
+        " public int getMaxItemUseDuration(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getItemUseAction",
+        " public EnumAction getItemUseAction(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "onPlayerStoppedUsing",
+        " int par4) {"
+      ]
+    ]
+  },
+  {
+    "field": "pruningShears",
+    "class": "ItemChalcedonyShears",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemChalcedonyShears.java",
+    "reg_name": "defeatedcrow.chalcedonyShears",
+    "reg_line": 253,
+    "dc_line": 271,
+    "category": "tool",
+    "extends": "ItemTool",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "onBlockDestroyed",
+        " EntityLivingBase par7EntityLivingBase) {"
+      ],
+      [
+        "func_150897_b",
+        " public boolean func_150897_b(Block par1Block) {"
+      ],
+      [
+        "func_150893_a",
+        " public float func_150893_a(ItemStack par1ItemStack, Block par2Block) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "onItemUse",
+        " float par8, float par9, float par10) {"
+      ]
+    ]
+  },
+  {
+    "field": "chopsticks",
+    "class": "ItemChopsticks",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemChopsticks.java",
+    "reg_name": "defeatedcrow.chopsticks",
+    "reg_line": 256,
+    "dc_line": 274,
+    "category": "tool",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkContainer",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "field": "milkBottle",
+    "class": "UNKNOWN",
+    "file": "UNKNOWN",
+    "reg_name": "UNKNOWN",
+    "reg_line": 0,
+    "dc_line": 275,
+    "category": "material",
+    "extends": "",
+    "implements": "",
+    "tab": "",
+    "methods": []
+  },
+  {
+    "field": "batteryItem",
+    "class": "ItemBattery",
+    "file": "src/main/java/mods/defeatedcrow/common/item/appliance/ItemBattery.java",
+    "reg_name": "defeatedcrow.battery",
+    "reg_line": 287,
+    "dc_line": 278,
+    "category": "appliance",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "field": "slotPanel",
+    "class": "ItemSlotPanel",
+    "file": "src/main/java/mods/defeatedcrow/common/item/appliance/ItemSlotPanel.java",
+    "reg_name": "defeatedcrow.slotPanel",
+    "reg_line": 288,
+    "dc_line": 279,
+    "category": "appliance",
+    "extends": "Item",
+    "implements": "IProcessorPanel",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "field": "jawPlate",
+    "class": "ItemJawplate",
+    "file": "src/main/java/mods/defeatedcrow/common/item/appliance/ItemJawplate.java",
+    "reg_name": "defeatedcrow.jawPlate",
+    "reg_line": 289,
+    "dc_line": 280,
+    "category": "appliance",
+    "extends": "Item",
+    "implements": "IJawPlate",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack stack, EntityPlayer player, List par3List, boolean par4) {"
+      ],
+      [
+        "getTipName",
+        "private String getTipName(int meta) {"
+      ],
+      [
+        "getTier",
+        " public int getTier(ItemStack item) {"
+      ],
+      [
+        "returnItem",
+        " public ItemStack returnItem(ItemStack item) {"
+      ],
+      [
+        "maxCount",
+        "private int maxCount(int meta) {"
+      ],
+      [
+        "showDurabilityBar",
+        " public boolean showDurabilityBar(ItemStack stack) {"
+      ],
+      [
+        "getDurabilityForDisplay",
+        " public double getDurabilityForDisplay(ItemStack stack) {"
+      ],
+      [
+        "getCount",
+        "public int getCount(ItemStack stack) {"
+      ]
+    ]
+  },
+  {
+    "field": "itemLargeBottle",
+    "class": "ItemLargeBottle",
+    "file": "src/main/java/mods/defeatedcrow/common/block/brewing/ItemLargeBottle.java",
+    "reg_name": "defeatedcrow.itemBottle",
+    "reg_line": 282,
+    "dc_line": 283,
+    "category": "brewing",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "canPlaceItemBlockOnSide",
+        " EntityPlayer par6EntityPlayer, ItemStack par7ItemStack) {"
+      ],
+      [
+        "placeBlockAt",
+        " float hitX, float hitY, float hitZ, int metadata) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "checkType",
+        "private int checkType(int par1) {"
+      ],
+      [
+        "checkRemain",
+        "private int checkRemain(int par1) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "itemCordial",
+    "class": "ItemCordial",
+    "file": "src/main/java/mods/defeatedcrow/common/block/brewing/ItemCordial.java",
+    "reg_name": "defeatedcrow.itemCordial",
+    "reg_line": 283,
+    "dc_line": 284,
+    "category": "brewing",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "canPlaceItemBlockOnSide",
+        " EntityPlayer par6EntityPlayer, ItemStack par7ItemStack) {"
+      ],
+      [
+        "placeBlockAt",
+        " float hitX, float hitY, float hitZ, int metadata) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "checkType",
+        "private int checkType(int par1) {"
+      ],
+      [
+        "checkRemain",
+        "private int checkRemain(int par1) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "yeast",
+    "class": "ItemYeast",
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemYeast.java",
+    "reg_name": "defeatedcrow.yeast",
+    "reg_line": 280,
+    "dc_line": 285,
+    "category": "brewing",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "moromi",
+    "class": "ItemMoromi",
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemMoromi.java",
+    "reg_name": "defeatedcrow.moromi",
+    "reg_line": 281,
+    "dc_line": 286,
+    "category": "brewing",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "youngAlcohol",
+    "class": "UNKNOWN",
+    "file": "UNKNOWN",
+    "reg_name": "UNKNOWN",
+    "reg_line": 0,
+    "dc_line": 287,
+    "category": "brewing",
+    "extends": "",
+    "implements": "",
+    "tab": "",
+    "methods": []
+  },
+  {
+    "field": "princessClam",
+    "class": "ItemPrincessClam",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemPrincessClam.java",
+    "reg_name": "defeatedcrow.princessClam",
+    "reg_line": 307,
+    "dc_line": 290,
+    "category": "magic",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "onItemUse",
+        " int posY, int posZ, int side, float fx, float fy, float fz) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {"
+      ],
+      [
+        "moonCanWarp",
+        "public static boolean moonCanWarp(World world, int X, int Y, int Z) {"
+      ],
+      [
+        "itemInteractionForEntity",
+        " public boolean itemInteractionForEntity(ItemStack itemstack, EntityPlayer player, EntityLivingBase entity) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "getRarity",
+        " public EnumRarity getRarity(ItemStack par1ItemStack) {"
+      ],
+      [
+        "hasEffect",
+        "public boolean hasEffect(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "dustWood",
+    "class": "ItemWoodDust",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemWoodDust.java",
+    "reg_name": "defeatedcrow.dustWood",
+    "reg_line": 290,
+    "dc_line": 291,
+    "category": "material",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkMaterial",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "essentialOil",
+    "class": "ItemEssentialOil",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemEssentialOil.java",
+    "reg_name": "defeatedcrow.essentialOil",
+    "reg_line": 291,
+    "dc_line": 292,
+    "category": "magic",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "strangeSlag",
+    "class": "ItemStrangeSlag",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemStrangeSlag.java",
+    "reg_name": "defeatedcrow.strangeSlag",
+    "reg_line": 310,
+    "dc_line": 293,
+    "category": "magic",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {"
+      ],
+      [
+        "returnItem",
+        "public ItemStack returnItem(ItemStack item, World world, EntityPlayer player) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "field": "fossilScale",
+    "class": "ItemFossilScale",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemFossilScale.java",
+    "reg_name": "defeatedcrow.fossilScale",
+    "reg_line": 311,
+    "dc_line": 294,
+    "category": "magic",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "getRarity",
+        "public EnumRarity getRarity(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onPlayerStoppedUsing",
+        " int par4) {"
+      ],
+      [
+        "onEaten",
+        "public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getMaxItemUseDuration",
+        "public int getMaxItemUseDuration(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getItemUseAction",
+        "public EnumAction getItemUseAction(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onItemRightClick",
+        "public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getItemIconForUseDuration",
+        "public IIcon getItemIconForUseDuration(int par1) {"
+      ]
+    ]
+  },
+  {
+    "field": "fossilCannon",
+    "class": "ItemFossilCannon",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemFossilCannon.java",
+    "reg_name": "defeatedcrow.fossilCannon",
+    "reg_line": 258,
+    "dc_line": 295,
+    "category": "tool",
+    "extends": "ItemBow",
+    "implements": "IBattery",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "getMaxAmount",
+        " public int getMaxAmount(ItemStack item) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "getRarity",
+        "public EnumRarity getRarity(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onPlayerStoppedUsing",
+        " int par4) {"
+      ],
+      [
+        "onEaten",
+        "public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getMaxItemUseDuration",
+        "public int getMaxItemUseDuration(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getItemUseAction",
+        "public EnumAction getItemUseAction(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onItemRightClick",
+        "public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getItemIconForUseDuration",
+        "public IIcon getItemIconForUseDuration(int par1) {"
+      ],
+      [
+        "getChargeAmount",
+        " public int getChargeAmount(ItemStack item) {"
+      ],
+      [
+        "isFullCharged",
+        " public boolean isFullCharged(ItemStack item) {"
+      ],
+      [
+        "charge",
+        " public int charge(ItemStack item, int amount, boolean flag) {"
+      ],
+      [
+        "discharge",
+        " public int discharge(ItemStack item, int amount, boolean flag) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "showDurabilityBar",
+        " public boolean showDurabilityBar(ItemStack stack) {"
+      ],
+      [
+        "getDurabilityForDisplay",
+        " public double getDurabilityForDisplay(ItemStack stack) {"
+      ],
+      [
+        "isFull3D",
+        "public boolean isFull3D() {"
+      ]
+    ]
+  },
+  {
+    "field": "yuzuGatling",
+    "class": "ItemYuzuGatling",
+    "file": "src/main/java/mods/defeatedcrow/common/item/appliance/ItemYuzuGatling.java",
+    "reg_name": "defeatedcrow.yuzuGatling",
+    "reg_line": 257,
+    "dc_line": 296,
+    "category": "tool",
+    "extends": "ItemBow",
+    "implements": "IBattery",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "getRarity",
+        " public EnumRarity getRarity(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMaxAmount",
+        " public int getMaxAmount(ItemStack item) {"
+      ],
+      [
+        "getMaxItemUseDuration",
+        " public int getMaxItemUseDuration(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getItemUseAction",
+        " public EnumAction getItemUseAction(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "looseYuzu",
+        "private boolean looseYuzu(EntityPlayer player, Item item, int meta, int count) {"
+      ],
+      [
+        "getChargeAmount",
+        " public int getChargeAmount(ItemStack item) {"
+      ],
+      [
+        "isFullCharged",
+        " public boolean isFullCharged(ItemStack item) {"
+      ],
+      [
+        "charge",
+        " public int charge(ItemStack item, int amount, boolean flag) {"
+      ],
+      [
+        "discharge",
+        " public int discharge(ItemStack item, int amount, boolean flag) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "showDurabilityBar",
+        " public boolean showDurabilityBar(ItemStack stack) {"
+      ],
+      [
+        "getDurabilityForDisplay",
+        " public double getDurabilityForDisplay(ItemStack stack) {"
+      ],
+      [
+        "isFull3D",
+        "public boolean isFull3D() {"
+      ]
+    ]
+  },
+  {
+    "field": "containerItemDoorW",
+    "class": "ItemContainerDoor",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemContainerDoor.java",
+    "reg_name": "defeatedcrow.containeritemDoorW",
+    "reg_line": 313,
+    "dc_line": 299,
+    "category": "container-item",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkContainer",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "onItemUse",
+        " float fy, float fz) {"
+      ],
+      [
+        "dropItem",
+        "private void dropItem(World world, EntityPlayer player, ItemStack item) {"
+      ]
+    ]
+  },
+  {
+    "field": "containerItemDoorI",
+    "class": "ItemContainerDoor",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemContainerDoor.java",
+    "reg_name": "defeatedcrow.containeritemDoorI",
+    "reg_line": 314,
+    "dc_line": 300,
+    "category": "container-item",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilkContainer",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "onItemUse",
+        " float fy, float fz) {"
+      ],
+      [
+        "dropItem",
+        "private void dropItem(World world, EntityPlayer player, ItemStack item) {"
+      ]
+    ]
+  },
+  {
+    "field": "eightEyesArm",
+    "class": "ItemDebugArm",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemDebugArm.java",
+    "reg_name": "defeatedcrow.debugArm",
+    "reg_line": 259,
+    "dc_line": 303,
+    "category": "tool",
+    "extends": "Item",
+    "implements": "IBattery",
+    "tab": "DCsAppleMilk.applemilkFood",
+    "methods": [
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "itemInteractionForEntity",
+        " public boolean itemInteractionForEntity(ItemStack item, EntityPlayer player, EntityLivingBase target) {"
+      ],
+      [
+        "onLeftClickEntity",
+        " public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {"
+      ],
+      [
+        "getItemUseAction",
+        " public EnumAction getItemUseAction(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getRarity",
+        " public EnumRarity getRarity(ItemStack par1ItemStack) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "getMaxAmount",
+        " public int getMaxAmount(ItemStack item) {"
+      ],
+      [
+        "getChargeAmount",
+        " public int getChargeAmount(ItemStack item) {"
+      ],
+      [
+        "isFullCharged",
+        " public boolean isFullCharged(ItemStack item) {"
+      ],
+      [
+        "charge",
+        " public int charge(ItemStack item, int amount, boolean flag) {"
+      ],
+      [
+        "discharge",
+        " public int discharge(ItemStack item, int amount, boolean flag) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "showDurabilityBar",
+        " public boolean showDurabilityBar(ItemStack stack) {"
+      ],
+      [
+        "getDurabilityForDisplay",
+        " public double getDurabilityForDisplay(ItemStack stack) {"
+      ],
+      [
+        "isFull3D",
+        "public boolean isFull3D() {"
+      ]
+    ]
+  },
+  {
+    "field": "incenseApple",
+    "class": "ItemIncenseApple",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseApple.java",
+    "reg_name": "defeatedcrow.incense_apple",
+    "reg_line": 293,
+    "dc_line": 305,
+    "category": "magic",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "field": "incenseRose",
+    "class": "ItemIncenseRose",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseRose.java",
+    "reg_name": "defeatedcrow.incense_rose",
+    "reg_line": 292,
+    "dc_line": 306,
+    "category": "magic",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "field": "incenseMint",
+    "class": "ItemIncenseMint",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseMint.java",
+    "reg_name": "defeatedcrow.incense_mint",
+    "reg_line": 294,
+    "dc_line": 307,
+    "category": "magic",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "field": "incenseIce",
+    "class": "ItemIncenseIce",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseIce.java",
+    "reg_name": "defeatedcrow.incense_ice",
+    "reg_line": 296,
+    "dc_line": 308,
+    "category": "magic",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "field": "incenseClam",
+    "class": "ItemIncenseClam",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseClam.java",
+    "reg_name": "defeatedcrow.incense_clam",
+    "reg_line": 295,
+    "dc_line": 309,
+    "category": "magic",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "field": "incenseLavender",
+    "class": "ItemIncenseLavender",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseLavender.java",
+    "reg_name": "defeatedcrow.incense_lavender",
+    "reg_line": 297,
+    "dc_line": 310,
+    "category": "magic",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "field": "incenseSandalwood",
+    "class": "ItemIncenseSandalwood",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseSandalwood.java",
+    "reg_name": "defeatedcrow.incense_sandalwood",
+    "reg_line": 298,
+    "dc_line": 311,
+    "category": "magic",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "field": "incenseAgar",
+    "class": "ItemIncenseAgar",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseAgar.java",
+    "reg_name": "defeatedcrow.incense_aloeswood",
+    "reg_line": 299,
+    "dc_line": 312,
+    "category": "magic",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "field": "incenseFrank",
+    "class": "ItemIncenseFrankincense",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseFrankincense.java",
+    "reg_name": "defeatedcrow.incense_frankincense",
+    "reg_line": 300,
+    "dc_line": 313,
+    "category": "magic",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "field": "incenseYuzu",
+    "class": "ItemIncenseYuzu",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseYuzu.java",
+    "reg_name": "defeatedcrow.incense_yuzu",
+    "reg_line": 301,
+    "dc_line": 314,
+    "category": "magic",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "field": "incenseVanilla",
+    "class": "ItemIncenseVanilla",
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseVanilla.java",
+    "reg_name": "defeatedcrow.incense_vanilla",
+    "reg_line": 302,
+    "dc_line": 315,
+    "category": "magic",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "tab": "DCsAppleMilk.applemilkMagic",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "field": "bucketVegiOil",
+    "class": "ItemBucketVegiOil",
+    "file": "src/main/java/mods/defeatedcrow/common/fluid/ItemBucketVegiOil.java",
+    "reg_name": "defeatedcrow.bucketVegiOil",
+    "reg_line": 507,
+    "dc_line": 342,
+    "category": "fluid-container",
+    "extends": "ItemBucket",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "bottleVegiOil",
+    "class": "ItemBottleVegiOil",
+    "file": "src/main/java/mods/defeatedcrow/common/fluid/ItemBottleVegiOil.java",
+    "reg_name": "defeatedcrow.bottleVegiOil",
+    "reg_line": 517,
+    "dc_line": 343,
+    "category": "fluid-container",
+    "extends": "ItemBucket",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {"
+      ]
+    ]
+  },
+  {
+    "field": "bucketCamOil",
+    "class": "ItemBucketCamOil",
+    "file": "src/main/java/mods/defeatedcrow/common/fluid/ItemBucketCamOil.java",
+    "reg_name": "defeatedcrow.bucketCamOil",
+    "reg_line": 540,
+    "dc_line": 344,
+    "category": "fluid-container",
+    "extends": "ItemBucket",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "bottleCamOil",
+    "class": "ItemBottleCamOil",
+    "file": "src/main/java/mods/defeatedcrow/common/fluid/ItemBottleCamOil.java",
+    "reg_name": "defeatedcrow.bottleCamOil",
+    "reg_line": 550,
+    "dc_line": 345,
+    "category": "fluid-container",
+    "extends": "ItemBucket",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {"
+      ]
+    ]
+  },
+  {
+    "field": "bucketYoungAlcohol",
+    "class": "ItemBucketYoungAlcohol",
+    "file": "src/main/java/mods/defeatedcrow/common/fluid/ItemBucketYoungAlcohol.java",
+    "reg_name": "defeatedcrow.bucketYoungAlcohol",
+    "reg_line": 642,
+    "dc_line": 346,
+    "category": "brewing",
+    "extends": "Item",
+    "implements": "",
+    "tab": "DCsAppleMilk.applemilk",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {"
+      ]
+    ]
+  },
+  {
+    "field": "dummyItem",
+    "class": "ItemDummyForTooltip",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemDummyForTooltip.java",
+    "reg_name": "defeatedcrow.dummyItem",
+    "reg_line": 514,
+    "dc_line": 349,
+    "category": "dummy",
+    "extends": "Item",
+    "implements": "",
+    "tab": "(none)",
+    "methods": [
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "field": "dummyTeppan",
+    "class": "ItemDummyForTeppan",
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemDummyForTeppan.java",
+    "reg_name": "defeatedcrow.dummyPlate",
+    "reg_line": 517,
+    "dc_line": 350,
+    "category": "dummy",
+    "extends": "Item",
+    "implements": "",
+    "tab": "(none)",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  }
+]

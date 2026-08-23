@@ -1,0 +1,29 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MMPL-1.0"
+issueTrackerURL="https://github.com/defeatedcrow/AppleMilkTea2/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+updateJSONURL="https://raw.githubusercontent.com/defeatedcrow/AppleMilkTea2/master/update.json"
+displayURL="https://github.com/defeatedcrow/AppleMilkTea2"
+logoFile="logo.png"
+credits="defeatedcrow, AppleMilkTea2 contributors"
+authors="${author}"
+description="Apple&Milk&Tea! - Large content mod for tea, cooking, brewing, chalcedony, incense, energy. (1.20.1, Forge 47.x, mojmap, JDK17)"
+
+[[dependencies.DCsAppleMilk]]
+modId="forge"
+mandatory=true
+versionRange="[47,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.DCsAppleMilk]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.21)"
+ordering="NONE"
+side="BOTH"

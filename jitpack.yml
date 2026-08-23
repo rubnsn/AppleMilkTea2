@@ -1,2 +1,6 @@
+jdk:
+  - openjdk17
 before_install:
-  - ./gradlew setupCIWorkspace
+  - ./gradlew build --stacktrace
+install:
+  - ./gradlew publishToMavenLocal
