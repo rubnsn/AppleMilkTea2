@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import mods.defeatedcrow.common.config.DCsConfig;
+import mods.defeatedcrow.common.registry.ModBiomeModifiers;
 import mods.defeatedcrow.common.registry.ModBlockEntities;
 import mods.defeatedcrow.common.registry.ModBlocks;
 import mods.defeatedcrow.common.registry.ModCreativeTabs;
@@ -21,6 +22,7 @@ import mods.defeatedcrow.common.registry.ModFluids;
 import mods.defeatedcrow.common.registry.ModItems;
 import mods.defeatedcrow.common.registry.ModMenuTypes;
 import mods.defeatedcrow.common.registry.ModMobEffects;
+import mods.defeatedcrow.common.registry.ModRecipes;
 
 /**
  * 1.20.1 entry point - DeferredRegister aggregation.
@@ -46,6 +48,9 @@ public class DCsAppleMilk {
         ModEntities.ENTITIES.register(modBus);
         ModMobEffects.MOB_EFFECTS.register(modBus);
         ModCreativeTabs.TABS.register(modBus);
+        ModRecipes.RECIPE_TYPES.register(modBus);
+        ModRecipes.RECIPE_SERIALIZERS.register(modBus);
+        ModBiomeModifiers.MODIFIERS.register(modBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, DCsConfig.COMMON_SPEC, "defeatedcrow-common.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, DCsConfig.CLIENT_SPEC, "defeatedcrow-client.toml");
