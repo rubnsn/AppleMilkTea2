@@ -1,0 +1,9 @@
+{
+  "type": "defeatedcrow:plate",
+  "ingredient": {
+    "item": "minecraft:beef"
+  },
+  "result": {
+    "item": "defeatedcrow:food_plate"
+  }
+}

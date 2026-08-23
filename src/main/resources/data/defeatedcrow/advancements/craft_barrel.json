@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:get_tea_leaves",
+  "criteria": {
+    "has_barrel": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:barrel"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.craftBarrel.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:barrel"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.craftBarrel.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_barrel"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

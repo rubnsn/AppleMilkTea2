@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:get_tea_leaves",
+  "criteria": {
+    "has_princess_clam": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:heart_of_the_sea"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.getPrincess.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:heart_of_the_sea"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.getPrincess.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_princess_clam"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:craft_yuzu_battery",
+  "criteria": {
+    "has_charge_battery": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:repeater"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.craftChargeableBattery.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:repeater"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.craftChargeableBattery.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_charge_battery"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

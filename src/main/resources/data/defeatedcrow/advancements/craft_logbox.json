@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:get_tea_leaves",
+  "criteria": {
+    "has_logbox": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.craftLogbox.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:chest"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.craftLogbox.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_logbox"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

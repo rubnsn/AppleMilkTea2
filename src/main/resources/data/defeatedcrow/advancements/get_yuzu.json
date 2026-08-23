@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:get_tea_leaves",
+  "criteria": {
+    "has_yuzu": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:golden_apple"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.getYuzu.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:golden_apple"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.getYuzu.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_yuzu"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

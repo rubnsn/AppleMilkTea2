@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:get_princess",
+  "criteria": {
+    "has_charm": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:ender_pearl"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.craftCharm.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:ender_pearl"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.craftCharm.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_charm"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

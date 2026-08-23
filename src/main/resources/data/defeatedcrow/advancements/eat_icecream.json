@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:craft_ice_maker",
+  "criteria": {
+    "has_icecream": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:snowball"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.eatIcecream.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:snowball"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.eatIcecream.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_icecream"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

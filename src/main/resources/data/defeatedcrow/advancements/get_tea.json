@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:craft_tea_maker",
+  "criteria": {
+    "has_tea": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:potion"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.getTea.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:potion"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.getTea.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_tea"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

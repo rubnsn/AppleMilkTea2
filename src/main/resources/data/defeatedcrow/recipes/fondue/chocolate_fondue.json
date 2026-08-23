@@ -1,0 +1,9 @@
+{
+  "type": "defeatedcrow:fondue",
+  "ingredient": {
+    "item": "minecraft:milk_bucket"
+  },
+  "result": {
+    "item": "defeatedcrow:food_plate"
+  }
+}

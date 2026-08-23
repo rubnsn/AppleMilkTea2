@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:get_yuzu",
+  "criteria": {
+    "has_yuzu_battery": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:redstone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.craftYuzuBattery.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:redstone"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.craftYuzuBattery.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_yuzu_battery"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

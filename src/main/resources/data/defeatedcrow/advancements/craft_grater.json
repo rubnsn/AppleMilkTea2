@@ -1,0 +1,40 @@
+{
+  "parent": "defeatedcrow:craft_pan",
+  "criteria": {
+    "has_grater": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:shears"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.craftGrater.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:shears",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.craftGrater.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_grater"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

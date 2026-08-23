@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "W": {
+      "item": "minecraft:blaze_rod"
+    },
+    "X": {
+      "tag": "forge:ingots/silver"
+    },
+    "Y": {
+      "item": "minecraft:water_bucket"
+    },
+    "Z": {
+      "item": "minecraft:glass"
+    }
+  },
+  "pattern": [
+    "XYX",
+    "ZYZ",
+    "XWX"
+  ],
+  "result": {
+    "item": "minecraft:stone"
+  },
+  "show_notification": true
+}

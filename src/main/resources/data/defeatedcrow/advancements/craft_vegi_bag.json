@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:craft_logbox",
+  "criteria": {
+    "has_vegibag": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:hay_block"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.craftVegiBag.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:hay_block"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.craftVegiBag.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_vegibag"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

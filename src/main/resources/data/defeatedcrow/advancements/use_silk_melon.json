@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:crash_melon",
+  "criteria": {
+    "has_silk_melon": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:melon_slice"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.useSilkMelon.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:melon_slice"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.useSilkMelon.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_silk_melon"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

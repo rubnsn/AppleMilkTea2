@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:get_tea_leaves",
+  "criteria": {
+    "has_tart": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:cake"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.craftTart.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:cake"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.craftTart.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_tart"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

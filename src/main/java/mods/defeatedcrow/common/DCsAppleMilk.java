@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import mods.defeatedcrow.common.config.DCsConfig;
+import mods.defeatedcrow.common.datagen.ModDatagen;
 import mods.defeatedcrow.common.registry.ModBiomeModifiers;
 import mods.defeatedcrow.common.registry.ModBlockEntities;
 import mods.defeatedcrow.common.registry.ModBlocks;
@@ -56,6 +57,7 @@ public class DCsAppleMilk {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, DCsConfig.CLIENT_SPEC, "defeatedcrow-client.toml");
 
         modBus.addListener(this::commonSetup);
+        modBus.addListener(ModDatagen::gatherData);
         MinecraftForge.EVENT_BUS.register(this);
         LOGGER.info("Apple&Milk&Tea! 1.20.1 bootstrap - DeferredRegister wired (Forge 47.3 / FG6 / mojmap / JDK17)");
     }

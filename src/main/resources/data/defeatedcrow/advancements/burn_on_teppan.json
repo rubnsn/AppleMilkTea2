@@ -1,0 +1,40 @@
+{
+  "parent": "defeatedcrow:craft_teppan",
+  "criteria": {
+    "has_fire": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:flint_and_steel"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.burnOnTeppan.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:flint_and_steel",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.burnOnTeppan.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_fire"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

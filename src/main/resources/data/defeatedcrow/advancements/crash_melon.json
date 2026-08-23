@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:craft_vegi_bag",
+  "criteria": {
+    "has_melon": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:melon"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.crashMelon.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:melon"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.crashMelon.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_melon"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

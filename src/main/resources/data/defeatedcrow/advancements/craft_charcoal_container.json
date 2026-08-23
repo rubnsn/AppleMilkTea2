@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:craft_logbox",
+  "criteria": {
+    "has_charcoal_box": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:charcoal"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.craftCharcoalContainer.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:charcoal"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.craftCharcoalContainer.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_charcoal_box"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:craft_grater",
+  "criteria": {
+    "has_rice": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:wheat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.makeRice.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:wheat"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.makeRice.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_rice"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

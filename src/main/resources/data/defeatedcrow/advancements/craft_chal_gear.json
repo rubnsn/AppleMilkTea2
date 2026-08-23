@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:craft_chalcedony",
+  "criteria": {
+    "has_chal_gear": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:iron_ingot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.craftChalGear.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:iron_ingot"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.craftChalGear.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_chal_gear"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

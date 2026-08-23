@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:make_tea_leaves",
+  "criteria": {
+    "has_pan": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:cauldron"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.craftPan.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:cauldron"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.craftPan.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_pan"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

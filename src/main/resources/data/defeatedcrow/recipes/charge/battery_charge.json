@@ -1,0 +1,7 @@
+{
+  "type": "defeatedcrow:charge",
+  "amount": 500,
+  "ingredient": {
+    "item": "defeatedcrow:battery"
+  }
+}

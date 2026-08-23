@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:craft_evaporator",
+  "criteria": {
+    "has_cordial": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:honey_bottle"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.getCordial.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:honey_bottle"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.getCordial.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_cordial"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
