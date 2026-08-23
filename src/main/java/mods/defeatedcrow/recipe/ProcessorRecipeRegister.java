@@ -34,8 +34,8 @@ public class ProcessorRecipeRegister implements IProcessorRecipeRegister {
     public void addRecipe(ItemStack output, boolean isFood, int tier, boolean forceReturn, ItemStack secondary,
         float secondaryChance, Object... input) {
         float c = Mth.clamp(0.0F, secondaryChance, 1.0F);
-        if (output == null || output.stackSize == 0) output = null;
-        if (secondary == null || secondary.stackSize == 0) secondary = null;
+        if (output == null || output.getCount() == 0) output = null;
+        if (secondary == null || secondary.getCount() == 0) secondary = null;
         recipes.add(new ProcessorRecipe(output, secondary, isFood, forceReturn, tier, secondaryChance, input));
         AMTLogger.debugInfo(
             "Add Prosessor recipe: output " + (output == null ? "null" : output.getDisplayName()) + ", tier" + tier);

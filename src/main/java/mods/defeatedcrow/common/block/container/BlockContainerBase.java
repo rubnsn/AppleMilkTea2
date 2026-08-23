@@ -135,7 +135,7 @@ public class BlockContainerBase extends Block implements EntityBlock {
      *             if (rem == 7) {
      *                 return false;
      *             } else {
-     *                 if (!par5EntityPlayer.capabilities.isCreativeMode && --item.stackSize <= 0) {
+     *                 if (!par5EntityPlayer.capabilities.isCreativeMode && --item.getCount() <= 0) {
      *                     par5EntityPlayer.inventory
      *                         .setInventorySlotContents(par5EntityPlayer.inventory.currentItem, (ItemStack) null);
      *                 }

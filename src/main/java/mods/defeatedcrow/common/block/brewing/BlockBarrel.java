@@ -80,7 +80,7 @@ public class BlockBarrel extends Block implements EntityBlock {
      * import net.minecraft.entity.EntityLivingBase;
      * import net.minecraft.entity.item.EntityItem;
      * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.init.Items;
+     * import net/minecraft/init/Items;
      * import net.minecraft.item.Item;
      * import net.minecraft.item.ItemStack;
      * import net.minecraft.tileentity.TileEntity;
@@ -146,7 +146,7 @@ public class BlockBarrel extends Block implements EntityBlock {
      *             } else {
      *                 ret = FluidHandlerHelper.fillFluidContainer(
      *                     new FluidStack(fluid.getFluid(), 1000),
-     *                     new ItemStack(item.getItem(), 1, item.getItemDamage()));
+     *                     new ItemStack(item.getItem(), 1, item.getDamageValue()));
      *                 if (Util.notEmptyItem(ret)) drainAmount = 1000;
      *             }
      * ... (full original retained in git history: git show HEAD:"src/main/java/mods/defeatedcrow/common/block/brewing/BlockBarrel.java")

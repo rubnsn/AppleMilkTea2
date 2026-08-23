@@ -39,7 +39,7 @@ public class IceRecipeRegister implements IIceRecipeRegister {
     public IceRecipe getRecipe(ItemStack item) {
         if (item == null) return null;
         for (IceRecipe recipe : this.recipes) {
-            if (this.isItemEqual(item, recipe.getInput())) {
+            if (this.isSameStack(item, recipe.getInput())) {
                 return recipe;
             }
         }
@@ -50,19 +50,19 @@ public class IceRecipeRegister implements IIceRecipeRegister {
     public int getChargeAmount(ItemStack item) {
         if (item == null) return 0;
         for (ChargeIceItem chargeable : this.chargeItems) {
-            if (this.isItemEqual(item, chargeable.getItem())) {
+            if (this.isSameStack(item, chargeable.getItem())) {
                 return chargeable.chargeAmount();
             }
         }
         return 0;
     }
 
-    private boolean isItemEqual(ItemStack a, ItemStack b) {
+    private boolean isSameStack(ItemStack a, ItemStack b) {
         boolean flag = false;
         if (a.getItem() == b.getItem()) {
-            if (a.getItemDamage() == b.getItemDamage()) {
+            if (a.getDamageValue() == b.getDamageValue()) {
                 flag = true;
-            } else if (b.getItemDamage() == Short.MAX_VALUE) {
+            } else if (b.getDamageValue() == Short.MAX_VALUE) {
                 flag = true;
             }
         }

@@ -81,8 +81,8 @@ public class BlockBasket extends Block implements EntityBlock {
      * import net.minecraft.creativetab.CreativeTabs;
      * import net.minecraft.entity.EntityLivingBase;
      * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.init.Blocks;
-     * import net.minecraft.init.Items;
+     * import net/minecraft/init/Blocks;
+     * import net/minecraft/init/Items;
      * import net.minecraft.item.Item;
      * import net.minecraft.item.ItemStack;
      * import net.minecraft.tileentity.TileEntity;

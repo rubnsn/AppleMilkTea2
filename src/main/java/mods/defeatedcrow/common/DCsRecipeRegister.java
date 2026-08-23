@@ -2026,7 +2026,7 @@ public class DCsRecipeRegister {
         ArrayList<ItemStack> woodRubber = TagHelper.getTagItems("woodRubber");
         if (woodRubber != null && woodRubber.size() > 0 && woodRubber.get(0) != null) {
             ItemStack ret = woodRubber.get(0);
-            int d = ret.getItemDamage();
+            int d = ret.getDamageValue();
             if (d == 32767) d = 0;
 
             RegistryHelper.addRecipe(
@@ -2051,7 +2051,7 @@ public class DCsRecipeRegister {
 
             RegistryHelper.addRecipe(
                 new ShapedRecipe(
-                    new ItemStack(ret.getItem(), 1, ret.getItemDamage()),
+                    new ItemStack(ret.getItem(), 1, ret.getDamageValue()),
                     new Object[] { "XXX", "XXX", "XXX", Character.valueOf('X'),
                         new ItemStack(DCsAppleMilk.EXItems, 1, 8) }));
         }
@@ -2067,7 +2067,7 @@ public class DCsRecipeRegister {
 
             RegistryHelper.addRecipe(
                 new ShapedRecipe(
-                    new ItemStack(ret.getItem(), 1, ret.getItemDamage()),
+                    new ItemStack(ret.getItem(), 1, ret.getDamageValue()),
                     new Object[] { "XXX", "XXX", "XXX", Character.valueOf('X'),
                         new ItemStack(DCsAppleMilk.EXItems, 1, 9) }));
         }
@@ -2083,7 +2083,7 @@ public class DCsRecipeRegister {
 
             RegistryHelper.addRecipe(
                 new ShapedRecipe(
-                    new ItemStack(ret.getItem(), 1, ret.getItemDamage()),
+                    new ItemStack(ret.getItem(), 1, ret.getDamageValue()),
                     new Object[] { "XXX", "XXX", "XXX", Character.valueOf('X'),
                         new ItemStack(DCsAppleMilk.EXItems, 1, 10) }));
         }
@@ -2099,7 +2099,7 @@ public class DCsRecipeRegister {
 
             RegistryHelper.addRecipe(
                 new ShapedRecipe(
-                    new ItemStack(ret.getItem(), 1, ret.getItemDamage()),
+                    new ItemStack(ret.getItem(), 1, ret.getDamageValue()),
                     new Object[] { "XXX", "XXX", "XXX", Character.valueOf('X'),
                         new ItemStack(DCsAppleMilk.EXItems, 1, 11) }));
         }
@@ -2115,7 +2115,7 @@ public class DCsRecipeRegister {
 
             RegistryHelper.addRecipe(
                 new ShapedRecipe(
-                    new ItemStack(ret.getItem(), 1, ret.getItemDamage()),
+                    new ItemStack(ret.getItem(), 1, ret.getDamageValue()),
                     new Object[] { "XXX", "XXX", "XXX", Character.valueOf('X'),
                         new ItemStack(DCsAppleMilk.EXItems, 1, 12) }));
         }
@@ -2131,7 +2131,7 @@ public class DCsRecipeRegister {
 
             RegistryHelper.addRecipe(
                 new ShapedRecipe(
-                    new ItemStack(ret.getItem(), 1, ret.getItemDamage()),
+                    new ItemStack(ret.getItem(), 1, ret.getDamageValue()),
                     new Object[] { "XXX", "XXX", "XXX", Character.valueOf('X'),
                         new ItemStack(DCsAppleMilk.EXItems, 1, 13) }));
         }
@@ -2145,13 +2145,13 @@ public class DCsRecipeRegister {
 
                 RegistryHelper.addRecipe(
                     new ShapelessRecipe(
-                        new ItemStack(i.getItem(), 9, i.getItemDamage()),
+                        new ItemStack(i.getItem(), 9, i.getDamageValue()),
                         new Object[] { new ItemStack(DCsAppleMilk.cardboard, 1, 4) }));
 
                 RegistryHelper.addRecipe(
                     new ShapedRecipe(
                         new ItemStack(DCsAppleMilk.cardboard, 1, 4),
-                        new Object[] { "XXX", "XXX", "XXX", 'X', new ItemStack(i.getItem(), 1, i.getItemDamage()) }));
+                        new Object[] { "XXX", "XXX", "XXX", 'X', new ItemStack(i.getItem(), 1, i.getDamageValue()) }));
             }
         }
 
@@ -2162,13 +2162,13 @@ public class DCsRecipeRegister {
 
                 RegistryHelper.addRecipe(
                     new ShapelessRecipe(
-                        new ItemStack(i.getItem(), 9, i.getItemDamage()),
+                        new ItemStack(i.getItem(), 9, i.getDamageValue()),
                         new Object[] { new ItemStack(DCsAppleMilk.cardboard, 1, 5) }));
 
                 RegistryHelper.addRecipe(
                     new ShapedRecipe(
                         new ItemStack(DCsAppleMilk.cardboard, 1, 5),
-                        new Object[] { "XXX", "XXX", "XXX", 'X', new ItemStack(i.getItem(), 1, i.getItemDamage()) }));
+                        new Object[] { "XXX", "XXX", "XXX", 'X', new ItemStack(i.getItem(), 1, i.getDamageValue()) }));
             }
         }
 
@@ -2180,13 +2180,13 @@ public class DCsRecipeRegister {
 
                 RegistryHelper.addRecipe(
                     new ShapelessRecipe(
-                        new ItemStack(i.getItem(), 9, i.getItemDamage()),
+                        new ItemStack(i.getItem(), 9, i.getDamageValue()),
                         new Object[] { new ItemStack(DCsAppleMilk.cardboard, 1, 6) }));
 
                 RegistryHelper.addRecipe(
                     new ShapedRecipe(
                         new ItemStack(DCsAppleMilk.cardboard, 1, 6),
-                        new Object[] { "XXX", "XXX", "XXX", 'X', new ItemStack(i.getItem(), 1, i.getItemDamage()) }));
+                        new Object[] { "XXX", "XXX", "XXX", 'X', new ItemStack(i.getItem(), 1, i.getDamageValue()) }));
             }
         }
 
@@ -2198,13 +2198,13 @@ public class DCsRecipeRegister {
 
                 RegistryHelper.addRecipe(
                     new ShapelessRecipe(
-                        new ItemStack(i.getItem(), 9, i.getItemDamage()),
+                        new ItemStack(i.getItem(), 9, i.getDamageValue()),
                         new Object[] { new ItemStack(DCsAppleMilk.cardboard, 1, 7) }));
 
                 RegistryHelper.addRecipe(
                     new ShapedRecipe(
                         new ItemStack(DCsAppleMilk.cardboard, 1, 7),
-                        new Object[] { "XXX", "XXX", "XXX", 'X', new ItemStack(i.getItem(), 1, i.getItemDamage()) }));
+                        new Object[] { "XXX", "XXX", "XXX", 'X', new ItemStack(i.getItem(), 1, i.getDamageValue()) }));
             }
         }
     }

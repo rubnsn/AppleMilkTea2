@@ -29,19 +29,19 @@ public class ChargeItemRegister implements IChargeItemRegister {
     public int getChargeAmount(ItemStack item) {
         if (item == null) return 0;
         for (ChargeItem chargeable : this.chargeItems) {
-            if (this.isItemEqual(item, chargeable.getItem())) {
+            if (this.isSameStack(item, chargeable.getItem())) {
                 return chargeable.chargeAmount();
             }
         }
         return 0;
     }
 
-    private boolean isItemEqual(ItemStack a, ItemStack b) {
+    private boolean isSameStack(ItemStack a, ItemStack b) {
         boolean flag = false;
         if (a.getItem() == b.getItem()) {
-            if (a.getItemDamage() == b.getItemDamage()) {
+            if (a.getDamageValue() == b.getDamageValue()) {
                 flag = true;
-            } else if (a.getItemDamage() == Short.MAX_VALUE) {
+            } else if (a.getDamageValue() == Short.MAX_VALUE) {
                 flag = true;
             }
         }

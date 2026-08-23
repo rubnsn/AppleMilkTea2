@@ -70,11 +70,11 @@ public class EntityItemCocktail2 extends Block {
      * import net.minecraft.entity.EntityLivingBase;
      * import net.minecraft.entity.monster.EntityMob;
      * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.init.Blocks;
+     * import net/minecraft/init/Blocks;
      * import net.minecraft.item.EnumAction;
      * import net.minecraft.item.ItemStack;
      * import net.minecraft.item.ItemTool;
-     * import net.minecraft.nbt.NBTTagCompound;
+     * import net.minecraft.nbt.CompoundTag;
      * import net.minecraft.potion.Potion;
      * import net.minecraft.potion.PotionEffect;
      * import net.minecraft.util.AxisAlignedBB;
@@ -101,7 +101,7 @@ public class EntityItemCocktail2 extends Block {
      * 
      *     @Override
      *     public String getUnlocalizedName(ItemStack par1ItemStack) {
-     *         int m = (par1ItemStack.getItemDamage());
+     *         int m = (par1ItemStack.getDamageValue());
      *         if (m < 10) return super.getUnlocalizedName() + type[m];
      *         else return super.getUnlocalizedName() + m;
      *     }
@@ -113,7 +113,7 @@ public class EntityItemCocktail2 extends Block {
      *         }
      *         par3EntityPlayer.triggerAchievement(AchievementRegister.drinkCocktail);
      * 
-     *         this.formEffect(par2World, par3EntityPlayer, par1ItemStack.getItemDamage());
+     *         this.formEffect(par2World, par3EntityPlayer, par1ItemStack.getDamageValue());
      *         return super.onEaten(par1ItemStack, par2World, par3EntityPlayer);
      *     }
      * 

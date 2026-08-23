@@ -35,7 +35,7 @@ public class ItemDummyForTooltip extends Item {
      * import net.minecraft.entity.player.EntityPlayer;
      * import net.minecraft.item.Item;
      * import net.minecraft.item.ItemStack;
-     * import net.minecraft.nbt.NBTTagCompound;
+     * import net.minecraft.nbt.CompoundTag;
      * 
      * public class ItemDummyForTooltip extends Item {
      * 
@@ -48,7 +48,7 @@ public class ItemDummyForTooltip extends Item {
      *     // マウスオーバー時の表示情報
      *     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
      *         super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-     *         NBTTagCompound nbt = par1ItemStack.getTagCompound();
+     *         CompoundTag nbt = par1ItemStack.getTagCompound();
      *         String name = "Empty";
      *         short s = 0;
      *         if (nbt != null && nbt.hasKey("fluid")) {

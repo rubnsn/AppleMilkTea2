@@ -81,7 +81,7 @@ public class BlockGelBat extends Block implements EntityBlock {
      * import net.minecraft.entity.item.EntityItem;
      * import net.minecraft.item.Item;
      * import net.minecraft.item.ItemStack;
-     * import net.minecraft.nbt.NBTTagCompound;
+     * import net.minecraft.nbt.CompoundTag;
      * import net.minecraft.tileentity.TileEntity;
      * import net.minecraft.util.BlockTexture;
      * import net.minecraft.world.World;
@@ -147,7 +147,7 @@ public class BlockGelBat extends Block implements EntityBlock {
      *         if (par6ItemStack.getItem() == Item.getItemFromBlock(this)) {
      *             if (par6ItemStack.hasTagCompound() && par6ItemStack.getTagCompound()
      *                 .hasKey("charge")) {
-     *                 NBTTagCompound tag = par6ItemStack.getTagCompound();
+     *                 CompoundTag tag = par6ItemStack.getTagCompound();
      *                 charge = tag.getInteger("charge");
      * ... (full original retained in git history: git show HEAD:"src/main/java/mods/defeatedcrow/common/block/energy/BlockGelBat.java")
      */

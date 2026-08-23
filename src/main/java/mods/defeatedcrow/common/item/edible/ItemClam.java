@@ -53,7 +53,7 @@ public class ItemClam extends Item {
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
      * import net.minecraft.creativetab.CreativeTabs;
      * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.init.Blocks;
+     * import net/minecraft/init/Blocks;
      * import net.minecraft.item.Item;
      * import net.minecraft.item.ItemFood;
      * import net.minecraft.item.ItemStack;
@@ -81,7 +81,7 @@ public class ItemClam extends Item {
      *         int par5, int par6, int par7, float par8, float par9, float par10) {
      *         Block i1 = par3World.getBlock(par4, par5, par6);
      *         Block block = Blocks.sand;
-     *         if (i1 == Blocks.sand && par1ItemStack.getItemDamage() == 0) {
+     *         if (i1 == Blocks.sand && par1ItemStack.getDamageValue() == 0) {
      *             par3World.setBlock(par4, par5, par6, DCsAppleMilk.clamSand, 0, 3);
      *             par3World.playSoundEffect(
      *                 par4 + 0.5F,
@@ -90,16 +90,16 @@ public class ItemClam extends Item {
      *                 block.stepSound.getBreakSound(),
      *                 (block.stepSound.getVolume() + 1.0F) / 2.0F,
      *                 block.stepSound.getPitch() * 0.8F);
-     *             --par1ItemStack.stackSize;
+     *             --par1ItemStack.getCount();
      *             return true;
-     *         } else if (i1 == DCsAppleMilk.wipeBox && par1ItemStack.getItemDamage() == 0) {
+     *         } else if (i1 == DCsAppleMilk.wipeBox && par1ItemStack.getDamageValue() == 0) {
      *             Block under = par3World.getBlock(par4, par5 - 1, par6);
      *             int meta = par3World.getBlockMetadata(par4, par5, par6);
      *             int underMeta = par3World.getBlockMetadata(par4, par5 - 1, par6);
      *             if (under == DCsAppleMilk.cLamp && (meta & 1) == 1 && underMeta > 3) {
      *                 if (par3World.setBlock(par4, par5, par6, DCsAppleMilk.crowDoll)) {
      *                     par3World.playSoundAtEntity(par2EntityPlayer, "defeatedcrow:suzu", 1.0F, 1.2F);
-     *                     --par1ItemStack.stackSize;
+     *                     --par1ItemStack.getCount();
      *                     return true;
      *                 }
      *             }

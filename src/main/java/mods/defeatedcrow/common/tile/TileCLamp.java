@@ -26,8 +26,8 @@ public class TileCLamp extends TileHasDirection {
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        CompoundTag nbtTagCompound = new CompoundTag();
-        this.saveAdditional(nbtTagCompound);
+        CompoundTag tag = new CompoundTag();
+        this.saveAdditional(tag);
         return ClientboundBlockEntityDataPacket.create(this);
     }
 

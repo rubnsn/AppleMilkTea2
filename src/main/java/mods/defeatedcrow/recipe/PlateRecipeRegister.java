@@ -49,12 +49,12 @@ public class PlateRecipeRegister implements IPlateRecipeRegister {
     public PlateRecipe getRecipe(ItemStack item) {
         if (item == null) return null;
         for (PlateRecipe recipe : this.recipes) {
-            if (this.isItemEqual(
+            if (this.isSameStack(
                 item,
                 recipe.getInput()
                     .getItem(),
                 recipe.getInput()
-                    .getItemDamage())) {
+                    .getDamageValue())) {
                 return recipe;
             }
         }
@@ -74,13 +74,13 @@ public class PlateRecipeRegister implements IPlateRecipeRegister {
         return false;
     }
 
-    private boolean isItemEqual(ItemStack a, Item b, int meta) {
+    private boolean isSameStack(ItemStack a, Item b, int meta) {
         if (a == null) return false;
         boolean flag = false;
         if (a.getItem() == b) {
-            if (a.getItemDamage() == meta) {
+            if (a.getDamageValue() == meta) {
                 flag = true;
-            } else if (a.getItemDamage() == 32767) {
+            } else if (a.getDamageValue() == 32767) {
                 flag = true;
             }
         }

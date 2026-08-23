@@ -62,7 +62,7 @@ public class EntityItemBowlJP extends Block {
      * 
      * import net.minecraft.block.Block;
      * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.init.Items;
+     * import net/minecraft/init/Items;
      * import net.minecraft.item.ItemStack;
      * import net.minecraft.world.World;
      * 
@@ -110,7 +110,7 @@ public class EntityItemBowlJP extends Block {
      * 
      *     @Override
      *     public String getUnlocalizedName(ItemStack par1ItemStack) {
-     *         int m = (par1ItemStack.getItemDamage());
+     *         int m = (par1ItemStack.getDamageValue());
      *         if (m < 10) return super.getUnlocalizedName() + type[m];
      *         else return super.getUnlocalizedName() + m;
      *     }

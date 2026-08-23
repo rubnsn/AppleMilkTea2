@@ -57,7 +57,7 @@ public class EdibleEntityItem2 extends Item {
      *     @Override
      *     @Optional.Method(modid = "AppleCore")
      *     public FoodValues getFoodValues(ItemStack itemStack) {
-     *         int[] h = this.hungerOnEaten(itemStack.getItemDamage());
+     *         int[] h = this.hungerOnEaten(itemStack.getDamageValue());
      *         return new FoodValues(h[0], h[1] * 0.1F);
      *     }
      * 

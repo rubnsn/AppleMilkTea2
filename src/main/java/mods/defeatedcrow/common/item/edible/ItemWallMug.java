@@ -82,13 +82,13 @@ public class ItemWallMug extends Item {
      *     @Override
      *     public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
      *         if (!par3EntityPlayer.capabilities.isCreativeMode) {
-     *             --par1ItemStack.stackSize;
+     *             --par1ItemStack.getCount();
      *         }
      *         if (!par3EntityPlayer.inventory.addItemStackToInventory(new ItemStack(this))) {
      *             par3EntityPlayer.entityDropItem(new ItemStack(this), 1);
      *         }
      * 
-     *         int meta = par1ItemStack.getItemDamage();
+     *         int meta = par1ItemStack.getDamageValue();
      *         int type = checkType(meta);
      *         int milk = checkMilkType(meta);
      *         int sugar = checkSugarType(meta);

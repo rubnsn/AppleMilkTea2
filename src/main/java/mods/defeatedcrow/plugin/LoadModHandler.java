@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
  *   (doc/plugins/migration-guide.md「Omit確定」参照)
  * - GameRegistry.addRecipe / ShapedOreRecipe / ShapelessOreRecipe によるレシピ登録
  *   (レシピは recipe/ 担当、datapack/RecipeSerializer 駆動へ移行)
- * - OreDictionary.registerOre による辞書登録 (TagKey/datapack 側へ移管)
+ * - TagKey.registerOre による辞書登録 (TagKey/datapack 側へ移管)
  * - 旧FMLレジストリ依存の除去
  *
  * 登録名 "seaWeed" / "containerWater" / "DCsBakedApple" 等は

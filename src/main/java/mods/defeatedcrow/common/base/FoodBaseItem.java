@@ -10,8 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.level.Level;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import mods.defeatedcrow.common.item.edible.EdibleEntityItem2;
 
 /**
@@ -53,7 +53,7 @@ public class FoodBaseItem extends EdibleEntityItem2 {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(this, 1, 0));
     }

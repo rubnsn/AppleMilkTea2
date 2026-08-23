@@ -80,7 +80,7 @@ public class BlockWipeBox2 extends Block implements EntityBlock {
      * import net.minecraft.entity.EntityLivingBase;
      * import net.minecraft.entity.item.EntityItem;
      * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.init.Items;
+     * import net/minecraft/init/Items;
      * import net.minecraft.item.Item;
      * import net.minecraft.item.ItemStack;
      * import net.minecraft.tileentity.TileEntity;
@@ -139,7 +139,7 @@ public class BlockWipeBox2 extends Block implements EntityBlock {
      *                 if (tile != null) {
      *                     int r = tile.getRemainShort();
      *                     int set = 0;
-     *                     int m = itemstack.getItemDamage();
+     *                     int m = itemstack.getDamageValue();
      * 
      *                     if (itemstack.getItem() == Items.paper) {
      *                         set = 1;

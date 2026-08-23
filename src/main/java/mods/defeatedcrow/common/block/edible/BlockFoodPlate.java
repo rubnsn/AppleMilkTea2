@@ -82,7 +82,7 @@ public class BlockFoodPlate extends Block implements EntityBlock {
      * import net.minecraft.entity.EntityLivingBase;
      * import net.minecraft.entity.item.EntityItem;
      * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.init.Blocks;
+     * import net/minecraft/init/Blocks;
      * import net.minecraft.item.Item;
      * import net.minecraft.item.ItemStack;
      * import net.minecraft.potion.Potion;

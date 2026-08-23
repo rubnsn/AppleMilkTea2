@@ -91,7 +91,7 @@ public class EntityItemIceCream extends Block {
      * 
      *     @Override
      *     public String getUnlocalizedName(ItemStack par1ItemStack) {
-     *         int m = (par1ItemStack.getItemDamage());
+     *         int m = (par1ItemStack.getDamageValue());
      *         if (m < 14) return super.getUnlocalizedName() + type[m];
      *         else return super.getUnlocalizedName() + m;
      *     }
@@ -104,7 +104,7 @@ public class EntityItemIceCream extends Block {
      *     @Override
      *     public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
      *         if (!par2World.isRemote) {
-     *             if (par1ItemStack.getItemDamage() == 7) { // lime
+     *             if (par1ItemStack.getDamageValue() == 7) { // lime
      *                 EntityItemTeaCup2.clearNegativePotion(par3EntityPlayer);
      *             }
      * 
@@ -119,7 +119,7 @@ public class EntityItemIceCream extends Block {
      *                     par3EntityPlayer.addPotionEffect(new PotionEffect(Potion.field_76443_y.id, 1, 2));
      *                 }
      * 
-     *             if (par1ItemStack.getItemDamage() == 11)// mint
+     *             if (par1ItemStack.getDamageValue() == 11)// mint
      *             {
      *                 BlockIceCream.increaseAmplifier(par3EntityPlayer);
      *             }

@@ -10,7 +10,7 @@ public interface IEvaporatorRecipeRegister {
     /**
      * Evaporator(減圧蒸留器)にレシピを追加する。 <br>
      * output、secondaryのどちらかがnullでも登録できる。 <br>
-     * inputがFluidContainerRegistryに登録された液体コンテナの場合、自動で空容器を返却するが、 <br>
+     * inputがFluidContainerRegに登録された液体コンテナの場合、自動で空容器を返却するが、 <br>
      * flagがfalseの場合は空容器返却をキャンセルできる。
      * 
      * @param output
@@ -27,7 +27,7 @@ public interface IEvaporatorRecipeRegister {
     /**
      * Evaporator(減圧蒸留器)にレシピを追加する。 <br>
      * output、secondaryのどちらかがnullでも登録できる。 <br>
-     * inputがFluidContainerRegistryに登録された液体コンテナの場合、強制的に空容器を返却する
+     * inputがFluidContainerRegに登録された液体コンテナの場合、強制的に空容器を返却する
      * 
      * @param output
      *                  (ItemStack) 完成品

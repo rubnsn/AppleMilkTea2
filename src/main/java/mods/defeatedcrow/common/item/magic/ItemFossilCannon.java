@@ -54,7 +54,7 @@ public class ItemFossilCannon extends Item {
      * import net.minecraft.item.EnumRarity;
      * import net.minecraft.item.ItemBow;
      * import net.minecraft.item.ItemStack;
-     * import net.minecraft.nbt.NBTTagCompound;
+     * import net.minecraft.nbt.CompoundTag;
      * import net.minecraft.util.AxisAlignedBB;
      * import net.minecraft.util.BlockTexture;
      * import net.minecraft.util.MathHelper;

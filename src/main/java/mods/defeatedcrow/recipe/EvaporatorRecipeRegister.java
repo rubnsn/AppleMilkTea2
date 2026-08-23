@@ -47,19 +47,19 @@ public class EvaporatorRecipeRegister implements IEvaporatorRecipeRegister {
     public IEvaporatorRecipe getRecipe(ItemStack input) {
         if (input == null) return null;
         for (EvaporatorRecipe recipe : this.recipes) {
-            if (this.isItemEqual(input, recipe.getInput())) {
+            if (this.isSameStack(input, recipe.getInput())) {
                 return recipe;
             }
         }
         return null;
     }
 
-    private boolean isItemEqual(ItemStack a, ItemStack b) {
+    private boolean isSameStack(ItemStack a, ItemStack b) {
         boolean flag = false;
         if (a.getItem() == b.getItem()) {
-            if (a.getItemDamage() == b.getItemDamage()) {
+            if (a.getDamageValue() == b.getDamageValue()) {
                 flag = true;
-            } else if (b.getItemDamage() == Short.MAX_VALUE) {
+            } else if (b.getDamageValue() == Short.MAX_VALUE) {
                 flag = true;
             }
         }

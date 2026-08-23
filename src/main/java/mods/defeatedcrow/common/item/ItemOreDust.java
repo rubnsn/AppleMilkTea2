@@ -67,7 +67,7 @@ public class ItemOreDust extends Item {
      * 
      *     @Override
      *     public String getUnlocalizedName(ItemStack par1ItemStack) {
-     *         int meta = par1ItemStack.getItemDamage();
+     *         int meta = par1ItemStack.getDamageValue();
      *         return meta < 8 ? super.getUnlocalizedName() + "_" + this.itemType[meta]
      *             : super.getUnlocalizedName() + "_" + meta;
      *     }

@@ -32,19 +32,19 @@ public class TeaRecipeRegister implements ITeaRecipeRegister {
     public TeaRecipe getRecipe(ItemStack item) {
         if (item == null) return null;
         for (TeaRecipe recipe : this.recipes) {
-            if (this.isItemEqual(item, recipe.getInput())) {
+            if (this.isSameStack(item, recipe.getInput())) {
                 return recipe;
             }
         }
         return null;
     }
 
-    private boolean isItemEqual(ItemStack a, ItemStack b) {
+    private boolean isSameStack(ItemStack a, ItemStack b) {
         boolean flag = false;
         if (a.getItem() == b.getItem()) {
-            if (a.getItemDamage() == b.getItemDamage()) {
+            if (a.getDamageValue() == b.getDamageValue()) {
                 flag = true;
-            } else if (a.getItemDamage() == Short.MAX_VALUE) {
+            } else if (a.getDamageValue() == Short.MAX_VALUE) {
                 flag = true;
             }
         }

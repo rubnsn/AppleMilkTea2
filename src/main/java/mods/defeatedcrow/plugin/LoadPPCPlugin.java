@@ -12,7 +12,7 @@ import mods.defeatedcrow.handler.Util;
  *
  * 1.20.1対応版なし (Omit確定)。外部MOD APIへの直接依存はなく文字列lookupのみのため、
  * ModListガード付きの発見処理として維持する。
- * OreDictionary.registerOre による辞書登録は廃止 (TagKey/datapack 側へ移管)。
+ * TagKey.registerOre による辞書登録は廃止 (TagKey/datapack 側へ移管)。
  */
 public class LoadPPCPlugin {
 

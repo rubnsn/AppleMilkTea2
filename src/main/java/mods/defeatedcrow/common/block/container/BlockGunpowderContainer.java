@@ -69,7 +69,7 @@ public class BlockGunpowderContainer extends Block {
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
      * import net.minecraft.creativetab.CreativeTabs;
      * import net.minecraft.entity.EntityLivingBase;
-     * import net.minecraft.init.Blocks;
+     * import net/minecraft/init/Blocks;
      * import net.minecraft.item.Item;
      * import net.minecraft.item.ItemStack;
      * import net.minecraft.util.AxisAlignedBB;

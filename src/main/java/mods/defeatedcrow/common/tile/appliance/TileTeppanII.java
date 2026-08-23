@@ -46,11 +46,11 @@ public class TileTeppanII extends BlockEntity implements WorldlyContainer, IPipe
         this.plateItems = new ItemStack[this.getContainerSize()];
 
         for (int i = 0; i < nbttaglist.size(); ++i) {
-            CompoundTag nbttagcompound1 = nbttaglist.getCompound(i);
-            byte b0 = nbttagcompound1.getByte("Slot");
+            CompoundTag CompoundTag1 = nbttaglist.getCompound(i);
+            byte b0 = CompoundTag1.getByte("Slot");
 
             if (b0 >= 0 && b0 < this.plateItems.length) {
-                this.plateItems[b0] = ItemStack.of(nbttagcompound1);
+                this.plateItems[b0] = ItemStack.of(CompoundTag1);
             }
         }
 
@@ -79,10 +79,10 @@ public class TileTeppanII extends BlockEntity implements WorldlyContainer, IPipe
 
         for (int i = 0; i < this.plateItems.length; ++i) {
             if (this.plateItems[i] != null) {
-                CompoundTag nbttagcompound1 = new CompoundTag();
-                nbttagcompound1.putByte("Slot", (byte) i);
-                this.plateItems[i].saveAdditional(nbttagcompound1);
-                nbttaglist.add(nbttagcompound1);
+                CompoundTag CompoundTag1 = new CompoundTag();
+                CompoundTag1.putByte("Slot", (byte) i);
+                this.plateItems[i].saveAdditional(CompoundTag1);
+                nbttaglist.add(CompoundTag1);
             }
         }
 
@@ -92,8 +92,8 @@ public class TileTeppanII extends BlockEntity implements WorldlyContainer, IPipe
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        CompoundTag nbtTagCompound = new CompoundTag();
-        this.saveAdditional(nbtTagCompound);
+        CompoundTag tag = new CompoundTag();
+        this.saveAdditional(tag);
         return ClientboundBlockEntityDataPacket.create(this);
     }
 

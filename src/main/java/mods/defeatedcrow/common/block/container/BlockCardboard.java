@@ -144,7 +144,7 @@ public class BlockCardboard extends Block implements EntityBlock {
      *     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase,
      *         ItemStack par6ItemStack) {
      *         int l = MathHelper.floor_double(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-     *         int meta = par6ItemStack.getItemDamage();
+     *         int meta = par6ItemStack.getDamageValue();
      *         byte facing = 0;
      * 
      *         if (l == 0) {

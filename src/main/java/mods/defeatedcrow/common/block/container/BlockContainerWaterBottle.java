@@ -61,7 +61,7 @@ public class BlockContainerWaterBottle extends Block {
      * package mods.defeatedcrow.common.block.container;
      * 
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
-     * import net.minecraft.init.Items;
+     * import net/minecraft/init/Items;
      * import net.minecraft.item.ItemStack;
      * import mods.defeatedcrow.common.DCsAppleMilk;
      * 

@@ -56,10 +56,10 @@ public class OreCrushRecipe {
             if (TagHelper.getTagItems(ore) != null && !TagHelper.getTagItems(ore)
                 .isEmpty() && dust != null) {
                 RecipeRegisterManager.processorRecipe.addRecipe(
-                    new ItemStack(dust.getItem(), d[0], dust.getItemDamage()),
+                    new ItemStack(dust.getItem(), d[0], dust.getDamageValue()),
                     false,
                     1,
-                    new ItemStack(dust.getItem(), d[1], dust.getItemDamage()),
+                    new ItemStack(dust.getItem(), d[1], dust.getDamageValue()),
                     0.5F,
                     new Object[] { ore });
             }
@@ -82,7 +82,7 @@ public class OreCrushRecipe {
             if (TagHelper.getTagItems(ore) != null && !TagHelper.getTagItems(ore)
                 .isEmpty() && dust != null) {
                 RecipeRegisterManager.processorRecipe.addRecipe(
-                    new ItemStack(dust.getItem(), d[0], dust.getItemDamage()),
+                    new ItemStack(dust.getItem(), d[0], dust.getDamageValue()),
                     false,
                     2,
                     new ItemStack(DCsAppleMilk.strangeSlag, 1, 0),
@@ -114,7 +114,7 @@ public class OreCrushRecipe {
             if (TagHelper.getTagItems(ore) != null && !TagHelper.getTagItems(ore)
                 .isEmpty() && dust != null) {
                 RecipeRegisterManager.processorRecipe.addRecipe(
-                    new ItemStack(dust.getItem(), d[0], dust.getItemDamage()),
+                    new ItemStack(dust.getItem(), d[0], dust.getDamageValue()),
                     false,
                     3,
                     new ItemStack(DCsAppleMilk.strangeSlag, 1, 0),
@@ -145,10 +145,10 @@ public class OreCrushRecipe {
             if (TagHelper.getTagItems(ore) != null && !TagHelper.getTagItems(ore)
                 .isEmpty() && gem != null) {
                 RecipeRegisterManager.processorRecipe.addRecipe(
-                    new ItemStack(gem.getItem(), d[0], gem.getItemDamage()),
+                    new ItemStack(gem.getItem(), d[0], gem.getDamageValue()),
                     false,
                     1,
-                    new ItemStack(gem.getItem(), 1, gem.getItemDamage()),
+                    new ItemStack(gem.getItem(), 1, gem.getDamageValue()),
                     0.5F,
                     new Object[] { ore });
             }
@@ -170,7 +170,7 @@ public class OreCrushRecipe {
             if (TagHelper.getTagItems(ore) != null && !TagHelper.getTagItems(ore)
                 .isEmpty() && gem != null) {
                 RecipeRegisterManager.processorRecipe.addRecipe(
-                    new ItemStack(gem.getItem(), d[0], gem.getItemDamage()),
+                    new ItemStack(gem.getItem(), d[0], gem.getDamageValue()),
                     false,
                     3,
                     new ItemStack(DCsAppleMilk.strangeSlag, 1, 0),

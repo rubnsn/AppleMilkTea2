@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 
 /**
  * 1.20.1 stub for PlaceableFoods - base for 13 edible placeable entities (cup/bowl/steak etc.).
- * Original 1.7.10 extended Entity with custom NBT, DataWatcher, isItemEqual, DCsAppleMilk references, etc.
+ * Original 1.7.10 extended Entity with custom NBT, DataWatcher, isSameStack, DCsAppleMilk references, etc.
  * 1.20.1: EntityType + SynchedEntityData + ItemStack NBT + BlockPos. Full interaction logic is TODO.
  * This stub retains the inheritance chain so all 13 subclasses compile via ModEntities registry.
  * See doc/entities/migration-guide.md:87

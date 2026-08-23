@@ -65,8 +65,8 @@ public class ChocolateRecipe implements IChocoFruitsRecipe {
         if (input == null || key == null) return false;
         if (input.getItem() == null || key.getItem() == null) return false;
         else {
-            return (input.getItem() == key.getItem() && (input.getItemDamage() == key.getItemDamage()
-                || key.getItemDamage() == 32767));
+            return (input.getItem() == key.getItem() && (input.getDamageValue() == key.getDamageValue()
+                || key.getDamageValue() == 32767));
         }
     }
 

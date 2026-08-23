@@ -83,7 +83,7 @@ public class ItemIcyToffyApple extends Item {
      *     protected void onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
      *         boolean alt = false;
      *         boolean alt2 = false;
-     *         switch (par1ItemStack.getItemDamage()) {
+     *         switch (par1ItemStack.getDamageValue()) {
      *             case 0:
      *                 par3EntityPlayer.addPotionEffect(new PotionEffect(Potion.fireResistance.id, 600, 0));
      *                 break;

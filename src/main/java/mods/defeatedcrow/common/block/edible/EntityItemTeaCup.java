@@ -94,7 +94,7 @@ public class EntityItemTeaCup extends Block {
      * 
      *     @Override
      *     public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-     *         int meta = par1ItemStack.getItemDamage();
+     *         int meta = par1ItemStack.getDamageValue();
      * 
      *         if (!par2World.isRemote) {
      *             this.setPotionWithTea(par3EntityPlayer, meta);

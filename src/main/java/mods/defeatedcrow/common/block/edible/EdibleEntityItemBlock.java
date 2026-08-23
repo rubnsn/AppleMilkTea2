@@ -68,7 +68,7 @@ public class EdibleEntityItemBlock extends Block {
      * import net.minecraft.entity.EntityLivingBase;
      * import net.minecraft.entity.item.EntityItem;
      * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.init.Blocks;
+     * import net/minecraft/init/Blocks;
      * import net.minecraft.item.EnumAction;
      * import net.minecraft.item.ItemBlock;
      * import net.minecraft.item.ItemStack;
@@ -96,7 +96,7 @@ public class EdibleEntityItemBlock extends Block {
      * 
      *     @Override
      *     public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-     *         int meta = par1ItemStack.getItemDamage();
+     *         int meta = par1ItemStack.getDamageValue();
      *         boolean flag = false;
      *         EatEdiblesEvent event = new EatEdiblesEvent(par2World, par3EntityPlayer, par1ItemStack);
      * 
@@ -104,7 +104,7 @@ public class EdibleEntityItemBlock extends Block {
      * 
      *         if (event.hasResult() && event.getResult() == Result.ALLOW) {
      *             if (!par3EntityPlayer.capabilities.isCreativeMode) {
-     *                 --par1ItemStack.stackSize;
+     *                 --par1ItemStack.getCount();
      *                 this.returnItemStack(par3EntityPlayer, meta);
      *             }
      *             flag = true;
@@ -115,7 +115,7 @@ public class EdibleEntityItemBlock extends Block {
      *         }
      * 
      *         if (!flag && !par3EntityPlayer.capabilities.isCreativeMode) {
-     *             --par1ItemStack.stackSize;
+     *             --par1ItemStack.getCount();
      *             this.returnItemStack(par3EntityPlayer, meta);
      *         }
      * 

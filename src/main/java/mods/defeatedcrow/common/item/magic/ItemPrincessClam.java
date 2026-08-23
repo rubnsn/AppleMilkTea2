@@ -49,11 +49,11 @@ public class ItemPrincessClam extends Item {
      * import net.minecraft.entity.EntityLivingBase;
      * import net.minecraft.entity.player.EntityPlayer;
      * import net.minecraft.entity.player.EntityPlayerMP;
-     * import net.minecraft.init.Blocks;
+     * import net/minecraft/init/Blocks;
      * import net.minecraft.item.EnumRarity;
      * import net.minecraft.item.Item;
      * import net.minecraft.item.ItemStack;
-     * import net.minecraft.nbt.NBTTagCompound;
+     * import net.minecraft.nbt.CompoundTag;
      * import net.minecraft.util.ChatComponentText;
      * import net.minecraft.util.BlockTexture;
      * import net.minecraft.util.MathHelper;
@@ -83,7 +83,7 @@ public class ItemPrincessClam extends Item {
      *     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int posX,
      *         int posY, int posZ, int side, float fx, float fy, float fz) {
      *         Block i1 = par3World.getBlock(posX, posY, posZ);
-     *         int meta = par1ItemStack.getItemDamage();
+     *         int meta = par1ItemStack.getDamageValue();
      *         Block block = Blocks.sand;
      *         if (i1 == Blocks.sand && meta == 0)// ハマグリを植えるときの処理
      *         {
@@ -95,7 +95,7 @@ public class ItemPrincessClam extends Item {
      *                 block.stepSound.getStepResourcePath(),
      *                 (block.stepSound.getVolume() + 1.0F) / 2.0F,
      *                 block.stepSound.getPitch() * 0.8F);
-     *             --par1ItemStack.stackSize;
+     *             --par1ItemStack.getCount();
      *             return true;
      *         } else if (meta == 3)// 風のチャーム
      */

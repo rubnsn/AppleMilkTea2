@@ -80,8 +80,8 @@ public class BlockBowlRack extends Block implements EntityBlock {
      * import net.minecraft.entity.EntityLivingBase;
      * import net.minecraft.entity.item.EntityItem;
      * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.init.Blocks;
-     * import net.minecraft.init.Items;
+     * import net/minecraft/init/Blocks;
+     * import net/minecraft/init/Items;
      * import net.minecraft.item.Item;
      * import net.minecraft.item.ItemStack;
      * import net.minecraft.tileentity.TileEntity;
@@ -141,7 +141,7 @@ public class BlockBowlRack extends Block implements EntityBlock {
      *             if (remain > 3) {
      *                 return false;
      *             } else {
-     *                 if (!par5EntityPlayer.capabilities.isCreativeMode && --itemstack.stackSize <= 0) {
+     *                 if (!par5EntityPlayer.capabilities.isCreativeMode && --itemstack.getCount() <= 0) {
      *                     par5EntityPlayer.inventory
      *                         .setInventorySlotContents(par5EntityPlayer.inventory.currentItem, (ItemStack) null);
      *                 }

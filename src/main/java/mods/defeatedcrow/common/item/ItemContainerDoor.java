@@ -84,7 +84,7 @@ public class ItemContainerDoor extends Item {
      *     // マウスオーバー時の表示情報
      *     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
      *         super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-     *         int l = par1ItemStack.getItemDamage();
+     *         int l = par1ItemStack.getDamageValue();
      *         int rem = (l & 7) + 1;
      *         par3List.add(new String("Number: " + rem));
      *     }

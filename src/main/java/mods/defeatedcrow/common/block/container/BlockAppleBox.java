@@ -128,7 +128,7 @@ public class BlockAppleBox extends Block {
      *     @Override
      *     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase,
      *         ItemStack par6ItemStack) {
-     *         int meta = par6ItemStack.getItemDamage();
+     *         int meta = par6ItemStack.getDamageValue();
      *         int next = meta;
      * 
      *         if (par5EntityLivingBase.isSneaking()) {

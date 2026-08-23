@@ -60,7 +60,7 @@ public class ItemDummyForTeppan extends Item {
      * 
      *     @Override
      *     public String getUnlocalizedName(ItemStack par1ItemStack) {
-     *         int j = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, 1);
+     *         int j = MathHelper.clamp_int(par1ItemStack.getDamageValue(), 0, 1);
      *         return super.getUnlocalizedName() + "_" + j;
      *     }
      * 

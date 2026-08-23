@@ -81,11 +81,11 @@ public class BlockEmptyPanG extends Block implements EntityBlock {
      * import net.minecraft.entity.EntityLivingBase;
      * import net.minecraft.entity.item.EntityItem;
      * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.init.Blocks;
-     * import net.minecraft.init.Items;
+     * import net/minecraft/init/Blocks;
+     * import net/minecraft/init/Items;
      * import net.minecraft.item.Item;
      * import net.minecraft.item.ItemStack;
-     * import net.minecraft.nbt.NBTTagCompound;
+     * import net.minecraft.nbt.CompoundTag;
      * import net.minecraft.tileentity.TileEntity;
      * import net.minecraft.util.AxisAlignedBB;
      * import net.minecraft.util.ChatComponentText;
@@ -144,11 +144,11 @@ public class BlockEmptyPanG extends Block implements EntityBlock {
      *             String disp = tile.getDisplayName();
      * 
      *             if (input != null) {
-     *                 NBTTagCompound tag = new NBTTagCompound();
+     *                 CompoundTag tag = new CompoundTag();
      * 
      *                 tag.setByte("remain", rem);
      *                 tag.setString("display", disp);
-     *                 tag.setTag("input", input.writeToNBT(new NBTTagCompound()));
+     *                 tag.setTag("input", input.writeToNBT(new CompoundTag()));
      * ... (full original retained in git history: git show HEAD:"src/main/java/mods/defeatedcrow/common/block/appliance/BlockEmptyPanG.java")
      */
 }

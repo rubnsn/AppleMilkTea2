@@ -40,15 +40,15 @@ public class TileBrewingBarrel extends BlockEntity implements IFluidHandler {
 
     // NBT
     @Override
-    public void load(CompoundTag par1NBTTagCompound) {
-        super.load(par1NBTTagCompound);
-        this.aging = par1NBTTagCompound.getInt("Remaining");
-        this.isAged = par1NBTTagCompound.getBoolean("IsAged");
-        this.side = par1NBTTagCompound.getBoolean("Side");
+    public void load(CompoundTag par1CompoundTag) {
+        super.load(par1CompoundTag);
+        this.aging = par1CompoundTag.getInt("Remaining");
+        this.isAged = par1CompoundTag.getBoolean("IsAged");
+        this.side = par1CompoundTag.getBoolean("Side");
 
         this.productTank = new DCsTank(1000);
-        if (par1NBTTagCompound.contains("productTank")) {
-            this.productTank.readFromNBT(par1NBTTagCompound.getCompound("productTank"));
+        if (par1CompoundTag.contains("productTank")) {
+            this.productTank.readFromNBT(par1CompoundTag.getCompound("productTank"));
         }
     }
 
@@ -56,15 +56,15 @@ public class TileBrewingBarrel extends BlockEntity implements IFluidHandler {
      * Writes a tile entity to NBT.
      */
     @Override
-    protected void saveAdditional(CompoundTag par1NBTTagCompound) {
-        super.saveAdditional(par1NBTTagCompound);
-        par1NBTTagCompound.putInt("Remaining", this.aging);
-        par1NBTTagCompound.putBoolean("IsAged", this.isAged);
-        par1NBTTagCompound.putBoolean("Side", this.side);
+    protected void saveAdditional(CompoundTag par1CompoundTag) {
+        super.saveAdditional(par1CompoundTag);
+        par1CompoundTag.putInt("Remaining", this.aging);
+        par1CompoundTag.putBoolean("IsAged", this.isAged);
+        par1CompoundTag.putBoolean("Side", this.side);
 
         CompoundTag tank = new CompoundTag();
         this.productTank.writeToNBT(tank);
-        par1NBTTagCompound.put("productTank", tank);
+        par1CompoundTag.put("productTank", tank);
     }
 
     @Override

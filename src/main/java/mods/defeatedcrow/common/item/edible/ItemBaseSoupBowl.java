@@ -52,7 +52,7 @@ public class ItemBaseSoupBowl extends Item {
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
      * import net.minecraft.creativetab.CreativeTabs;
      * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.init.Items;
+     * import net/minecraft/init/Items;
      * import net.minecraft.item.Item;
      * import net.minecraft.item.ItemStack;
      * import net.minecraft.util.BlockTexture;

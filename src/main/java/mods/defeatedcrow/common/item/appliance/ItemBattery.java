@@ -71,7 +71,7 @@ public class ItemBattery extends Item {
      * 
      *     @Override
      *     public String getUnlocalizedName(ItemStack par1ItemStack) {
-     *         return super.getUnlocalizedName() + "_" + par1ItemStack.getItemDamage();
+     *         return super.getUnlocalizedName() + "_" + par1ItemStack.getDamageValue();
      *     }
      * 
      *     @Override

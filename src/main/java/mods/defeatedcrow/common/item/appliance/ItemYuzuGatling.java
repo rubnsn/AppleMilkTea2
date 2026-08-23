@@ -51,7 +51,7 @@ public class ItemYuzuGatling extends Item {
      * import net.minecraft.item.Item;
      * import net.minecraft.item.ItemBow;
      * import net.minecraft.item.ItemStack;
-     * import net.minecraft.nbt.NBTTagCompound;
+     * import net.minecraft.nbt.CompoundTag;
      * import net.minecraft.util.MathHelper;
      * import net.minecraft.world.World;
      * import net.minecraftforge.common.MinecraftForge;

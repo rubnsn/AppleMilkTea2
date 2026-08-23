@@ -87,14 +87,14 @@ public class EntityItemCocktailSP extends Block {
      * 
      *     @Override
      *     public String getUnlocalizedName(ItemStack par1ItemStack) {
-     *         int m = (par1ItemStack.getItemDamage());
+     *         int m = (par1ItemStack.getDamageValue());
      *         if (m < 10) return super.getUnlocalizedName() + type[m];
      *         else return super.getUnlocalizedName() + m;
      *     }
      * 
      *     @Override
      *     public String getItemStackDisplayName(ItemStack item) {
-     *         int meta = Math.min(item.getItemDamage(), 2);
+     *         int meta = Math.min(item.getDamageValue(), 2);
      *         return DCsConfigCocktail.name[meta];
      *     }
      * 

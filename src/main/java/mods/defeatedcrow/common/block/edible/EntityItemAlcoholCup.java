@@ -87,7 +87,7 @@ public class EntityItemAlcoholCup extends Block {
      * 
      *     @Override
      *     public String getUnlocalizedName(ItemStack par1ItemStack) {
-     *         int m = (par1ItemStack.getItemDamage());
+     *         int m = (par1ItemStack.getDamageValue());
      *         if (m < 14) return super.getUnlocalizedName() + type[m];
      *         else return super.getUnlocalizedName() + m;
      *     }

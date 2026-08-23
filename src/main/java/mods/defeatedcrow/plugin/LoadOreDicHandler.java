@@ -17,10 +17,10 @@ import mods.defeatedcrow.common.registry.ModFluids;
 import mods.defeatedcrow.common.registry.ModItems;
 
 /**
- * タグ (旧OreDictionary) に登録されているアイテムを、使う分だけゲームのロード時にまとめて読み込み、
+ * タグ (旧TagKey) に登録されているアイテムを、使う分だけゲームのロード時にまとめて読み込み、
  * このクラス内で管理する。
  *
- * 1.20.1移行: OreDictionary.getOres → TagKey + BuiltInRegistries.ITEM のタグ検索に置換。
+ * 1.20.1移行: TagKey.getOres → TagKey + BuiltInRegistries.ITEM のタグ検索に置換。
  * タグパスは forge 標準命名 (crops/almond 等) の仮置きであり、実タグはdatapack側で定義する。
  */
 public class LoadOreDicHandler {

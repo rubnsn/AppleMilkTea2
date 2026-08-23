@@ -40,7 +40,7 @@ public class ItemChalcedonyKnife extends Item {
      * import net.minecraft.entity.EntityLivingBase;
      * import net.minecraft.entity.item.EntityItem;
      * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.init.Blocks;
+     * import net/minecraft/init/Blocks;
      * import net.minecraft.item.ItemStack;
      * import net.minecraft.item.ItemTool;
      * import net.minecraft.stats.StatList;

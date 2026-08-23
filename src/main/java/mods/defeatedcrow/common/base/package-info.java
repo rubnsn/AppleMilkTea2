@@ -5,7 +5,5 @@
  * Please check the License(MMPL_1.0).txt included in the package file of this Mod.
  */
 
-@API(apiVersion = "2.9", owner = "DCsAppleMilk", provides = "AppleMilkTeaAPI|commonbase")
 package mods.defeatedcrow.common.base;
 
-import cpw.mods.fml.common.API;

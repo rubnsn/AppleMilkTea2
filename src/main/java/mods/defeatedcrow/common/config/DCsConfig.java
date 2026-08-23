@@ -203,7 +203,7 @@ public class DCsConfig {
 
             builder.push("setting");
             useEXRecipe = builder.comment("Add recipe for crafting tea tree sapling.").define("UseExtraRecipe", false);
-            allowSlimeBallDic = builder.comment("Allow to add SlimeBall and Animalglue to Oredictionary.").define("AllowSlimeballOreDic", true);
+            allowSlimeBallDic = builder.comment("Allow to add SlimeBall and Animalglue to TagRegistry.").define("AllowSlimeballOreDic", true);
             disableFireSteater = builder.comment("Disable recipe for crafting firestarter.").define("DisableFirestarter", false);
             noWetGContainer = builder.comment("Not weathering Gunpowder container.").define("NoWeatheringContainer", false);
             teppannHardMode = builder.comment("Enable time limit to get the food from the iron plate.").define("TeppannHardMode", false);

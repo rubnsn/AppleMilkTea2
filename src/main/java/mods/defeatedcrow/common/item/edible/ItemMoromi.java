@@ -33,7 +33,7 @@ public class ItemMoromi extends Item {
      * 
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
      * import net.minecraft.creativetab.CreativeTabs;
-     * import net.minecraft.init.Items;
+     * import net/minecraft/init/Items;
      * import net.minecraft.item.Item;
      * import net.minecraft.item.ItemStack;
      * import net.minecraft.util.BlockTexture;
@@ -67,7 +67,7 @@ public class ItemMoromi extends Item {
      * 
      *     @Override
      *     public String getUnlocalizedName(ItemStack par1ItemStack) {
-     *         return super.getUnlocalizedName() + "_" + par1ItemStack.getItemDamage();
+     *         return super.getUnlocalizedName() + "_" + par1ItemStack.getDamageValue();
      *     }
      * 
      *     @Override

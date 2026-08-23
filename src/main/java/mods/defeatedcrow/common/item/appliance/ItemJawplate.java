@@ -36,7 +36,7 @@ public class ItemJawplate extends Item {
      * import net.minecraft.entity.player.EntityPlayer;
      * import net.minecraft.item.Item;
      * import net.minecraft.item.ItemStack;
-     * import net.minecraft.nbt.NBTTagCompound;
+     * import net.minecraft.nbt.CompoundTag;
      * import net.minecraft.util.EnumChatFormatting;
      * import net.minecraft.util.BlockTexture;
      * import net.minecraft.util.MathHelper;
@@ -70,7 +70,7 @@ public class ItemJawplate extends Item {
      * 
      *     @Override
      *     public String getUnlocalizedName(ItemStack par1ItemStack) {
-     *         return super.getUnlocalizedName() + "_" + par1ItemStack.getItemDamage();
+     *         return super.getUnlocalizedName() + "_" + par1ItemStack.getDamageValue();
      *     }
      * 
      *     @Override

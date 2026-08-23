@@ -39,11 +39,11 @@ public class TileChargerBase extends BlockEntity implements WorldlyContainer, IC
         this.itemstacks = new ItemStack[this.getContainerSize()];
 
         for (int i = 0; i < nbttaglist.size(); ++i) {
-            CompoundTag nbttagcompound1 = (CompoundTag) nbttaglist.getCompound(i);
-            byte b0 = nbttagcompound1.getByte("Slot");
+            CompoundTag CompoundTag1 = (CompoundTag) nbttaglist.getCompound(i);
+            byte b0 = CompoundTag1.getByte("Slot");
 
             if (b0 >= 0 && b0 < this.itemstacks.length) {
-                this.itemstacks[b0] = ItemStack.of(nbttagcompound1);
+                this.itemstacks[b0] = ItemStack.of(CompoundTag1);
             }
         }
 
@@ -59,10 +59,10 @@ public class TileChargerBase extends BlockEntity implements WorldlyContainer, IC
 
         for (int i = 0; i < this.itemstacks.length; ++i) {
             if (this.itemstacks[i] != null) {
-                CompoundTag nbttagcompound1 = new CompoundTag();
-                nbttagcompound1.putByte("Slot", (byte) i);
-                this.itemstacks[i].saveAdditional(nbttagcompound1);
-                nbttaglist.add(nbttagcompound1);
+                CompoundTag CompoundTag1 = new CompoundTag();
+                CompoundTag1.putByte("Slot", (byte) i);
+                this.itemstacks[i].saveAdditional(CompoundTag1);
+                nbttaglist.add(CompoundTag1);
             }
         }
 
@@ -75,8 +75,8 @@ public class TileChargerBase extends BlockEntity implements WorldlyContainer, IC
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        CompoundTag nbtTagCompound = new CompoundTag();
-        this.saveAdditional(nbtTagCompound);
+        CompoundTag tag = new CompoundTag();
+        this.saveAdditional(tag);
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
