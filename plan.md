@@ -184,17 +184,17 @@ Test-Path src/main/resources/data/defeatedcrow/forge/biome_modifier/add_tea_tree
 
 ---
 
-## 8. WT-A / WT-C / WT-D 進捗 — 2026-08-24 `dev:e759f7c` 時点（WT-B Phase2 + WT-C同期マージ後）
+## 8. WT-A / WT-B / WT-C / WT-D 進捗 — 2026-08-24 `dev:8d32bbc` 時点（全世代同期完了）
 
-> `dev` は `WT-A(f11cf83)` + `WT-D(df8734f+b99feb3)` + `WT-B(6b31c34→3fda022→a0a4981→4746f5c)` + `WT-C(3567d47→278676d→e759f7c)` + `7569016/2524409/ed0d90f` docs を統合。`lint wtb/wtd/wta/wtc/bootstrap` は全てPASS。
+> `dev:8d32bbc` は `WT-A(f11cf83)` + `WT-D(df8734f+b99feb3)` + `WT-B(6b31c34→3fda022→a0a4981→4746f5c)` + `WT-C(3567d47→278676d→e759f7c→8d32bbc)` + `7569016/2524409/ed0d90f` docs を統合。全worktree `E:/AMT2-WT-A/B/C/D` は `8d32bbc` に同期済。`lint wta/wtb/wtc/wtd/bootstrap` は全てPASS。
 
 | Worktree | ブランチ | 最終統合 `dev` | lint | 状態 | 残課題 |
 |---|---|---|---|---|---|
-| **WT-A Blocks+Items** | `feature/blocks-items:7569016` (`f11cf83`→`7569016` sync) | `e759f7c` まで同期可（`2524409`まで同期済、次回 `e759f7c` へ追従） | `wta` PASS | **完了** | なし |
-| **WT-B Tiles+Fluids+World+Entity+Event** | `feature/tiles-fluids-world:a0a4981` | `4746f5c`→`e759f7c` に含まれる | `wtb` **PASS** | **完了** | なし |
-| **WT-C Client+Cross** | `feature/client-cross:278676d` (`3567d47`→`278676d` sync dev) | `e759f7c` Merge済（`278676d` で `dev:2524409` を取込後 `3567d47` を統合、コンフリクト0）| `wtc` PASS（`3567d47`で `ISBRH44/TESR→BER/S35:0`、278676dでもPASS維持）| **完了** | なし。`client/*` 180は `wtc` 14ルールPASS、空コミットのためファイル差分0で `dev` へ統合。`plugin/*`66は削除方針維持 |
-| **WT-D Recipe+Advancement** | `feature/recipe-advancement:df8734f`→`7569016` sync | `e759f7c` に含まれる | `wtd` PASS | **完了** | なし |
+| **WT-A Blocks+Items** | `feature/blocks-items:8d32bbc` | `8d32bbc` 同期済 | `wta` PASS | **完了** | なし |
+| **WT-B Tiles+Fluids+World+Entity+Event** | `feature/tiles-fluids-world:8d32bbc` | `8d32bbc` 同期済 | `wtb` PASS | **完了** | なし |
+| **WT-C Client+Cross** | `feature/client-cross:8d32bbc` | `8d32bbc` 同期済（`278676d`で `2524409` を取込後 `e759f7c`→`8d32bbc` docs統合）| `wtc` PASS | **完了** | なし |
+| **WT-D Recipe+Advancement** | `feature/recipe-advancement:8d32bbc` | `8d32bbc` 同期済 | `wtd` PASS | **完了** | なし |
 
-**次ステップ（全体）**
-1. `dev:e759f7c` で `lint all` 残 `cpw:13`/`OreDictionary:5`/`NBTTagCompound:91` 等を `DCsRecipeRegister.java:930` 等の境界ファイルで解消（`wta/b/c/d` 外の `common/*` 由来）
-2. `./gradlew runData` → `./gradlew build`（`wta/b/c/d` は全てPASS済のため `all` 残のみがブロッカー）
+**全体残課題（worktree横断 `lint all`）**
+* `lint all` は `cpw.mods.fml:13`/`FluidContainerRegistry:2`/`OreDictionary:5`/`net.minecraft.init:46`/`NBTTagCompound:91`/`stackSize:13`/`isItemEqual:7`/`getItemDamage:87` が `DCsRecipeRegister.java:930,2054`/`ReceivingIMCEvent.java` 等の境界ファイル由来で残存（いずれも `wta/b/c/d` 単体では所有外のため `PASS` だが `all` ではFAIL）。`dev` での最終統合タスクとして `common/*` 横断で `getCount/getDamageValue/CompoundTag` 化が必要。
+* 次は `dev` 直上で `lint all` 0件化 → `./gradlew runData` → `./gradlew build`。worktree個別の操作はなし。
