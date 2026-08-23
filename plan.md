@@ -184,17 +184,17 @@ Test-Path src/main/resources/data/defeatedcrow/forge/biome_modifier/add_tea_tree
 
 ---
 
-## 8. WT-A / WT-C / WT-D 進捗 — 2026-08-24 `dev:4746f5c` 時点（WT-B Phase2完了後）
+## 8. WT-A / WT-C / WT-D 進捗 — 2026-08-24 `dev:e759f7c` 時点（WT-B Phase2 + WT-C同期マージ後）
 
-> `dev` は `WT-A(f11cf83)` + `WT-D(df8734f+b99feb3)` + `WT-B(6b31c34→3fda022→a0a4981→4746f5c)` + `7569016` fix + `ed0d90f` docs を統合。`lint wtb/wtd/wta/wtc/bootstrap` は全てPASS、`lint all` では境界ファイル由来の `cpw:13` 等が残存。
+> `dev` は `WT-A(f11cf83)` + `WT-D(df8734f+b99feb3)` + `WT-B(6b31c34→3fda022→a0a4981→4746f5c)` + `WT-C(3567d47→278676d→e759f7c)` + `7569016/2524409/ed0d90f` docs を統合。`lint wtb/wtd/wta/wtc/bootstrap` は全てPASS。
 
 | Worktree | ブランチ | 最終統合 `dev` | lint | 状態 | 残課題 |
 |---|---|---|---|---|---|
-| **WT-A Blocks+Items** | `feature/blocks-items:7569016` (`f11cf83`→`7569016` sync) | `ed0d90f` まで同期済 | `wta` PASS | **完了** | なし。`ModItems.java:192` 61 BlockItems (`70`件) 済 |
-| **WT-B Tiles+Fluids+World+Entity+Event** | `feature/tiles-fluids-world:a0a4981` | `4746f5c` Merge済 | `wtb` **PASS** (`a0a4981`で13件解消) | **完了** | なし。`TileBrewingBarrel.java:113` `worldObj→level`等、`DCsTank.java:9` 含め `lint wtb` PASS。残 `all` の `stackSize:13` はWT-D/C境界 |
-| **WT-C Client+Cross** | `feature/client-cross:3567d47` (`20e8b6c`→`ed0d90f`→`3567d47`) | 未マージ（`3567d47`は `ed0d90f` 派生の空コミット、ファイル差分0）| `wtc` PASS（`3567d47`で `ISBRH44/TESR→BER/S35:0/IIcon:0` 検証）| **検証完了・要同期後マージ** | `client/*` 180は `wtc` 14ルールPASSだが `dev:4746f5c` へのマージ前に `git -C ../AMT2-WT-C merge dev` が必要（現 `3567d47` は `4746f5c` の `a0a4981` を含まず、直接マージすると `TileBrewingBarrel` が退行）。同期後 `3567d47` の空コミットを `dev` へ `merge --no-ff` で統合すれば `wtc` 完了扱い。`all` 残 `cpw:13` 等は `potion/plugin` 等の `//` コメント内由来で `wtc` 対象外 |
-| **WT-D Recipe+Advancement** | `feature/recipe-advancement:df8734f`→`7569016` sync | `4746f5c` に含まれる | `wtd` PASS | **完了** | `ModRecipes.java:1` 11種 + `AMTRecipeProvider`/`AMTAdvancementProvider` + `data` 5件 + BOM等の `b99feb3/7569016` 修正済 |
+| **WT-A Blocks+Items** | `feature/blocks-items:7569016` (`f11cf83`→`7569016` sync) | `e759f7c` まで同期可（`2524409`まで同期済、次回 `e759f7c` へ追従） | `wta` PASS | **完了** | なし |
+| **WT-B Tiles+Fluids+World+Entity+Event** | `feature/tiles-fluids-world:a0a4981` | `4746f5c`→`e759f7c` に含まれる | `wtb` **PASS** | **完了** | なし |
+| **WT-C Client+Cross** | `feature/client-cross:278676d` (`3567d47`→`278676d` sync dev) | `e759f7c` Merge済（`278676d` で `dev:2524409` を取込後 `3567d47` を統合、コンフリクト0）| `wtc` PASS（`3567d47`で `ISBRH44/TESR→BER/S35:0`、278676dでもPASS維持）| **完了** | なし。`client/*` 180は `wtc` 14ルールPASS、空コミットのためファイル差分0で `dev` へ統合。`plugin/*`66は削除方針維持 |
+| **WT-D Recipe+Advancement** | `feature/recipe-advancement:df8734f`→`7569016` sync | `e759f7c` に含まれる | `wtd` PASS | **完了** | なし |
 
 **次ステップ（全体）**
-1. **WT-C同期→マージ**: `git -C E:/AMT2-WT-C merge dev`（`4746f5c` を取込）→ `lint wtc` 再PASS確認 → `git checkout dev; git merge --no-ff feature/client-cross`（空コミット `3567d47` の統合、コンフリクトなし想定）→ `plan.md:8` を `WT-C完了` に更新
-2. `dev` で `lint all` 残 `cpw:13`/`OreDictionary:5` 等を `DCsRecipeRegister.java:930` 等の境界ファイルで解消 → `./gradlew runData` → `./gradlew build`
+1. `dev:e759f7c` で `lint all` 残 `cpw:13`/`OreDictionary:5`/`NBTTagCompound:91` 等を `DCsRecipeRegister.java:930` 等の境界ファイルで解消（`wta/b/c/d` 外の `common/*` 由来）
+2. `./gradlew runData` → `./gradlew build`（`wta/b/c/d` は全てPASS済のため `all` 残のみがブロッカー）
