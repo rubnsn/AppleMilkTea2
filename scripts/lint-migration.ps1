@@ -1,5 +1,5 @@
 param(
-  [ValidateSet("all","bootstrap","wta","wtb","wtc")]
+  [ValidateSet("all","bootstrap","wta","wtb","wtc","wtd")]
   [string]$Check = "all"
 )
 
@@ -43,7 +43,8 @@ $owned = switch ($Check) {
   "bootstrap" { @("src/main/java/mods/defeatedcrow/common/DCsAppleMilk.java","src/main/java/mods/defeatedcrow/common/MaterialRegister.java","src/main/java/mods/defeatedcrow/common/CommonProxy.java","src/main/java/mods/defeatedcrow/client/ClientProxy.java","src/main/java/mods/defeatedcrow/common/registry/*.java","src/main/java/mods/defeatedcrow/common/config/*.java") }
   "wta"       { @("src/main/java/mods/defeatedcrow/common/block/**/*.java","src/main/java/mods/defeatedcrow/common/item/**/*.java","src/main/java/mods/defeatedcrow/common/CreativeTab*.java") }
   "wtb"       { @("src/main/java/mods/defeatedcrow/common/tile/**/*.java","src/main/java/mods/defeatedcrow/common/fluid/**/*.java","src/main/java/mods/defeatedcrow/common/entity/**/*.java","src/main/java/mods/defeatedcrow/common/world/**/*.java","src/main/java/mods/defeatedcrow/event/**/*.java","src/main/java/mods/defeatedcrow/handler/**/*.java") }
-  "wtc"       { @("src/main/java/mods/defeatedcrow/client/**/*.java","src/main/java/mods/defeatedcrow/potion/**/*.java","src/main/java/mods/defeatedcrow/recipe/**/*.java","src/main/java/mods/defeatedcrow/network/**/*.java","src/main/java/mods/defeatedcrow/plugin/**/*.java") }
+  "wtc"       { @("src/main/java/mods/defeatedcrow/client/**/*.java","src/main/java/mods/defeatedcrow/potion/**/*.java","src/main/java/mods/defeatedcrow/network/**/*.java","src/main/java/mods/defeatedcrow/plugin/**/*.java") }
+  "wtd"       { @("src/main/java/mods/defeatedcrow/recipe/**/*.java","src/main/java/mods/defeatedcrow/common/AchievementRegister.java","src/main/java/mods/defeatedcrow/common/DCsRecipeRegister.java","src/main/java/mods/defeatedcrow/common/ReceivingIMCEvent.java","src/main/java/mods/defeatedcrow/common/registry/ModRecipes.java","src/main/java/mods/defeatedcrow/common/datagen/**/*.java") }
   default     { @("src/main/java/**/*.java") }
 }
 
@@ -65,6 +66,15 @@ Lint-Grep -Pattern "implements IMessage" -Paths $owned -Label "IMessage"
 Lint-Grep -Pattern "RenderingRegistry\.registerBlockHandler" -Paths $owned -Label "ISBRH registerBlockHandler"
 Lint-Grep -Pattern "TileEntitySpecialRenderer" -Paths $owned -Label "TileEntitySpecialRenderer"
 Lint-Grep -Pattern "BlockEntityType\.Builder\.create" -Paths $owned -Label "Builder.create (must be Builder.of)"
+# WT-D specific 1.7.10 remnants (Recipe+Achievement) — must be 0 after WT-D migration
+if ($Check -eq "wtd" -or $Check -eq "all") {
+  Lint-Grep -Pattern "OreDictionary" -Paths $owned -Label "OreDictionary (must be TagKey)"
+  Lint-Grep -Pattern "net\.minecraft\.init\." -Paths $owned -Label "net.minecraft.init (must be world.*)"
+  Lint-Grep -Pattern "NBTTagCompound" -Paths $owned -Label "NBTTagCompound (must be CompoundTag)"
+  Lint-Grep -Pattern "net\.minecraft\.stats\.Achievement" -Paths $owned -Label "Achievement (must be AdvancementHolder)"
+  Lint-Grep -Pattern "AchievementPage" -Paths $owned -Label "AchievementPage (must be Advancement)"
+  Lint-Grep -Pattern "Potion\.potionTypes" -Paths $owned -Label "Potion.potionTypes (must be Holder<MobEffect>)"
+}
 # Positive checks (should exist after bootstrap)
 if ($Check -eq "bootstrap" -or $Check -eq "all") {
   Lint-Grep -Pattern "DeferredRegister" -Paths @("src/main/java/mods/defeatedcrow/common/registry/*.java") -Label "DeferredRegister exists" -ExpectZero:$false
