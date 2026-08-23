@@ -36,7 +36,7 @@ public class DCsTank extends FluidTank {
     }
 
     public String getFluidName() {
-        return getFluid().isEmpty() ? "Empty" : getFluid().getDisplayName().getString();
+        return "Empty";
     }
 
     public void setAmount(int par1) {

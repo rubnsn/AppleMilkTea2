@@ -1,7 +1,0 @@
-{
-  "_comment": "1.20.1 migration for FoodBaseItem example — replaces atlas icon methods (registerIcons/getIconFromDamage). Former registerIcon('defeatedcrow:appletart') is now this JSON. See doc/items/migration-guide.md#3",
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "defeatedcrow:item/appletart"
-  }
-}

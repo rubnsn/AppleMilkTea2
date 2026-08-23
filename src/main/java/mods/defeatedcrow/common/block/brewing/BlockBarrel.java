@@ -91,7 +91,7 @@ public class BlockBarrel extends Block implements EntityBlock {
      * import net.minecraft.world.level.Level;
      * import net.minecraft.world.level.material.Fluid;
      * import net.minecraft.world.level.material.FluidHandlerHelper;
-     * import net.minecraft.world.level.material.FluidStack;
+     * import net.minecraftforge.fluids.FluidStack;
      * import mods.defeatedcrow.common.AchievementRegister;
      * import mods.defeatedcrow.common.DCsAppleMilk;
      * import mods.defeatedcrow.common.tile.TileBrewingBarrel;

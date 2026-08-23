@@ -92,7 +92,7 @@ public class PlateRecipeRegister implements IPlateRecipeRegister {
         if (input != null && output != null) {
             this.recipes.add(new PlateRecipe(input, output, time, isOven));
             AMTLogger
-                .debugInfo("Add Plate Recipe: input " + input.getDisplayName() + ", output " + output.getDisplayName());
+                .debugInfo("Add Plate Recipe: input " + input.getHoverName().getString() + ", output " + output.getHoverName().getString());
         }
     }
 
@@ -100,7 +100,7 @@ public class PlateRecipeRegister implements IPlateRecipeRegister {
     public void registerHeatSource(Block block, int meta) {
         if (block != null) {
             this.sources.add(new HeatSource(block, meta));
-            AMTLogger.debugInfo("Add plate heat source : " + block.getLocalizedName() + ":" + meta);
+            AMTLogger.debugInfo("Add plate heat source : " + block.getName().getString() + ":" + meta);
         }
     }
 

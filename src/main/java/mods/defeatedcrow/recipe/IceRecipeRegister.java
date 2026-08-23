@@ -83,10 +83,10 @@ public class IceRecipeRegister implements IIceRecipeRegister {
         }
 
         String container = "null";
-        if (leaveStack != null) container = leaveStack.getDisplayName();
+        if (leaveStack != null) container = leaveStack.getHoverName().getString();
         AMTLogger.debugInfo(
             "Add IceMaker Recipe: input " + input
-                .getDisplayName() + ", output " + output.getDisplayName() + ", container " + container);
+                .getHoverName().getString() + ", output " + output.getHoverName().getString() + ", container " + container);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class IceRecipeRegister implements IIceRecipeRegister {
         if (input != null && val > 0) {
             this.chargeItems.add(new ChargeIceItem(input, val));
         }
-        AMTLogger.debugInfo("Add IceMaker chargeable item: input " + input.getDisplayName() + ", amount " + val);
+        AMTLogger.debugInfo("Add IceMaker chargeable item: input " + input.getHoverName().getString() + ", amount " + val);
     }
 
     public class IceRecipe implements IIceRecipe {

@@ -99,14 +99,14 @@ public class PanRecipeRegister implements IPanRecipeRegister {
         if (input != null) {
             this.recipes.add(new PanRecipe(input, output, output2, tex, disp));
         }
-        AMTLogger.debugInfo("Add Pan Recipe: input " + input.getDisplayName() + ", output " + output.getDisplayName());
+        AMTLogger.debugInfo("Add Pan Recipe: input " + input.getHoverName().getString() + ", output " + output.getHoverName().getString());
     }
 
     @Override
     public void registerHeatSource(Block block, int meta) {
         if (block != null) {
             this.sources.add(new PanHeatSource(block, meta));
-            AMTLogger.debugInfo("Add pan heat source : " + block.getLocalizedName() + ":" + meta);
+            AMTLogger.debugInfo("Add pan heat source : " + block.getName().getString() + ":" + meta);
         }
     }
 

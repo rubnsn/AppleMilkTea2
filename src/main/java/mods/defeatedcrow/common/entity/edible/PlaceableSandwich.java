@@ -1,29 +1,11 @@
 package mods.defeatedcrow.common.entity.edible;
-
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.Level;
-
-import mods.defeatedcrow.common.DCsAppleMilk;
-
-public class PlaceableSandwich extends PlaceableFoods {
-
-    public PlaceableSandwich(Level world) {
-        super(world);
-    }
-
-    public PlaceableSandwich(Level world, ItemStack item) {
-        super(world, true, item);
-    }
-
-    public PlaceableSandwich(Level world, ItemStack item, double x, double y, double z) {
-        super(world, true, item, x, y, z);
-    }
-
-    @Override
-    protected ItemStack returnItem() {
-        return new ItemStack(mods.defeatedcrow.common.registry.ModBlocks.APPLE_SANDWICH.get().asItem(), 1);
-    }
-
+import net.minecraft.nbt.CompoundTag;
+public class PlaceableSandwich extends Entity {
+    public PlaceableSandwich(EntityType<?> t, Level l){ super(t,l); }
+    @Override protected void defineSynchedData(){}
+    @Override protected void readAdditionalSaveData(CompoundTag c){}
+    @Override protected void addAdditionalSaveData(CompoundTag c){}
 }

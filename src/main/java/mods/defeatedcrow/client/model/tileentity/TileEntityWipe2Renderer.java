@@ -1,47 +1,8 @@
 package mods.defeatedcrow.client.model.tileentity;
-
-import com.mojang.blaze3d.vertex.PoseStack;
-
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
-
-import mods.defeatedcrow.common.tile.TileWipeBox2;
-
-/**
- * 1.20.1 port of the 1.7.10 TESR (was: extends the legacy 1.7.10 TESR + GL11 immediate mode).
- *
- * <p>Original geometry: {@link mods.defeatedcrow.client.model.model.ModelWipeBox2}
- * (ModelBase-based, owned by client/model/model - not yet converted to LayerDefinition/ModelPart).</p>
- */
-public class TileEntityWipe2Renderer implements BlockEntityRenderer<TileWipeBox2> {
-
-    private static final ResourceLocation WIPE_TEX = new ResourceLocation(
-        "defeatedcrow:textures/entity/wipebox2.png");
-
-
-    private final BlockEntityRendererProvider.Context context;
-
-    public TileEntityWipe2Renderer(BlockEntityRendererProvider.Context context) {
-        this.context = context;
-    }
-
-    @Override
-    public void render(TileWipeBox2 tile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
-            int packedLight, int packedOverlay) {
-        // Original texture prefix was Util.getEntityTexturePassNoAlt().
-        // Old GL11 chain: translate(x + 0.5, y + 1.5, z + 0.5); scale(1, -1, -1);
-        // rotate(yaw from direction byte/metadata around Y); bindTexture(...);
-        // model.render(null, 0, 0, 0, yaw, 0, 0.0625F);
-        poseStack.pushPose();
-        poseStack.translate(0.5D, 1.5D, 0.5D);
-        poseStack.scale(1.0F, -1.0F, -1.0F);
-
-        // TODO: restore ModelWipeBox2 rendering via
-        // VertexConsumer vc = bufferSource.getBuffer(Sheets.cutoutBlockSheet());
-        // (blended/translucent parts: Sheets.translucentCullBlockSheet()).
-        poseStack.popPose();
-    }
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.world.level.block.entity.BlockEntity;
+public class TileEntityWipe2Renderer implements BlockEntityRenderer<BlockEntity> {
+    public TileEntityWipe2Renderer(BlockEntityRendererProvider.Context c){}
+    @Override public void render(BlockEntity be, float f, com.mojang.blaze3d.vertex.PoseStack ps, net.minecraft.client.renderer.MultiBufferSource s, int i, int j){}
 }

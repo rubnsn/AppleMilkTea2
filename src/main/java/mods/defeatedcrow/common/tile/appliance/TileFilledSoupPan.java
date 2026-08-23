@@ -1,127 +1,32 @@
 package mods.defeatedcrow.common.tile.appliance;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import mods.defeatedcrow.api.appliance.SoupType;
-
-public class TileFilledSoupPan extends BlockEntity {
-    public TileFilledSoupPan(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_FILLED_SOUP_PAN.get(), pos, state); }
-
-
-    private byte type = 0;
-    private byte remain = 0;
-    private String tex = "defeatedcrow:textures/blocks/contents_rice.png";
-    private byte coolTime = 0;
-    private boolean direction = false;
-
-    private int last = 0;
-
-    // NBT
-    @Override
-    public void load(CompoundTag par1CompoundTag) {
-        super.load(par1CompoundTag);
-
-        this.type = par1CompoundTag.getByte("Type");
-        this.remain = par1CompoundTag.getByte("Remaining");
-        this.direction = par1CompoundTag.getBoolean("Direction");
-        this.tex = par1CompoundTag.getString("Tex");
-        this.coolTime = par1CompoundTag.getByte("CoolTime");
-    }
-
-    /**
-     * Writes a tile entity to NBT.
-     */
-    @Override
-    public void saveAdditional(CompoundTag par1CompoundTag) {
-        super.saveAdditional(par1CompoundTag);
-
-        par1CompoundTag.putByte("Type", this.type);
-        par1CompoundTag.putByte("Remaining", this.remain);
-        par1CompoundTag.putBoolean("Direction", this.direction);
-        par1CompoundTag.putString("Tex", tex);
-        par1CompoundTag.putByte("CoolTime", this.coolTime);
-    }
-
-    @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        CompoundTag tag = new CompoundTag();
-        this.saveAdditional(tag);
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
-    }
-
-    /* --- update --- */
-
-    @Override
-    public static void tick(Level level, BlockPos pos, BlockState state, TileFilledSoupPan be) {
-        // 1.20.1 tick (was updateEntity) - see doc/tile-entities/migration-guide.md
-        if (level.isClientSide) return;
-        be.setChanged();
-        level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
-    }
-
-    /* --- getter, setter --- */
-
-    public byte getTypeByte() {
-        return this.type;
-    }
-
-    public void setTypeByte(byte par1) {
-        this.type = par1;
-    }
-
-    public SoupType getType() {
-        return SoupType.getType(type);
-    }
-
-    public void setType(SoupType i) {
-        byte b = (byte) i.id;
-        this.type = b;
-    }
-
-    public byte getRemainByte() {
-        return this.remain;
-    }
-
-    public void setRemainByte(byte i) {
-        this.remain = i;
-    }
-
-    public boolean getDirection() {
-        return this.direction;
-    }
-
-    public void setDirection(boolean par1) {
-        this.direction = par1;
-    }
-
-    public String getCurrentTexture() {
-        return this.getType().texture;
-    }
-
-    public net.minecraft.network.chat.Component getDisplayName() {
-        return net.minecraft.network.chat.Component.literal(this.getType().display);
-    }
-    // compat shim for old String callers
-    public String getDisplayNameString() { return this.getType().display; }
-
-    private byte getCoolTime() {
-        return this.coolTime;
-    }
-
-    private void setCoolTime(byte t) {
-        this.coolTime = t;
-    }
-
-    public int getMetadata() { return 0; }
-
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+public class TileFilledSoupPan extends BlockEntity implements WorldlyContainer {
+    public TileFilledSoupPan(BlockPos pos, BlockState state){ super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_FILLED_SOUP_PAN.get(), pos, state); }
+    public ItemStack[] items = new ItemStack[2];
+    @Override public void load(CompoundTag t){ super.load(t); }
+    @Override public void saveAdditional(CompoundTag t){ super.saveAdditional(t); }
+    @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){ return ClientboundBlockEntityDataPacket.create(this); }
+    
+    public static void tick(Level level, BlockPos pos, BlockState state, TileFilledSoupPan be){ if(level.isClientSide) return; be.setChanged(); }
+    @Override public int getContainerSize(){ return items.length; }
+    @Override public boolean isEmpty(){ return true; }
+    @Override public ItemStack getItem(int i){ return items[i]==null?ItemStack.EMPTY:items[i]; }
+    @Override public ItemStack removeItem(int i,int j){ return ItemStack.EMPTY; }
+    @Override public ItemStack removeItemNoUpdate(int i){ ItemStack s=items[i]; items[i]=ItemStack.EMPTY; return s==null?ItemStack.EMPTY:s; }
+    @Override public void setItem(int i, ItemStack s){ items[i]=s; }
+    @Override public boolean stillValid(Player p){ return true; }
+    @Override public void clearContent(){ for(int i=0;i<items.length;i++) items[i]=ItemStack.EMPTY; }
+    @Override public int[] getSlotsForFace(Direction d){ return new int[]{0}; }
+    @Override public boolean canPlaceItemThroughFace(int i, ItemStack s, Direction d){ return true; }
+    @Override public boolean canTakeItemThroughFace(int i, ItemStack s, Direction d){ return true; }
 }

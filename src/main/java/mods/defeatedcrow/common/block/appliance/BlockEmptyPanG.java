@@ -141,7 +141,7 @@ public class BlockEmptyPanG extends Block implements EntityBlock {
      * 
      *             ItemStack input = tile.getItemStack();
      *             byte rem = tile.getRemainByte();
-     *             String disp = tile.getDisplayName();
+     *             String disp = tile.getHoverName().getString();
      * 
      *             if (input != null) {
      *                 CompoundTag tag = new CompoundTag();

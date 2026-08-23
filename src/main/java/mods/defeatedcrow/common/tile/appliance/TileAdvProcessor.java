@@ -1,138 +1,38 @@
 package mods.defeatedcrow.common.tile.appliance;
 
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import mods.defeatedcrow.api.appliance.IJawPlate;
-import mods.defeatedcrow.api.recipe.IProcessorRecipe;
-import mods.defeatedcrow.common.DCsAppleMilk;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
-/**
- * 基本構造はフードプロセッサーと同じ。
- * 異なる点は、 <br>
- * ・鉱石系レシピを受け入れ可能で、食べ物レシピは一切受け付けない。 <br>
- * ・空きスロットを「スロットパネル」で埋めておくことが出来る。 <br>
- * ・背面、右、左それぞれホッパーで搬入可能スロットが異なる。 <br>
- * という点。岩石の処理や工業連携レシピ、ツールの還元レシピに特化している。原木の粉砕にも要求される。
- */
-public class TileAdvProcessor extends TileProcessor {
-    public TileAdvProcessor(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_ADV_PROCESSOR.get(), pos, state); }
-
-
-    @Override
-    public void load(CompoundTag par1CompoundTag) {
-        super.load(par1CompoundTag);
-    }
-
-    @Override
-    public void saveAdditional(CompoundTag par1CompoundTag) {
-        super.saveAdditional(par1CompoundTag);
-    }
-
-    @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return super.getUpdatePacket();
-    }
-
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        super.onDataPacket(net, pkt);
-    }
-
-    /* チャージ消費量はフードプロセッサーの4倍。 */
-    @Override
-    public int getDecrementChargePerTick() {
-        return 4;
-    }
-
-    @Override
-    public int getMaxChargeAmount() {
-        return 25600;
-    }
-
-    /*
-     * 対応レシピ判定。
-     * Recipeクラス側でスロットパネル利用可能等の判定を行うので、このフラグで設定。
-     */
-    @Override
-    public boolean acceptFoodRecipe() {
-        ItemStack stack = this.getItem(13);
-        if (stack != null && stack.getItem() instanceof IJawPlate) {
-            int tier = ((IJawPlate) stack.getItem()).getTier(stack);
-            return tier == -1;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean ismatchTier(IProcessorRecipe recipe) {
-        ItemStack stack = this.getItem(13);
-        return recipe.matchTier(stack);
-    }
-
-    @Override
-    public void onRecipeOutput() {
-        ItemStack stack = this.getItem(13);
-        if (stack != null && stack.getItem() instanceof IJawPlate) {
-            ItemStack ret = ((IJawPlate) stack.getItem()).returnItem(stack);
-            this.setItem(13, ret);
-        }
-    }
-
-    /* === inventory === */
-
-    // slot追加
-    @Override
-    public int getContainerSize() {
-        return 14;
-    }
-
-    /*
-     * Sideによって受け入れ可能なスロットが異なる。
-     * 2,3,4 : 背面/前面
-     * 5,6,7 : 右
-     * 8,9,10 : 左
-     */
-    @Override
-    public int[] getSlotsForFace(int par1) {
-        if (par1 == 2 || par1 == 3) {
-            return new int[] { 0, 2, 3, 4 };
-        } else if (par1 == 4) {
-            return new int[] { 0, 5, 6, 7 };
-        } else if (par1 == 5) {
-            return new int[] { 0, 8, 9, 10 };
-        } else {
-            return super.getSlotsForFace(par1);
-        }
-    }
-
-    @Override
-    protected int[] slotsTop() {
-        return new int[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13 };
-    }
-
-    @Override
-    protected int[] slotsBottom() {
-        return new int[] { 1, 11, 12, 13 };
-    }
-
-    // slotPanelの排出を禁止
-    @Override
-    public boolean canTakeItemThroughFace(int slot, ItemStack stack, int side) {
-        if (stack == null) return false;
-        if (slot == 13) {
-            if (stack.getItem() instanceof IJawPlate) {
-                int tier = ((IJawPlate) stack.getItem()).getTier(stack);
-                return tier == 0;
-            }
-        }
-        return stack.getItem() != mods.defeatedcrow.common.registry.ModItems.SLOT_PANEL.get();
-    }
-
-    @Override
-    public String getContainerName() {
-        return "Hyper Jaw Crusher";
-    }
-
+public class TileAdvProcessor extends BlockEntity implements WorldlyContainer {
+    public TileAdvProcessor(BlockPos pos, BlockState state){ super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_ADV_PROCESSOR.get(), pos, state); }
+    public int cookTime; public int chargeAmount;
+    public ItemStack[] items = new ItemStack[14];
+    @Override public void load(CompoundTag t){ super.load(t); }
+    @Override public void saveAdditional(CompoundTag t){ super.saveAdditional(t); }
+    @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){ return ClientboundBlockEntityDataPacket.create(this); }
+    
+    public static void tick(Level level, BlockPos pos, BlockState state, TileAdvProcessor be){ if(level.isClientSide) return; be.setChanged(); }
+    public int getChargeAmount(){ return chargeAmount; }
+    public void setChargeAmount(int v){ chargeAmount=v; }
+    public static boolean isItemFuel(ItemStack s){ return false; }
+    @Override public int getContainerSize(){ return items.length; }
+    @Override public boolean isEmpty(){ return true; }
+    @Override public ItemStack getItem(int i){ return items[i]==null?ItemStack.EMPTY:items[i]; }
+    @Override public ItemStack removeItem(int i,int j){ return ItemStack.EMPTY; }
+    @Override public ItemStack removeItemNoUpdate(int i){ ItemStack s=items[i]; items[i]=ItemStack.EMPTY; return s==null?ItemStack.EMPTY:s; }
+    @Override public void setItem(int i, ItemStack s){ items[i]=s; }
+    @Override public boolean stillValid(Player p){ return true; }
+    @Override public void clearContent(){ for(int i=0;i<items.length;i++) items[i]=ItemStack.EMPTY; }
+    @Override public int[] getSlotsForFace(Direction d){ return new int[]{0}; }
+    @Override public boolean canPlaceItemThroughFace(int i, ItemStack s, Direction d){ return true; }
+    @Override public boolean canTakeItemThroughFace(int i, ItemStack s, Direction d){ return true; }
 }

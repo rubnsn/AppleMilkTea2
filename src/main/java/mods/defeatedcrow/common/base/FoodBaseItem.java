@@ -1,78 +1,12 @@
 package mods.defeatedcrow.common.base;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.level.Level;
-
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import mods.defeatedcrow.common.item.edible.EdibleEntityItem2;
-
-/**
- * AMT2のソースを利用した飲食アイテムの一例。
- */
-public class FoodBaseItem extends EdibleEntityItem2 {
-
-    public FoodBaseItem(boolean canSeeTooltip) {
-        super(true, canSeeTooltip);
-    }
-
-    /** 空腹度回復量 */
-    @Override
-    public int[] hungerOnEaten(int meta) {
-        return new int[] { 4, 2 };
-    }
-
-    /**
-     * 食べ物にポーション効果を付けたい場合に使用する。 <br>
-     * バニラと異なり、複数の効果を同時に付与できる。
-     */
-    @Override
-    public ArrayList<PotionEffect> effectOnEaten(EntityPlayer par1EntityPlayer, int meta) {
-        ArrayList<PotionEffect> list = new ArrayList<PotionEffect>();
-        return list;
-    }
-
-    // 1.20.1 migration: former atlas icon methods removed - texture is now JSON model.
-    // Model: assets/defeatedcrow/models/item/appletart.json (parent=item/generated, layer0=defeatedcrow:item/appletart)
-    // See doc/items/migration-guide.md#3 and doc/blocks/migration-guide.md
-    @Override
-    public int getMetadata(int par1) {
-        return par1;
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
-        return super.getUnlocalizedName();
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-        par3List.add(new ItemStack(this, 1, 0));
-    }
-
-    /**
-     * 対応する食べ物Entityをスポーンさせる部分。 <br>
-     * Entityが無い場合はfalseを返す。
-     */
-    @Override
-    protected boolean spownEntityFoods(World world, EntityPlayer player, ItemStack item, double x, double y, double z) {
-        return false;
-    }
-
-    /**
-     * ポーション効果以外に飲食時の効果を付けたい場合にここに入れる
-     */
-    @Override
-    public ItemStack onEaten(ItemStack itemStack, World world, EntityPlayer player) {
-        return super.onEaten(itemStack, world, player);
-    }
-
+import java.util.ArrayList;
+import java.util.List;
+public class FoodBaseItem extends Item {
+    public FoodBaseItem(boolean b){ super(new Item.Properties()); }
+    public int[] hungerOnEaten(int meta){ return new int[]{4,2}; }
+    public List<MobEffectInstance> effectOnEaten(Player p,int m){ return new ArrayList<>(); }
 }

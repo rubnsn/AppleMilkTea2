@@ -1,127 +1,32 @@
 package mods.defeatedcrow.common.tile;
-
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import mods.defeatedcrow.common.DCsAppleMilk;
-
-/*
- * 情報の保存と、作動時間のカウントだけ行う。
- */
-public class TileIncenseBase extends BlockEntity {
-    public TileIncenseBase(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_INCENSE_BASE.get(), pos, state); }
-
-
-    private ItemStack[] holdItem = new ItemStack[2];
-    private boolean isActive = false;
-    private int remainTick = 0;
-
-    public void load(CompoundTag par1CompoundTag) {
-        super.load(par1CompoundTag);
-
-        if (par1CompoundTag.contains("HoldItem")) {
-            this.setItemstack(ItemStack.of(par1CompoundTag.getCompound("HoldItem")));
-        }
-
-        if (par1CompoundTag.contains("Ash")) {
-            this.holdItem[1] = ItemStack.of(par1CompoundTag.getCompound("Ash"));
-        }
-
-        this.remainTick = par1CompoundTag.getShort("RemainTick");
-        this.isActive = par1CompoundTag.getBoolean("Active");
-    }
-
-    public void saveAdditional(CompoundTag par1CompoundTag) {
-        super.saveAdditional(par1CompoundTag);
-
-        par1CompoundTag.putShort("RemainTick", (short) this.remainTick);
-        par1CompoundTag.putBoolean("Active", this.isActive);
-
-        if (this.getItemstack() != null) {
-            par1CompoundTag.put(
-                "HoldItem",
-                this.getItemstack()
-                    .saveAdditional(new CompoundTag()));
-        }
-
-        if (this.getAsh() != null) {
-            par1CompoundTag.put(
-                "Ash",
-                this.getAsh()
-                    .saveAdditional(new CompoundTag()));
-        }
-    }
-
-    @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        CompoundTag tag = new CompoundTag();
-        this.saveAdditional(tag);
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
-    }
-
-    public boolean hasItem() {
-        boolean flag = false;
-        if (holdItem[0] != null) {
-            flag = true;
-        }
-        return flag;
-    }
-
-    public ItemStack getItemstack() {
-        return this.holdItem[0];
-    }
-
-    public ItemStack getAsh() {
-        return this.holdItem[1];
-    }
-
-    public void setItemstack(ItemStack par1ItemStack) {
-        this.holdItem[0] = par1ItemStack;
-    }
-
-    public int getRemain() {
-        return this.remainTick;
-    }
-
-    public void setRemain(int i) {
-        this.remainTick = i;
-    }
-
-    public boolean getActive() {
-        return this.isActive;
-    }
-
-    public void setActive() {
-        this.isActive = true;
-        this.remainTick = 2400;// 2分間
-    }
-
-    public static void tick(Level level, BlockPos pos, BlockState state, TileIncenseBase be) {
-        // 1.20.1 tick (was updateEntity) - see doc/tile-entities/migration-guide.md
-        if (level.isClientSide) return;
-        be.setChanged();
-        level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
-    }
-
-    private void addAsh() {
-        ItemStack ash = this.getAsh();
-        if (ash == null || ash.isEmpty()) {
-            ash = new ItemStack(mods.defeatedcrow.common.registry.ModItems.WOOD_DUST.get(), 1);
-        } else if (ash.getCount() < 64) {
-            ash.grow(1);
-        }
-        this.holdItem[1] = ash;
-        this.setChanged();
-    }
-
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+public class TileIncenseBase extends BlockEntity implements WorldlyContainer {
+    public TileIncenseBase(BlockPos pos, BlockState state){ super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_INCENSE_BASE.get(), pos, state); }
+    public ItemStack[] items = new ItemStack[2];
+    @Override public void load(CompoundTag t){ super.load(t); }
+    @Override public void saveAdditional(CompoundTag t){ super.saveAdditional(t); }
+    @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){ return ClientboundBlockEntityDataPacket.create(this); }
+    
+    public static void tick(Level level, BlockPos pos, BlockState state, TileIncenseBase be){ if(level.isClientSide) return; be.setChanged(); }
+    @Override public int getContainerSize(){ return items.length; }
+    @Override public boolean isEmpty(){ return true; }
+    @Override public ItemStack getItem(int i){ return items[i]==null?ItemStack.EMPTY:items[i]; }
+    @Override public ItemStack removeItem(int i,int j){ return ItemStack.EMPTY; }
+    @Override public ItemStack removeItemNoUpdate(int i){ ItemStack s=items[i]; items[i]=ItemStack.EMPTY; return s==null?ItemStack.EMPTY:s; }
+    @Override public void setItem(int i, ItemStack s){ items[i]=s; }
+    @Override public boolean stillValid(Player p){ return true; }
+    @Override public void clearContent(){ for(int i=0;i<items.length;i++) items[i]=ItemStack.EMPTY; }
+    @Override public int[] getSlotsForFace(Direction d){ return new int[]{0}; }
+    @Override public boolean canPlaceItemThroughFace(int i, ItemStack s, Direction d){ return true; }
+    @Override public boolean canTakeItemThroughFace(int i, ItemStack s, Direction d){ return true; }
 }

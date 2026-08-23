@@ -198,3 +198,95 @@ Test-Path src/main/resources/data/defeatedcrow/forge/biome_modifier/add_tea_tree
 
 **全体残課題（worktree横断後）**
 * `lint all` は0件化完了。次は `dev` 直上で `./gradlew runData` → `./gradlew build`（`compileJava`は `BlockItem`/`Fluid`/`ModelPart` 等の1.20.1 API差異が1000+件残存、別途 `World/EntityPlayer` 移行が必要）。worktree個別の操作はなし。
+
+---
+
+## 9. WT-A 資産 (assets/data) 残タスク詳細 — 2026-08-24 洗い出し
+
+> **背景**: コード（registry）は 1.20.1 移行済み（`ModBlocks:72` / `ModItems:133`、namespace `defeatedcrow`）だが、`src/main/resources` の assets/data が 1.7.10〜1.12 の形のまま大量残留。ゲーム内で全ブロック/アイテムがミッシングモデル・未翻訳になる。
+> **所有者**: WT-A（`feature/blocks-items`）。WT-A は bootstrapping 時に `common/block/**` + `common/item/**` を所有しており、"そのコードが参照する asset"（blockstate/model/lang）も WT-A に帰属させる。
+> 正本: `doc/blocks/migration-guide.md` / `doc/items/migration-guide.md` の1.20.1追記 + 本セクション。
+
+### 9.1 現状（調査済み 2026-08-24）
+
+* **namespace は `defeatedcrow`**（`ModBlocks:93` / `ModItems:81` が `DeferredRegister.create(..., "defeatedcrow")`）。`MODID`=`DCsAppleMilk` は mods.toml 用で、registry/asset namespace とは別物。
+* **`assets/defeatedcrow/` に `lang/` 不在**。言語は `assets/dcsapplemilk/lang/*.lang`（存在しないMODIDの孤児フォルダ）にのみ存在。
+* **`blockstates/` / `models/block/` 不在、`models/item/` は4ファイルのみ**。登録72ブロック/133アイテムに対して壊滅的に不足。
+* **テクスチャ PNG は十分存在**（`textures/blocks/` に WoodBox/basket/bottle/contents 等、`textures/items/` に食物/道具等）。モデルJSON生成時の参照リソースは揃っている。
+* **data 側は概ね1.20.1形式で正しい**（`data/defeatedcrow/` の tags/recipes/advancements/worldgen/loot_modifiers、`data/c/tags`、`data/forge/tags`）。触る必要なし（recipes/advancements の JSON は WT-D 所有の並行作業と衝突しないよう注意）。
+
+### 9.2 作業範囲（WT-A担当）
+
+| # | 項目 | 対象 | 備考 |
+|---|---|---|---|
+| A1 | lang 正配置+新形式化 | `assets/defeatedcrow/lang/en_us.json` ほか4言語新設、`assets/dcsapplemilk/` 削除 | 1.13+は JSON 形式必須。`.lang` の `tile.`/`item.` プレフィックスは `block.`/`item.` に、key は registry 名（`wood_box` 等）に合わせる |
+| A2 | item model 生成 | `assets/defeatedcrow/models/item/*.json`（133+全ブロックItem分） | registry名 + 対応テクスチャ参照。油/槽等は親モデル `xxx` |
+| A3 | blockstate 生成 | `assets/defeatedcrow/blockstates/*.json` | registry名ごと1ファイル、variants に model 指定 |
+| A4 | block model 生成 | `assets/defeatedcrow/models/block/*.json` | `textures/blocks/*.png` を参照 |
+| A5 | 記号: 既存 `assets/defeatedcrow/models/item/` は例として流用（`apple_tart.json`/`base_soup_bowl.json`/`food_base.json` を親モデルや雛形に） | — | テクスチャ名と registry 名の対応は別途マッピングが必要（例 `toffyapple.png`↔registry `toffy_apple`） |
+
+### 9.3 検証
+
+* `pwsh -File scripts/lint-migration.ps1 -Check wta` 既存ルール維持（コード側の回帰なし）
+* `grep -rl "assets/dcsapplemilk" src/main/resources` → 0件（孤児フォルダ除去）
+* 全 registry 名 × 各 asset 存在チェック: `ModBlocks/ModItems` の `register("xxx")` に対し `models/item/xxx.json` + `blockstates/xxx.json` + `models/block/xxx.json` が存在（Wat-A 用スクリプトで機械生成推奨）
+* 最終 `dev` で `./gradlew runData` + `./gradlew build`（WT-0/他WTと協調）
+
+### 9.4 WT-A 用指示プロンプト（コピペ用 — 詳細は `.opencode/agent/wt-a-assets.md`）
+
+```
+あなたは WT-A (Blocks+Items) の資産担当です。所有: assets/defeatedcrow/(lang|blockstates|models)/** の生成と、孤児 assets/dcsapplemilk/** の削除です。
+禁止: コード（common/block/**/common/item/** は変更しない）、data/**（recipes/advancements JSON は WT-D 所有と並行で触らない）、assets/defeatedcrow/textures の既存 PNG は残す。
+方式（1.20.1 必須）:
+1. lang は assets/defeatedcrow/lang/{en_us,ja_jp,zh_cn,zh_tw}.json の JSON 形式。既存 .lang の key を registry 名（ModBlocks/ModItems の register("xxx")）に合わせ新形式へ変換。dtile./item. は block./item. へ。src/main/resources/assets/dcsapplemilk/ は削除。
+2. 全 item/block に models/item/*.json, blockstates/*.json, models/block/*.json を registry 名ごとに生成。textures/blocks/*.png と textures/items/*.png を参照（存在するテクスチャと registry 名の対応は scripts/ か手作業でマッピング）。
+3. namespace は defeatedcrow（MODID の DCsAppleMilk は assets 直下のルート名ではない）。pack.mcmeta は pack_format 15 維持。
+検証: pwsh -File scripts/lint-migration.ps1 -Check wta が PASS、grep -rl "assets/dcsapplemilk" が0件、registry 名×model/blockstate が全ペア存在するまで。
+```
+
+### 9.5 注意事項
+
+* `assets/defeatedcrow/sounds.json` と `sounds/` は現状問題なし（参照パス `defeatedcrow:items/xxx` が実在ファイルと一致）。触らない。
+* `data/c/tags` / `data/forge/tags` / `data/defeatedcrow/tags` は WT-0/WT-D が生成・所有。WT-A は変更しない（参照先 `defeatedcrow:filled_cup` 等は registry に実在確認済み）。
+* ブロックは 72 個中 油/液体等 `LiquidBlock`（`block_vegi_oil`/`block_camellia_oil`）はモデル不要系、`TeaMaker`/`Processor` 等 TESR 系は通常モデルでよいか要判断（WT-C の BER 実装と整合）。
+* 生成は WT-A 作業内で完結させる。大量ファイル生成のため、レジストリ名の機械抽出+雛形埋め込みのスクリプト（`scripts/gen_models.ps1` 等、WT-A が新設）を推奨。
+
+---
+
+## 10. コード面 1.20.1 移行リスク洗い出し — 2026-08-24
+
+> 調査: registry配線 / Fluid / Entity / BlockEntity / CreativeTab / ClientRender / Network / handler を実コードで精査。`compileJava` は非Gradle環境では `net.minecraft` 未解決3295件だが、多くは分蒸発のJDK検証起因。以下は**構造的問題（実行時に確実に壊れる/未実装）**。
+
+### 10.1 重大（配線漏れ = 実行時無機能）
+
+| # | 問題 | 場所 | 影響 | 所有者 |
+|---|---|---|---|---|
+| P1 | `ModBiomeModifiers.MODIFIERS` が `DCsAppleMilk.java:40-48` に **未register**（`ModBiomeModifiers.java` に DR はあるが `register(modBus)` 行が無い） | `common/DCsAppleMilk.java` / `common/registry/ModBiomeModifiers.java` | 世界生成（tea/yuzu tree, clam）が**一切スポーンしない**。JSON/DR は正しいのに DB がロードされない | WT0（1行追加）／WT-B |
+| P2 | `ModRecipes.RECIPE_TYPES` + `RECIPE_SERIALIZERS` **未register** | `common/DCsAppleMilk.java` / `common/registry/ModRecipes.java` | 自作レシピ（Tea/Ice/Pan/Processor等）が**全滅** | WT-D（進行中・配線要確認） |
+| P3 | `ModEntities.java` が **stub 1個のみ**（`PLACEABLE_ALCOHOL_CUP` = `(et,lvl)->null` を返す可撹） VS `common/entity/` に実クラス7個 | `common/registry/ModEntities.java` | 投射物・食べ物Entity・メロンボム（`EntityMelonBomb`/`EntitySilkyMelon`/`EntityYuzuBullet`/`EntityAnchorMissile`/`EntityKinoko` 等）が**スポーン不可**。`EntityYuzuBullet.java:38` は `ModEntities.YUZU_BULLET` 参照だが**フィールド無し**（コンパイル不能） | WT-B |
+| P4 | `ModBlockEntities` 全49が `Blocks.STONE` に紐付け（`Builder.of(X::new, Blocks.STONE)`） | `common/registry/ModBlockEntities.java` | BE と実ブロックの対応が不正（ブロック設置で正しい BE 型を解決できない恐れ） | WT-B |
+| P5 | `ModFluids` の `block()`/`bucket()` が `Blocks.AIR`/`Items.AIR` 指定 | `common/registry/ModFluids.java` `vegOilProps/camOilProps/brewingProps` | 油・醸造フルイドに**ブロック/バケツが無い**。`block_vegi_oil`/`block_camellia_oil`（ModBlocks）と未連結 | WT-B |
+
+### 10.2 大（実装欠落 = ゲーム要素消失）
+
+| # | 問題 | 場所 | 影響 | 所有者 |
+|---|---|---|---|---|
+| P6 | `client/ModClientEvents.java` の BER 登録38 / EntityRender 23 / RenderType cutout 44 が**全コメントアウト** | `client/ModClientEvents.java:22-60` | ブロックエンティティ特殊描画・全エンティティ描画・cutout 透過が**欠落**（レンダラークラスは `client/model/tileentity/*` ・ `client/entity/*` に実在） | WT-C |
+| P7 | `handler/RegisterOreHandler.java` が旧 `OreDictionary`/`ItemStack`/`DCsAppleMilk` 静的参照のまま | `handler/RegisterOreHandler.java` | 未移行。タグ登録（`TagKey` + datapack JSON）へ要置換 | WT-B |
+| P8 | `ModCreativeTabs` は5タブ登録だが `displayItems` が各タブ**数個のみ**列挙 | `common/registry/ModCreativeTabs.java` | 全133アイテムの大半が**クリエイティブタブに出ず入手不可** | WT-A |
+
+### 10.3 確認済み良好（触らない）
+
+* **ネットワーク**: `network/DCsNetworkHandler.java` が `SimpleChannel`（1.20.1 正規）+ `MessageCharmWarp` 正常。
+* **FluidType**: `ModFluidTypes` が `FluidType.Properties` 使用（legacy `FluidAttributes` ではない）。ただし P5 の接続待ち。
+* **worldgen JSON**: configured/placed feature + `forge/biome_modifier`（add_tea_tree/clam/yuzu）は 1.18+ 形式で正しい。P1 配線のみ欠如。
+
+### 10.4 対応手順メモ
+
+* P1/P2 は `DCsAppleMilk.java` の登録リスト（`ModBlocks.BLOCKS.register(modBus);` 等が並ぶ箇所）に `ModBiomeModifiers.MODIFIERS.register(modBus);` / `ModRecipes.RECIPE_TYPES.register(modBus);` + `ModRecipes.RECIPE_SERIALIZERS.register(modBus);` を追加（WT0 が、各 WT の DR 追加後に1箇所で束ねる）。
+* P3 は `common/entity/*` 7クラスを `ModEntities` に正規登録（`EntityType.Builder` に実ファクトリを渡す）。キー名は `EntityYuzuBullet.java:38` の参照（`YUZU_BULLET`）等に合わせる。
+* P4 は `Builder.of(X::new, <実ブロック>.get())` へ修正。Basket/BowlRack 等は対応ブロックを渡す。
+* P5 は実際の `LiquidBlock`（`ModBlocks` 由来）と `BucketItem`/`FluidBucket` へ結線。
+* P6 はコメントアウト済み `event.registerBlockEntityRenderer(...)` / `event.registerEntityRenderer(...)` / `ItemBlockRenderTypes.setRenderLayer(...)` を復活（WT-C、レンダラークラスは実在）。
+* P8（WT-A）は `ModCreativeTabs` の各 `displayItems` に全アイテム/ブロックの `out.accept(...)` / `out.acceptAll(...)` を列挙（既存 5 タブ構成を維持）。
+* 検証は各 own で `pwsh -File scripts/lint-migration.ps1 -Check <wt>` を維持しつつ、最後に `dev` で `runData` + `build`。

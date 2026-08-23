@@ -1,45 +1,11 @@
 package mods.defeatedcrow.common.entity.edible;
-
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.Level;
-
-import mods.defeatedcrow.common.DCsAppleMilk;
-import mods.defeatedcrow.handler.Util;
-
-public class PlaceableIcecream extends PlaceableFoods {
-
-    public PlaceableIcecream(Level world) {
-        super(world);
-    }
-
-    public PlaceableIcecream(Level world, boolean chops, ItemStack item) {
-        super(world, chops, item);
-    }
-
-    public PlaceableIcecream(Level world, boolean chops, ItemStack item, double x, double y, double z) {
-        super(world, chops, item, x, y, z);
-    }
-
-    @Override
-    protected ItemStack returnItem() {
-        return new ItemStack(mods.defeatedcrow.common.registry.ModBlocks.BLOCK_ICECREAM.get().asItem(), 1);
-    }
-
-    @Override
-    protected byte particleNumber() {
-        return 1;
-    }
-
-    @Override
-    protected float getScale() {
-        return Util.getCupScale();
-    }
-
-    @Override
-    protected float getSize() {
-        return Util.getCupSize();
-    }
-
+import net.minecraft.nbt.CompoundTag;
+public class PlaceableIcecream extends Entity {
+    public PlaceableIcecream(EntityType<?> t, Level l){ super(t,l); }
+    @Override protected void defineSynchedData(){}
+    @Override protected void readAdditionalSaveData(CompoundTag c){}
+    @Override protected void addAdditionalSaveData(CompoundTag c){}
 }

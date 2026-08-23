@@ -69,7 +69,7 @@ public class EntityStunEffect extends Entity {
 
     @Override
     public void tick() {
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             --this.remain;
 
             if (this.target == null) {
@@ -90,12 +90,12 @@ public class EntityStunEffect extends Entity {
 
                     if (DCsAppleMilk.debugMode) {
                         for (int var1 = 0; var1 < 2; ++var1) {
-                            double var2 = this.level.random.nextDouble() * (double) this.getBbWidth() * 2.0D;
-                            double var4 = this.level.random.nextDouble() * Math.PI * 1.0D;
+                            double var2 = this.level().random.nextDouble() * (double) this.getBbWidth() * 2.0D;
+                            double var4 = this.level().random.nextDouble() * Math.PI * 1.0D;
                             double var6 = this.getX() + var2 * Math.sin(var4);
-                            double var8 = this.getY() + (double) this.getBbHeight() * this.level.random.nextDouble();
+                            double var8 = this.getY() + (double) this.getBbHeight() * this.level().random.nextDouble();
                             double var10 = this.getZ() + var2 * Math.cos(var4);
-                            this.level.addParticle(net.minecraft.core.particles.ParticleTypes.EXPLOSION, var6, var8, var10, 0.0D, 0.0D, 0.0D);
+                            this.level().addParticle(net.minecraft.core.particles.ParticleTypes.EXPLOSION, var6, var8, var10, 0.0D, 0.0D, 0.0D);
                         }
                     }
                 } else {
@@ -106,24 +106,8 @@ public class EntityStunEffect extends Entity {
     }
 
     @Override
-    public void discard() {
-        if (this.entityTasks != null && this.target instanceof Mob mob) {
-            // 1.20.1: GoalSelector restore removed
-            // ObfuscationReflectionHelper.setPrivateValue(LivingEntity.class, this.target, this.entityTasks, 7);
-            mob.setTarget(null);
-            mob.setLastHurtByMob(null);
-        }
-        super.discard();
-    }
-
-    @Override
     public boolean canBeCollidedWith() {
         return false;
-    }
-
-    @Override
-    public float getBrightness(float var1) {
-        return 1.0f;
     }
 
 }

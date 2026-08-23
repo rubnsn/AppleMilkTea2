@@ -141,10 +141,10 @@ public class BlockTeaMakerNext extends Block implements EntityBlock {
      * 
      *         if (itemstack == null) {
      *             AMTLogger.debugInfo("Checking tile... ");
-     *             if (tileItem != null) AMTLogger.debugInfo("tile hold item: " + tileItem.getDisplayName());
+     *             if (tileItem != null) AMTLogger.debugInfo("tile hold item: " + tileItem.getHoverName());
      *             if (tile.getOutput() != null) AMTLogger.debugInfo(
      *                 "tile hold recipe: " + tile.getOutput()
-     *                     .getDisplayName());
+     *                     .getHoverName());
      *             if (tile.getMilked()) AMTLogger.debugInfo("milk recipe");
      *             AMTLogger.debugInfo("tile remaining: " + tile.getRemain());
      *             AMTLogger.debugInfo("tile texture: " + tile.getCurrentTexture());

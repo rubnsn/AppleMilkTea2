@@ -1,28 +1,2 @@
 package mods.defeatedcrow.event;
-
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
-
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import mods.defeatedcrow.common.AMTLogger;
-import mods.defeatedcrow.plugin.LoadModHandler;
-
-public class EatFoodEvent {
-
-    @SubscribeEvent
-    public void eatFinishEvent(PlayerUseItemEvent.Finish event) {
-        Player player = event.entityPlayer;
-        ItemStack food = event.item;
-        ItemStack target = LoadModHandler.getItem("DCsBakedApple");
-        AMTLogger.debugInfo("now twsting");
-
-        if (player != null && food != null && target != null) {
-            AMTLogger.debugInfo("this item name : " + food.getDisplayName());
-            if (food.getItem() == target.getItem()) {
-                AMTLogger.debugInfo("result true");
-            }
-        }
-    }
-
-}
+public class EatFoodEvent {}
