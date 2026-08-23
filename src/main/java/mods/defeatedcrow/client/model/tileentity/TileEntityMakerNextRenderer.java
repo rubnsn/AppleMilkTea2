@@ -1,71 +1,49 @@
 package mods.defeatedcrow.client.model.tileentity;
 
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import mods.defeatedcrow.client.model.model.ModelMakerNext;
 import mods.defeatedcrow.common.tile.appliance.TileMakerNext;
 
-@SideOnly(Side.CLIENT)
-public class TileEntityMakerNextRenderer extends TileEntitySpecialRenderer {
+/**
+ * 1.20.1 port of the 1.7.10 TESR (was: extends the legacy 1.7.10 TESR + GL11 immediate mode).
+ *
+ * <p>Original geometry: {@link mods.defeatedcrow.client.model.model.ModelMakerNext}
+ * (ModelBase-based, owned by client/model/model - not yet converted to LayerDefinition/ModelPart).</p>
+ */
+public class TileEntityMakerNextRenderer implements BlockEntityRenderer<TileMakerNext> {
 
-    private static ResourceLocation makerTex = new ResourceLocation("defeatedcrow:textures/blocks/contents_milk.png");
-    private static final ResourceLocation emptyTex = new ResourceLocation(
+    private static final ResourceLocation MAKER_TEX = new ResourceLocation(
+        "defeatedcrow:textures/blocks/contents_milk.png");
+    private static final ResourceLocation EMPTY_TEX = new ResourceLocation(
         "defeatedcrow:textures/blocks/contents_water.png");
-    public static TileEntityMakerNextRenderer makerRenderer;
-    private ModelMakerNext nextModel = new ModelMakerNext();
 
-    public void renderTileEntityMakerAt(TileMakerNext par1Tile, double par2, double par4, double par6, float par8) {
-        this.setRotation((float) par2, (float) par4, (float) par6, par1Tile);
-    }
 
-    /**
-     * Associate a TileEntityRenderer with this TileEntitySpecialRenderer
-     */
-    public void setTileEntityRenderer(TileEntityRendererDispatcher par1TileEntityRenderer) {
-        super.func_147497_a(par1TileEntityRenderer);
-        makerRenderer = this;
-    }
+    private final BlockEntityRendererProvider.Context context;
 
-    public void setRotation(float par1, float par2, float par3, TileMakerNext tile) {
-        ModelMakerNext model = this.nextModel;
-        String tex = tile.getCurrentTexture();
-        boolean hasItem = (tile.getItemStack() != null);
-        boolean isMilked = tile.getMilked();
-
-        makerTex = new ResourceLocation(tex);
-
-        this.bindTexture(makerTex);
-
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        if (isMilked) {
-            GL11.glColor4f(2.0F, 2.0F, 2.0F, 1.0F);
-        } else {
-
-            GL11.glColor4f(1.2F, 1.2F, 1.2F, 0.9F);
-        }
-        GL11.glTranslatef((float) par1 + 0.5F, (float) par2 + 1.5F, (float) par3 + 0.5F);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef((float) 0.0F, 0.0F, -1.0F, 0.0F);
-        model.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+    public TileEntityMakerNextRenderer(BlockEntityRendererProvider.Context context) {
+        this.context = context;
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
-        this.renderTileEntityMakerAt((TileMakerNext) par1TileEntity, par2, par4, par6, par8);
+    public void render(TileMakerNext tile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+            int packedLight, int packedOverlay) {
+        // Original rebuilt makerTex at runtime depending on the filled liquid (milk/water).
+        // Old GL11 chain: translate(x + 0.5, y + 1.5, z + 0.5); scale(1, -1, -1);
+        // rotate(yaw from direction byte/metadata around Y); bindTexture(...);
+        // model.render(null, 0, 0, 0, yaw, 0, 0.0625F);
+        poseStack.pushPose();
+        poseStack.translate(0.5D, 1.5D, 0.5D);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+
+        // TODO: restore ModelMakerNext rendering via
+        // VertexConsumer vc = bufferSource.getBuffer(Sheets.cutoutBlockSheet());
+        // (blended/translucent parts: Sheets.translucentCullBlockSheet()).
+        poseStack.popPose();
     }
 }

@@ -1,136 +1,59 @@
 package mods.defeatedcrow.plugin;
 
-import net.minecraft.init.*;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.ModList;
+
 import mods.defeatedcrow.common.AMTLogger;
-import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.handler.Util;
 
+/**
+ * ExBucket ("AndanteMod_ExBucket") 連携。
+ *
+ * 1.20.1対応版なし (Omit確定) だが、外部MOD APIへの直接依存がなく
+ * 文字列lookupのみのため ModList ガード付きの発見処理として維持する。
+ *
+ * 1.20.1移行により、GameRegistry.addRecipe / ShapedOreRecipe / ShapelessOreRecipe
+ * によるレシピ登録は全て削除した (レシピは recipe/ 担当、datapack駆動へ移行)。
+ */
 public class LoadExBucketPlugin {
+
+    // TODO: 実modID要確認 (旧 Util.getModItem の第1引数はmod名)
+    private static final String EXBUCKET_MODID = "andexbucket";
 
     public static ItemStack woodenBucketMilk;
     public static ItemStack goldenBucketMilk;
 
     public void load() {
+        if (!ModList.get().isLoaded(EXBUCKET_MODID)) {
+            return;
+        }
         try {
-            Item item = Util.getModItem("AndanteMod_ExBucket", "ExBucket:WoodenBucketMilk");
+            Item item = Util.getModItem("AndanteMod_ExBucket", "WoodenBucketMilk");
             if (item != null) {
-                woodenBucketMilk = new ItemStack(item, 1, 0);
-                if (LoadModHandler.registerModItems("containerMilk", woodenBucketMilk)) {
-                    AMTLogger.debugInfo("Succeeded to get WoodenBucketMIlk");
-                }
-
-                GameRegistry.addRecipe(
-                    new ShapelessOreRecipe(
-                        new ItemStack(DCsAppleMilk.mincedFoods, 1, 1),
-                        new Object[] { new ItemStack(DCsAppleMilk.DCgrater, 1, 32767), new ItemStack(Items.fish, 1),
-                            new ItemStack(Items.carrot, 1), new ItemStack(Items.potato, 1), woodenBucketMilk }));
-
-                GameRegistry.addRecipe(
-                    new ShapelessOreRecipe(
-                        new ItemStack(DCsAppleMilk.mincedFoods, 1, 6),
-                        new Object[] { "toolGrater", new ItemStack(Blocks.pumpkin, 1, 0), woodenBucketMilk }));
-
-                GameRegistry.addRecipe(
-                    new ShapelessOreRecipe(
-                        new ItemStack(DCsAppleMilk.mincedFoods, 1, 8),
-                        new Object[] { "toolGrater", woodenBucketMilk, "dustSugar", new ItemStack(Items.dye, 9, 3),
-                            new ItemStack(Items.dye, 9, 3) }));
-
-                GameRegistry.addRecipe(
-                    new ShapelessOreRecipe(
-                        new ItemStack(DCsAppleMilk.gratedApple, 1, 4),
-                        new Object[] { new ItemStack(DCsAppleMilk.mincedFoods, 1, 8), woodenBucketMilk }));
-
-                GameRegistry.addRecipe(
-                    new ShapelessOreRecipe(
-                        new ItemStack(DCsAppleMilk.condensedMIlk, 1, 0),
-                        new Object[] { woodenBucketMilk, "dustSugar" }));
-
-                GameRegistry.addRecipe(
-                    new ShapedOreRecipe(
-                        new ItemStack(DCsAppleMilk.itemLargeBottle, 1, (112 + 8)),
-                        new Object[] { "XXX", "XZX", "XXX", Character.valueOf('Z'),
-                            new ItemStack(DCsAppleMilk.itemLargeBottle, 1, 0), Character.valueOf('X'),
-                            woodenBucketMilk }));
-
-                // ピニャコラーダのアナザーレシピも追加
-                ItemStack gummiPine = LoadModHandler.getItem("pineapple");
-
-                if (gummiPine != null) {
-                    GameRegistry.addRecipe(
-                        new ShapelessOreRecipe(
-                            new ItemStack(DCsAppleMilk.cocktail, 1, 6),
-                            new Object[] { "bottleRum", gummiPine, woodenBucketMilk, "foodCrushedIce" }));
-                }
-
+                woodenBucketMilk = new ItemStack(item);
+                LoadModHandler.registerModItems("containerMilk", woodenBucketMilk);
+                AMTLogger.debugInfo("Succeeded to get WoodenBucketMIlk");
             }
-            Item item2 = Util.getModItem("AndanteMod_ExBucket", "ExBucket:GoldenBucketMilk");
+
+            Item item2 = Util.getModItem("AndanteMod_ExBucket", "GoldenBucketMilk");
             if (item2 != null) {
-                goldenBucketMilk = new ItemStack(item2, 1, 32767);
-                if (LoadModHandler.registerModItems("containerMilk", goldenBucketMilk)) {
-                    AMTLogger.debugInfo("Succeeded to get GoldenBucketMilk");
-                }
-
-                GameRegistry.addRecipe(
-                    new ShapelessOreRecipe(
-                        new ItemStack(DCsAppleMilk.mincedFoods, 1, 1),
-                        new Object[] { "toolGrater", new ItemStack(Items.fish, 1), new ItemStack(Items.carrot, 1),
-                            new ItemStack(Items.potato, 1), goldenBucketMilk }));
-
-                GameRegistry.addRecipe(
-                    new ShapelessOreRecipe(
-                        new ItemStack(DCsAppleMilk.mincedFoods, 1, 6),
-                        new Object[] { "toolGrater", new ItemStack(Blocks.pumpkin, 1, 0), goldenBucketMilk }));
-
-                GameRegistry.addRecipe(
-                    new ShapelessOreRecipe(
-                        new ItemStack(DCsAppleMilk.mincedFoods, 1, 8),
-                        new Object[] { "toolGrater", goldenBucketMilk, "dustSugar", new ItemStack(Items.dye, 9, 3),
-                            new ItemStack(Items.dye, 9, 3) }));
-
-                GameRegistry.addRecipe(
-                    new ShapelessOreRecipe(
-                        new ItemStack(DCsAppleMilk.gratedApple, 1, 4),
-                        new Object[] { new ItemStack(DCsAppleMilk.mincedFoods, 1, 8), goldenBucketMilk }));
-
-                GameRegistry.addRecipe(
-                    new ShapelessOreRecipe(
-                        new ItemStack(DCsAppleMilk.condensedMIlk, 1, 0),
-                        new Object[] { goldenBucketMilk, "dustSugar" }));
-
-                GameRegistry.addRecipe(
-                    new ShapedOreRecipe(
-                        new ItemStack(DCsAppleMilk.itemLargeBottle, 1, (112 + 8)),
-                        new Object[] { "XXX", "XZX", "XXX", Character.valueOf('Z'),
-                            new ItemStack(DCsAppleMilk.itemLargeBottle, 1, 0), Character.valueOf('X'),
-                            goldenBucketMilk }));
-
-                // ピニャコラーダのアナザーレシピも追加
-                ItemStack gummiPine = LoadModHandler.getItem("pineapple");
-
-                if (gummiPine != null) {
-                    GameRegistry.addRecipe(
-                        new ShapelessOreRecipe(
-                            new ItemStack(DCsAppleMilk.cocktail, 1, 6),
-                            new Object[] { "bottleRum", gummiPine, goldenBucketMilk, "foodCrushedIce" }));
-                }
+                goldenBucketMilk = new ItemStack(item2);
+                LoadModHandler.registerModItems("containerMilk", goldenBucketMilk);
+                AMTLogger.debugInfo("Succeeded to get GoldenBucketMilk");
             }
-            // 以下は別のレシピ用の水バケツ
-            Item item3 = Util.getModItem("AndanteMod_ExBucket", "ExBucket:WoodenBucketWater");
+
+            // 別のレシピ用の水バケツ
+            Item item3 = Util.getModItem("AndanteMod_ExBucket", "WoodenBucketWater");
             if (item3 != null) {
-                if (LoadModHandler.registerModItems("containerWater", new ItemStack(item3, 1, 0))) {
+                if (LoadModHandler.registerModItems("containerWater", new ItemStack(item3))) {
                     AMTLogger.debugInfo("Succeeded to get WoodenBucketWater");
                 }
             }
-            Item item4 = Util.getModItem("AndanteMod_ExBucket", "ExBucket:GoldenBucketWater");
+            Item item4 = Util.getModItem("AndanteMod_ExBucket", "GoldenBucketWater");
             if (item4 != null) {
-                if (LoadModHandler.registerModItems("containerWater", new ItemStack(item4, 1, 32767))) {
+                if (LoadModHandler.registerModItems("containerWater", new ItemStack(item4))) {
                     AMTLogger.debugInfo("Succeeded to get GoldenBucketWater");
                 }
             }

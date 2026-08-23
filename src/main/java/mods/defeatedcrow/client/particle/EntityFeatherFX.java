@@ -1,44 +1,61 @@
 package mods.defeatedcrow.client.particle;
 
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.world.World;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.core.particles.SimpleParticleType;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+/**
+ * 1.20.1 port of the 1.7.10 "feather" particle (was {@code EntityFX}, FX layer 2).
+ *
+ * <p>
+ * Lifetime is passed by the spawner plus random 0-2 ticks; motion damps at 0.90 (X/Z) and 0.95 (Y) per
+ * tick — the feather-like slow fall. Spawned from WT-B code via {@code ModParticleTypes.FEATHER}.
+ */
+public class EntityFeatherFX extends TextureSheetParticle {
 
-@SideOnly(Side.CLIENT)
-public class EntityFeatherFX extends EntityFX {
-
-    public EntityFeatherFX(World par1World, double par2, double par4, double par6, double par8, double par10,
-        double par12, int time) {
-        super(par1World, par2, par4, par6);
-        this.motionX = par8;
-        this.motionY = par10;
-        this.motionZ = par12;
-        this.noClip = false;
-        this.particleMaxAge = time + par1World.rand.nextInt(3);
-        this.particleScale = 1.5F;
+    protected EntityFeatherFX(ClientLevel level, double x, double y, double z, double vx, double vy, double vz,
+        int time, SpriteSet sprites) {
+        super(level, x, y, z, vx, vy, vz);
+        this.xd = vx;
+        this.yd = vy;
+        this.zd = vz;
+        this.lifetime = time + this.random.nextInt(3);
+        this.quadSize = 0.3F;
+        this.setSprite(sprites.get(this.random));
     }
 
     @Override
-    public void onUpdate() {
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
+    public void tick() {
+        this.xo = this.x;
+        this.yo = this.y;
+        this.zo = this.z;
 
-        if (this.particleAge++ >= this.particleMaxAge) {
-            this.setDead();
+        if (this.age++ >= this.lifetime) {
+            this.remove();
+            return;
         }
 
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
-        this.motionX *= 0.90D;
-        this.motionY *= 0.95D;
-        this.motionZ *= 0.90D;
+        this.move(this.xd, this.yd, this.zd);
+        this.xd *= 0.90D;
+        this.yd *= 0.95D;
+        this.zd *= 0.90D;
     }
 
-    @Override
-    public int getFXLayer() {
-        return 2;
-    }
+    public static class Provider implements ParticleProvider<SimpleParticleType> {
 
+        private final SpriteSet sprites;
+
+        public Provider(SpriteSet sprites) {
+            this.sprites = sprites;
+        }
+
+        @Override
+        public EntityFeatherFX createParticle(SimpleParticleType type, ClientLevel level, double x, double y,
+            double z, double vx, double vy, double vz) {
+            // 旧実装の time 引数相当: 固定値 30 + ランダムで代替（スポナー側の引数はSimpleParticleTypeに載らない）
+            return new EntityFeatherFX(level, x, y, z, vx, vy, vz, 30, this.sprites);
+        }
+    }
 }

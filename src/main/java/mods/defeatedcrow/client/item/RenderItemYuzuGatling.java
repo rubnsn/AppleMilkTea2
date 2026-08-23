@@ -1,117 +1,28 @@
 package mods.defeatedcrow.client.item;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
+import net.minecraft.resources.ResourceLocation;
 
-import org.lwjgl.opengl.GL11;
+/**
+ * 1.20.1 stub for the 1.7.10 {@code IItemRenderer} of the Yuzu Gatling item.
+ *
+ * <p>
+ * The legacy renderer drew {@code ModelYuzuGatling} with an additive second pass
+ * ({@code defeatedcrow:textures/entity/yuzugatling.png}). ModelBase does not exist on 1.20.1, so the
+ * render path is intentionally reduced to a JSON-model placeholder:
+ *
+ * <ul>
+ * <li>Short term: WT-A resources provides {@code assets/dcsapplemilk/models/item/yuzu_gatling.json};
+ * the held-weapon pose goes into the JSON {@code display} tag.</li>
+ * <li>Long term: implement Forge's {@code IClientItemExtensions} returning a
+ * {@code BlockEntityWithoutLevelRenderer} delegating to the ported model, hooked via
+ * {@code Item#initializeClient(...)} in the WT-A item class.</li>
+ * </ul>
+ */
+@net.minecraftforge.api.distmarker.OnlyIn(net.minecraftforge.api.distmarker.Dist.CLIENT)
+public final class RenderItemYuzuGatling {
 
-import cpw.mods.fml.client.FMLClientHandler;
-import mods.defeatedcrow.client.model.model.ModelYuzuGatling;
+    /** Kept for the future BEWLR port; same texture as 1.7.10. */
+    public static final ResourceLocation TEXTURE = new ResourceLocation("defeatedcrow", "textures/entity/yuzugatling.png");
 
-public class RenderItemYuzuGatling implements IItemRenderer {
-
-    private static final ResourceLocation resource = new ResourceLocation(
-        "defeatedcrow:textures/entity/yuzugatling.png");
-    private ModelYuzuGatling model = new ModelYuzuGatling();
-
-    @Override
-    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return canRendering(item, type);
-    }
-
-    private boolean canRendering(ItemStack item, ItemRenderType type) {
-        switch (type) {
-            case ENTITY:
-            case EQUIPPED:
-            case EQUIPPED_FIRST_PERSON:
-            case INVENTORY:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        switch (helper) {
-            case INVENTORY_BLOCK:
-            case ENTITY_BOBBING:
-            case ENTITY_ROTATION:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        if (canRendering(item, type)) {
-
-            GL11.glPushMatrix();
-            /*
-             * 描画する種類によって回転, 平行移動を行う.
-             */
-            switch (type) {
-                case INVENTORY:
-                    glMatrixForRenderInInventory();
-                    break;
-                case EQUIPPED:
-                case EQUIPPED_FIRST_PERSON:
-                    glMatrixForRenderInEquipped();
-                    break;
-                case ENTITY:
-                    glMatrixForRenderInEntity();
-                default:
-                    break;
-            }
-            /*
-             * リソースをTextureMangerにbindし, modelのrenderを呼んで描画する.
-             */
-            FMLClientHandler.instance()
-                .getClient()
-                .getTextureManager()
-                .bindTexture(resource);
-            this.model.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-            this.model.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GL11.glColor4f(2.0F, 2.0F, 2.0F, 0.5F);
-            this.model.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glDisable(GL11.GL_BLEND);
-
-            GL11.glPopMatrix();
-        }
-    }
-
-    /*
-     * インベントリ内での描画位置の調整.
-     */
-    private void glMatrixForRenderInInventory() {
-        GL11.glRotatef(-180F, 1.0F, 0.0F, 0.0F);
-        GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-    }
-
-    /*
-     * 装備状態での描画位置の調整.
-     */
-    private void glMatrixForRenderInEquipped() {
-        GL11.glRotatef(-270F, 1.0F, 0.0F, 0.0F);
-        GL11.glRotatef(0F, 0.0F, 0.0F, 1.0F);
-        GL11.glRotatef(-60F, 0.0F, 1.0F, 0.0F);
-        GL11.glScalef(1.1F, 1.1F, 1.1F);
-        GL11.glTranslatef(0.2F, -1.5F, -0.4F);
-    }
-
-    /*
-     * ドロップ状態での描画位置の調整.
-     */
-    private void glMatrixForRenderInEntity() {
-        GL11.glRotatef(-180F, 1.0F, 0.0F, 0.0F);
-        GL11.glTranslatef(0.0F, -1.5F, 0.0F);
-    }
-
+    private RenderItemYuzuGatling() {}
 }

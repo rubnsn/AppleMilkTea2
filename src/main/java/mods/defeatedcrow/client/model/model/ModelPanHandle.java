@@ -1,41 +1,59 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-@SideOnly(Side.CLIENT)
-public class ModelPanHandle extends ModelBase {
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELPANHANDLE) -> new ModelPanHandle(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelPanHandle {
 
-    // fields
-    public ModelRenderer handlea1 = (new ModelRenderer(this, 0, 0)).setTextureSize(32, 32);
-    public ModelRenderer handlea2 = (new ModelRenderer(this, 0, 0)).setTextureSize(32, 32);
-    public ModelRenderer handlea3 = (new ModelRenderer(this, 0, 0)).setTextureSize(32, 32);
-    public ModelRenderer handlea4 = (new ModelRenderer(this, 0, 0)).setTextureSize(32, 32);
+    private final ModelPart root;
+    private final ModelPart handlea1;
+    private final ModelPart handlea2;
+    private final ModelPart handlea3;
+    private final ModelPart handlea4;
 
-    public ModelPanHandle() {
-
-        handlea1.addBox(6F, 0F, -1.5F, 2, 1, 3);
-        handlea1.setRotationPoint(0F, 16F, 0F);
-        handlea2.addBox(-8F, 0F, -1.5F, 2, 1, 3);
-        handlea2.setRotationPoint(0F, 16F, 0F);
-        handlea3.addBox(-1.5F, 0F, 6F, 3, 1, 2);
-        handlea3.setRotationPoint(0F, 16F, 0F);
-        handlea4.addBox(-1.5F, 0F, -8F, 3, 1, 2);
-        handlea4.setRotationPoint(0F, 16F, 0F);
+    public ModelPanHandle(ModelPart root) {
+        this.root = root;
+        this.handlea1 = root.getChild("handlea1");
+        this.handlea2 = root.getChild("handlea2");
+        this.handlea3 = root.getChild("handlea3");
+        this.handlea4 = root.getChild("handlea4");
     }
 
-    public void render(Entity par1Entity, float par2, float par3, float par4, byte par5, float par6, float par7) {
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition handlea1 = partdefinition.addOrReplaceChild("handlea1", CubeListBuilder.create().texOffs(0, 0).addBox(6F, 0F, -1.5F, 2, 1, 3), PartPose.offset(0F, 16F, 0F));
+        PartDefinition handlea2 = partdefinition.addOrReplaceChild("handlea2", CubeListBuilder.create().texOffs(0, 0).addBox(-8F, 0F, -1.5F, 2, 1, 3), PartPose.offset(0F, 16F, 0F));
+        PartDefinition handlea3 = partdefinition.addOrReplaceChild("handlea3", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0F, 6F, 3, 1, 2), PartPose.offset(0F, 16F, 0F));
+        PartDefinition handlea4 = partdefinition.addOrReplaceChild("handlea4", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0F, -8F, 3, 1, 2), PartPose.offset(0F, 16F, 0F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
+    }
+
+
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, byte par5) {
         if (par5 == 0 || par5 == 2) {
-            this.handlea1.render(0.0625F);
-            this.handlea2.render(0.0625F);
+            handlea1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            handlea2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         } else {
-            this.handlea3.render(0.0625F);
-            this.handlea4.render(0.0625F);
+            handlea3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            handlea4.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         }
     }
-
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+        this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+    }
 }

@@ -2,7 +2,7 @@ package mods.defeatedcrow.client.entity;
 
 import java.util.List;
 
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelPart;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -16,6 +16,6 @@ public interface IEdibleRenderRegister {
 
     IEdibleRenderHandler getHandler(ItemStack item);
 
-    void register(ItemStack Item, Class<? extends ModelBase> model, String tex, String glowTex, String cloarTex);
+    void register(ItemStack Item, Class<? extends ModelPart> model, String tex, String glowTex, String cloarTex);
 
 }

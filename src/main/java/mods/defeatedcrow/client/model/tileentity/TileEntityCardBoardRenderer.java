@@ -1,82 +1,47 @@
 package mods.defeatedcrow.client.model.tileentity;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.tile.TileCardBoard;
 
-@SideOnly(Side.CLIENT)
-public class TileEntityCardBoardRenderer extends TileEntitySpecialRenderer {
+/**
+ * 1.20.1 port of the 1.7.10 TESR (was: extends the legacy 1.7.10 TESR + Tessellator quads).
+ *
+ * <p>Original drew a single textured quad from the old block icon
+ * ({@code DCsAppleMilk.cardboard.getIcon(1, meta)}) on the atlas-bound TextureMap, oriented by
+ * {@code getDirectionByte()} (dir 0/2 vs others), at y offset +0.5 with mirrored Y/Z scale.</p>
+ */
+public class TileEntityCardBoardRenderer implements BlockEntityRenderer<TileCardBoard> {
 
     public static TileEntityCardBoardRenderer boxRenderer;
 
-    public void renderTileEntityBottleAt(TileCardBoard par1Tile, double par2, double par4, double par6, float par8) {
-        this.setRotation(par1Tile, (float) par2, (float) par4, (float) par6);
-    }
+    private final BlockEntityRendererProvider.Context context;
 
-    public void setTileEntityRenderer(TileEntityRendererDispatcher par1TileEntityRenderer) {
-        super.func_147497_a(par1TileEntityRenderer);
+    public TileEntityCardBoardRenderer(BlockEntityRendererProvider.Context context) {
+        this.context = context;
         boxRenderer = this;
     }
 
-    public void setRotation(TileCardBoard tile, float par1, float par2, float par3) {
-        byte meta = (byte) tile.getBlockMetadata();
-        byte dir = tile.getDirectionByte();
-
-        Tessellator tessellator = Tessellator.instance;
-
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glColor4f(2.0F, 2.0F, 2.0F, 1.0F);
-        GL11.glTranslatef((float) par1, (float) par2 + 0.5F, (float) par3);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef(0.0F, 0.0F, 0.0F, 0.0F);
-
-        GL11.glPolygonOffset(-1, -1);
-        GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
-
-        IIcon iicon = DCsAppleMilk.cardboard.getIcon(1, meta);
-        float f14 = iicon.getMinU();
-        float f15 = iicon.getMaxU();
-        float f4 = iicon.getMinV();
-        float f5 = iicon.getMaxV();
-        this.bindTexture(TextureMap.locationBlocksTexture);
-
-        if (dir == 0 || dir == 2) {
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(0.0D, -0.5D, -1.0D, (double) f15, (double) f4);
-            tessellator.addVertexWithUV(1.0D, -0.5D, -1.0D, (double) f14, (double) f4);
-            tessellator.addVertexWithUV(1.0D, -0.5D, 0.0D, (double) f14, (double) f5);
-            tessellator.addVertexWithUV(0.0D, -0.5D, 0.0D, (double) f15, (double) f5);
-            tessellator.draw();
-        } else {
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(0.0D, -0.5D, -1.0D, (double) f14, (double) f4);
-            tessellator.addVertexWithUV(1.0D, -0.5D, -1.0D, (double) f14, (double) f5);
-            tessellator.addVertexWithUV(1.0D, -0.5D, 0.0D, (double) f15, (double) f5);
-            tessellator.addVertexWithUV(0.0D, -0.5D, 0.0D, (double) f15, (double) f4);
-            tessellator.draw();
-        }
-
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
-        GL11.glPopMatrix();
-    }
-
     @Override
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
-        this.renderTileEntityBottleAt((TileCardBoard) par1TileEntity, par2, par4, par6, par8);
+    public void render(TileCardBoard tile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+            int packedLight, int packedOverlay) {
+        poseStack.pushPose();
+        poseStack.translate(0.0D, 0.5D, 0.0D);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+
+        // TODO(WT-A): the quad sprite was the cardboard block icon per metadata. In 1.20.1 fetch it
+        // from the block atlas, e.g.
+        //   TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+        //       .apply(new ResourceLocation("defeatedcrow:block/cardboard_<meta>")).get();
+        //   VertexConsumer vc = bufferSource.getBuffer(Sheets.cutoutBlockSheet());
+        // then emit the quad via vc.vertex(pose, x, y, z).color(u, v, overlay, light, normal).
+        // Orientation (dir 0/2 vs 1/3 UV flip) must be restored together with the blockstate.
+
+        poseStack.popPose();
     }
 }

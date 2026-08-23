@@ -8,7 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+
 import net.minecraftforge.oredict.OreDictionary;
 
 import mods.defeatedcrow.api.appliance.IJawPlate;
@@ -154,7 +154,8 @@ public class ProcessorRecipeRegister implements IProcessorRecipeRegister {
                     if (cont != null && cont.getItem() != next.getItem()) {
                         break;
                     } else {
-                        cont = FluidContainerRegistry.drainFluidContainer(next);
+                        // 旧1.7.10の流体コンテナ排出APIの置換 (Forge capability経由)
+                        cont = drainFluidContainer(next);
                         if (cont != null) {
                             break;
                         }
@@ -163,6 +164,16 @@ public class ProcessorRecipeRegister implements IProcessorRecipeRegister {
             }
 
             return cont == null ? null : cont;
+        }
+
+        private static ItemStack drainFluidContainer(ItemStack container) {
+            net.minecraftforge.fluids.capability.IFluidHandlerItem handler = net.minecraftforge.fluids.FluidUtil
+                .getFluidHandler(container.copy()).orElse(null);
+            if (handler == null || handler.getTanks() == 0) return null;
+            net.minecraftforge.fluids.FluidStack drained = handler.drain(
+                Integer.MAX_VALUE, net.minecraftforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+            if (drained == null || drained.isEmpty()) return null;
+            return handler.getContainer();
         }
 
         @Override

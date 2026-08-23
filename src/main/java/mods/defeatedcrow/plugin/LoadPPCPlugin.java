@@ -1,129 +1,52 @@
 package mods.defeatedcrow.plugin;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+
+import net.minecraftforge.fml.ModList;
 
 import mods.defeatedcrow.handler.Util;
 
+/**
+ * PPC (PeacePlantCraft) 連携。
+ *
+ * 1.20.1対応版なし (Omit確定)。外部MOD APIへの直接依存はなく文字列lookupのみのため、
+ * ModListガード付きの発見処理として維持する。
+ * OreDictionary.registerOre による辞書登録は廃止 (TagKey/datapack 側へ移管)。
+ */
 public class LoadPPCPlugin {
+
+    // TODO: 実modID要確認 (旧 Util.getModItem の第1引数はmod名)
+    private static final String PPC_MODID = "peaceplantcraft";
 
     private LoadPPCPlugin() {}
 
     public static void load() {
-        Item rad = Util.getModItem("peaceplantcraft", "DAIKON");
-        if (rad != null) {
-            ItemStack register = new ItemStack(rad, 1);
-            if (register != null) {
-                LoadModHandler.registerModItems("PPCradish", register);
-                OreDictionary.registerOre("cropRadish", register);
-            }
+        if (!ModList.get().isLoaded(PPC_MODID)) {
+            return;
         }
-        Item gp = Util.getModItem("peaceplantcraft", "PIMAN");
-        if (gp != null) {
-            ItemStack register = new ItemStack(gp, 1);
-            if (register != null) {
-                LoadModHandler.registerModItems("PPCgreenpepper", register);
-                OreDictionary.registerOre("cropGreenPepper", register);
-            }
-        }
-        Item tom = Util.getModItem("peaceplantcraft", "TOMATO");
-        if (tom != null) {
-            ItemStack register = new ItemStack(tom, 1);
-            if (register != null) {
-                LoadModHandler.registerModItems("PPCtomato", register);
-                OreDictionary.registerOre("cropTomato", register);
-            }
-        }
-        Item ric = Util.getModItem("peaceplantcraft", "KOME");
-        if (ric != null) {
-            ItemStack register = new ItemStack(ric, 1);
-            if (register != null) {
-                LoadModHandler.registerModItems("PPCrice", register);
-                OreDictionary.registerOre("cropRice", register);
-            }
-        }
-        Item let = Util.getModItem("peaceplantcraft", "RETASU");
-        if (let != null) {
-            ItemStack register = new ItemStack(let, 1);
-            if (register != null) {
-                LoadModHandler.registerModItems("PPClettuce", register);
-                OreDictionary.registerOre("cropLettuce", register);
-            }
-        }
-        Item tur = Util.getModItem("peaceplantcraft", "KABU");
-        if (tur != null) {
-            ItemStack register = new ItemStack(tur, 1);
-            if (register != null) {
-                LoadModHandler.registerModItems("PPCturnip", register);
-                OreDictionary.registerOre("cropTurnip", register);
-            }
-        }
-        Item nap = Util.getModItem("peaceplantcraft", "HAKUSAI");
-        if (nap != null) {
-            ItemStack register = new ItemStack(nap, 1);
-            if (register != null) {
-                LoadModHandler.registerModItems("PPCnapacabbage", register);
-                OreDictionary.registerOre("cropNapaCabbage", register);
-            }
-        }
-        Item oni = Util.getModItem("peaceplantcraft", "TAMANEGI");
-        if (oni != null) {
-            ItemStack register = new ItemStack(oni, 1);
-            if (register != null) {
-                LoadModHandler.registerModItems("PPConion", register);
-                OreDictionary.registerOre("cropOnion", register);
-            }
-        }
-        Item gar = Util.getModItem("peaceplantcraft", "NINNIKU");
-        if (gar != null) {
-            ItemStack register = new ItemStack(gar, 1);
-            if (register != null) {
-                LoadModHandler.registerModItems("PPCgarlic", register);
-                OreDictionary.registerOre("cropGarlic", register);
-            }
-        }
-        Item soy = Util.getModItem("peaceplantcraft", "EDAMAME");
-        if (soy != null) {
-            ItemStack register = new ItemStack(soy, 1);
-            if (register != null) {
-                LoadModHandler.registerModItems("PPsoy", register);
-                OreDictionary.registerOre("cropSoybeans", register);
-                OreDictionary.registerOre("cropEdamanme", register);
-            }
-        }
-        Item lee = Util.getModItem("peaceplantcraft", "NEGI");
-        if (lee != null) {
-            ItemStack register = new ItemStack(lee, 1);
-            if (register != null) {
-                LoadModHandler.registerModItems("PPleek", register);
-                OreDictionary.registerOre("cropLeek", register);
-            }
-        }
-        Item cab = Util.getModItem("peaceplantcraft", "KYABETSU");
-        if (cab != null) {
-            ItemStack register = new ItemStack(cab, 1);
-            if (register != null) {
-                LoadModHandler.registerModItems("PPcabbage", register);
-                OreDictionary.registerOre("cropCabbage", register);
-            }
-        }
-        Item cuc = Util.getModItem("peaceplantcraft", "KYURI");
-        if (cuc != null) {
-            ItemStack register = new ItemStack(cuc, 1);
-            if (register != null) {
-                LoadModHandler.registerModItems("PPcucumber", register);
-                OreDictionary.registerOre("cropCucumber", register);
-            }
-        }
-        Item egp = Util.getModItem("peaceplantcraft", "NASU");
-        if (egp != null) {
-            ItemStack register = new ItemStack(egp, 1);
-            if (register != null) {
-                LoadModHandler.registerModItems("PPeggplant", register);
-                OreDictionary.registerOre("cropEggplant", register);
-            }
-        }
+
+        registerCrop("DAIKON", "PPCradish");
+        registerCrop("PIMAN", "PPCgreenpepper");
+        registerCrop("TOMATO", "PPCtomato");
+        registerCrop("KOME", "PPCrice");
+        registerCrop("RETASU", "PPClettuce");
+        registerCrop("KABU", "PPCturnip");
+        registerCrop("HAKUSAI", "PPCnapacabbage");
+        registerCrop("TAMANEGI", "PPConion");
+        registerCrop("NINNIKU", "PPCgarlic");
+        registerCrop("EDAMAME", "PPsoy");
+        registerCrop("NEGI", "PPleek");
+        registerCrop("KYABETSU", "PPcabbage");
+        registerCrop("KYURI", "PPcucumber");
+        registerCrop("NASU", "PPeggplant");
+    }
+
+    private static void registerCrop(String itemName, String alias) {
+        Item item = Util.getModItem("peaceplantcraft", itemName);
+        if (item == null) return;
+        ItemStack register = new ItemStack(item);
+        LoadModHandler.registerModItems(alias, register);
     }
 
 }

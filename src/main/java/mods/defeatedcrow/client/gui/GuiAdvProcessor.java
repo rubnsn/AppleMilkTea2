@@ -1,93 +1,94 @@
 package mods.defeatedcrow.client.gui;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
-import org.lwjgl.opengl.GL11;
-
-import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.PropertyHandler;
 import mods.defeatedcrow.common.tile.appliance.ContainerAdvProcessor;
 import mods.defeatedcrow.common.tile.appliance.TileAdvProcessor;
-import mods.defeatedcrow.common.tile.appliance.TileProcessor;
 
-public class GuiAdvProcessor extends GuiContainer {
+/**
+ * 1.20.1 screen for the Advanced Processor / Jaw Crusher (was {@code GuiContainer}).
+ *
+ * <p>
+ * Migration assumptions (owner: WT-B / common-tile):
+ * <ul>
+ * <li>{@code ContainerAdvProcessor} extends {@code AbstractContainerMenu} with a network constructor
+ * {@code (int id, Inventory inv, FriendlyByteBuf buf)} reading the backing {@code BlockPos}.</li>
+ * <li>{@code ContainerAdvProcessor#getTile()} exposes the backing {@code TileAdvProcessor}.</li>
+ * <li>Screen registration (bootstrap / ModMenuTypes territory, NOT done here):
+ * {@code MenuScreens.register(ModMenuTypes.ADV_PROCESSOR.get(), GuiAdvProcessor::new);} inside
+ * {@code FMLClientSetupEvent#enqueueWork}.</li>
+ * </ul>
+ */
+public class GuiAdvProcessor extends AbstractContainerScreen<ContainerAdvProcessor> {
 
-    protected TileProcessor tileentity;
-    protected TileProcessor inventory;
+    private static final ResourceLocation TEXTURE = new ResourceLocation("defeatedcrow", "textures/gui/jawcrushergui.png");
 
-    public GuiAdvProcessor(EntityPlayer player, TileAdvProcessor par2TileEntity) {
-        super(new ContainerAdvProcessor(player, par2TileEntity));
-        this.tileentity = par2TileEntity;
-        this.inventory = par2TileEntity;
+    protected final TileAdvProcessor tileentity;
+
+    public GuiAdvProcessor(ContainerAdvProcessor menu, Inventory playerInv, Component title) {
+        super(menu, playerInv, title);
+        this.tileentity = menu.getTile();
+        this.imageWidth = 176;
+        this.imageHeight = 166;
+        this.titleLabelY = 6;
+        this.inventoryLabelY = this.imageHeight - 94;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int x, int y) {
-        // インベントリ名の描画
-        String s = this.inventory.hasCustomInventoryName() ? this.inventory.getInventoryName()
-            : I18n.format(this.inventory.getInventoryName(), new Object[0]);
-        this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
-        this.fontRendererObj
-            .drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
-    }
-
-    @Override
-    public void drawScreen(int x, int y, float par3) {
-        super.drawScreen(x, y, par3);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        this.renderBackground(graphics);
+        super.render(graphics, mouseX, mouseY, partialTick);
 
         // チャージゲージのマウスオーバー
-        boolean b1 = this.func_146978_c(11, 26, 12, 27, x, y);
+        boolean b1 = this.isHovering(11, 26, 12, 27, mouseX, mouseY);
         if (b1) {
             int charge = this.tileentity.getChargeAmount();
-            ArrayList<String> list1 = new ArrayList<String>();
-            list1.add("Charge Amount : " + charge + "/" + tileentity.getMaxChargeAmount());
+            List<Component> list1 = new ArrayList<Component>();
+            list1.add(Component.literal("Charge Amount : " + charge + "/" + this.tileentity.getMaxChargeAmount()));
 
-            if (DCsAppleMilk.proxy.isShiftKeyDown()) { // shiftキー押下時
+            if (hasShiftDown()) { // shiftキー押下時
                 int vsRF = charge * PropertyHandler.rateRF();
                 int vsEU = charge * PropertyHandler.rateEU();
                 int vsGF = charge * PropertyHandler.rateGF();
-                list1.add(" - " + vsRF + "/" + tileentity.getMaxChargeAmount() * PropertyHandler.rateRF() + " RF");
-                list1.add(" - " + vsEU + "/" + tileentity.getMaxChargeAmount() * PropertyHandler.rateEU() + " EU");
-                list1.add(" - " + vsGF + "/" + tileentity.getMaxChargeAmount() * PropertyHandler.rateGF() + " GF");
+                list1.add(Component.literal(" - " + vsRF + "/" + this.tileentity.getMaxChargeAmount()
+                    * PropertyHandler.rateRF() + " RF"));
+                list1.add(Component.literal(" - " + vsEU + "/" + this.tileentity.getMaxChargeAmount()
+                    * PropertyHandler.rateEU() + " EU"));
+                list1.add(Component.literal(" - " + vsGF + "/" + this.tileentity.getMaxChargeAmount()
+                    * PropertyHandler.rateGF() + " GF"));
             } else {
-                list1.add(EnumChatFormatting.ITALIC + "LShift: Expand tooltip.");
+                list1.add(Component.literal("LShift: Expand tooltip.").withStyle(ChatFormatting.ITALIC));
             }
-            this.drawHoveringText(list1, x, y, fontRendererObj);
+            graphics.renderComponentTooltip(this.font, list1, mouseX, mouseY);
         }
+        this.renderTooltip(graphics, mouseX, mouseY);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float par1, int x, int y) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
-        // テクスチャの指定
-        // ResourceLocationの第一引数を付け足してドメインを指定することもできる
-        // 例:new ResourceLocation("sample", "textures/gui/container/furnace.png")
-        this.mc.getTextureManager()
-            .bindTexture(new ResourceLocation("defeatedcrow", this.GuiTexPass()));
-
+    protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
         // かまど描画処理
-        int k = (this.width - this.xSize) / 2;
-        int l = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-        int i1;
-        int i2;
+        int k = this.leftPos;
+        int l = this.topPos;
+        graphics.blit(TEXTURE, k, l, 0, 0, this.imageWidth, this.imageHeight);
 
-        i1 = this.tileentity.getBurnTimeRemainingScaled(27);
-        this.drawTexturedModalRect(k + 11, l + 53 - i1, 176, 43 - i1, 12, i1);
+        int i1 = this.tileentity.getBurnTimeRemainingScaled(27);
+        if (i1 > 0) {
+            graphics.blit(TEXTURE, k + 11, l + 53 - i1, 176, 43 - i1, 12, i1);
+        }
 
-        i2 = this.tileentity.getCookProgressScaled(24);
-        this.drawTexturedModalRect(k + 88, l + 43, 176, 0, i2 + 1, 16);
-    }
-
-    public String GuiTexPass() {
-        return "textures/gui/jawcrushergui.png";
+        int i2 = this.tileentity.getCookProgressScaled(24);
+        if (i2 > 0) {
+            graphics.blit(TEXTURE, k + 88, l + 43, 176, 0, i2 + 1, 16);
+        }
     }
 
 }

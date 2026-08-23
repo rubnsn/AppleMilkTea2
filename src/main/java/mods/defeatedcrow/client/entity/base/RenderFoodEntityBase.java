@@ -1,157 +1,147 @@
-package mods.defeatedcrow.client.entity.base;
+﻿package mods.defeatedcrow.client.entity.base;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import mods.defeatedcrow.client.ModEntityRenderers;
 import mods.defeatedcrow.common.base.FoodBaseEntity;
 import mods.defeatedcrow.common.base.FoodModelType.Deco;
 import mods.defeatedcrow.common.base.FoodModelType.Dish;
 import mods.defeatedcrow.common.base.FoodModelType.Soup;
 import mods.defeatedcrow.common.config.DCsConfig;
 
-@SideOnly(Side.CLIENT)
-public class RenderFoodEntityBase extends Render {
+/**
+ * 1.20.1 migration: Render -> EntityRenderer + PoseStack/MultiBufferSource.
+ * Former Tessellator immediate-mode soup quads are ported to VertexConsumer
+ * flat quads on {@link RenderType#entityCutout}.
+ * TODO(WT-B): the former per-item soup icon (entity.getSoupIcon(meta), item atlas)
+ * is gone; restore by syncing an ItemStack via SynchedEntityData and rendering it,
+ * or by resolving the sprite from WT-A's block/item registration.
+ */
+public class RenderFoodEntityBase extends EntityRenderer<FoodBaseEntity> {
 
     protected static final String[] PASS = { "foods", "foods/x32" };
 
-    protected static final ResourceLocation BOWL_RICE_TEX = new ResourceLocation(
-        "defeatedcrow:textures/entity/" + getPass() + "/bowlJP_rice.png");
-    protected static final ResourceLocation BOWL_SOUP_TEX = new ResourceLocation(
-        "defeatedcrow:textures/entity/" + getPass() + "/bowlJP_soup.png");
-    protected static final ResourceLocation BOWL_WOOD_TEX = new ResourceLocation(
-        "defeatedcrow:textures/entity/woodbowl.png");
-    protected static final ResourceLocation DISH_GLASS_TEX = new ResourceLocation(
-        "defeatedcrow:textures/entity/" + getPass() + "/dish_glass.png");
-    protected static final ResourceLocation DISH_JP_TEX = new ResourceLocation(
-        "defeatedcrow:textures/entity/" + getPass() + "/dish_jp.png");
-    protected static final ResourceLocation DISH_SQUARE_TEX = new ResourceLocation(
-        "defeatedcrow:textures/entity/" + getPass() + "/dish_square.png");
-    protected static final ResourceLocation DISH_WHITE_TEX = new ResourceLocation(
-        "defeatedcrow:textures/entity/" + getPass() + "/dish_white.png");
-    protected static final ResourceLocation MAG_WHITE_TEX = new ResourceLocation(
-        "defeatedcrow:textures/blocks/whitepanel.png");
+    protected static final ResourceLocation BOWL_RICE_TEX = tex("bowlJP_rice.png");
+    protected static final ResourceLocation BOWL_SOUP_TEX = tex("bowlJP_soup.png");
+    protected static final ResourceLocation BOWL_WOOD_TEX = new ResourceLocation("defeatedcrow", "textures/entity/woodbowl.png");
+    protected static final ResourceLocation DISH_GLASS_TEX = tex("dish_glass.png");
+    protected static final ResourceLocation DISH_JP_TEX = tex("dish_jp.png");
+    protected static final ResourceLocation DISH_SQUARE_TEX = tex("dish_square.png");
+    protected static final ResourceLocation DISH_WHITE_TEX = tex("dish_white.png");
+    protected static final ResourceLocation MAG_WHITE_TEX = new ResourceLocation("defeatedcrow", "textures/blocks/whitepanel.png");
 
-    protected static final ResourceLocation INNER_TEX_DEFAULT = new ResourceLocation(
-        "defeatedcrow:textures/entity/" + getPass() + "/bowlJP_inner.png");
+    /** fallback texture for the former soup/deco icon quads */
+    protected static final ResourceLocation INNER_TEX_DEFAULT = tex("bowlJP_inner.png");
 
-    protected ModelRiceBowlB modelBowlR = new ModelRiceBowlB();
-    protected ModelSoupBowlB modelBowlS = new ModelSoupBowlB();
-    protected ModelWoodBowl modelBowlW = new ModelWoodBowl();
-    protected ModelGlassDishB modelDishG = new ModelGlassDishB();
-    protected ModelJPDishB modelDishJ = new ModelJPDishB();
-    protected ModelWhiteDishB modelDishW = new ModelWhiteDishB();
-    protected ModelTeaCup modelCup = new ModelTeaCup();
-
-    protected ModelInnerKobati modelKobati = new ModelInnerKobati();
-    protected ModelInnerSoup modelSoup = new ModelInnerSoup();
-
-    public RenderFoodEntityBase() {
-        this.shadowSize = 0.3F;
+    private static ResourceLocation tex(String name) {
+        return new ResourceLocation("defeatedcrow", "textures/entity/" + getPass() + "/" + name);
     }
 
-    /**
-     * The render method used in RenderBoat that renders the boat model.
-     */
-    public void render(FoodBaseEntity entity, double par2, double par4, double par6, float par8, float par9) {
+    protected final ModelRiceBowlB modelBowlR;
+    protected final ModelSoupBowlB modelBowlS;
+    protected final ModelWoodBowl modelBowlW;
+    protected final ModelGlassDishB modelDishG;
+    protected final ModelJPDishB modelDishJ;
+    protected final ModelWhiteDishB modelDishW;
+    protected final ModelTeaCup modelCup;
+
+    protected final ModelInnerKobati modelKobati;
+    protected final ModelInnerSoup modelSoup;
+
+    public RenderFoodEntityBase(EntityRendererProvider.Context ctx) {
+        super(ctx);
+        this.shadowRadius = 0.3F;
+        this.modelBowlR = new ModelRiceBowlB(ctx.bakeLayer(ModEntityRenderers.MODEL_RICE_BOWL_B));
+        this.modelBowlS = new ModelSoupBowlB(ctx.bakeLayer(ModEntityRenderers.MODEL_SOUP_BOWL_B));
+        this.modelBowlW = new ModelWoodBowl(ctx.bakeLayer(ModEntityRenderers.MODEL_BOWL_WOOD));
+        this.modelDishG = new ModelGlassDishB(ctx.bakeLayer(ModEntityRenderers.MODEL_GLASS_DISH_B));
+        this.modelDishJ = new ModelJPDishB(ctx.bakeLayer(ModEntityRenderers.MODEL_JP_DISH_B));
+        this.modelDishW = new ModelWhiteDishB(ctx.bakeLayer(ModEntityRenderers.MODEL_WHITE_DISH_B));
+        this.modelCup = new ModelTeaCup(ctx.bakeLayer(ModEntityRenderers.MODEL_TEA_CUP));
+        this.modelKobati = new ModelInnerKobati(ctx.bakeLayer(ModEntityRenderers.MODEL_INNER_KOBATI));
+        this.modelSoup = new ModelInnerSoup(ctx.bakeLayer(ModEntityRenderers.MODEL_INNER_SOUP));
+    }
+
+    @Override
+    public void render(FoodBaseEntity entity, float yaw, float partialTick, PoseStack poseStack,
+        MultiBufferSource buffer, int packedLight) {
         byte l = (byte) entity.getItemMetadata();
         Dish dish = entity.getDishType();
         Soup soup = entity.getSoupType();
         Deco deco = entity.getDecoType();
 
-        this.renderDeco(entity, l, deco, par2, par4, par6, par8, par9);
-
-        this.renderDish(entity, l, dish, par2, par4, par6, par8, par9);
-
-        this.renderSoup(entity, l, soup, par2, par4, par6, par8, par9);
-
+        this.renderDeco(entity, l, deco, yaw, poseStack, buffer, packedLight);
+        this.renderDish(entity, l, dish, yaw, poseStack, buffer, packedLight);
+        this.renderSoup(entity, l, soup, yaw, poseStack, buffer, packedLight);
+        super.render(entity, yaw, partialTick, poseStack, buffer, packedLight);
     }
 
-    protected void renderDish(FoodBaseEntity entity, byte meta, Dish dish, double par2, double par4, double par6,
-        float par8, float par9) {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glTranslatef((float) par2, (float) par4 + 1.25F, (float) par6);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef(par8, 0.0F, 1.0F, 0.0F);
+    protected void renderDish(FoodBaseEntity entity, byte meta, Dish dish, float yaw,
+        PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        poseStack.pushPose();
+        poseStack.translate(0.0F, 1.25F, 0.0F);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
 
         if (dish == Dish.RiceBowl) {
-            this.bindTexture(BOWL_RICE_TEX);
-            modelBowlR.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            this.modelBowlR.render(poseStack, buffer.getBuffer(RenderType.entityCutout(BOWL_RICE_TEX)),
+                packedLight, OverlayTexture.NO_OVERLAY);
         } else if (dish == Dish.SoupBowl) {
-            this.bindTexture(BOWL_SOUP_TEX);
-            modelBowlS.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            this.modelBowlS.render(poseStack, buffer.getBuffer(RenderType.entityCutout(BOWL_SOUP_TEX)),
+                packedLight, OverlayTexture.NO_OVERLAY);
         } else if (dish == Dish.WoodBowl) {
-            this.bindTexture(BOWL_WOOD_TEX);
-            modelBowlW.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            this.modelBowlW.render(poseStack, buffer.getBuffer(RenderType.entityCutout(BOWL_WOOD_TEX)),
+                packedLight, OverlayTexture.NO_OVERLAY);
         } else if (dish == Dish.Obon) {
-            this.bindTexture(DISH_JP_TEX);
-            modelDishJ.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            this.modelDishJ.render(poseStack, buffer.getBuffer(RenderType.entityCutout(DISH_JP_TEX)),
+                packedLight, OverlayTexture.NO_OVERLAY);
         } else if (dish == Dish.SquarePlate) {
-            this.bindTexture(DISH_SQUARE_TEX);
-            modelDishJ.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            this.modelDishJ.render(poseStack, buffer.getBuffer(RenderType.entityCutout(DISH_SQUARE_TEX)),
+                packedLight, OverlayTexture.NO_OVERLAY);
         } else if (dish == Dish.Glass) {
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
-
-            this.bindTexture(DISH_GLASS_TEX);
-            modelDishG.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-
-            GL11.glDisable(GL11.GL_BLEND);
+            this.modelDishG.render(poseStack, buffer.getBuffer(RenderType.entityTranslucent(DISH_GLASS_TEX)),
+                packedLight, OverlayTexture.NO_OVERLAY);
         } else if (dish == Dish.White) {
-            this.bindTexture(DISH_WHITE_TEX);
-            modelDishW.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            this.modelDishW.render(poseStack, buffer.getBuffer(RenderType.entityCutout(DISH_WHITE_TEX)),
+                packedLight, OverlayTexture.NO_OVERLAY);
         } else if (dish == Dish.Mug) {
-            this.bindTexture(MAG_WHITE_TEX);
-            modelCup.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            this.modelCup.render(poseStack, buffer.getBuffer(RenderType.entityCutout(MAG_WHITE_TEX)),
+                packedLight, OverlayTexture.NO_OVERLAY);
         }
 
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
+        poseStack.popPose();
     }
 
-    protected void renderSoup(FoodBaseEntity entity, byte meta, Soup soup, double par2, double par4, double par6,
-        float par8, float par9) {
-        Tessellator tessellator = Tessellator.instance;
-        IIcon iicon = entity.getSoupIcon(meta);
-        if (iicon == null || soup == Soup.None) return;
+    protected void renderSoup(FoodBaseEntity entity, byte meta, Soup soup, float yaw,
+        PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        if (soup == Soup.None) return;
 
-        float f14 = iicon.getMinU();
-        float f15 = iicon.getMaxU();
-        float f4 = iicon.getMinV();
-        float f5 = iicon.getMaxV();
+        // TODO(WT-B): restore per-item soup texture/icon (former TextureMap items atlas)
+        ResourceLocation soupTex = INNER_TEX_DEFAULT;
+
+        poseStack.pushPose();
+        poseStack.translate(0.0F, 0.4F, 0.0F);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
+
+        VertexConsumer vc = buffer.getBuffer(soup == Soup.Drink
+            ? RenderType.entityTranslucent(soupTex)
+            : RenderType.entityCutout(soupTex));
 
         double x;
         double y;
         double z;
 
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        if (soup == Soup.Drink) {
-            GL11.glColor4f(2.0F, 2.0F, 2.0F, 0.9F);
-        } else {
-            GL11.glColor4f(2.0F, 2.0F, 2.0F, 1.0F);
-        }
-        GL11.glTranslatef((float) par2, (float) par4 + 0.4F, (float) par6);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef(par8, 0.0F, 1.0F, 0.0F);
-
-        this.bindTexture(TextureMap.locationItemsTexture);
-
-        if (soup != Soup.Rice && soup != Soup.Rice) {
+        if (soup != Soup.Rice && soup != Soup.WoodRice) {
             if (soup == Soup.Soup) {
                 x = 0.2D;
                 y = 0.33D;
@@ -169,129 +159,95 @@ public class RenderFoodEntityBase extends Render {
                 y = 0.5D;
                 z = 0.25D;
             }
-
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(-x, y, -z, f14, f5);
-            tessellator.addVertexWithUV(x, y, -z, f15, f5);
-            tessellator.addVertexWithUV(x, y, z, f15, f4);
-            tessellator.addVertexWithUV(-x, y, z, f14, f4);
-            tessellator.draw();
+            flatQuad(poseStack, vc, (float) x, (float) y, (float) z, packedLight);
         } else if (soup == Soup.WoodRice) {
+            flatQuad(poseStack, vc, 0.1F, 0.3F, 0.1F, packedLight);
 
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(-0.1D, 0.3D, -0.1D, f14, f5);
-            tessellator.addVertexWithUV(0.1D, 0.3D, -0.1D, f15, f5);
-            tessellator.addVertexWithUV(0.1D, 0.3D, 0.1D, f15, f4);
-            tessellator.addVertexWithUV(-0.1D, 0.3D, 0.1D, f14, f4);
-            tessellator.draw();
-
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(-0.25D, 0.5D, -0.25D, f14, f5);
-            tessellator.addVertexWithUV(0.25D, 0.5D, -0.25D, f15, f5);
-            tessellator.addVertexWithUV(0.1D, 0.3D, -0.1D, f15, f4);
-            tessellator.addVertexWithUV(-0.1D, 0.3D, -0.1D, f14, f4);
-            tessellator.draw();
-
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(0.25D, 0.5D, 0.25D, f14, f5);
-            tessellator.addVertexWithUV(-0.25D, 0.5D, 0.25D, f15, f5);
-            tessellator.addVertexWithUV(-0.1D, 0.3D, 0.1D, f15, f4);
-            tessellator.addVertexWithUV(0.1D, 0.3D, 0.1D, f14, f4);
-            tessellator.draw();
-
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(-0.25D, 0.5D, -0.25D, f14, f5);
-            tessellator.addVertexWithUV(-0.1D, 0.3D, -0.1D, f15, f5);
-            tessellator.addVertexWithUV(-0.1D, 0.3D, 0.1D, f15, f4);
-            tessellator.addVertexWithUV(-0.25D, 0.5D, 0.25D, f14, f4);
-            tessellator.draw();
-
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(0.1D, 0.3D, -0.1D, f14, f5);
-            tessellator.addVertexWithUV(0.25D, 0.5D, -0.25D, f15, f5);
-            tessellator.addVertexWithUV(0.25D, 0.5D, 0.25D, f15, f4);
-            tessellator.addVertexWithUV(0.1D, 0.3D, 0.1D, f14, f4);
-            tessellator.draw();
+            slopeQuadA(poseStack, vc, 0.25F, 0.5F, 0.1F, 0.3F, packedLight);
+            slopeQuadB(poseStack, vc, 0.25F, 0.5F, 0.1F, 0.3F, packedLight);
+            slopeQuadC(poseStack, vc, 0.25F, 0.5F, 0.1F, 0.3F, packedLight);
         } else if (soup == Soup.Rice) {
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(-0.1D, 0.3D, -0.1D, f14, f5);
-            tessellator.addVertexWithUV(0.1D, 0.3D, -0.1D, f15, f5);
-            tessellator.addVertexWithUV(0.1D, 0.3D, 0.1D, f15, f4);
-            tessellator.addVertexWithUV(-0.1D, 0.3D, 0.1D, f14, f4);
-            tessellator.draw();
+            flatQuad(poseStack, vc, 0.1F, 0.3F, 0.1F, packedLight);
 
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(-0.2D, 0.45D, -0.2D, f14, f5);
-            tessellator.addVertexWithUV(0.2D, 0.45D, -0.2D, f15, f5);
-            tessellator.addVertexWithUV(0.1D, 0.3D, -0.1D, f15, f4);
-            tessellator.addVertexWithUV(-0.1D, 0.3D, -0.1D, f14, f4);
-            tessellator.draw();
-
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(0.2D, 0.45D, 0.2D, f14, f5);
-            tessellator.addVertexWithUV(-0.2D, 0.45D, 0.2D, f15, f5);
-            tessellator.addVertexWithUV(-0.1D, 0.3D, 0.1D, f15, f4);
-            tessellator.addVertexWithUV(0.1D, 0.3D, 0.1D, f14, f4);
-            tessellator.draw();
-
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(-0.2D, 0.45D, -0.2D, f14, f5);
-            tessellator.addVertexWithUV(-0.1D, 0.3D, -0.1D, f15, f5);
-            tessellator.addVertexWithUV(-0.1D, 0.3D, 0.1D, f15, f4);
-            tessellator.addVertexWithUV(-0.2D, 0.45D, 0.2D, f14, f4);
-            tessellator.draw();
-
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(0.1D, 0.3D, -0.1D, f14, f5);
-            tessellator.addVertexWithUV(0.2D, 0.45D, -0.2D, f15, f5);
-            tessellator.addVertexWithUV(0.2D, 0.45D, 0.2D, f15, f4);
-            tessellator.addVertexWithUV(0.1D, 0.3D, 0.1D, f14, f4);
-            tessellator.draw();
+            slopeQuadA(poseStack, vc, 0.2F, 0.45F, 0.1F, 0.3F, packedLight);
+            slopeQuadB(poseStack, vc, 0.2F, 0.45F, 0.1F, 0.3F, packedLight);
+            slopeQuadC(poseStack, vc, 0.2F, 0.45F, 0.1F, 0.3F, packedLight);
         }
 
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        poseStack.popPose();
     }
 
-    protected void renderDeco(FoodBaseEntity entity, byte meta, Deco deco, double par2, double par4, double par6,
-        float par8, float par9) {
+    protected void renderDeco(FoodBaseEntity entity, byte meta, Deco deco, float yaw,
+        PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         if (deco == Deco.None) {
             return;
         }
 
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        poseStack.pushPose();
+        poseStack.translate(0.0F, 1.25F, 0.0F);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
 
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glTranslatef((float) par2, (float) par4 + 1.25F, (float) par6);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef(par8, 0.0F, 1.0F, 0.0F);
-
-        this.bindTexture(getDecoTexture(entity, meta, deco));
+        VertexConsumer vc = buffer.getBuffer(RenderType.entityCutout(getDecoTexture(entity, meta, deco)));
 
         if (deco == Deco.Kobathi) {
-            modelKobati.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            this.modelKobati.render(poseStack, vc, packedLight, OverlayTexture.NO_OVERLAY);
         } else if (deco == Deco.SoupInner) {
-            modelSoup.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            this.modelSoup.render(poseStack, vc, packedLight, OverlayTexture.NO_OVERLAY);
         }
 
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
+        poseStack.popPose();
     }
 
-    protected ResourceLocation getBowlTextures(FoodBaseEntity par1Entity) {
+    /**
+     * Horizontal quad (top face normal +Y), half extents hx/hz at height y.
+     * Geometry preserved from the former Tessellator draw.
+     */
+    protected static void flatQuad(PoseStack poseStack, VertexConsumer vc, float hx, float y, float hz, int packedLight) {
+        PoseStack.Pose pose = poseStack.last();
+        vertex(vc, pose, -hx, y, -hz, 0.0F, 1.0F, packedLight);
+        vertex(vc, pose, hx, y, -hz, 1.0F, 1.0F, packedLight);
+        vertex(vc, pose, hx, y, hz, 1.0F, 0.0F, packedLight);
+        vertex(vc, pose, -hx, y, hz, 0.0F, 0.0F, packedLight);
+    }
+
+    /** one slanted side quad of the rice mound (+Z/-Z/-X variants collapsed into offsets by caller order) */
+    protected static void slopeQuadA(PoseStack poseStack, VertexConsumer vc, float hx, float hy, float ix, float iy, int packedLight) {
+        PoseStack.Pose pose = poseStack.last();
+        vertex(vc, pose, -hx, hy, -hx, 0.0F, 1.0F, packedLight);
+        vertex(vc, pose, hx, hy, -hx, 1.0F, 1.0F, packedLight);
+        vertex(vc, pose, ix, iy, -ix, 1.0F, 0.0F, packedLight);
+        vertex(vc, pose, -ix, iy, -ix, 0.0F, 0.0F, packedLight);
+    }
+
+    protected static void slopeQuadB(PoseStack poseStack, VertexConsumer vc, float hx, float hy, float ix, float iy, int packedLight) {
+        PoseStack.Pose pose = poseStack.last();
+        vertex(vc, pose, hx, hy, hx, 0.0F, 1.0F, packedLight);
+        vertex(vc, pose, -hx, hy, hx, 1.0F, 1.0F, packedLight);
+        vertex(vc, pose, -ix, iy, ix, 1.0F, 0.0F, packedLight);
+        vertex(vc, pose, ix, iy, ix, 0.0F, 0.0F, packedLight);
+    }
+
+    protected static void slopeQuadC(PoseStack poseStack, VertexConsumer vc, float hx, float hy, float ix, float iy, int packedLight) {
+        PoseStack.Pose pose = poseStack.last();
+        vertex(vc, pose, -hx, hy, -hx, 0.0F, 1.0F, packedLight);
+        vertex(vc, pose, -ix, iy, -ix, 1.0F, 1.0F, packedLight);
+        vertex(vc, pose, -ix, iy, ix, 1.0F, 0.0F, packedLight);
+        vertex(vc, pose, -hx, hy, hx, 0.0F, 0.0F, packedLight);
+    }
+
+    private static void vertex(VertexConsumer vc, PoseStack.Pose pose, float x, float y, float z,
+        float u, float v, int packedLight) {
+        vc.vertex(pose.pose(), x, y, z)
+            .color(1.0F, 1.0F, 1.0F, 1.0F)
+            .uv(u, v)
+            .overlayCoords(OverlayTexture.NO_OVERLAY)
+            .uv2(packedLight)
+            .normal(pose.normal(), 0.0F, 1.0F, 0.0F)
+            .endVertex();
+    }
+
+    protected ResourceLocation getBowlTextures(FoodBaseEntity entity) {
         return BOWL_RICE_TEX;
     }
 
@@ -300,13 +256,8 @@ public class RenderFoodEntityBase extends Render {
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity) {
-        return this.getBowlTextures((FoodBaseEntity) par1Entity);
-    }
-
-    @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-        this.render((FoodBaseEntity) par1Entity, par2, par4, par6, par8, par9);
+    public ResourceLocation getTextureLocation(FoodBaseEntity entity) {
+        return this.getBowlTextures(entity);
     }
 
     private static String getPass() {

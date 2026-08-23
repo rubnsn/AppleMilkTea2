@@ -1,105 +1,77 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelAltBowl extends ModelBase {
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-    // fields
-    ModelRenderer plate1;
-    ModelRenderer plate2;
-    ModelRenderer plate3;
-    ModelRenderer plate4;
-    ModelRenderer plate5;
-    ModelRenderer plate6;
-    ModelRenderer plate7;
-    ModelRenderer plate8;
-    ModelRenderer plate9;
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELALTBOWL) -> new ModelAltBowl(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelAltBowl {
 
-    public ModelAltBowl() {
-        textureWidth = 64;
-        textureHeight = 32;
+    private final ModelPart root;
+    private final ModelPart plate1;
+    private final ModelPart plate2;
+    private final ModelPart plate3;
+    private final ModelPart plate4;
+    private final ModelPart plate5;
+    private final ModelPart plate6;
+    private final ModelPart plate7;
+    private final ModelPart plate8;
+    private final ModelPart plate9;
 
-        plate1 = new ModelRenderer(this, 16, 8);
-        plate1.addBox(-3F, -3F, 0F, 6, 6, 1);
-        plate1.setRotationPoint(0F, 16F, 0F);
-        plate1.setTextureSize(64, 32);
-        plate1.mirror = true;
-        setRotation(plate1, 0F, 0F, 0F);
-        plate2 = new ModelRenderer(this, 16, 0);
-        plate2.addBox(-3F, -6.5F, 0.5F, 6, 4, 1);
-        plate2.setRotationPoint(0F, 16F, 0F);
-        plate2.setTextureSize(64, 32);
-        plate2.mirror = true;
-        setRotation(plate2, 0.2617994F, 0F, 0F);
-        plate3 = new ModelRenderer(this, 16, 18);
-        plate3.addBox(-3F, 2.5F, 0.5F, 6, 4, 1);
-        plate3.setRotationPoint(0F, 16F, 0F);
-        plate3.setTextureSize(64, 32);
-        plate3.mirror = true;
-        setRotation(plate3, -0.2617994F, 0F, 0F);
-        plate4 = new ModelRenderer(this, 0, 8);
-        plate4.addBox(-6.5F, -3F, 0.5F, 4, 6, 1);
-        plate4.setRotationPoint(0F, 16F, 0F);
-        plate4.setTextureSize(64, 32);
-        plate4.mirror = true;
-        setRotation(plate4, 0F, -0.2617994F, 0F);
-        plate5 = new ModelRenderer(this, 36, 8);
-        plate5.addBox(2.5F, -3F, 0.5F, 4, 6, 1);
-        plate5.setRotationPoint(0F, 16F, 0F);
-        plate5.setTextureSize(64, 32);
-        plate5.mirror = true;
-        setRotation(plate5, 0F, 0.2617994F, 0F);
-        plate6 = new ModelRenderer(this, 0, 0);
-        plate6.addBox(-6.5F, -6.5F, 1F, 4, 4, 1);
-        plate6.setRotationPoint(0F, 16F, 0F);
-        plate6.setTextureSize(64, 32);
-        plate6.mirror = true;
-        setRotation(plate6, 0.2617994F, -0.2617994F, 0F);
-        plate7 = new ModelRenderer(this, 36, 0);
-        plate7.addBox(2.5F, -6.5F, 1F, 4, 4, 1);
-        plate7.setRotationPoint(0F, 16F, 0F);
-        plate7.setTextureSize(64, 32);
-        plate7.mirror = true;
-        setRotation(plate7, 0.2617994F, 0.2617994F, 0F);
-        plate8 = new ModelRenderer(this, 0, 18);
-        plate8.addBox(-6.5F, 2.5F, 1F, 4, 4, 1);
-        plate8.setRotationPoint(0F, 16F, 0F);
-        plate8.setTextureSize(64, 32);
-        plate8.mirror = true;
-        setRotation(plate8, -0.2617994F, -0.2617994F, 0F);
-        plate9 = new ModelRenderer(this, 36, 18);
-        plate9.addBox(2.5F, 2.5F, 1F, 4, 4, 1);
-        plate9.setRotationPoint(0F, 16F, 0F);
-        plate9.setTextureSize(64, 32);
-        plate9.mirror = true;
-        setRotation(plate9, -0.2617994F, 0.2617994F, 0F);
+    public ModelAltBowl(ModelPart root) {
+        this.root = root;
+        this.plate1 = root.getChild("plate1");
+        this.plate2 = root.getChild("plate2");
+        this.plate3 = root.getChild("plate3");
+        this.plate4 = root.getChild("plate4");
+        this.plate5 = root.getChild("plate5");
+        this.plate6 = root.getChild("plate6");
+        this.plate7 = root.getChild("plate7");
+        this.plate8 = root.getChild("plate8");
+        this.plate9 = root.getChild("plate9");
     }
+
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition plate1 = partdefinition.addOrReplaceChild("plate1", CubeListBuilder.create().texOffs(16, 8).mirror().addBox(-3F, -3F, 0F, 6, 6, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition plate2 = partdefinition.addOrReplaceChild("plate2", CubeListBuilder.create().texOffs(16, 0).mirror().addBox(-3F, -6.5F, 0.5F, 6, 4, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2617994F, 0F, 0F));
+        PartDefinition plate3 = partdefinition.addOrReplaceChild("plate3", CubeListBuilder.create().texOffs(16, 18).mirror().addBox(-3F, 2.5F, 0.5F, 6, 4, 1), PartPose.offsetAndRotation(0F, 16F, 0F, -0.2617994F, 0F, 0F));
+        PartDefinition plate4 = partdefinition.addOrReplaceChild("plate4", CubeListBuilder.create().texOffs(0, 8).mirror().addBox(-6.5F, -3F, 0.5F, 4, 6, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.2617994F, 0F));
+        PartDefinition plate5 = partdefinition.addOrReplaceChild("plate5", CubeListBuilder.create().texOffs(36, 8).mirror().addBox(2.5F, -3F, 0.5F, 4, 6, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 0.2617994F, 0F));
+        PartDefinition plate6 = partdefinition.addOrReplaceChild("plate6", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6.5F, -6.5F, 1F, 4, 4, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2617994F, -0.2617994F, 0F));
+        PartDefinition plate7 = partdefinition.addOrReplaceChild("plate7", CubeListBuilder.create().texOffs(36, 0).mirror().addBox(2.5F, -6.5F, 1F, 4, 4, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2617994F, 0.2617994F, 0F));
+        PartDefinition plate8 = partdefinition.addOrReplaceChild("plate8", CubeListBuilder.create().texOffs(0, 18).mirror().addBox(-6.5F, 2.5F, 1F, 4, 4, 1), PartPose.offsetAndRotation(0F, 16F, 0F, -0.2617994F, -0.2617994F, 0F));
+        PartDefinition plate9 = partdefinition.addOrReplaceChild("plate9", CubeListBuilder.create().texOffs(36, 18).mirror().addBox(2.5F, 2.5F, 1F, 4, 4, 1), PartPose.offsetAndRotation(0F, 16F, 0F, -0.2617994F, 0.2617994F, 0F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
+    }
+
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        plate1.render(f5);
-        plate2.render(f5);
-        plate3.render(f5);
-        plate4.render(f5);
-        plate5.render(f5);
-        plate6.render(f5);
-        plate7.render(f5);
-        plate8.render(f5);
-        plate9.render(f5);
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            plate1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            plate2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            plate3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            plate4.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            plate5.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            plate6.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            plate7.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            plate8.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            plate9.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
-    }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, null);
-    }
-
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        }
 }

@@ -1,137 +1,76 @@
 package mods.defeatedcrow.client.entity;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import mods.defeatedcrow.client.ModEntityRenderers;
 import mods.defeatedcrow.client.entity.base.ModelWoodBowl;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.entity.edible.PlaceableBowl;
 
-@SideOnly(Side.CLIENT)
-public class RenderBowlEntity extends Render {
+/**
+ * 1.20.1 migration: Render -> EntityRenderer + PoseStack/MultiBufferSource.
+ * The former block-icon (block-icon) flat quads for the bowl contents are replaced by
+ * renderSingleBlock of the corresponding block.
+ * TODO(WT-A): DCsAppleMilk.bowlBlock is pending DeferredRegister migration; the
+ * registry lookup below must be synced with WT-A's final registry name and the
+ * per-meta state should come from the entity's synced ItemStack.
+ */
+public class RenderBowlEntity extends EntityRenderer<PlaceableBowl> {
 
-    private static final ResourceLocation woodTex = new ResourceLocation("defeatedcrow:textures/entity/woodbowl.png");
+    private static final ResourceLocation WOOD_TEX = new ResourceLocation("defeatedcrow", "textures/entity/woodbowl.png");
 
-    /** instance of ModelBoat for rendering */
-    protected ModelWoodBowl model;
+    private final ModelWoodBowl model;
 
-    public RenderBowlEntity() {
-        this.shadowSize = 0.5F;
-        this.model = new ModelWoodBowl();
+    public RenderBowlEntity(EntityRendererProvider.Context ctx) {
+        super(ctx);
+        this.shadowRadius = 0.5F;
+        this.model = new ModelWoodBowl(ctx.bakeLayer(ModEntityRenderers.MODEL_BOWL_WOOD));
     }
 
-    /**
-     * The render method used in RenderBoat that renders the boat model.
-     */
-    public void render(PlaceableBowl entity, double posX, double posY, double posZ, float round, float yaw) {
-        Tessellator tessellator = Tessellator.instance;
-
-        this.bindTexture(woodTex);
+    @Override
+    public void render(PlaceableBowl entity, float yaw, float partialTick, PoseStack poseStack,
+        MultiBufferSource buffer, int packedLight) {
         int l = entity.getItemMetadata();
 
-        // ボウル
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glColor4f(2.0F, 2.0F, 2.0F, 1.0F);
-        GL11.glTranslatef((float) posX, (float) posY + 1.25F, (float) posZ);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef(round, 0.0F, 1.0F, 0.0F);
-        model.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
+        // bowl
+        poseStack.pushPose();
+        poseStack.translate(0.0F, 1.25F, 0.0F);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
+        this.model.render(poseStack, buffer.getBuffer(RenderType.entityCutout(WOOD_TEX)),
+            packedLight, OverlayTexture.NO_OVERLAY);
+        poseStack.popPose();
 
-        // 中身
+        // contents: former block-icon quads of DCsAppleMilk.bowlBlock meta texture
         if (l != 15) {
-            GL11.glPushMatrix();
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glColor4f(2.0F, 2.0F, 2.0F, 1.0F);
-            GL11.glTranslatef((float) posX, (float) posY + 0.5F, (float) posZ);
-            GL11.glScalef(1.0F, -1.0F, -1.0F);
-            GL11.glRotatef(round, 0.0F, 1.0F, 0.0F);
-
-            IIcon iicon = DCsAppleMilk.bowlBlock.getIcon(0, l);
-            float f14 = iicon.getMinU();
-            float f15 = iicon.getMaxU();
-            float f4 = iicon.getMinV();
-            float f5 = iicon.getMaxV();
-
-            this.bindTexture(TextureMap.locationBlocksTexture);
-
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(-0.25D, 0.5D, -0.25D, (double) f14, (double) f5);
-            tessellator.addVertexWithUV(0.25D, 0.5D, -0.25D, (double) f15, (double) f5);
-            tessellator.addVertexWithUV(0.25D, 0.5D, 0.25D, (double) f15, (double) f4);
-            tessellator.addVertexWithUV(-0.25D, 0.5D, 0.25D, (double) f14, (double) f4);
-            tessellator.draw();
-
-            if (l == 0 || l == 4) {
-                tessellator.startDrawingQuads();
-                tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                tessellator.addVertexWithUV(-0.1D, 0.3D, -0.1D, (double) f14, (double) f5);
-                tessellator.addVertexWithUV(0.1D, 0.3D, -0.1D, (double) f15, (double) f5);
-                tessellator.addVertexWithUV(0.1D, 0.3D, 0.1D, (double) f15, (double) f4);
-                tessellator.addVertexWithUV(-0.1D, 0.3D, 0.1D, (double) f14, (double) f4);
-                tessellator.draw();
-
-                tessellator.startDrawingQuads();
-                tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                tessellator.addVertexWithUV(-0.25D, 0.5D, -0.25D, (double) f14, (double) f5);
-                tessellator.addVertexWithUV(0.25D, 0.5D, -0.25D, (double) f15, (double) f5);
-                tessellator.addVertexWithUV(0.1D, 0.3D, -0.1D, (double) f15, (double) f4);
-                tessellator.addVertexWithUV(-0.1D, 0.3D, -0.1D, (double) f14, (double) f4);
-                tessellator.draw();
-
-                tessellator.startDrawingQuads();
-                tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                tessellator.addVertexWithUV(0.25D, 0.5D, 0.25D, (double) f14, (double) f5);
-                tessellator.addVertexWithUV(-0.25D, 0.5D, 0.25D, (double) f15, (double) f5);
-                tessellator.addVertexWithUV(-0.1D, 0.3D, 0.1D, (double) f15, (double) f4);
-                tessellator.addVertexWithUV(0.1D, 0.3D, 0.1D, (double) f14, (double) f4);
-                tessellator.draw();
-
-                tessellator.startDrawingQuads();
-                tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                tessellator.addVertexWithUV(-0.25D, 0.5D, -0.25D, (double) f14, (double) f5);
-                tessellator.addVertexWithUV(-0.1D, 0.3D, -0.1D, (double) f15, (double) f5);
-                tessellator.addVertexWithUV(-0.1D, 0.3D, 0.1D, (double) f15, (double) f4);
-                tessellator.addVertexWithUV(-0.25D, 0.5D, 0.25D, (double) f14, (double) f4);
-                tessellator.draw();
-
-                tessellator.startDrawingQuads();
-                tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                tessellator.addVertexWithUV(0.1D, 0.3D, -0.1D, (double) f14, (double) f5);
-                tessellator.addVertexWithUV(0.25D, 0.5D, -0.25D, (double) f15, (double) f5);
-                tessellator.addVertexWithUV(0.25D, 0.5D, 0.25D, (double) f15, (double) f4);
-                tessellator.addVertexWithUV(0.1D, 0.3D, 0.1D, (double) f14, (double) f4);
-                tessellator.draw();
-            }
-
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            GL11.glPopMatrix();
+            // TODO(WT-A): resolve per-meta BlockState from WT-A's bowlBlock registration
+            net.minecraft.world.level.block.Block bowl = net.minecraftforge.registries.ForgeRegistries.BLOCKS
+                .getValue(new ResourceLocation(DCsAppleMilk.MODID, "bowl"));
+            net.minecraft.world.level.block.state.BlockState state = bowl != null
+                ? bowl.defaultBlockState()
+                : net.minecraft.world.level.block.Blocks.BOWL.defaultBlockState();
+            poseStack.pushPose();
+            poseStack.translate(0.0F, 0.5F, 0.0F);
+            poseStack.scale(1.0F, -1.0F, -1.0F);
+            poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
+            net.minecraft.client.Minecraft.getInstance().getBlockRenderer()
+                .renderSingleBlock(state, poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY);
+            poseStack.popPose();
         }
-    }
-
-    protected ResourceLocation getMelonTextures(PlaceableBowl par1Entity) {
-        return woodTex;
+        super.render(entity, yaw, partialTick, poseStack, buffer, packedLight);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity) {
-        return this.getMelonTextures((PlaceableBowl) par1Entity);
-    }
-
-    @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-        this.render((PlaceableBowl) par1Entity, par2, par4, par6, par8, par9);
+    public ResourceLocation getTextureLocation(PlaceableBowl entity) {
+        return WOOD_TEX;
     }
 }

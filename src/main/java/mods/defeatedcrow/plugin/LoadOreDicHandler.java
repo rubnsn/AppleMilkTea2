@@ -1,23 +1,29 @@
 package mods.defeatedcrow.plugin;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.common.DCsAppleMilk;
-import mods.defeatedcrow.handler.Util;
 
+/**
+ * タグ (旧OreDictionary) に登録されているアイテムを、使う分だけゲームのロード時にまとめて読み込み、
+ * このクラス内で管理する。
+ *
+ * 1.20.1移行: OreDictionary.getOres → TagKey + BuiltInRegistries.ITEM のタグ検索に置換。
+ * タグパスは forge 標準命名 (crops/almond 等) の仮置きであり、実タグはdatapack側で定義する。
+ */
 public class LoadOreDicHandler {
 
-    /**
-     * OreDictionaryに登録されているアイテムを、使う分だけゲームのロード時にまとめて読み込み、このクラス内で管理する。
-     * OreIDでは取得できないアイテム（複数の辞書名が登録されたアイテム）への策。
-     * よって、このMODのpostInitより遅いタイミングで辞書登録されるMODには対応できない。
-     */
     private static ArrayList<ItemStack> listAlmond = new ArrayList<ItemStack>();
     private static ArrayList<ItemStack> listPeanut = new ArrayList<ItemStack>();
     private static ArrayList<ItemStack> listNuts = new ArrayList<ItemStack>();
@@ -30,64 +36,66 @@ public class LoadOreDicHandler {
     private static ArrayList<ItemStack> listSoy = new ArrayList<ItemStack>();
     private static ArrayList<ItemStack> listSeaweed = new ArrayList<ItemStack>();
 
+    private static List<ItemStack> getTagItems(String tagPath) {
+        TagKey<net.minecraft.world.item.Item> key = TagKey.create(Registries.ITEM, new ResourceLocation("forge", tagPath));
+        return BuiltInRegistries.ITEM.getTag(key)
+            .map(set -> set.stream()
+                .map(holder -> new ItemStack(holder.value()))
+                .collect(Collectors.toList()))
+            .orElse(Collections.emptyList());
+    }
+
     public void load() {
 
-        /**
-         * 必要分だけ取得してリストに加える。
-         */
-        listAlmond.addAll(OreDictionary.getOres("cropAlmond"));
-        listPeanut.addAll(OreDictionary.getOres("cropPeanut"));
-        listNuts.addAll(OreDictionary.getOres("cropWalnut"));
-        listNuts.addAll(OreDictionary.getOres("cropHazelnut"));
-        listNuts.addAll(OreDictionary.getOres("cropCoconut"));
-        listCherry.addAll(OreDictionary.getOres("cropCherry"));
-        listStraw.addAll(OreDictionary.getOres("cropStrawberry"));
-        listBerry.addAll(OreDictionary.getOres("cropRaspberry"));
-        listBerry.addAll(OreDictionary.getOres("cropCranberry"));
-        listBerry.addAll(OreDictionary.getOres("cropBlueberry"));
-        listBerry.addAll(OreDictionary.getOres("cropBlackberry"));
-        listBerry.addAll(OreDictionary.getOres("cropCassis"));
-        listBanana.addAll(OreDictionary.getOres("cropBanana"));
-        listRice.addAll(OreDictionary.getOres("cropRice"));
-        listHoney.addAll(OreDictionary.getOres("dropHoney"));
-        listSoy.addAll(OreDictionary.getOres("soybeans"));
-        listSeaweed.addAll(OreDictionary.getOres("cropSeaweed"));
+        listAlmond.addAll(getTagItems("crops/almond"));
+        listPeanut.addAll(getTagItems("crops/peanut"));
+        listNuts.addAll(getTagItems("crops/walnut"));
+        listNuts.addAll(getTagItems("crops/hazelnut"));
+        listNuts.addAll(getTagItems("crops/coconut"));
+        listCherry.addAll(getTagItems("crops/cherry"));
+        listStraw.addAll(getTagItems("crops/strawberry"));
+        listBerry.addAll(getTagItems("crops/raspberry"));
+        listBerry.addAll(getTagItems("crops/cranberry"));
+        listBerry.addAll(getTagItems("crops/blueberry"));
+        listBerry.addAll(getTagItems("crops/blackberry"));
+        listBerry.addAll(getTagItems("crops/cassis"));
+        listBanana.addAll(getTagItems("crops/banana"));
+        listRice.addAll(getTagItems("crops/rice"));
+        listHoney.addAll(getTagItems("honey"));
+        listSoy.addAll(getTagItems("crops/soybeans"));
+        listSeaweed.addAll(getTagItems("crops/seaweed"));
 
         /**
          * 当MOD用の管理Mapへの登録。
-         * 鉱石辞書名とは異なる名前で登録している。
+         * タグ名とは異なる名前で登録している。
          */
         if (listAlmond != null && listAlmond.isEmpty()) LoadModHandler.registerArray("nuts", listAlmond);
         if (listPeanut != null && listPeanut.isEmpty()) LoadModHandler.registerArray("nuts", listPeanut);
-        if (listNuts != null && listNuts.isEmpty()) LoadModHandler.registerArray("nuts", listNuts);
-        if (listCherry != null && listCherry.isEmpty()) LoadModHandler.registerArray("cherry", listCherry);
-        if (listBerry != null && listBerry.isEmpty()) LoadModHandler.registerArray("berry", listBerry);
-        if (listStraw != null && listStraw.isEmpty()) LoadModHandler.registerArray("strawberry", listStraw);
-        if (listBanana != null && listBanana.isEmpty()) LoadModHandler.registerArray("banana", listBanana);
-        if (listRice != null && listRice.isEmpty()) LoadModHandler.registerArray("rice", listRice);
-        if (listHoney != null && listHoney.isEmpty()) LoadModHandler.registerArray("honey", listHoney);
-        if (listSoy != null && listSoy.isEmpty()) LoadModHandler.registerArray("soy", listSoy);
+        if (listNuts != null && !listNuts.isEmpty()) LoadModHandler.registerArray("nuts", listNuts);
+        if (listCherry != null && !listCherry.isEmpty()) LoadModHandler.registerArray("cherry", listCherry);
+        if (listBerry != null && !listBerry.isEmpty()) LoadModHandler.registerArray("berry", listBerry);
+        if (listStraw != null && !listStraw.isEmpty()) LoadModHandler.registerArray("strawberry", listStraw);
+        if (listBanana != null && !listBanana.isEmpty()) LoadModHandler.registerArray("banana", listBanana);
+        if (listRice != null && !listRice.isEmpty()) LoadModHandler.registerArray("rice", listRice);
+        if (listHoney != null && !listHoney.isEmpty()) LoadModHandler.registerArray("honey", listHoney);
+        if (listSoy != null && !listSoy.isEmpty()) LoadModHandler.registerArray("soy", listSoy);
         if (listSeaweed != null && !listSeaweed.isEmpty()) LoadModHandler.registerArray("seaWeed", listSeaweed);
 
         /**
          * 以下、登録したリストを使った追加レシピ登録。
          */
         for (ItemStack soy : listSoy) {
-            if (Util.notEmptyItem(soy)) {
+            if (!soy.isEmpty()) {
 
                 RecipeRegisterManager.evaporatorRecipe.addRecipe(
-                    new ItemStack(DCsAppleMilk.dustWood, 1, 3),
-                    new FluidStack(DCsAppleMilk.vegitableOil, 25),
+                    new ItemStack(DCsAppleMilk.dustWood, 3),
+                    new net.minecraft.world.level.material.FluidStack(DCsAppleMilk.vegitableOil, 25),
                     soy);
             }
         }
 
     }
 
-    /**
-     * 別クラスから、ItemStackがこのクラスにあるリスト内に含まれているかを判定するためのメソッド。
-     * ここではアーモンドかどうかを判定するため、ListAlmondに含まれていればtrueを返す。
-     */
     public static boolean isAlmond(ItemStack itemstack) {
         boolean flag = false;
         flag = matchItems(listAlmond, itemstack);
@@ -144,13 +152,10 @@ public class LoadOreDicHandler {
         return flag;
     }
 
-    /**
-     * for文を回して、リストを順にチェックしている。
-     */
     private static boolean matchItems(ArrayList<ItemStack> list, ItemStack items) {
         for (ItemStack checks : list) {
-            if (checks != null && items != null
-                && (items.getItem() == checks.getItem() && items.getItemDamage() == checks.getItemDamage())) {
+            if (checks != null && items != null && !items.isEmpty()
+                && (items.getItem() == checks.getItem() && items.getDamageValue() == checks.getDamageValue())) {
                 return true;
             }
         }

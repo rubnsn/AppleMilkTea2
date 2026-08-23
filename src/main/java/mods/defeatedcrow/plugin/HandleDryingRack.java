@@ -1,18 +1,18 @@
 package mods.defeatedcrow.plugin;
 
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class HandleDryingRack {
 
     private HandleDryingRack() {}
 
-    public static boolean isDryingRack(TileEntity tile) {
+    public static boolean isDryingRack(BlockEntity tile) {
         // if (tile != null)
         // return tile instanceof TileDryingRack;
         return false;
     }
 
-    public static boolean addDays(TileEntity tile, int day, boolean isDryOrFerm) {
+    public static boolean addDays(BlockEntity tile, int day, boolean isDryOrFerm) {
         // if (tile != null){
         // boolean flag = false;
         // if (tile instanceof TileDryingRack) {

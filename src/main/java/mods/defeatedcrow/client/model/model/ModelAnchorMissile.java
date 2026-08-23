@@ -1,157 +1,111 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelAnchorMissile extends ModelBase {
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-    // fields
-    ModelRenderer head;
-    ModelRenderer head2;
-    ModelRenderer head3;
-    ModelRenderer body;
-    ModelRenderer tail1;
-    ModelRenderer tail2;
-    ModelRenderer tail3;
-    ModelRenderer tail4;
-    ModelRenderer wingL1;
-    ModelRenderer wingL2;
-    ModelRenderer wingR1;
-    ModelRenderer wingR2;
-    ModelRenderer wing3;
-    ModelRenderer burn;
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELANCHORMISSILE) -> new ModelAnchorMissile(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelAnchorMissile {
 
-    public ModelAnchorMissile() {
-        textureWidth = 64;
-        textureHeight = 32;
+    private final ModelPart root;
+    private final ModelPart head;
+    private final ModelPart head2;
+    private final ModelPart head3;
+    private final ModelPart body;
+    private final ModelPart tail1;
+    private final ModelPart tail2;
+    private final ModelPart tail3;
+    private final ModelPart tail4;
+    private final ModelPart wingL1;
+    private final ModelPart wingL2;
+    private final ModelPart wingR1;
+    private final ModelPart wingR2;
+    private final ModelPart wing3;
+    private final ModelPart burn;
 
-        head = new ModelRenderer(this, 0, 0);
-        head.addBox(-2F, -1.5F, -2F, 4, 3, 4);
-        head.setRotationPoint(0F, 16F, -4F);
-        head.setTextureSize(64, 32);
-        head.mirror = true;
-        setRotation(head, 0F, 0F, 0F);
-        head2 = new ModelRenderer(this, 0, 0);
-        head2.addBox(-1.5F, -1F, -4F, 3, 2, 2);
-        head2.setRotationPoint(0F, 16F, -4F);
-        head2.setTextureSize(64, 32);
-        head2.mirror = true;
-        setRotation(head2, 0F, 0F, 0F);
-        head3 = new ModelRenderer(this, 0, 0);
-        head3.addBox(-1F, -0.5F, -5F, 2, 1, 1);
-        head3.setRotationPoint(0F, 16F, -4F);
-        head3.setTextureSize(64, 32);
-        head3.mirror = true;
-        setRotation(head3, 0F, 0F, 0F);
-        body = new ModelRenderer(this, 36, 10);
-        body.addBox(-1.5F, -1F, 2F, 3, 2, 10);
-        body.setRotationPoint(0F, 16F, -4F);
-        body.setTextureSize(64, 32);
-        body.mirror = true;
-        setRotation(body, 0F, 0F, 0F);
-        tail1 = new ModelRenderer(this, 28, 0);
-        tail1.addBox(-2F, -1F, 12F, 4, 1, 3);
-        tail1.setRotationPoint(0F, 16F, -4F);
-        tail1.setTextureSize(64, 32);
-        tail1.mirror = true;
-        setRotation(tail1, 0.0523599F, 0F, 0F);
-        tail2 = new ModelRenderer(this, 28, 0);
-        tail2.addBox(-2F, 0F, 12F, 4, 1, 3);
-        tail2.setRotationPoint(0F, 16F, -4F);
-        tail2.setTextureSize(64, 32);
-        tail2.mirror = true;
-        setRotation(tail2, -0.0523599F, 0F, 0F);
-        tail3 = new ModelRenderer(this, 43, 0);
-        tail3.addBox(0F, -1F, 12F, 1, 2, 3);
-        tail3.setRotationPoint(0F, 16F, -4F);
-        tail3.setTextureSize(64, 32);
-        tail3.mirror = true;
-        setRotation(tail3, 0F, 0.0872665F, 0F);
-        tail4 = new ModelRenderer(this, 43, 0);
-        tail4.addBox(-1F, -1F, 12F, 1, 2, 3);
-        tail4.setRotationPoint(0F, 16F, -4F);
-        tail4.setTextureSize(64, 32);
-        tail4.mirror = true;
-        setRotation(tail4, 0F, -0.0872665F, 0F);
-        wingL1 = new ModelRenderer(this, 0, 8);
-        wingL1.addBox(-1F, 0F, 1F, 3, 1, 10);
-        wingL1.setRotationPoint(0F, 16F, -4F);
-        wingL1.setTextureSize(64, 32);
-        wingL1.mirror = true;
-        setRotation(wingL1, 0F, 0.7853982F, 0F);
-        wingL2 = new ModelRenderer(this, 28, 24);
-        wingL2.addBox(-2.5F, 0F, 11F, 5, 1, 2);
-        wingL2.setRotationPoint(0F, 16F, -4F);
-        wingL2.setTextureSize(64, 32);
-        wingL2.mirror = true;
-        setRotation(wingL2, 0F, 0.7853982F, 0F);
-        wingR1 = new ModelRenderer(this, 0, 20);
-        wingR1.addBox(-2F, 0F, 1F, 3, 1, 10);
-        wingR1.setRotationPoint(0F, 16F, -4F);
-        wingR1.setTextureSize(64, 32);
-        wingR1.mirror = true;
-        setRotation(wingR1, 0F, -0.7853982F, 0F);
-        wingR2 = new ModelRenderer(this, 28, 28);
-        wingR2.addBox(-2.5F, 0F, 11F, 5, 1, 2);
-        wingR2.setRotationPoint(0F, 16F, -4F);
-        wingR2.setTextureSize(64, 32);
-        wingR2.mirror = true;
-        setRotation(wingR2, 0F, -0.7853982F, 0F);
-        wing3 = new ModelRenderer(this, 28, 5);
-        wing3.addBox(-0.5F, 3F, 7F, 1, 2, 4);
-        wing3.setRotationPoint(0F, 16F, -4F);
-        wing3.setTextureSize(64, 32);
-        wing3.mirror = true;
-        setRotation(wing3, 0.5235988F, 0F, 0F);
-        burn = new ModelRenderer(this, 52, 0);
-        burn.addBox(-1.5F, -1F, 13F, 3, 2, 1);
-        burn.setRotationPoint(0F, 16F, -4F);
-        burn.setTextureSize(64, 32);
-        burn.mirror = true;
-        setRotation(burn, 0F, 0F, 0F);
+    public ModelAnchorMissile(ModelPart root) {
+        this.root = root;
+        this.head = root.getChild("head");
+        this.head2 = root.getChild("head2");
+        this.head3 = root.getChild("head3");
+        this.body = root.getChild("body");
+        this.tail1 = root.getChild("tail1");
+        this.tail2 = root.getChild("tail2");
+        this.tail3 = root.getChild("tail3");
+        this.tail4 = root.getChild("tail4");
+        this.wingL1 = root.getChild("wingL1");
+        this.wingL2 = root.getChild("wingL2");
+        this.wingR1 = root.getChild("wingR1");
+        this.wingR2 = root.getChild("wingR2");
+        this.wing3 = root.getChild("wing3");
+        this.burn = root.getChild("burn");
     }
 
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5, boolean flag) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity, flag);
-        head.render(f5);
-        head2.render(f5);
-        head3.render(f5);
-        body.render(f5);
-        tail1.render(f5);
-        tail2.render(f5);
-        tail3.render(f5);
-        tail4.render(f5);
-        wingL1.render(f5);
-        wingL2.render(f5);
-        wingR1.render(f5);
-        wingR2.render(f5);
-        wing3.render(f5);
-        if (flag) burn.render(f5);
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-2F, -1.5F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, -4F));
+        PartDefinition head2 = partdefinition.addOrReplaceChild("head2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1.5F, -1F, -4F, 3, 2, 2), PartPose.offset(0F, 16F, -4F));
+        PartDefinition head3 = partdefinition.addOrReplaceChild("head3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1F, -0.5F, -5F, 2, 1, 1), PartPose.offset(0F, 16F, -4F));
+        PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(36, 10).mirror().addBox(-1.5F, -1F, 2F, 3, 2, 10), PartPose.offset(0F, 16F, -4F));
+        PartDefinition tail1 = partdefinition.addOrReplaceChild("tail1", CubeListBuilder.create().texOffs(28, 0).mirror().addBox(-2F, -1F, 12F, 4, 1, 3), PartPose.offsetAndRotation(0F, 16F, -4F, 0.0523599F, 0F, 0F));
+        PartDefinition tail2 = partdefinition.addOrReplaceChild("tail2", CubeListBuilder.create().texOffs(28, 0).mirror().addBox(-2F, 0F, 12F, 4, 1, 3), PartPose.offsetAndRotation(0F, 16F, -4F, -0.0523599F, 0F, 0F));
+        PartDefinition tail3 = partdefinition.addOrReplaceChild("tail3", CubeListBuilder.create().texOffs(43, 0).mirror().addBox(0F, -1F, 12F, 1, 2, 3), PartPose.offsetAndRotation(0F, 16F, -4F, 0F, 0.0872665F, 0F));
+        PartDefinition tail4 = partdefinition.addOrReplaceChild("tail4", CubeListBuilder.create().texOffs(43, 0).mirror().addBox(-1F, -1F, 12F, 1, 2, 3), PartPose.offsetAndRotation(0F, 16F, -4F, 0F, -0.0872665F, 0F));
+        PartDefinition wingL1 = partdefinition.addOrReplaceChild("wingL1", CubeListBuilder.create().texOffs(0, 8).mirror().addBox(-1F, 0F, 1F, 3, 1, 10), PartPose.offsetAndRotation(0F, 16F, -4F, 0F, 0.7853982F, 0F));
+        PartDefinition wingL2 = partdefinition.addOrReplaceChild("wingL2", CubeListBuilder.create().texOffs(28, 24).mirror().addBox(-2.5F, 0F, 11F, 5, 1, 2), PartPose.offsetAndRotation(0F, 16F, -4F, 0F, 0.7853982F, 0F));
+        PartDefinition wingR1 = partdefinition.addOrReplaceChild("wingR1", CubeListBuilder.create().texOffs(0, 20).mirror().addBox(-2F, 0F, 1F, 3, 1, 10), PartPose.offsetAndRotation(0F, 16F, -4F, 0F, -0.7853982F, 0F));
+        PartDefinition wingR2 = partdefinition.addOrReplaceChild("wingR2", CubeListBuilder.create().texOffs(28, 28).mirror().addBox(-2.5F, 0F, 11F, 5, 1, 2), PartPose.offsetAndRotation(0F, 16F, -4F, 0F, -0.7853982F, 0F));
+        PartDefinition wing3 = partdefinition.addOrReplaceChild("wing3", CubeListBuilder.create().texOffs(28, 5).mirror().addBox(-0.5F, 3F, 7F, 1, 2, 4), PartPose.offsetAndRotation(0F, 16F, -4F, 0.5235988F, 0F, 0F));
+        PartDefinition burn = partdefinition.addOrReplaceChild("burn", CubeListBuilder.create().texOffs(52, 0).mirror().addBox(-1.5F, -1F, 13F, 3, 2, 1), PartPose.offset(0F, 16F, -4F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
+    }
+
+
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, boolean flag) {
+            head.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            head2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            head3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            body.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            tail1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            tail2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            tail3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            tail4.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            wingL1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            wingL2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            wingR1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            wingR2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            wing3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        if (flag)             burn.render(poseStack, vertexConsumer, packedLight, packedOverlay);
 
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
-    }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity,
-        boolean flag) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5, boolean flag) {
         if (flag) {
-            this.wingL1.rotateAngleY = 0.7853982F;
-            this.wingL2.rotateAngleY = 0.7853982F;
-            this.wingR1.rotateAngleY = -0.7853982F;
-            this.wingR2.rotateAngleY = -0.7853982F;
+            this.wingL1.yRot = 0.7853982F;
+            this.wingL2.yRot = 0.7853982F;
+            this.wingR1.yRot = -0.7853982F;
+            this.wingR2.yRot = -0.7853982F;
         } else {
-            this.wingL1.rotateAngleY = 0F;
-            this.wingL2.rotateAngleY = 0F;
-            this.wingR1.rotateAngleY = 0F;
-            this.wingR2.rotateAngleY = 0F;
+            this.wingL1.yRot = 0F;
+            this.wingL2.yRot = 0F;
+            this.wingR1.yRot = 0F;
+            this.wingR2.yRot = 0F;
         }
     }
-
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+        this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+    }
 }

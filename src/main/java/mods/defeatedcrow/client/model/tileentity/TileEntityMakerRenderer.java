@@ -1,67 +1,51 @@
 package mods.defeatedcrow.client.model.tileentity;
 
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import mods.defeatedcrow.client.model.model.ModelMakerHandle;
 import mods.defeatedcrow.common.tile.TileMakerHandle;
 
-@SideOnly(Side.CLIENT)
-public class TileEntityMakerRenderer extends TileEntitySpecialRenderer {
+/**
+ * 1.20.1 port of the 1.7.10 TESR (was: extends the legacy 1.7.10 TESR + GL11 immediate mode).
+ *
+ * <p>Original geometry: {@link mods.defeatedcrow.client.model.model.ModelMakerHandle}
+ * (ModelBase-based, owned by client/model/model - not yet converted to LayerDefinition/ModelPart).</p>
+ */
+public class TileEntityMakerRenderer implements BlockEntityRenderer<TileMakerHandle> {
 
-    private static final ResourceLocation makerHandleTex = new ResourceLocation(
-        "defeatedcrow:textures/blocks/porcelain.png");
+    /** Legacy shared instance (old TESR singleton) ? kept for Placeable* entity renderer reuse. */
     public static TileEntityMakerRenderer makerRenderer;
-    private ModelMakerHandle panHandleModel = new ModelMakerHandle();
 
-    public void renderTileEntityMakerAt(TileMakerHandle par1Tile, double par2, double par4, double par6, float par8) {
-        this.setRotation((float) par2, (float) par4, (float) par6, par1Tile.getDirectionByte());
-    }
+    private static final ResourceLocation PORCELAIN_TEX = new ResourceLocation(
+        "defeatedcrow:textures/blocks/porcelain.png");
 
-    /**
-     * Associate a TileEntityRenderer with this TileEntitySpecialRenderer
-     */
-    public void setTileEntityRenderer(TileEntityRendererDispatcher par1TileEntityRenderer) {
-        super.func_147497_a(par1TileEntityRenderer);
+
+    private final BlockEntityRendererProvider.Context context;
+
+    public TileEntityMakerRenderer(BlockEntityRendererProvider.Context context) {
+        this.context = context;
         makerRenderer = this;
     }
 
-    public void setRotation(float par1, float par2, float par3, byte par4) {
-        ModelMakerHandle model = this.panHandleModel;
-
-        float j = 0;
-        if (par4 == 0) j = 180.0F;
-        if (par4 == 1) j = -90.0F;
-        if (par4 == 2) j = 0.0F;
-        if (par4 == 4) j = 90.0F;
-
-        this.bindTexture(makerHandleTex);
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glTranslatef((float) par1, (float) par2 + 1.0F, (float) par3 + 1.0F);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        short short1 = 0;
-
-        GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-        GL11.glRotatef((float) short1, 0.0F, -1.0F, 0.0F);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        model.render((Entity) null, 0.0F, 0.0F, 0.0F, j, 0.0F, 0.0625F);
-        GL11.glPopMatrix();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    }
-
     @Override
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
-        this.renderTileEntityMakerAt((TileMakerHandle) par1TileEntity, par2, par4, par6, par8);
+    public void render(TileMakerHandle tile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+            int packedLight, int packedOverlay) {
+        // Original yaw mapping from getDirectionByte(): 0->180F, 1->-90F, 2->0F, 4->90F.
+        // Old GL11 chain: translate(x + 0.5, y + 1.5, z + 0.5); scale(1, -1, -1);
+        // rotate(yaw from direction byte/metadata around Y); bindTexture(...);
+        // model.render(null, 0, 0, 0, yaw, 0, 0.0625F);
+        poseStack.pushPose();
+        poseStack.translate(0.5D, 1.5D, 0.5D);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+
+        // TODO: restore ModelMakerHandle rendering via
+        // VertexConsumer vc = bufferSource.getBuffer(Sheets.cutoutBlockSheet());
+        // (blended/translucent parts: Sheets.translucentCullBlockSheet()).
+        poseStack.popPose();
     }
 }

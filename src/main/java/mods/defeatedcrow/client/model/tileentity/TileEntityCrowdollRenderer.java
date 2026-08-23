@@ -1,111 +1,57 @@
 package mods.defeatedcrow.client.model.tileentity;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import mods.defeatedcrow.client.model.model.ModelCrowDoll;
 import mods.defeatedcrow.common.tile.TileCrowDoll;
 
-@SideOnly(Side.CLIENT)
-public class TileEntityCrowdollRenderer extends TileEntitySpecialRenderer {
+/**
+ * 1.20.1 port of the 1.7.10 TESR (was: extends the legacy 1.7.10 TESR + ModelCrowDoll +
+ * RenderManager.renderEntityWithPosYaw of a fake EntityItem for the arrow).
+ *
+ * <p>Original geometry: {@link mods.defeatedcrow.client.model.model.ModelCrowDoll}
+ * (ModelBase-based, owned by client/model/model  Enot yet converted). The doll body
+ * ({@code render}) and base ({@code renderBase}) were drawn with a yaw from metadata
+ * (0->180F, 1->-90F, 2->0F, 3->90F) and a height offset {@code 0.05F * tile.range}.</p>
+ */
+public class TileEntityCrowdollRenderer implements BlockEntityRenderer<TileCrowDoll> {
 
-    private static final ResourceLocation dollTex = new ResourceLocation("defeatedcrow:textures/entity/crowdoll.png");
     public static TileEntityCrowdollRenderer dollRenderer;
-    private ModelCrowDoll dollModel = new ModelCrowDoll();
 
-    public void renderTileEntityDollAt(TileCrowDoll par1Tile, double par2, double par4, double par6, float par8) {
-        this.setRotation(par1Tile, (float) par2, (float) par4, (float) par6);
-    }
+    private final BlockEntityRendererProvider.Context context;
 
-    /**
-     * Associate a TileEntityRenderer with this TileEntitySpecialRenderer
-     */
-    public void setTileEntityRenderer(TileEntityRendererDispatcher par1TileEntityRenderer) {
-        super.func_147497_a(par1TileEntityRenderer);
+    public TileEntityCrowdollRenderer(BlockEntityRendererProvider.Context context) {
+        this.context = context;
         dollRenderer = this;
     }
 
-    public void setRotation(TileCrowDoll tile, float par1, float par2, float par3) {
-        ModelCrowDoll model = this.dollModel;
-        byte m = (byte) tile.getBlockMetadata();
-        byte l = (byte) (m & 3);
-        float j = 0;
-        if (l == 0) j = 180.0F;
-        if (l == 1) j = -90.0F;
-        if (l == 2) j = 0.0F;
-        if (l == 3) j = 90.0F;
-        boolean isFancy = Minecraft.isFancyGraphicsEnabled();
-
-        float h = 0.05F * (float) tile.range;
-
-        this.bindTexture(dollTex);
-
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glTranslatef(par1 + 0.5F, par2 + 1.5F + h, par3 + 0.5F);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef(j, 0.0F, 1.0F, 0.0F);
-        model.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
-
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glTranslatef(par1 + 0.5F, par2 + 1.5F, par3 + 0.5F);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef(j, 0.0F, 1.0F, 0.0F);
-        model.renderBase((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
-
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glTranslatef(par1 + 0.5F, par2 + 0.75F + h, par3 + 0.5F);
-        GL11.glScalef(1.2F, -1.2F, -1.2F);
-        GL11.glRotatef(j + 180.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glTranslatef(-0.15F, 0.0F, 0.0F);
-        this.renderArrow(tile);
-
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
-    }
-
-    private void renderArrow(TileCrowDoll tile) {
-
-        ItemStack item = new ItemStack(Items.arrow, 1, 0);
-
-        if (item != null) {
-            EntityItem entityitem = new EntityItem(tile.getWorldObj(), 0.0D, 0.0D, 0.0D, item);
-            entityitem.getEntityItem().stackSize = 1;
-            entityitem.hoverStart = 0.0F;
-
-            RenderItem.renderInFrame = true;
-            RenderManager.instance.renderEntityWithPosYaw(entityitem, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
-            RenderItem.renderInFrame = false;
-        }
-    }
-
     @Override
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
-        this.renderTileEntityDollAt((TileCrowDoll) par1TileEntity, par2, par4, par6, par8);
+    public void render(TileCrowDoll tile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+            int packedLight, int packedOverlay) {
+        if (tile.getLevel() == null) return;
+
+        // TODO: restore ModelCrowDoll#render / #renderBase via
+        // VertexConsumer vc = bufferSource.getBuffer(Sheets.cutoutBlockSheet())
+        // ("defeatedcrow:textures/entity/crowdoll.png"), with the legacy transform chain:
+        //   translate(x + 0.5, y + 1.5 + 0.05*range, z + 0.5); scale(1,-1,-1); rotate(yaw, Y);
+        //   render(...); then base at y + 1.5 without height offset.
+
+        // Arrow pointer item (old: fake EntityItem of Items.arrow at y + 0.75 + 0.05*range,
+        // scale 1.2, yaw + 180, shifted -0.15 on X):
+        poseStack.pushPose();
+        poseStack.translate(0.35D, 0.75D + 0.05D * tile.range, 0.5D);
+        poseStack.scale(1.2F, -1.2F, -1.2F);
+
+        ItemStack arrow = new ItemStack(Items.ARROW, 1);
+        this.context.getItemRenderer().renderStatic(arrow, ItemDisplayContext.GROUND,
+            packedLight, packedOverlay, poseStack, bufferSource, tile.getLevel(), 0);
+
+        poseStack.popPose();
     }
 }

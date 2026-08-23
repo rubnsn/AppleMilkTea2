@@ -1,153 +1,127 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import mods.defeatedcrow.common.*;
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-@SideOnly(Side.CLIENT)
-public class ModelCupHandle extends ModelBase {
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELCUPHANDLE) -> new ModelCupHandle(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelCupHandle {
 
-    // fields
-    public ModelRenderer handlea1 = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
-    public ModelRenderer handlea3 = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
-    public ModelRenderer handlea2 = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
+    private final ModelPart root;
+    private final ModelPart handlea1;
+    private final ModelPart handlea3;
+    private final ModelPart handlea2;
+    private final ModelPart handleb1;
+    private final ModelPart handleb3;
+    private final ModelPart handleb2;
+    private final ModelPart handlec1;
+    private final ModelPart handlec3;
+    private final ModelPart handlec2;
+    private final ModelPart handled1;
+    private final ModelPart handled3;
+    private final ModelPart handled2;
+    private final ModelPart sideF;
+    private final ModelPart sideB;
+    private final ModelPart sideR;
+    private final ModelPart sideL;
+    private final ModelPart Bottom;
 
-    public ModelRenderer handleb1 = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
-    public ModelRenderer handleb3 = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
-    public ModelRenderer handleb2 = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
-
-    public ModelRenderer handlec1 = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
-    public ModelRenderer handlec3 = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
-    public ModelRenderer handlec2 = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
-
-    public ModelRenderer handled1 = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
-    public ModelRenderer handled3 = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
-    public ModelRenderer handled2 = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
-
-    // for Summer or JP rendering
-    ModelRenderer sideF = new ModelRenderer(this, 0, 10);
-    ModelRenderer sideB = new ModelRenderer(this, 0, 10);
-    ModelRenderer sideR = new ModelRenderer(this, 15, 10);
-    ModelRenderer sideL = new ModelRenderer(this, 15, 10);
-    ModelRenderer Bottom = new ModelRenderer(this, 0, 0);
-
-    public ModelCupHandle() {
-
-        // south
-        this.handlea1.addBox(0F, 0F, 0F, 2, 1, 2, 0.0F);
-        this.handlea1.rotationPointX = -1.0F;
-        this.handlea1.rotationPointY = 17.0F;
-        this.handlea1.rotationPointZ = -5.0F;
-        this.handlea1.mirror = true;
-        this.handlea3.addBox(0F, 0F, 0F, 2, 1, 2, 0.0F);
-        this.handlea3.rotationPointX = -1.0F;
-        this.handlea3.rotationPointY = 22.0F;
-        this.handlea3.rotationPointZ = -5.0F;
-        this.handlea3.mirror = true;
-        this.handlea2.addBox(0F, 0F, 0F, 2, 6, 1, 0.0F);
-        this.handlea2.rotationPointX = -1.0F;
-        this.handlea2.rotationPointY = 17.0F;
-        this.handlea2.rotationPointZ = -6.0F;
-        this.handlea2.mirror = true;
-        // north
-        handleb1.addBox(0F, 0F, 0F, 2, 1, 2);
-        handleb1.setRotationPoint(-1F, 17F, 3F);
-        handleb1.mirror = true;
-        handleb3.addBox(0F, 0F, 0F, 2, 1, 2);
-        handleb3.setRotationPoint(-1F, 22F, 3F);
-        handleb3.mirror = true;
-        handleb2.addBox(0F, 0F, 0F, 2, 6, 1);
-        handleb2.setRotationPoint(-1F, 17F, 5F);
-        handleb2.mirror = true;
-        // east
-        handlec3.addBox(0F, 0F, 0F, 2, 1, 2);
-        handlec3.setRotationPoint(3F, 22F, -1F);
-        handlec3.setTextureSize(64, 32);
-        handlec3.mirror = true;
-        handlec1.addBox(0F, 0F, 0F, 2, 1, 2);
-        handlec1.setRotationPoint(3F, 17F, -1F);
-        handlec1.setTextureSize(64, 32);
-        handlec1.mirror = true;
-        handlec2.addBox(0F, 0F, 0F, 1, 6, 2);
-        handlec2.setRotationPoint(5F, 17F, -1F);
-        handlec2.setTextureSize(64, 32);
-        handlec2.mirror = true;
-        // west
-        handled1.addBox(0F, 0F, 0F, 2, 1, 2);
-        handled1.setRotationPoint(-5F, 17F, -1F);
-        handled1.mirror = true;
-        handled3.addBox(0F, 0F, 0F, 2, 1, 2);
-        handled3.setRotationPoint(-5F, 22F, -1F);
-        handled3.mirror = true;
-        handled2.addBox(0F, 0F, 0F, 1, 6, 2);
-        handled2.setRotationPoint(-6F, 17F, -1F);
-        handled2.mirror = true;
-
-        // Summer and JP
-        sideF.addBox(-3F, 0F, -3F, 6, 8, 1);
-        sideF.setRotationPoint(0F, 16F, 0F);
-        sideF.setTextureSize(64, 32);
-        sideF.mirror = true;
-        sideB.addBox(-3F, 0F, 2F, 6, 8, 1);
-        sideB.setRotationPoint(0F, 16F, 0F);
-        sideB.setTextureSize(64, 32);
-        sideB.mirror = true;
-        sideR.addBox(-3F, 0F, -2F, 1, 8, 4);
-        sideR.setRotationPoint(0F, 16F, 0F);
-        sideR.setTextureSize(64, 32);
-        sideR.mirror = true;
-        sideL.addBox(2F, 0F, -2F, 1, 8, 4);
-        sideL.setRotationPoint(0F, 16F, 0F);
-        sideL.setTextureSize(64, 32);
-        sideL.mirror = true;
-        Bottom.addBox(-2F, 0F, -2F, 4, 2, 4);
-        Bottom.setRotationPoint(0F, 22F, 0F);
-        Bottom.setTextureSize(64, 32);
-        Bottom.mirror = true;
+    public ModelCupHandle(ModelPart root) {
+        this.root = root;
+        this.handlea1 = root.getChild("handlea1");
+        this.handlea3 = root.getChild("handlea3");
+        this.handlea2 = root.getChild("handlea2");
+        this.handleb1 = root.getChild("handleb1");
+        this.handleb3 = root.getChild("handleb3");
+        this.handleb2 = root.getChild("handleb2");
+        this.handlec1 = root.getChild("handlec1");
+        this.handlec3 = root.getChild("handlec3");
+        this.handlec2 = root.getChild("handlec2");
+        this.handled1 = root.getChild("handled1");
+        this.handled3 = root.getChild("handled3");
+        this.handled2 = root.getChild("handled2");
+        this.sideF = root.getChild("sideF");
+        this.sideB = root.getChild("sideB");
+        this.sideR = root.getChild("sideR");
+        this.sideL = root.getChild("sideL");
+        this.Bottom = root.getChild("Bottom");
     }
 
-    public void render(Entity par1Entity, float par2, float par3, float par4, byte par5, float par6, float par7) {
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition handlea1 = partdefinition.addOrReplaceChild("handlea1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-1.0F, 17.0F, -5.0F));
+        PartDefinition handlea3 = partdefinition.addOrReplaceChild("handlea3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-1.0F, 22.0F, -5.0F));
+        PartDefinition handlea2 = partdefinition.addOrReplaceChild("handlea2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 6, 1), PartPose.offset(-1.0F, 17.0F, -6.0F));
+        PartDefinition handleb1 = partdefinition.addOrReplaceChild("handleb1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-1F, 17F, 3F));
+        PartDefinition handleb3 = partdefinition.addOrReplaceChild("handleb3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-1F, 22F, 3F));
+        PartDefinition handleb2 = partdefinition.addOrReplaceChild("handleb2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 6, 1), PartPose.offset(-1F, 17F, 5F));
+        PartDefinition handlec1 = partdefinition.addOrReplaceChild("handlec1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(3F, 17F, -1F));
+        PartDefinition handlec3 = partdefinition.addOrReplaceChild("handlec3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(3F, 22F, -1F));
+        PartDefinition handlec2 = partdefinition.addOrReplaceChild("handlec2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 1, 6, 2), PartPose.offset(5F, 17F, -1F));
+        PartDefinition handled1 = partdefinition.addOrReplaceChild("handled1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-5F, 17F, -1F));
+        PartDefinition handled3 = partdefinition.addOrReplaceChild("handled3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-5F, 22F, -1F));
+        PartDefinition handled2 = partdefinition.addOrReplaceChild("handled2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 1, 6, 2), PartPose.offset(-6F, 17F, -1F));
+        PartDefinition sideF = partdefinition.addOrReplaceChild("sideF", CubeListBuilder.create().texOffs(0, 10).mirror().addBox(-3F, 0F, -3F, 6, 8, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition sideB = partdefinition.addOrReplaceChild("sideB", CubeListBuilder.create().texOffs(0, 10).mirror().addBox(-3F, 0F, 2F, 6, 8, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition sideR = partdefinition.addOrReplaceChild("sideR", CubeListBuilder.create().texOffs(15, 10).mirror().addBox(-3F, 0F, -2F, 1, 8, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition sideL = partdefinition.addOrReplaceChild("sideL", CubeListBuilder.create().texOffs(15, 10).mirror().addBox(2F, 0F, -2F, 1, 8, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition Bottom = partdefinition.addOrReplaceChild("Bottom", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-2F, 0F, -2F, 4, 2, 4), PartPose.offset(0F, 22F, 0F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
+    }
+
+
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, byte par5) {
         // if (DCsConfig.useJapaneseCup)
         // {
-        // this.sideB.render(par7);
-        // this.sideF.render(par7);
-        // this.sideL.render(par7);
-        // this.sideR.render(par7);
-        // this.Bottom.render(par7);
+        //             sideB.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        //             sideF.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        //             sideL.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        //             sideR.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        //             Bottom.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         // }
         // else
         // {
         if (par5 == 0) {
-            this.handleb1.render(0.0625F);
-            this.handleb2.render(0.0625F);
-            this.handleb3.render(0.0625F);
+            handleb1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            handleb2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            handleb3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         } else if (par5 == 1) {
-            this.handlec1.render(0.0625F);
-            this.handlec2.render(0.0625F);
-            this.handlec3.render(0.0625F);
+            handlec1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            handlec2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            handlec3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         } else if (par5 == 2) {
-            this.handlea1.render(0.0625F);
-            this.handlea2.render(0.0625F);
-            this.handlea3.render(0.0625F);
+            handlea1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            handlea2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            handlea3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         } else if (par5 == 4) {
-            this.handled1.render(0.0625F);
-            this.handled2.render(0.0625F);
-            this.handled3.render(0.0625F);
+            handled1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            handled2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            handled3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         }
         // }
     }
 
-    public void renderSummer(Entity par1Entity, float par2, float par3, float par4, float per5, float par6,
-        float par7) {
-        this.sideB.render(par7);
-        this.sideF.render(par7);
-        this.sideL.render(par7);
-        this.sideR.render(par7);
-        this.Bottom.render(par7);
+    public void renderSummer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            sideB.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            sideF.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            sideL.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            sideR.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            Bottom.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
-
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+        this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+    }
 }

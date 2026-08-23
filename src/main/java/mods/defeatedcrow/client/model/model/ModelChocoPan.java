@@ -1,51 +1,59 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-@SideOnly(Side.CLIENT)
-public class ModelChocoPan extends ModelBase {
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELCHOCOPAN) -> new ModelChocoPan(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelChocoPan {
 
-    // fields
-    public ModelRenderer contants1 = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
-    public ModelRenderer contants2 = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
-    public ModelRenderer contants3 = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
+    private final ModelPart root;
+    private final ModelPart contants1;
+    private final ModelPart contants2;
+    private final ModelPart contants3;
 
-    public ModelChocoPan() {
-        contants1.addBox(-5F, 0F, -5F, 10, 1, 10);
-        contants1.setRotationPoint(0F, 21F, 0F);
-        setRotation(contants1, 0F, 0F, 0F);
-        contants2.addBox(-5F, 0F, -5F, 10, 3, 10);
-        contants2.setRotationPoint(0F, 19F, 0F);
-        setRotation(contants2, 0F, 0F, 0F);
-        contants3.addBox(-5F, 0F, -5F, 10, 5, 10);
-        contants3.setRotationPoint(0F, 17F, 0F);
-        setRotation(contants3, 0F, 0F, 0F);
+    public ModelChocoPan(ModelPart root) {
+        this.root = root;
+        this.contants1 = root.getChild("contants1");
+        this.contants2 = root.getChild("contants2");
+        this.contants3 = root.getChild("contants3");
     }
 
-    public void render(Entity par1Entity, float par2, float par3, float par4, byte par5, float par6, float par7) {
-        super.render(par1Entity, par2, par3, par4, par5, par6, par7);
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
-        this.contants1.render(par7);
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition contants1 = partdefinition.addOrReplaceChild("contants1", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 21F, 0F));
+        PartDefinition contants2 = partdefinition.addOrReplaceChild("contants2", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -5F, 10, 3, 10), PartPose.offset(0F, 19F, 0F));
+        PartDefinition contants3 = partdefinition.addOrReplaceChild("contants3", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -5F, 10, 5, 10), PartPose.offset(0F, 17F, 0F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
+    }
+
+
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, byte par5) {
+            contants1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         if (par5 > 3) {
-            this.contants2.render(par7);
+            contants2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
             if (par5 > 7) {
-                this.contants3.render(par7);
+            contants3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
             }
         }
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
-    }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        }
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+        this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 }

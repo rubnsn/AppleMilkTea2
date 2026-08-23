@@ -1,28 +1,29 @@
 package mods.defeatedcrow.potion;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.MathHelper;
-
-import mods.defeatedcrow.api.potion.PotionReflexBase;
-import mods.defeatedcrow.common.config.DCsConfig;
+import net.minecraft.core.Holder;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 
 /**
- * 当て身ポーション。
- * このポーションは効果時間中にダメージを受けると発動し、ダメージを反射したり、吸収したりする。
+ * 当て身ポーション。効果時間中にダメージを受けると発動し、ダメージを反射したり、吸収したりする。
+ * 発動は WT-B の DCsHurtEvent から effectFormer を経由して呼ばれる。
+ * 1.20.1: PotionReflexBase(api凍結) → MobEffect 直接継承、PotionEffect → MobEffectInstance。
  */
-public class PotionReflex extends PotionReflexBase {
+public class PotionReflex extends MobEffect {
 
-    public PotionReflex(int par1, boolean par2, int par3, boolean par4, int x, int y) {
-        super(par1, par2, par3, par4, x, y);
+    public PotionReflex(MobEffectCategory category, int color) {
+        super(category, color);
     }
 
-    @Override
-    public boolean effectFormer(EntityLivingBase target, DamageSource source, PotionEffect effect, float amount) {
+    public boolean effectFormer(LivingEntity target, DamageSource source, Holder<MobEffect> self, MobEffectInstance effect, float amount) {
         boolean succeed = false;
 
         if (amount < 1.0F) {
@@ -31,93 +32,86 @@ public class PotionReflex extends PotionReflexBase {
 
         int amp = effect.getAmplifier();
 
-        if (effect.getPotionID() == DCsConfig.potionIDReflex)// 反射
-        {
+        if (self.is(this)) {
             if (amount < 5.0F) {
                 amount = 5.0F;
             }
 
-            /* 攻撃元のエンティティがいない場合は何もしない */
-            if (source instanceof EntityDamageSource) {
-                EntityDamageSource source2 = (EntityDamageSource) source;
-                Entity attacker = source2.getEntity();
+            if (source.getEntity() != null) {
+                LivingEntity livingAttacker = source.getEntity() instanceof LivingEntity le ? le : null;
 
-                if (attacker != null) {
-                    if (attacker instanceof EntityLivingBase)// 生き物の時はダメージやノックバック処理を行う
-                    {
-                        EntityLivingBase livingAttacker = (EntityLivingBase) attacker;
-
-                        if (attacker != target) {
-                            // ノックバック
-                            float range = 360 - livingAttacker.rotationYaw;
-                            float yawX = MathHelper.sin(range / 180.0F * (float) Math.PI);
-                            float yawZ = MathHelper.cos(range / 180.0F * (float) Math.PI);
-                            livingAttacker.motionX += 1.0 * yawX;
-                            livingAttacker.motionY += 0.3;
-                            livingAttacker.motionZ += 1.0 * yawZ;
-                            // magic属性のダメージ
-                            livingAttacker.attackEntityFrom(DamageSource.magic, amount * amp);
-                            // プレイヤーには金属音が聞こえる
-                            Float r = target.worldObj.rand.nextFloat();
-                            target.worldObj.playSoundAtEntity(target, "defeatedcrow:metal", 1.0F, 0.5F + r);
-                            succeed = true;
-                        }
-                    } else if (amp > 0) {
-                        // 生き物でない場合は何もしないが、無効化効果は働く
-                        Float r = target.worldObj.rand.nextFloat();
-                        target.worldObj.playSoundAtEntity(target, "defeatedcrow:metal", 1.0F, 0.5F + r);
-                        succeed = true;
-                    }
+                if (livingAttacker != null && livingAttacker != target) {
+                    float range = 360 - livingAttacker.getYRot();
+                    float yawX = (float) Math.sin(range / 180.0F * Math.PI);
+                    float yawZ = (float) Math.cos(range / 180.0F * Math.PI);
+                    livingAttacker.push(1.0D * yawX, 0.3D, 1.0D * yawZ);
+                    livingAttacker.hurt(target.damageSources().magic(), amount * amp);
+                    playMetalSound(target);
+                    succeed = true;
+                } else if (livingAttacker == null && amp > 0) {
+                    playMetalSound(target);
+                    succeed = true;
                 }
             }
         }
 
-        if (effect.getPotionID() == DCsConfig.potionIDAbsEXP) {
-            if (target instanceof EntityPlayer) {
-                EntityPlayer player = (EntityPlayer) target;
+        if (self.is(mods.defeatedcrow.common.registry.ModMobEffects.ABS_EXP.getKey())) {
+            if (target instanceof Player player) {
                 int get = Math.round(Math.abs(amount));
                 boolean flag = false;
 
                 if (amp > 1) {
                     flag = true;
-                } else if (amp > 0 && (source.isExplosion() || source.isFireDamage())) {
+                } else if (amp > 0 && (source.is(net.minecraft.world.damagesource.DamageTypes.EXPLOSION)
+                    || source.is(net.minecraft.world.damagesource.DamageTypes.IN_FIRE))) {
                     flag = true;
                 } else {
-                    flag = (source instanceof EntityDamageSource);
+                    flag = (source.getEntity() != null);
                 }
 
                 if (flag) {
-                    player.addExperience(get);
-                    Float r = player.worldObj.rand.nextFloat();
-                    player.worldObj.playSoundAtEntity(target, "defeatedcrow:suzu", 1.0F, 0.5F + r);
+                    player.giveExperiencePoints(get);
+                    playSuzuSound(player);
                     succeed = true;
                 }
             }
         }
 
-        if (effect.getPotionID() == DCsConfig.potionIDAbsHeal) {
-            if (target instanceof EntityLivingBase) {
-                EntityLivingBase player = (EntityLivingBase) target;
-                boolean flag = false;
+        if (self.is(mods.defeatedcrow.common.registry.ModMobEffects.ABS_HEAL.getKey())) {
+            boolean flag = false;
 
-                if (amp > 1) {
-                    flag = true;
-                } else if (amp > 0 && (source.isExplosion() || source.isFireDamage())) {
-                    flag = true;
-                } else {
-                    flag = (source instanceof EntityDamageSource);
-                }
+            if (amp > 1) {
+                flag = true;
+            } else if (amp > 0 && (source.is(net.minecraft.world.damagesource.DamageTypes.EXPLOSION)
+                || source.is(net.minecraft.world.damagesource.DamageTypes.IN_FIRE))) {
+                flag = true;
+            } else {
+                flag = (source.getEntity() != null);
+            }
 
-                if (flag) {
-                    player.heal(amount * amp);
-                    Float r = player.worldObj.rand.nextFloat();
-                    player.worldObj.playSoundAtEntity(target, "defeatedcrow:suzu", 1.0F, 0.5F + r);
-                    succeed = true;
-                }
+            if (flag) {
+                target.heal(amount * amp);
+                playSuzuSound(target);
+                succeed = true;
             }
         }
 
         return succeed;
     }
 
+    private void playMetalSound(LivingEntity target) {
+        SoundEvent metal = net.minecraftforge.registries.ForgeRegistries.SOUND_EVENTS
+            .getValue(new net.minecraft.resources.ResourceLocation(mods.defeatedcrow.common.DCsAppleMilk.MODID, "metal"));
+        SoundEvent use = metal != null ? metal : SoundEvents.NOTE_BLOCK_BELL.value();
+        target.level().playSound(null, target.blockPosition(), use, SoundSource.PLAYERS, 1.0F,
+            0.5F + target.level().random.nextFloat());
+    }
+
+    private void playSuzuSound(LivingEntity target) {
+        SoundEvent suzu = net.minecraftforge.registries.ForgeRegistries.SOUND_EVENTS
+            .getValue(new net.minecraft.resources.ResourceLocation(mods.defeatedcrow.common.DCsAppleMilk.MODID, "suzu"));
+        SoundEvent use = suzu != null ? suzu : SoundEvents.NOTE_BLOCK_CHIME.value();
+        target.level().playSound(null, target.blockPosition(), use, SoundSource.PLAYERS, 1.0F,
+            0.5F + target.level().random.nextFloat());
+    }
 }

@@ -1,76 +1,52 @@
-package mods.defeatedcrow.client.entity;
+﻿package mods.defeatedcrow.client.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.model.ModelYuzuBullet;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import mods.defeatedcrow.client.model.model.ModelYuzuBullet;
+import mods.defeatedcrow.client.ModEntityRenderers;
 import mods.defeatedcrow.common.entity.EntityYuzuBullet;
 
-@SideOnly(Side.CLIENT)
-public class RenderYuzuBullet extends Render {
+/**
+ * 1.20.1 migration: Render -> EntityRenderer + PoseStack/MultiBufferSource.
+ * The former GL color tint for the burning state has no direct VertexConsumer
+ * equivalent here and is dropped (TODO: tint via custom RenderType if needed).
+ */
+public class RenderYuzuBullet extends EntityRenderer<EntityYuzuBullet> {
 
-    private static final ResourceLocation melonTextures = new ResourceLocation(
-        "defeatedcrow:textures/entity/yuzubullet.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("defeatedcrow", "textures/entity/yuzubullet.png");
 
-    /** instance of ModelBoat for rendering */
-    protected ModelBase modelMissile;
+    private final ModelYuzuBullet modelMissile;
 
-    public RenderYuzuBullet(ModelBase par1ModelBase) {
-        super();
-        this.shadowSize = 0.5F;
-        this.modelMissile = par1ModelBase;
-    }
-
-    public void renderMissile(EntityYuzuBullet par1Entity, double posX, double posY, double posZ, float round,
-        float yaw) {
-        ModelYuzuBullet model = (ModelYuzuBullet) this.modelMissile;
-        boolean b = par1Entity.isBurning();
-
-        this.bindEntityTexture(par1Entity);
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        if (b) {
-            GL11.glColor4f(2.0F, 2.0F, 2.0F, 1.0F);
-        } else {
-            GL11.glColor4f(3.0F, 1.0F, 1.0F, 1.0F);
-        }
-        GL11.glTranslatef((float) posX, (float) posY + 1.0F, (float) posZ);
-        GL11.glRotatef(
-            par1Entity.prevRotationYaw + (par1Entity.rotationYaw - par1Entity.prevRotationYaw) * yaw,
-            0.0F,
-            1.0F,
-            0.0F);
-        GL11.glRotatef(
-            par1Entity.prevRotationPitch + (par1Entity.rotationPitch - par1Entity.prevRotationPitch) * yaw,
-            -1.0F,
-            0.0F,
-            0.0F);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        model.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPopMatrix();
-    }
-
-    protected ResourceLocation getMelonTextures(EntityYuzuBullet par1Entity) {
-        return melonTextures;
+    public RenderYuzuBullet(EntityRendererProvider.Context ctx) {
+        super(ctx);
+        this.shadowRadius = 0.5F;
+        this.modelMissile = new ModelYuzuBullet(ctx.bakeLayer(ModEntityRenderers.MODEL_YUZU_BULLET));
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity) {
-        return this.getMelonTextures((EntityYuzuBullet) par1Entity);
+    public void render(EntityYuzuBullet entity, float yaw, float partialTick, PoseStack poseStack,
+        MultiBufferSource buffer, int packedLight) {
+        poseStack.pushPose();
+        poseStack.translate(0.0F, 1.0F, 0.0F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(entity.getViewYRot(partialTick)));
+        poseStack.mulPose(Axis.XP.rotationDegrees(-entity.getViewXRot(partialTick)));
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+        this.modelMissile.render(poseStack, buffer.getBuffer(RenderType.entityCutout(getTextureLocation(entity))),
+            packedLight, OverlayTexture.NO_OVERLAY);
+        poseStack.popPose();
+        super.render(entity, yaw, partialTick, poseStack, buffer, packedLight);
     }
 
     @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-        this.renderMissile((EntityYuzuBullet) par1Entity, par2, par4, par6, par8, par9);
+    public ResourceLocation getTextureLocation(EntityYuzuBullet entity) {
+        return TEXTURE;
     }
 }

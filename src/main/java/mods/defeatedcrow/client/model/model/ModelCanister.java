@@ -1,115 +1,85 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.src.*;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelCanister extends ModelBase {
-    // fields
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-    ModelRenderer bottomC;
-    ModelRenderer side1C;
-    ModelRenderer side2C;
-    ModelRenderer side3C;
-    ModelRenderer side4C;
-    ModelRenderer top1C;
-    ModelRenderer top2C;
-    ModelRenderer woodcap;
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELCANISTER) -> new ModelCanister(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelCanister {
 
-    ModelRenderer contents;
+    private final ModelPart root;
+    private final ModelPart bottomC;
+    private final ModelPart side1C;
+    private final ModelPart side2C;
+    private final ModelPart side3C;
+    private final ModelPart side4C;
+    private final ModelPart top1C;
+    private final ModelPart top2C;
+    private final ModelPart woodcap;
+    private final ModelPart contents;
 
-    public ModelCanister() {
-        textureWidth = 32;
-        textureHeight = 32;
-
-        bottomC = new ModelRenderer(this, 0, 0);
-        bottomC.addBox(-5F, 0F, -5F, 10, 2, 10);
-        bottomC.setRotationPoint(0F, 22F, 0F);
-        bottomC.setTextureSize(64, 32);
-        bottomC.mirror = true;
-        setRotation(bottomC, 0F, 0F, 0F);
-        side1C = new ModelRenderer(this, 0, 0);
-        side1C.addBox(-5F, 0F, -5F, 10, 10, 1);
-        side1C.setRotationPoint(0F, 12F, 0F);
-        side1C.setTextureSize(64, 32);
-        side1C.mirror = true;
-        setRotation(side1C, 0F, 0F, 0F);
-        side2C = new ModelRenderer(this, 0, 0);
-        side2C.addBox(-5F, 0F, 4F, 10, 10, 1);
-        side2C.setRotationPoint(0F, 12F, 0F);
-        side2C.setTextureSize(64, 32);
-        side2C.mirror = true;
-        setRotation(side2C, 0F, 0F, 0F);
-        side3C = new ModelRenderer(this, 0, 0);
-        side3C.addBox(-5F, 0F, -4F, 1, 10, 8);
-        side3C.setRotationPoint(0F, 12F, 0F);
-        side3C.setTextureSize(64, 32);
-        side3C.mirror = true;
-        setRotation(side3C, 0F, 0F, 0F);
-        side4C = new ModelRenderer(this, 0, 0);
-        side4C.addBox(4F, 0F, -4F, 1, 10, 8);
-        side4C.setRotationPoint(0F, 12F, 0F);
-        side4C.setTextureSize(64, 32);
-        side4C.mirror = true;
-        setRotation(side4C, 0F, 0F, 0F);
-        top1C = new ModelRenderer(this, 0, 0);
-        top1C.addBox(-4F, 0F, -4F, 8, 2, 8);
-        top1C.setRotationPoint(0F, 11F, 0F);
-        top1C.setTextureSize(64, 32);
-        top1C.mirror = true;
-        setRotation(top1C, 0F, 0F, 0F);
-        top2C = new ModelRenderer(this, 0, 0);
-        top2C.addBox(-3F, 0F, -3F, 6, 1, 6);
-        top2C.setRotationPoint(0F, 10F, 0F);
-        top2C.setTextureSize(64, 32);
-        top2C.mirror = true;
-        setRotation(top2C, 0F, 0F, 0F);
-        woodcap = new ModelRenderer(this, 0, 0);
-        woodcap.addBox(-4F, 0F, -4F, 8, 1, 8);
-        woodcap.setRotationPoint(0F, 9F, 0F);
-        woodcap.setTextureSize(32, 32);
-        woodcap.mirror = true;
-        setRotation(woodcap, 0F, 0F, 0F);
-
-        contents = new ModelRenderer(this, 0, 0);
-        contents.addBox(-4F, 0F, -4F, 8, 8, 8);
-        contents.setRotationPoint(0F, 14F, 0F);
-        contents.setTextureSize(64, 32);
-        contents.mirror = true;
-        setRotation(contents, 0F, 0F, 0F);
+    public ModelCanister(ModelPart root) {
+        this.root = root;
+        this.bottomC = root.getChild("bottomC");
+        this.side1C = root.getChild("side1C");
+        this.side2C = root.getChild("side2C");
+        this.side3C = root.getChild("side3C");
+        this.side4C = root.getChild("side4C");
+        this.top1C = root.getChild("top1C");
+        this.top2C = root.getChild("top2C");
+        this.woodcap = root.getChild("woodcap");
+        this.contents = root.getChild("contents");
     }
 
-    public void renderCanister(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        bottomC.render(f5);
-        side1C.render(f5);
-        side2C.render(f5);
-        side3C.render(f5);
-        side4C.render(f5);
-        top1C.render(f5);
-        top2C.render(f5);
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition bottomC = partdefinition.addOrReplaceChild("bottomC", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -5F, 10, 2, 10), PartPose.offset(0F, 22F, 0F));
+        PartDefinition side1C = partdefinition.addOrReplaceChild("side1C", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -5F, 10, 10, 1), PartPose.offset(0F, 12F, 0F));
+        PartDefinition side2C = partdefinition.addOrReplaceChild("side2C", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, 4F, 10, 10, 1), PartPose.offset(0F, 12F, 0F));
+        PartDefinition side3C = partdefinition.addOrReplaceChild("side3C", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -4F, 1, 10, 8), PartPose.offset(0F, 12F, 0F));
+        PartDefinition side4C = partdefinition.addOrReplaceChild("side4C", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(4F, 0F, -4F, 1, 10, 8), PartPose.offset(0F, 12F, 0F));
+        PartDefinition top1C = partdefinition.addOrReplaceChild("top1C", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4F, 0F, -4F, 8, 2, 8), PartPose.offset(0F, 11F, 0F));
+        PartDefinition top2C = partdefinition.addOrReplaceChild("top2C", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3F, 0F, -3F, 6, 1, 6), PartPose.offset(0F, 10F, 0F));
+        PartDefinition woodcap = partdefinition.addOrReplaceChild("woodcap", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4F, 0F, -4F, 8, 1, 8), PartPose.offset(0F, 9F, 0F));
+        PartDefinition contents = partdefinition.addOrReplaceChild("contents", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4F, 0F, -4F, 8, 8, 8), PartPose.offset(0F, 14F, 0F));
+        return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
-    public void renderContents(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        contents.render(f5);
+
+    public void renderCanister(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            bottomC.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            side1C.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            side2C.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            side3C.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            side4C.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            top1C.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            top2C.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    public void renderCanisterCap(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        woodcap.render(f5);
+    public void renderContents(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            contents.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+    public void renderCanisterCap(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            woodcap.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        }
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+        this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
-
 }

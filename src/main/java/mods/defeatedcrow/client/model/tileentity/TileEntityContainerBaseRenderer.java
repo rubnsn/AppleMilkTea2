@@ -1,108 +1,75 @@
 package mods.defeatedcrow.client.model.tileentity;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import mods.defeatedcrow.common.block.container.BlockContainerBase;
 import mods.defeatedcrow.common.block.container.BlockContainerBase;
 import mods.defeatedcrow.common.tile.TileContainerBase;
 
-@SideOnly(Side.CLIENT)
-public class TileEntityContainerBaseRenderer extends TileEntitySpecialRenderer {
+/**
+ * 1.20.1 port of the 1.7.10 TESR (was: extends the legacy 1.7.10 TESR +
+ * RenderManager.renderEntityWithPosYaw of a fake EntityItem).
+ *
+ * <p>The old {@code RenderItem.renderInFrame} hack is replaced with
+ * {@link net.minecraft.client.renderer.entity.ItemRenderer#renderStatic}. The old
+ * "fancy graphics off" double-render (mirrored copy) is intentionally dropped.</p>
+ */
+public class TileEntityContainerBaseRenderer implements BlockEntityRenderer<TileContainerBase> {
 
     public static TileEntityContainerBaseRenderer thisRenderer;
 
-    public void renderTileEntityCaseAt(TileContainerBase par1Tile, double par2, double par4, double par6, float par8) {
-        this.setRotation(par1Tile, (float) par2, (float) par4, (float) par6);
-    }
+    private final BlockEntityRendererProvider.Context context;
 
-    public void setTileEntityRenderer(TileEntityRendererDispatcher par1TileEntityRenderer) {
-        super.func_147497_a(par1TileEntityRenderer);
+    public TileEntityContainerBaseRenderer(BlockEntityRendererProvider.Context context) {
+        this.context = context;
         thisRenderer = this;
     }
 
-    public void setRotation(TileContainerBase tile, float par1, float par2, float par3) {
-        // inner
-        if (tile.getWorldObj() != null) {
-            boolean isFancy = Minecraft.isFancyGraphicsEnabled();
-            Block block = tile.getBlockType();
-            int meta = tile.getBlockMetadata();
-            if (block instanceof BlockContainerBase) {
-                BlockContainerBase cont = (BlockContainerBase) block;
-                ItemStack item = cont.returnItem();
-                if (item != null) {
-                    int rem = meta & 7;
-                    boolean side = meta > 7;
-
-                    if (side) {
-                        for (int i = 0; i <= rem; i++) {
-                            float f1 = i * 0.1F;
-                            float f2 = (i & 1) * 0.4F;
-                            GL11.glPushMatrix();
-                            GL11.glTranslatef(par1 + 0.125F + f1, par2 + 0.35F, par3 + 0.3F + f2);
-                            GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-                            this.renderInner(tile, item);
-                            if (!isFancy) {
-                                GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-                                this.renderInner(tile, item);
-                            }
-                            GL11.glPopMatrix();
-                        }
-                    } else {
-                        for (int i = 0; i <= rem; i++) {
-                            float f1 = i * 0.1F;
-                            float f2 = (i & 1) * 0.4F;
-                            GL11.glPushMatrix();
-                            GL11.glTranslatef(par1 + 0.3F + f2, par2 + 0.35F, par3 + 0.125F + f1);
-                            GL11.glRotatef(0.0F, 0.0F, 0.0F, 0.0F);
-                            this.renderInner(tile, item);
-                            if (!isFancy) {
-                                GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-                                this.renderInner(tile, item);
-                            }
-                            GL11.glPopMatrix();
-                        }
-                    }
-
-                }
-            }
-        }
-    }
-
-    private void renderInner(TileContainerBase tile, ItemStack item) {
-
-        if (item != null) {
-            EntityItem entityitem = new EntityItem(tile.getWorldObj(), 0.0D, 0.0D, 0.0D, item);
-            entityitem.getEntityItem().stackSize = 1;
-            entityitem.hoverStart = 0.0F;
-
-            if (item.getItem() instanceof ItemBlock) {
-                GL11.glScalef(1.2F, 1.2F, 1.2F);
-            } else {
-                GL11.glScalef(1.2F, 1.2F, 1.2F);
-            }
-
-            RenderItem.renderInFrame = true;
-            RenderManager.instance.renderEntityWithPosYaw(entityitem, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
-            RenderItem.renderInFrame = false;
-
-            GL11.glScalef(1.0F, 1.0F, 1.0F);
-        }
-    }
-
     @Override
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
-        this.renderTileEntityCaseAt((TileContainerBase) par1TileEntity, par2, par4, par6, par8);
+    public void render(TileContainerBase tile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+            int packedLight, int packedOverlay) {
+        if (tile.getLevel() == null) return;
+
+        BlockState state = tile.getBlockState();
+        if (!(state.getBlock() instanceof BlockContainerBase)) return;
+
+        ItemStack item = ((BlockContainerBase) state.getBlock()).returnItem();
+        if (item == null || item.isEmpty()) return;
+
+        // TODO(WT-A/WT-B): old getBlockMetadata() semantics  Emeta & 7 = item count,
+        // meta > 7 = "side" layout flag. Re-derive both from the migrated BlockState
+        // properties once container blocks land; until then nothing is rendered.
+        int rem = 0;
+        boolean side = false;
+        if (rem <= 0) return;
+
+        for (int i = 0; i <= rem; i++) {
+            float f1 = i * 0.1F;
+            float f2 = (i & 1) * 0.4F;
+
+            poseStack.pushPose();
+            if (side) {
+                poseStack.translate(0.125F + f1, 0.35F, 0.3F + f2);
+                poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(90.0F));
+            } else {
+                poseStack.translate(0.3F + f2, 0.35F, 0.125F + f1);
+            }
+
+            float scale = item.getItem() instanceof BlockItem ? 1.2F : 1.2F;
+            poseStack.scale(scale, scale, scale);
+
+            this.context.getItemRenderer().renderStatic(item, ItemDisplayContext.GROUND,
+                packedLight, packedOverlay, poseStack, bufferSource, tile.getLevel(), 0);
+
+            poseStack.popPose();
+        }
     }
 }

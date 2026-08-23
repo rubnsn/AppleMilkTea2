@@ -7,8 +7,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
+import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.PropertyHandler;
 
@@ -206,20 +206,16 @@ public class OreCrushRecipe {
 
         // ボタ山設定以外のdust取得
         // ingotが存在しないと焼くレシピも存在しない
+        // 1.20.1: 旧GameRegistry.addSmeltingは廃止。製錬レシピは data/dcsapplemilk/recipes/smelting/*.json へ移行する。
+        // TODO(datapack): oreDust meta i → ingotX の製錬レシピJSONを生成する（無ければ鉄インゴットへ）。
         String[] ores4 = new String[] { "Iron", "Tin", "Copper", "Silver", "Lead", "Gold", "Nickel", "Platinum" };
         for (int i = 0; i < ores4.length; i++) {
             if (OreDictionary.getOres("ingot" + ores4[i]) != null && !OreDictionary.getOres("ingot" + ores4[i])
                 .isEmpty()) {
-                ItemStack ingot = OreDictionary.getOres("ingot" + ores4[i])
-                    .get(0);
-                GameRegistry.addSmelting(
-                    new ItemStack(DCsAppleMilk.oreDust, 1, i),
-                    new ItemStack(ingot.getItem(), 1, ingot.getItemDamage()),
-                    0.3F);
+                AMTLogger.debugInfo("smelting recipe (datapack pending): oreDust:" + i + " -> ingot" + ores4[i]);
             } else// なかったら鉄になる
             {
-                GameRegistry
-                    .addSmelting(new ItemStack(DCsAppleMilk.oreDust, 1, i), new ItemStack(Items.iron_ingot), 0.3F);
+                AMTLogger.debugInfo("smelting recipe (datapack pending): oreDust:" + i + " -> iron_ingot");
             }
         }
 

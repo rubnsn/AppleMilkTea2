@@ -1,230 +1,179 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-@SideOnly(Side.CLIENT)
-public class ModelSteak extends ModelBase {
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELSTEAK) -> new ModelSteak(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelSteak {
 
-    // fields
-    ModelRenderer pork = (new ModelRenderer(this, 0, 8)).setTextureSize(32, 32);
-    ModelRenderer carrot1 = (new ModelRenderer(this, 0, 18)).setTextureSize(32, 32);
-    ModelRenderer carrot2 = (new ModelRenderer(this, 0, 18)).setTextureSize(32, 32);
-    ModelRenderer carrot3 = (new ModelRenderer(this, 0, 18)).setTextureSize(32, 32);
-    ModelRenderer potato1 = (new ModelRenderer(this, 0, 23)).setTextureSize(32, 32);
-    ModelRenderer potato2 = (new ModelRenderer(this, 0, 23)).setTextureSize(32, 32);
-    ModelRenderer beef = (new ModelRenderer(this, 0, 0)).setTextureSize(32, 32);
-    ModelRenderer butter = (new ModelRenderer(this, 9, 18)).setTextureSize(32, 32);
+    private final ModelPart root;
+    private final ModelPart pork;
+    private final ModelPart carrot1;
+    private final ModelPart carrot2;
+    private final ModelPart carrot3;
+    private final ModelPart potato1;
+    private final ModelPart potato2;
+    private final ModelPart beef;
+    private final ModelPart butter;
+    private final ModelPart body1;
+    private final ModelPart body2;
+    private final ModelPart leg1;
+    private final ModelPart leg2;
+    private final ModelPart leg3;
+    private final ModelPart leg4;
+    private final ModelPart leg5;
+    private final ModelPart leg6;
+    private final ModelPart leg7;
+    private final ModelPart leg8;
+    private final ModelPart bottom;
+    private final ModelPart bottom2;
+    private final ModelPart top1;
+    private final ModelPart top2;
+    private final ModelPart Shape1;
+    private final ModelPart wood;
+    private final ModelPart plate;
 
-    ModelRenderer body1 = (new ModelRenderer(this, 0, 0)).setTextureSize(32, 32);
-    ModelRenderer body2 = (new ModelRenderer(this, 0, 3)).setTextureSize(32, 32);
-    ModelRenderer leg1 = (new ModelRenderer(this, 0, 16)).setTextureSize(32, 32);
-    ModelRenderer leg2 = (new ModelRenderer(this, 0, 16)).setTextureSize(32, 32);
-    ModelRenderer leg3 = (new ModelRenderer(this, 3, 18)).setTextureSize(32, 32);
-    ModelRenderer leg4 = (new ModelRenderer(this, 3, 18)).setTextureSize(32, 32);
-    ModelRenderer leg5 = (new ModelRenderer(this, 18, 16)).setTextureSize(32, 32);
-    ModelRenderer leg6 = (new ModelRenderer(this, 18, 16)).setTextureSize(32, 32);
-    ModelRenderer leg7 = (new ModelRenderer(this, 18, 24)).setTextureSize(32, 32);
-    ModelRenderer leg8 = (new ModelRenderer(this, 18, 24)).setTextureSize(32, 32);
-
-    ModelRenderer bottom = (new ModelRenderer(this, 0, 16)).setTextureSize(32, 32);
-    ModelRenderer bottom2 = (new ModelRenderer(this, 0, 0)).setTextureSize(32, 32);
-    ModelRenderer top1 = (new ModelRenderer(this, 14, 8)).setTextureSize(32, 32);
-    ModelRenderer top2 = (new ModelRenderer(this, 0, 8)).setTextureSize(32, 32);
-    ModelRenderer Shape1 = (new ModelRenderer(this, 0, 22)).setTextureSize(32, 32);
-
-    ModelRenderer wood = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 32);
-    ModelRenderer plate = (new ModelRenderer(this, 0, 17)).setTextureSize(64, 32);
-
-    public ModelSteak() {
-
-        pork.addBox(-4F, 0F, -5F, 8, 3, 5);
-        pork.setRotationPoint(0F, 18F, 0F);
-        pork.mirror = true;
-        setRotation(pork, 0F, 0F, 0F);
-        carrot1.addBox(5F, 0F, 0F, 1, 1, 3);
-        carrot1.setRotationPoint(0F, 20F, 0F);
-        carrot1.mirror = true;
-        setRotation(carrot1, 0F, -0.4363323F, 0F);
-        carrot2.addBox(4F, 0F, 1F, 1, 1, 3);
-        carrot2.setRotationPoint(0F, 20F, 0F);
-        carrot2.mirror = true;
-        setRotation(carrot2, 0F, -0.4363323F, 0F);
-        carrot3.addBox(-1F, 0F, 3F, 1, 1, 3);
-        carrot3.setRotationPoint(0F, 21F, 0F);
-        carrot3.mirror = true;
-        setRotation(carrot3, 0.4363323F, 0.7853982F, 0F);
-        potato1.addBox(-5F, 0F, 2F, 2, 2, 2);
-        potato1.setRotationPoint(0F, 19F, 0F);
-        potato1.mirror = true;
-        setRotation(potato1, 0F, 0F, 0F);
-        potato2.addBox(-3F, 0F, 3F, 2, 2, 2);
-        potato2.setRotationPoint(0F, 19F, 0F);
-        potato2.mirror = true;
-        setRotation(potato2, 0F, 0F, 0F);
-        beef.addBox(-4F, 0F, -5F, 8, 3, 5);
-        beef.setRotationPoint(0F, 18F, 0F);
-        beef.mirror = true;
-        setRotation(beef, 0F, 0F, 0F);
-        butter.addBox(-0.5F, 0F, -3F, 1, 1, 1);
-        butter.setRotationPoint(0F, 17F, 0F);
-        butter.mirror = true;
-        setRotation(butter, 0F, 0F, 0F);
-
-        body1.addBox(-3F, 0F, -6F, 6, 5, 10);
-        body1.setRotationPoint(0F, 17F, 0F);
-        body1.mirror = true;
-        setRotation(body1, 0F, 0F, 0F);
-        body2.addBox(-4F, 0F, -5F, 8, 4, 8);
-        body2.setRotationPoint(0F, 18F, 0F);
-        body2.mirror = true;
-        setRotation(body2, 0F, 0F, 0F);
-        leg1.addBox(3F, 0F, -2F, 2, 5, 7);
-        leg1.setRotationPoint(0F, 16F, 0F);
-        leg1.mirror = true;
-        setRotation(leg1, 0F, 0F, 0F);
-        leg2.addBox(-5F, 0F, -2F, 2, 5, 7);
-        leg2.setRotationPoint(0F, 16F, 0F);
-        leg2.mirror = true;
-        setRotation(leg2, 0F, 0F, 0F);
-        leg3.addBox(5F, 0F, -1F, 1, 4, 5);
-        leg3.setRotationPoint(0F, 16.5F, 0F);
-        leg3.mirror = true;
-        setRotation(leg3, 0F, 0F, 0F);
-        leg4.addBox(-6F, 0F, -1F, 1, 4, 5);
-        leg4.setRotationPoint(0F, 16.5F, 0F);
-        leg4.mirror = true;
-        setRotation(leg4, 0F, 0F, 0F);
-        leg5.addBox(3F, -1F, 2F, 2, 2, 4);
-        leg5.setRotationPoint(0F, 18F, 0F);
-        leg5.mirror = true;
-        setRotation(leg5, 0.3141593F, 0F, 0F);
-        leg6.addBox(-5F, -1F, 1F, 2, 2, 4);
-        leg6.setRotationPoint(0F, 18F, 0F);
-        leg6.mirror = true;
-        setRotation(leg6, 0.3141593F, 0F, 0F);
-        leg7.addBox(3F, 0F, 4F, 2, 1, 4);
-        leg7.setRotationPoint(0F, 17F, 0F);
-        leg7.mirror = true;
-        setRotation(leg7, 0.3141593F, 0F, 0F);
-        leg8.addBox(-5F, 0F, 4F, 2, 1, 4);
-        leg8.setRotationPoint(0F, 17F, 0F);
-        leg8.mirror = true;
-        setRotation(leg8, 0.3141593F, 0F, 0F);
-
-        bottom.addBox(-2F, 0F, -2F, 4, 1, 4);
-        bottom.setRotationPoint(0F, 21F, 0F);
-        bottom.mirror = true;
-        setRotation(bottom, 0F, 0F, 0F);
-        bottom2.addBox(-3F, 0F, -3F, 6, 1, 6);
-        bottom2.setRotationPoint(0F, 20F, 0F);
-        bottom2.mirror = true;
-        setRotation(bottom2, 0F, 0F, 0F);
-        top1.addBox(-2F, 0F, 4F, 4, 4, 1);
-        top1.setRotationPoint(0F, 14F, 0F);
-        top1.mirror = true;
-        setRotation(top1, 0F, 0F, 0F);
-        top2.addBox(-3F, 0F, 3F, 6, 6, 1);
-        top2.setRotationPoint(0F, 14F, 0F);
-        top2.mirror = true;
-        setRotation(top2, 0F, 0F, 0F);
-        Shape1.addBox(-2F, 0F, -2F, 4, 2, 4);
-        Shape1.setRotationPoint(0F, 18F, 0F);
-        Shape1.mirror = true;
-        setRotation(Shape1, 0F, 0F, 0F);
-
-        wood.addBox(-8F, 0F, -8F, 16, 1, 16);
-        wood.setRotationPoint(0F, 23F, 0F);
-        wood.setTextureSize(64, 32);
-        wood.mirror = true;
-        setRotation(wood, 0F, 0F, 0F);
-
-        plate.addBox(-7F, 0F, -7F, 14, 1, 14);
-        plate.setRotationPoint(0F, 22F, 0F);
-        plate.setTextureSize(64, 32);
-        plate.mirror = true;
-        setRotation(plate, 0F, 0F, 0F);
+    public ModelSteak(ModelPart root) {
+        this.root = root;
+        this.pork = root.getChild("pork");
+        this.carrot1 = root.getChild("carrot1");
+        this.carrot2 = root.getChild("carrot2");
+        this.carrot3 = root.getChild("carrot3");
+        this.potato1 = root.getChild("potato1");
+        this.potato2 = root.getChild("potato2");
+        this.beef = root.getChild("beef");
+        this.butter = root.getChild("butter");
+        this.body1 = root.getChild("body1");
+        this.body2 = root.getChild("body2");
+        this.leg1 = root.getChild("leg1");
+        this.leg2 = root.getChild("leg2");
+        this.leg3 = root.getChild("leg3");
+        this.leg4 = root.getChild("leg4");
+        this.leg5 = root.getChild("leg5");
+        this.leg6 = root.getChild("leg6");
+        this.leg7 = root.getChild("leg7");
+        this.leg8 = root.getChild("leg8");
+        this.bottom = root.getChild("bottom");
+        this.bottom2 = root.getChild("bottom2");
+        this.top1 = root.getChild("top1");
+        this.top2 = root.getChild("top2");
+        this.Shape1 = root.getChild("Shape1");
+        this.wood = root.getChild("wood");
+        this.plate = root.getChild("plate");
     }
 
-    public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7,
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition pork = partdefinition.addOrReplaceChild("pork", CubeListBuilder.create().texOffs(0, 8).mirror().addBox(-4F, 0F, -5F, 8, 3, 5), PartPose.offset(0F, 18F, 0F));
+        PartDefinition carrot1 = partdefinition.addOrReplaceChild("carrot1", CubeListBuilder.create().texOffs(0, 18).mirror().addBox(5F, 0F, 0F, 1, 1, 3), PartPose.offsetAndRotation(0F, 20F, 0F, 0F, -0.4363323F, 0F));
+        PartDefinition carrot2 = partdefinition.addOrReplaceChild("carrot2", CubeListBuilder.create().texOffs(0, 18).mirror().addBox(4F, 0F, 1F, 1, 1, 3), PartPose.offsetAndRotation(0F, 20F, 0F, 0F, -0.4363323F, 0F));
+        PartDefinition carrot3 = partdefinition.addOrReplaceChild("carrot3", CubeListBuilder.create().texOffs(0, 18).mirror().addBox(-1F, 0F, 3F, 1, 1, 3), PartPose.offsetAndRotation(0F, 21F, 0F, 0.4363323F, 0.7853982F, 0F));
+        PartDefinition potato1 = partdefinition.addOrReplaceChild("potato1", CubeListBuilder.create().texOffs(0, 23).mirror().addBox(-5F, 0F, 2F, 2, 2, 2), PartPose.offset(0F, 19F, 0F));
+        PartDefinition potato2 = partdefinition.addOrReplaceChild("potato2", CubeListBuilder.create().texOffs(0, 23).mirror().addBox(-3F, 0F, 3F, 2, 2, 2), PartPose.offset(0F, 19F, 0F));
+        PartDefinition beef = partdefinition.addOrReplaceChild("beef", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4F, 0F, -5F, 8, 3, 5), PartPose.offset(0F, 18F, 0F));
+        PartDefinition butter = partdefinition.addOrReplaceChild("butter", CubeListBuilder.create().texOffs(9, 18).mirror().addBox(-0.5F, 0F, -3F, 1, 1, 1), PartPose.offset(0F, 17F, 0F));
+        PartDefinition body1 = partdefinition.addOrReplaceChild("body1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3F, 0F, -6F, 6, 5, 10), PartPose.offset(0F, 17F, 0F));
+        PartDefinition body2 = partdefinition.addOrReplaceChild("body2", CubeListBuilder.create().texOffs(0, 3).mirror().addBox(-4F, 0F, -5F, 8, 4, 8), PartPose.offset(0F, 18F, 0F));
+        PartDefinition leg1 = partdefinition.addOrReplaceChild("leg1", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(3F, 0F, -2F, 2, 5, 7), PartPose.offset(0F, 16F, 0F));
+        PartDefinition leg2 = partdefinition.addOrReplaceChild("leg2", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-5F, 0F, -2F, 2, 5, 7), PartPose.offset(0F, 16F, 0F));
+        PartDefinition leg3 = partdefinition.addOrReplaceChild("leg3", CubeListBuilder.create().texOffs(3, 18).mirror().addBox(5F, 0F, -1F, 1, 4, 5), PartPose.offset(0F, 16.5F, 0F));
+        PartDefinition leg4 = partdefinition.addOrReplaceChild("leg4", CubeListBuilder.create().texOffs(3, 18).mirror().addBox(-6F, 0F, -1F, 1, 4, 5), PartPose.offset(0F, 16.5F, 0F));
+        PartDefinition leg5 = partdefinition.addOrReplaceChild("leg5", CubeListBuilder.create().texOffs(18, 16).mirror().addBox(3F, -1F, 2F, 2, 2, 4), PartPose.offsetAndRotation(0F, 18F, 0F, 0.3141593F, 0F, 0F));
+        PartDefinition leg6 = partdefinition.addOrReplaceChild("leg6", CubeListBuilder.create().texOffs(18, 16).mirror().addBox(-5F, -1F, 1F, 2, 2, 4), PartPose.offsetAndRotation(0F, 18F, 0F, 0.3141593F, 0F, 0F));
+        PartDefinition leg7 = partdefinition.addOrReplaceChild("leg7", CubeListBuilder.create().texOffs(18, 24).mirror().addBox(3F, 0F, 4F, 2, 1, 4), PartPose.offsetAndRotation(0F, 17F, 0F, 0.3141593F, 0F, 0F));
+        PartDefinition leg8 = partdefinition.addOrReplaceChild("leg8", CubeListBuilder.create().texOffs(18, 24).mirror().addBox(-5F, 0F, 4F, 2, 1, 4), PartPose.offsetAndRotation(0F, 17F, 0F, 0.3141593F, 0F, 0F));
+        PartDefinition bottom = partdefinition.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2F, 0F, -2F, 4, 1, 4), PartPose.offset(0F, 21F, 0F));
+        PartDefinition bottom2 = partdefinition.addOrReplaceChild("bottom2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3F, 0F, -3F, 6, 1, 6), PartPose.offset(0F, 20F, 0F));
+        PartDefinition top1 = partdefinition.addOrReplaceChild("top1", CubeListBuilder.create().texOffs(14, 8).mirror().addBox(-2F, 0F, 4F, 4, 4, 1), PartPose.offset(0F, 14F, 0F));
+        PartDefinition top2 = partdefinition.addOrReplaceChild("top2", CubeListBuilder.create().texOffs(0, 8).mirror().addBox(-3F, 0F, 3F, 6, 6, 1), PartPose.offset(0F, 14F, 0F));
+        PartDefinition Shape1 = partdefinition.addOrReplaceChild("Shape1", CubeListBuilder.create().texOffs(0, 22).mirror().addBox(-2F, 0F, -2F, 4, 2, 4), PartPose.offset(0F, 18F, 0F));
+        PartDefinition wood = partdefinition.addOrReplaceChild("wood", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-8F, 0F, -8F, 16, 1, 16), PartPose.offset(0F, 23F, 0F));
+        PartDefinition plate = partdefinition.addOrReplaceChild("plate", CubeListBuilder.create().texOffs(0, 17).mirror().addBox(-7F, 0F, -7F, 14, 1, 14), PartPose.offset(0F, 22F, 0F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
+    }
+
+
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay,
         byte par8) {
-        super.render(par1Entity, par2, par3, par4, par5, par6, par7);
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
 
         if (par8 == 0 || par8 == 1) {
-            this.butter.render(par7);
-            this.carrot1.render(par7);
-            this.carrot2.render(par7);
-            this.carrot3.render(par7);
-            this.potato1.render(par7);
-            this.potato2.render(par7);
-            if (par8 == 0) this.beef.render(par7);
-            if (par8 == 1) this.pork.render(par7);
+            butter.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            carrot1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            carrot2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            carrot3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            potato1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            potato2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            if (par8 == 0)             beef.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            if (par8 == 1)             pork.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         } else if (par8 == 2) {
-            this.body1.render(par7);
-            this.body2.render(par7);
-            this.leg1.render(par7);
-            this.leg2.render(par7);
-            this.leg3.render(par7);
-            this.leg4.render(par7);
-            this.leg5.render(par7);
-            this.leg6.render(par7);
-            this.leg7.render(par7);
-            this.leg8.render(par7);
+            body1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            body2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            leg1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            leg2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            leg3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            leg4.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            leg5.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            leg6.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            leg7.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            leg8.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         } else {
-            this.bottom.render(par7);
-            this.bottom2.render(par7);
-            this.top1.render(par7);
-            this.top2.render(par7);
-            this.Shape1.render(par7);
+            bottom.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            bottom2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            top1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            top2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            Shape1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         }
     }
 
-    public void renderPlate(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7,
+    public void renderPlate(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay,
         byte par8) {
-        super.render(par1Entity, par2, par3, par4, par5, par6, par7);
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
-        this.wood.render(par7);
-        this.plate.render(par7);
+            wood.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            plate.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        this.beef.yRot = f3 / (180F / (float) Math.PI);
+        this.pork.yRot = f3 / (180F / (float) Math.PI);
+        this.butter.yRot = f3 / (180F / (float) Math.PI);
+        this.carrot1.yRot = -0.4363323F + f3 / (180F / (float) Math.PI);
+        this.carrot2.yRot = -0.4363323F + f3 / (180F / (float) Math.PI);
+        this.carrot3.yRot = 0.7853982F + f3 / (180F / (float) Math.PI);
+        this.potato1.yRot = f3 / (180F / (float) Math.PI);
+        this.potato2.yRot = f3 / (180F / (float) Math.PI);
+
+        this.body1.yRot = f3 / (180F / (float) Math.PI);
+        this.body2.yRot = f3 / (180F / (float) Math.PI);
+        this.leg1.yRot = f3 / (180F / (float) Math.PI);
+        this.leg2.yRot = f3 / (180F / (float) Math.PI);
+        this.leg3.yRot = f3 / (180F / (float) Math.PI);
+        this.leg4.yRot = f3 / (180F / (float) Math.PI);
+        this.leg5.yRot = f3 / (180F / (float) Math.PI);
+        this.leg6.yRot = f3 / (180F / (float) Math.PI);
+        this.leg7.yRot = f3 / (180F / (float) Math.PI);
+        this.leg8.yRot = f3 / (180F / (float) Math.PI);
+
+        this.top1.yRot = f3 / (180F / (float) Math.PI);
+        this.top2.yRot = f3 / (180F / (float) Math.PI);
+
+        this.wood.yRot = f3 / (180F / (float) Math.PI);
+        this.plate.yRot = f3 / (180F / (float) Math.PI);
+
     }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        this.beef.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.pork.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.butter.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.carrot1.rotateAngleY = -0.4363323F + f3 / (180F / (float) Math.PI);
-        this.carrot2.rotateAngleY = -0.4363323F + f3 / (180F / (float) Math.PI);
-        this.carrot3.rotateAngleY = 0.7853982F + f3 / (180F / (float) Math.PI);
-        this.potato1.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.potato2.rotateAngleY = f3 / (180F / (float) Math.PI);
-
-        this.body1.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.body2.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.leg1.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.leg2.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.leg3.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.leg4.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.leg5.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.leg6.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.leg7.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.leg8.rotateAngleY = f3 / (180F / (float) Math.PI);
-
-        this.top1.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.top2.rotateAngleY = f3 / (180F / (float) Math.PI);
-
-        this.wood.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.plate.rotateAngleY = f3 / (180F / (float) Math.PI);
-
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+        this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 }

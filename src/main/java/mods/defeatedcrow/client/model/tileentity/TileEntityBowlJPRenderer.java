@@ -1,65 +1,49 @@
 package mods.defeatedcrow.client.model.tileentity;
 
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import mods.defeatedcrow.client.model.model.ModelBowlJP;
 import mods.defeatedcrow.common.tile.TileJPBowl;
-import mods.defeatedcrow.handler.Util;
 
-@SideOnly(Side.CLIENT)
-public class TileEntityBowlJPRenderer extends TileEntitySpecialRenderer {
+/**
+ * 1.20.1 port of the 1.7.10 TESR (was: extends the legacy 1.7.10 TESR + GL11 immediate mode).
+ *
+ * <p>Original geometry: {@link mods.defeatedcrow.client.model.model.ModelBowlJP}
+ * (ModelBase-based, owned by client/model/model  Enot yet converted).</p>
+ */
+public class TileEntityBowlJPRenderer implements BlockEntityRenderer<TileJPBowl> {
 
-    private static final ResourceLocation BowlJPTex1 = new ResourceLocation(
-        Util.getEntityTexturePassNoAlt() + "bowlJP_sakura.png");
-    private static final ResourceLocation BowlJPTex2 = new ResourceLocation(
-        Util.getEntityTexturePassNoAlt() + "bowlJP_bluepattern.png");
-    private static final ResourceLocation BowlJPTex3 = new ResourceLocation(
-        Util.getEntityTexturePassNoAlt() + "bowlJP_whiteporcelain.png");
-    public static TileEntityBowlJPRenderer BowlRenderer;
-    private ModelBowlJP bowlJPModel = new ModelBowlJP();
+    private static final ResourceLocation BOWL_JP_TEX_1 = new ResourceLocation(
+        "defeatedcrow:textures/entity/bowlJP_sakura.png");
+    private static final ResourceLocation BOWL_JP_TEX_2 = new ResourceLocation(
+        "defeatedcrow:textures/entity/bowlJP_bluepattern.png");
+    private static final ResourceLocation BOWL_JP_TEX_3 = new ResourceLocation(
+        "defeatedcrow:textures/entity/bowlJP_whiteporcelain.png");
 
-    public void renderTileEntityBowlAt(TileJPBowl par1TileJPBowl, double par2, double par4, double par6, float par8) {
-        this.setRotation((float) par2, (float) par4, (float) par6, par1TileJPBowl.blockMetadata, par1TileJPBowl);
-    }
+    private final BlockEntityRendererProvider.Context context;
 
-    /**
-     * Associate a TileEntityRenderer with this TileEntitySpecialRenderer
-     */
-    public void setTileEntityRenderer(TileEntityRendererDispatcher par1TileEntityRenderer) {
-        super.func_147497_a(par1TileEntityRenderer);
-        BowlRenderer = this;
-    }
-
-    public void setRotation(float par1, float par2, float par3, int par4, TileJPBowl tile) {
-        ModelBowlJP modelBowlJP = this.bowlJPModel;
-        byte l = (byte) tile.getBlockMetadata();
-
-        this.bindTexture(BowlJPTex1);
-        if (Util.getCupRender() == 1) this.bindTexture(BowlJPTex1);
-        else if (Util.getCupRender() == 2) this.bindTexture(BowlJPTex2);
-        else this.bindTexture(BowlJPTex3);
-
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glTranslatef((float) par1 + 0.5F, (float) par2 + 1.5F, (float) par3 + 0.5F);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef(0.0F, 0.0F, 0.0F, 0.0F);
-        this.bowlJPModel.render((Entity) null, 0.0F, 0.0F, 0.0F, l, 0.0F, 0.0625F);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
+    public TileEntityBowlJPRenderer(BlockEntityRendererProvider.Context context) {
+        this.context = context;
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
-        this.renderTileEntityBowlAt((TileJPBowl) par1TileEntity, par2, par4, par6, par8);
+    public void render(TileJPBowl tile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+            int packedLight, int packedOverlay) {
+        // Old code read tile.getBlockMetadata() to select one of three textures and the yaw.
+        // Old GL11 chain: translate(x + 0.5, y + 1.0/1.5, z + 0.5); scale(1,-1,-1);
+        // bindTexture(selected); model.render(null, ..., yaw, 0.0F, 0.0625F);
+        poseStack.pushPose();
+        poseStack.translate(0.5D, 1.0D, 0.5D);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+
+        // TODO: restore ModelBowlJP rendering via
+        // bufferSource.getBuffer(Sheets.cutoutBlockSheet()), texture per metadata variant
+        // (BOWL_JP_TEX_1 / _2 / _3).
+        poseStack.popPose();
     }
 }

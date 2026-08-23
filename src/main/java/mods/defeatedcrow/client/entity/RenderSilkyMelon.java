@@ -1,71 +1,61 @@
-package mods.defeatedcrow.client.entity;
+﻿package mods.defeatedcrow.client.entity;
 
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import mods.defeatedcrow.client.ModEntityRenderers;
 import mods.defeatedcrow.client.model.model.ModelMelonBomb;
 import mods.defeatedcrow.common.entity.EntitySilkyMelon;
 
-@SideOnly(Side.CLIENT)
-public class RenderSilkyMelon extends Render {
+/**
+ * 1.20.1 migration: Render -> EntityRenderer + PoseStack/MultiBufferSource.
+ */
+public class RenderSilkyMelon extends EntityRenderer<EntitySilkyMelon> {
 
-    private static final ResourceLocation melonTextures = new ResourceLocation(
-        "defeatedcrow:textures/entity/compressedmelon_silky.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("defeatedcrow", "textures/entity/compressedmelon_silky.png");
 
-    /** instance of ModelBoat for rendering */
-    protected ModelMelonBomb modelMelonBomb;
+    private final ModelMelonBomb modelMelonBomb;
 
-    public RenderSilkyMelon() {
-        this.shadowSize = 0.5F;
-        this.modelMelonBomb = new ModelMelonBomb();
+    public RenderSilkyMelon(EntityRendererProvider.Context ctx) {
+        super(ctx);
+        this.shadowRadius = 0.5F;
+        this.modelMelonBomb = new ModelMelonBomb(ctx.bakeLayer(ModEntityRenderers.MODEL_SILKY_MELON));
     }
 
-    public void renderMelonBomb(EntitySilkyMelon par1EntityMelon, double posX, double posY, double posZ, float round,
-        float yaw) {
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) posX, (float) posY, (float) posZ);
-        GL11.glRotatef(180.0F - round, 0.0F, 1.0F, 0.0F);
-        float f2 = (float) par1EntityMelon.getTimeSinceHit() - yaw;
-        float f3 = par1EntityMelon.getDamageTaken() - yaw;
+    @Override
+    public void render(EntitySilkyMelon entity, float yaw, float partialTick, PoseStack poseStack,
+        MultiBufferSource buffer, int packedLight) {
+        poseStack.pushPose();
+        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));
+        float f2 = (float) entity.getTimeSinceHit() - partialTick;
+        float f3 = entity.getDamageTaken() - partialTick;
 
         if (f3 < 0.0F) {
             f3 = 0.0F;
         }
 
         if (f2 > 0.0F) {
-            GL11.glRotatef(
-                MathHelper.sin(f2) * f2 * f3 / 10.0F * (float) par1EntityMelon.getForwardDirection(),
-                1.0F,
-                0.0F,
-                0.0F);
+            poseStack.mulPose(Axis.XP.rotationDegrees(Mth.sin(f2) * f2 * f3 / 10.0F
+                * (float) entity.getForwardDirection()));
         }
 
-        float f4 = 0.75F;
-        GL11.glScalef(f4, f4, f4);
-        GL11.glScalef(1.0F / f4, 1.0F / f4, 1.0F / f4);
-        this.bindEntityTexture(par1EntityMelon);
-        GL11.glScalef(-1.0F, -1.0F, 1.0F);
-        this.modelMelonBomb.render(par1EntityMelon, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-        GL11.glPopMatrix();
-    }
-
-    protected ResourceLocation getMelonTextures(EntitySilkyMelon par1Entity) {
-        return melonTextures;
+        poseStack.scale(-1.0F, -1.0F, 1.0F);
+        this.modelMelonBomb.render(poseStack, buffer.getBuffer(RenderType.entityCutout(getTextureLocation(entity))),
+            packedLight, OverlayTexture.NO_OVERLAY);
+        poseStack.popPose();
+        super.render(entity, yaw, partialTick, poseStack, buffer, packedLight);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity) {
-        return this.getMelonTextures((EntitySilkyMelon) par1Entity);
-    }
-
-    @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-        this.renderMelonBomb((EntitySilkyMelon) par1Entity, par2, par4, par6, par8, par9);
+    public ResourceLocation getTextureLocation(EntitySilkyMelon entity) {
+        return TEXTURE;
     }
 }

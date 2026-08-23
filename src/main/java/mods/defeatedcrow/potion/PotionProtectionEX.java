@@ -1,40 +1,30 @@
 package mods.defeatedcrow.potion;
 
-import net.minecraft.util.DamageSource;
-
-import mods.defeatedcrow.api.potion.PotionBaseAMT;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.damagesource.DamageSource;
 
 /**
- * 中身はゲッターセッターだけ。
- * 実際の動作はDamage時のイベントに依存する。
+ * 中身はゲッターとセッターだけ。実際の動作はDamage時のイベントに依存する (WT-B: DCsHurtEvent)。
+ * 1.20.1: PotionBaseAMT(api凍結) → MobEffect 直接継承。
  */
-public class PotionProtectionEX extends PotionBaseAMT {
+public class PotionProtectionEX extends MobEffect {
 
-    // これがtrueだと全ての効果をあわせもつ。特殊条件で5秒程度付くような使い方をする予定。
     private boolean allProtection = false;
 
-    // 飛び道具のダメージを無効化する。
     private boolean projectileProtection = false;
 
-    // 爆発ダメージ無効化
     private boolean explodeProtection = false;
 
-    // 窒息ダメージ無効化
     private boolean suffocationProtection = false;
 
-    // それ以外のダメージソースを指定する。上記と併用もできるが、一種しか指定できない。
     private DamageSource preventSource;
 
-    public PotionProtectionEX(int par1, boolean par2, int par3, boolean all, boolean exp, boolean proj,
-        DamageSource source, int x, int y) {
-        super(par1, par2, par3, x, y);
-        this.allProtection = all;
-        this.explodeProtection = exp;
-        this.projectileProtection = proj;
-        this.preventSource = source;
+    public PotionProtectionEX(MobEffectCategory category, int color) {
+        super(category, color);
     }
 
-    public PotionProtectionEX setAiiProtection() {
+    public PotionProtectionEX setAllProtection() {
         this.allProtection = true;
         return this;
     }
@@ -78,5 +68,4 @@ public class PotionProtectionEX extends PotionBaseAMT {
     public DamageSource getPreventSource() {
         return this.preventSource;
     }
-
 }

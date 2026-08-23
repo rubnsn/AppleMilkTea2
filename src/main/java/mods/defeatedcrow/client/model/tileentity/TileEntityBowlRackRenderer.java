@@ -1,81 +1,48 @@
 package mods.defeatedcrow.client.model.tileentity;
 
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import mods.defeatedcrow.client.model.model.ModelAltBowl;
 import mods.defeatedcrow.common.tile.TileBowlRack;
-import mods.defeatedcrow.handler.Util;
 
-@SideOnly(Side.CLIENT)
-public class TileEntityBowlRackRenderer extends TileEntitySpecialRenderer {
+/**
+ * 1.20.1 port of the 1.7.10 TESR (was: extends the legacy 1.7.10 TESR + GL11 immediate mode).
+ *
+ * <p>Original geometry: {@link mods.defeatedcrow.client.model.model.ModelAltBowl}
+ * (ModelBase-based, owned by client/model/model - not yet converted to LayerDefinition/ModelPart).</p>
+ */
+public class TileEntityBowlRackRenderer implements BlockEntityRenderer<TileBowlRack> {
 
-    private static final ResourceLocation altTex = new ResourceLocation(
-        Util.getEntityTexturePassAlt() + "bowlrack_alt.png");
+    private static final ResourceLocation ALT_TEX = new ResourceLocation(
+        "defeatedcrow:textures/entity/bowlrack_alt.png");
 
-    public static TileEntityBowlRackRenderer altRenderer;
-    private ModelAltBowl altModel = new ModelAltBowl();
 
-    public void renderTileEntitySteakAt(TileBowlRack par1Tile, double par2, double par4, double par6, float par8) {
-        this.setRotation(par1Tile, (float) par2, (float) par4, (float) par6);
-    }
+    private final BlockEntityRendererProvider.Context context;
 
-    /**
-     * Associate a TileEntityRenderer with this TileEntitySpecialRenderer
-     */
-    public void setTileEntityRenderer(TileEntityRendererDispatcher par1TileEntityRenderer) {
-        super.func_147497_a(par1TileEntityRenderer);
-        altRenderer = this;
-    }
-
-    public void setRotation(TileBowlRack par0Tile, float par1, float par2, float par3) {
-
-        ModelAltBowl modelAlt = this.altModel;
-        byte m = (byte) par0Tile.getBlockMetadata();
-        byte l = (byte) (m & 3);
-        byte amo = par0Tile.getRemainByte();
-
-        float j = 0;
-        if (l == 0) j = 180.0F;
-        if (l == 1) j = -90.0F;
-        if (l == 2) j = 0.0F;
-        if (l == 3) j = 90.0F;
-
-        boolean alt = (m & 4) != 0;
-
-        this.bindTexture(altTex);
-
-        for (int i = 0; i < amo; i++) {
-            float ajx = 0.5F;
-            float ajz = 0.5F;
-            if (l == 0) ajz = 0.15F + 0.25F * i;
-            if (l == 1) ajx = 0.85F - 0.25F * i;
-            if (l == 2) ajz = 0.10F + 0.25F * i;
-            if (l == 3) ajx = 0.9F - 0.25F * i;
-
-            GL11.glPushMatrix();
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glTranslatef((float) par1 + ajx, (float) par2 + 1.5F, (float) par3 + ajz);
-            GL11.glScalef(1.0F, -1.0F, -1.0F);
-            GL11.glRotatef(j, 0.0F, 1.0F, 0.0F);
-            modelAlt.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            GL11.glPopMatrix();
-        }
-
+    public TileEntityBowlRackRenderer(BlockEntityRendererProvider.Context context) {
+        this.context = context;
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
-        this.renderTileEntitySteakAt((TileBowlRack) par1TileEntity, par2, par4, par6, par8);
+    public void render(TileBowlRack tile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+            int packedLight, int packedOverlay) {
+        // Original read getBlockMetadata() for bowl count/yaw; texture prefix was
+        // Util.getEntityTexturePassNoAlt().
+        // Old GL11 chain: translate(x + 0.5, y + 1.5, z + 0.5); scale(1, -1, -1);
+        // rotate(yaw from direction byte/metadata around Y); bindTexture(...);
+        // model.render(null, 0, 0, 0, yaw, 0, 0.0625F);
+        poseStack.pushPose();
+        poseStack.translate(0.5D, 1.5D, 0.5D);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+
+        // TODO: restore ModelAltBowl rendering via
+        // VertexConsumer vc = bufferSource.getBuffer(Sheets.cutoutBlockSheet());
+        // (blended/translucent parts: Sheets.translucentCullBlockSheet()).
+        poseStack.popPose();
     }
 }

@@ -1,239 +1,157 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelBarrel extends ModelBase {
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-    // fields
-    ModelRenderer side1;
-    ModelRenderer side2;
-    ModelRenderer side3;
-    ModelRenderer side4;
-    ModelRenderer side5;
-    ModelRenderer side6;
-    ModelRenderer side7;
-    ModelRenderer side8;
-    ModelRenderer side9;
-    ModelRenderer side10;
-    ModelRenderer r1;
-    ModelRenderer r2;
-    ModelRenderer r3;
-    ModelRenderer r4;
-    ModelRenderer r5;
-    ModelRenderer l1;
-    ModelRenderer l2;
-    ModelRenderer l3;
-    ModelRenderer l4;
-    ModelRenderer l5;
-    ModelRenderer base1;
-    ModelRenderer base2;
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELBARREL) -> new ModelBarrel(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelBarrel {
 
-    public ModelBarrel() {
-        textureWidth = 64;
-        textureHeight = 32;
+    private final ModelPart root;
+    private final ModelPart side1;
+    private final ModelPart side2;
+    private final ModelPart side3;
+    private final ModelPart side4;
+    private final ModelPart side5;
+    private final ModelPart side6;
+    private final ModelPart side7;
+    private final ModelPart side8;
+    private final ModelPart side9;
+    private final ModelPart side10;
+    private final ModelPart r1;
+    private final ModelPart r2;
+    private final ModelPart r3;
+    private final ModelPart r4;
+    private final ModelPart r5;
+    private final ModelPart l1;
+    private final ModelPart l2;
+    private final ModelPart l3;
+    private final ModelPart l4;
+    private final ModelPart l5;
+    private final ModelPart base1;
+    private final ModelPart base2;
 
-        side1 = new ModelRenderer(this, 0, 20);
-        side1.addBox(-8F, 6F, -2F, 16, 1, 4);
-        side1.setRotationPoint(0F, 16F, 0F);
-        side1.setTextureSize(64, 32);
-        side1.mirror = true;
-        setRotation(side1, 0F, 0F, 0F);
-        side2 = new ModelRenderer(this, 0, 20);
-        side2.addBox(-8F, 6F, -2F, 16, 1, 4);
-        side2.setRotationPoint(0F, 16F, 0F);
-        side2.setTextureSize(64, 32);
-        side2.mirror = true;
-        setRotation(side2, 0.6283185F, 0F, 0F);
-        side3 = new ModelRenderer(this, 0, 20);
-        side3.addBox(-8F, 6F, -2F, 16, 1, 4);
-        side3.setRotationPoint(0F, 16F, 0F);
-        side3.setTextureSize(64, 32);
-        side3.mirror = true;
-        setRotation(side3, 1.256637F, 0F, 0F);
-        side4 = new ModelRenderer(this, 0, 20);
-        side4.addBox(-8F, 6F, -2F, 16, 1, 4);
-        side4.setRotationPoint(0F, 16F, 0F);
-        side4.setTextureSize(64, 32);
-        side4.mirror = true;
-        setRotation(side4, -0.6283185F, 0F, 0F);
-        side5 = new ModelRenderer(this, 0, 20);
-        side5.addBox(-8F, 6F, -2F, 16, 1, 4);
-        side5.setRotationPoint(0F, 16F, 0F);
-        side5.setTextureSize(64, 32);
-        side5.mirror = true;
-        setRotation(side5, -1.256637F, 0F, 0F);
-        side6 = new ModelRenderer(this, 0, 20);
-        side6.addBox(-8F, -7F, -2F, 16, 1, 4);
-        side6.setRotationPoint(0F, 16F, 0F);
-        side6.setTextureSize(64, 32);
-        side6.mirror = true;
-        setRotation(side6, 1.256637F, 0F, 0F);
-        side7 = new ModelRenderer(this, 0, 20);
-        side7.addBox(-8F, -7F, -2F, 16, 1, 4);
-        side7.setRotationPoint(0F, 16F, 0F);
-        side7.setTextureSize(64, 32);
-        side7.mirror = true;
-        setRotation(side7, -1.256637F, 0F, 0F);
-        side8 = new ModelRenderer(this, 0, 20);
-        side8.addBox(-8F, -7F, -2F, 16, 1, 4);
-        side8.setRotationPoint(0F, 16F, 0F);
-        side8.setTextureSize(64, 32);
-        side8.mirror = true;
-        setRotation(side8, 0.6283185F, 0F, 0F);
-        side9 = new ModelRenderer(this, 0, 20);
-        side9.addBox(-8F, -7F, -2F, 16, 1, 4);
-        side9.setRotationPoint(0F, 16F, 0F);
-        side9.setTextureSize(64, 32);
-        side9.mirror = true;
-        setRotation(side9, -0.6283185F, 0F, 0F);
-        side10 = new ModelRenderer(this, 0, 20);
-        side10.addBox(-8F, -7F, -2F, 16, 1, 4);
-        side10.setRotationPoint(0F, 16F, 0F);
-        side10.setTextureSize(64, 32);
-        side10.mirror = true;
-        setRotation(side10, 0F, 0F, 0F);
-        r1 = new ModelRenderer(this, 0, 0);
-        r1.addBox(-7F, -5F, -5F, 1, 10, 10);
-        r1.setRotationPoint(0F, 16F, 0F);
-        r1.setTextureSize(64, 32);
-        r1.mirror = true;
-        setRotation(r1, 0F, 0F, 0F);
-        r2 = new ModelRenderer(this, 0, 0);
-        r2.addBox(-7F, -4F, -6.5F, 1, 8, 2);
-        r2.setRotationPoint(0F, 16F, 0F);
-        r2.setTextureSize(64, 32);
-        r2.mirror = true;
-        setRotation(r2, 0F, 0F, 0F);
-        r3 = new ModelRenderer(this, 0, 0);
-        r3.addBox(-7F, -4F, 4.5F, 1, 8, 2);
-        r3.setRotationPoint(0F, 16F, 0F);
-        r3.setTextureSize(64, 32);
-        r3.mirror = true;
-        setRotation(r3, 0F, 0F, 0F);
-        r4 = new ModelRenderer(this, 14, 0);
-        r4.addBox(-7F, -6F, -3.5F, 1, 1, 7);
-        r4.setRotationPoint(0F, 16F, 0F);
-        r4.setTextureSize(64, 32);
-        r4.mirror = true;
-        setRotation(r4, 0F, 0F, 0F);
-        r5 = new ModelRenderer(this, 14, 0);
-        r5.addBox(-7F, 5F, -3.5F, 1, 1, 7);
-        r5.setRotationPoint(0F, 16F, 0F);
-        r5.setTextureSize(64, 32);
-        r5.mirror = true;
-        setRotation(r5, 0F, 0F, 0F);
-        l1 = new ModelRenderer(this, 0, 0);
-        l1.addBox(6F, -5F, -5F, 1, 10, 10);
-        l1.setRotationPoint(0F, 16F, 0F);
-        l1.setTextureSize(64, 32);
-        l1.mirror = true;
-        setRotation(l1, 0F, 0F, 0F);
-        l2 = new ModelRenderer(this, 0, 0);
-        l2.addBox(6F, -4F, 4.5F, 1, 8, 2);
-        l2.setRotationPoint(0F, 16F, 0F);
-        l2.setTextureSize(64, 32);
-        l2.mirror = true;
-        setRotation(l2, 0F, 0F, 0F);
-        l3 = new ModelRenderer(this, 0, 0);
-        l3.addBox(6F, -4F, -6.5F, 1, 8, 2);
-        l3.setRotationPoint(0F, 16F, 0F);
-        l3.setTextureSize(64, 32);
-        l3.mirror = true;
-        setRotation(l3, 0F, 0F, 0F);
-        l4 = new ModelRenderer(this, 14, 0);
-        l4.addBox(6F, -6F, -3.5F, 1, 1, 7);
-        l4.setRotationPoint(0F, 16F, 0F);
-        l4.setTextureSize(64, 32);
-        l4.mirror = true;
-        setRotation(l4, 0F, 0F, 0F);
-        l5 = new ModelRenderer(this, 14, 0);
-        l5.addBox(6F, 5F, -3.5F, 1, 1, 7);
-        l5.setRotationPoint(0F, 16F, 0F);
-        l5.setTextureSize(64, 32);
-        l5.mirror = true;
-        setRotation(l5, 0F, 0F, 0F);
-        base1 = new ModelRenderer(this, 24, 0);
-        base1.addBox(5F, 6F, -5F, 1, 2, 10);
-        base1.setRotationPoint(0F, 16F, 0F);
-        base1.setTextureSize(64, 32);
-        base1.mirror = true;
-        setRotation(base1, 0F, 0F, 0F);
-        base2 = new ModelRenderer(this, 24, 0);
-        base2.addBox(-6F, 6F, -5F, 1, 2, 10);
-        base2.setRotationPoint(0F, 16F, 0F);
-        base2.setTextureSize(64, 32);
-        base2.mirror = true;
-        setRotation(base2, 0F, 0F, 0F);
+    public ModelBarrel(ModelPart root) {
+        this.root = root;
+        this.side1 = root.getChild("side1");
+        this.side2 = root.getChild("side2");
+        this.side3 = root.getChild("side3");
+        this.side4 = root.getChild("side4");
+        this.side5 = root.getChild("side5");
+        this.side6 = root.getChild("side6");
+        this.side7 = root.getChild("side7");
+        this.side8 = root.getChild("side8");
+        this.side9 = root.getChild("side9");
+        this.side10 = root.getChild("side10");
+        this.r1 = root.getChild("r1");
+        this.r2 = root.getChild("r2");
+        this.r3 = root.getChild("r3");
+        this.r4 = root.getChild("r4");
+        this.r5 = root.getChild("r5");
+        this.l1 = root.getChild("l1");
+        this.l2 = root.getChild("l2");
+        this.l3 = root.getChild("l3");
+        this.l4 = root.getChild("l4");
+        this.l5 = root.getChild("l5");
+        this.base1 = root.getChild("base1");
+        this.base2 = root.getChild("base2");
     }
 
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        side1.render(f5);
-        side2.render(f5);
-        side3.render(f5);
-        side4.render(f5);
-        side5.render(f5);
-        side6.render(f5);
-        side7.render(f5);
-        side8.render(f5);
-        side9.render(f5);
-        side10.render(f5);
-        r2.render(f5);
-        r3.render(f5);
-        r4.render(f5);
-        r5.render(f5);
-        l2.render(f5);
-        l3.render(f5);
-        l4.render(f5);
-        l5.render(f5);
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition side1 = partdefinition.addOrReplaceChild("side1", CubeListBuilder.create().texOffs(0, 20).mirror().addBox(-8F, 6F, -2F, 16, 1, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition side2 = partdefinition.addOrReplaceChild("side2", CubeListBuilder.create().texOffs(0, 20).mirror().addBox(-8F, 6F, -2F, 16, 1, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0.6283185F, 0F, 0F));
+        PartDefinition side3 = partdefinition.addOrReplaceChild("side3", CubeListBuilder.create().texOffs(0, 20).mirror().addBox(-8F, 6F, -2F, 16, 1, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 1.256637F, 0F, 0F));
+        PartDefinition side4 = partdefinition.addOrReplaceChild("side4", CubeListBuilder.create().texOffs(0, 20).mirror().addBox(-8F, 6F, -2F, 16, 1, 4), PartPose.offsetAndRotation(0F, 16F, 0F, -0.6283185F, 0F, 0F));
+        PartDefinition side5 = partdefinition.addOrReplaceChild("side5", CubeListBuilder.create().texOffs(0, 20).mirror().addBox(-8F, 6F, -2F, 16, 1, 4), PartPose.offsetAndRotation(0F, 16F, 0F, -1.256637F, 0F, 0F));
+        PartDefinition side6 = partdefinition.addOrReplaceChild("side6", CubeListBuilder.create().texOffs(0, 20).mirror().addBox(-8F, -7F, -2F, 16, 1, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 1.256637F, 0F, 0F));
+        PartDefinition side7 = partdefinition.addOrReplaceChild("side7", CubeListBuilder.create().texOffs(0, 20).mirror().addBox(-8F, -7F, -2F, 16, 1, 4), PartPose.offsetAndRotation(0F, 16F, 0F, -1.256637F, 0F, 0F));
+        PartDefinition side8 = partdefinition.addOrReplaceChild("side8", CubeListBuilder.create().texOffs(0, 20).mirror().addBox(-8F, -7F, -2F, 16, 1, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0.6283185F, 0F, 0F));
+        PartDefinition side9 = partdefinition.addOrReplaceChild("side9", CubeListBuilder.create().texOffs(0, 20).mirror().addBox(-8F, -7F, -2F, 16, 1, 4), PartPose.offsetAndRotation(0F, 16F, 0F, -0.6283185F, 0F, 0F));
+        PartDefinition side10 = partdefinition.addOrReplaceChild("side10", CubeListBuilder.create().texOffs(0, 20).mirror().addBox(-8F, -7F, -2F, 16, 1, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition r1 = partdefinition.addOrReplaceChild("r1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-7F, -5F, -5F, 1, 10, 10), PartPose.offset(0F, 16F, 0F));
+        PartDefinition r2 = partdefinition.addOrReplaceChild("r2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-7F, -4F, -6.5F, 1, 8, 2), PartPose.offset(0F, 16F, 0F));
+        PartDefinition r3 = partdefinition.addOrReplaceChild("r3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-7F, -4F, 4.5F, 1, 8, 2), PartPose.offset(0F, 16F, 0F));
+        PartDefinition r4 = partdefinition.addOrReplaceChild("r4", CubeListBuilder.create().texOffs(14, 0).mirror().addBox(-7F, -6F, -3.5F, 1, 1, 7), PartPose.offset(0F, 16F, 0F));
+        PartDefinition r5 = partdefinition.addOrReplaceChild("r5", CubeListBuilder.create().texOffs(14, 0).mirror().addBox(-7F, 5F, -3.5F, 1, 1, 7), PartPose.offset(0F, 16F, 0F));
+        PartDefinition l1 = partdefinition.addOrReplaceChild("l1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(6F, -5F, -5F, 1, 10, 10), PartPose.offset(0F, 16F, 0F));
+        PartDefinition l2 = partdefinition.addOrReplaceChild("l2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(6F, -4F, 4.5F, 1, 8, 2), PartPose.offset(0F, 16F, 0F));
+        PartDefinition l3 = partdefinition.addOrReplaceChild("l3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(6F, -4F, -6.5F, 1, 8, 2), PartPose.offset(0F, 16F, 0F));
+        PartDefinition l4 = partdefinition.addOrReplaceChild("l4", CubeListBuilder.create().texOffs(14, 0).mirror().addBox(6F, -6F, -3.5F, 1, 1, 7), PartPose.offset(0F, 16F, 0F));
+        PartDefinition l5 = partdefinition.addOrReplaceChild("l5", CubeListBuilder.create().texOffs(14, 0).mirror().addBox(6F, 5F, -3.5F, 1, 1, 7), PartPose.offset(0F, 16F, 0F));
+        PartDefinition base1 = partdefinition.addOrReplaceChild("base1", CubeListBuilder.create().texOffs(24, 0).mirror().addBox(5F, 6F, -5F, 1, 2, 10), PartPose.offset(0F, 16F, 0F));
+        PartDefinition base2 = partdefinition.addOrReplaceChild("base2", CubeListBuilder.create().texOffs(24, 0).mirror().addBox(-6F, 6F, -5F, 1, 2, 10), PartPose.offset(0F, 16F, 0F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
+    }
+
+
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            side1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            side2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            side3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            side4.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            side5.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            side6.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            side7.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            side8.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            side9.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            side10.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            r2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            r3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            r4.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            r5.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            l2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            l3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            l4.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            l5.render(poseStack, vertexConsumer, packedLight, packedOverlay);
 
     }
 
-    public void renderSide(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        r1.render(f5);
-        l1.render(f5);
+    public void renderSide(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            r1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            l1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    public void renderBase(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        base1.render(f5);
-        base2.render(f5);
+    public void renderBase(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            base1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            base2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        side1.yRot = f3 / (180F / (float) Math.PI);
+        side2.yRot = f3 / (180F / (float) Math.PI);
+        side3.yRot = f3 / (180F / (float) Math.PI);
+        side4.yRot = f3 / (180F / (float) Math.PI);
+        side5.yRot = f3 / (180F / (float) Math.PI);
+        side6.yRot = f3 / (180F / (float) Math.PI);
+        side7.yRot = f3 / (180F / (float) Math.PI);
+        side8.yRot = f3 / (180F / (float) Math.PI);
+        side9.yRot = f3 / (180F / (float) Math.PI);
+        side10.yRot = f3 / (180F / (float) Math.PI);
+        r1.yRot = f3 / (180F / (float) Math.PI);
+        r2.yRot = f3 / (180F / (float) Math.PI);
+        r3.yRot = f3 / (180F / (float) Math.PI);
+        r4.yRot = f3 / (180F / (float) Math.PI);
+        r5.yRot = f3 / (180F / (float) Math.PI);
+        l1.yRot = f3 / (180F / (float) Math.PI);
+        l2.yRot = f3 / (180F / (float) Math.PI);
+        l3.yRot = f3 / (180F / (float) Math.PI);
+        l4.yRot = f3 / (180F / (float) Math.PI);
+        l5.yRot = f3 / (180F / (float) Math.PI);
+        base1.yRot = f3 / (180F / (float) Math.PI);
+        base2.yRot = f3 / (180F / (float) Math.PI);
     }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        side1.rotateAngleY = f3 / (180F / (float) Math.PI);
-        side2.rotateAngleY = f3 / (180F / (float) Math.PI);
-        side3.rotateAngleY = f3 / (180F / (float) Math.PI);
-        side4.rotateAngleY = f3 / (180F / (float) Math.PI);
-        side5.rotateAngleY = f3 / (180F / (float) Math.PI);
-        side6.rotateAngleY = f3 / (180F / (float) Math.PI);
-        side7.rotateAngleY = f3 / (180F / (float) Math.PI);
-        side8.rotateAngleY = f3 / (180F / (float) Math.PI);
-        side9.rotateAngleY = f3 / (180F / (float) Math.PI);
-        side10.rotateAngleY = f3 / (180F / (float) Math.PI);
-        r1.rotateAngleY = f3 / (180F / (float) Math.PI);
-        r2.rotateAngleY = f3 / (180F / (float) Math.PI);
-        r3.rotateAngleY = f3 / (180F / (float) Math.PI);
-        r4.rotateAngleY = f3 / (180F / (float) Math.PI);
-        r5.rotateAngleY = f3 / (180F / (float) Math.PI);
-        l1.rotateAngleY = f3 / (180F / (float) Math.PI);
-        l2.rotateAngleY = f3 / (180F / (float) Math.PI);
-        l3.rotateAngleY = f3 / (180F / (float) Math.PI);
-        l4.rotateAngleY = f3 / (180F / (float) Math.PI);
-        l5.rotateAngleY = f3 / (180F / (float) Math.PI);
-        base1.rotateAngleY = f3 / (180F / (float) Math.PI);
-        base2.rotateAngleY = f3 / (180F / (float) Math.PI);
-    }
-
 }

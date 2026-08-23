@@ -1,221 +1,151 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelSandwich extends ModelBase {
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-    ModelRenderer basketU;
-    ModelRenderer basketF;
-    ModelRenderer basketB;
-    ModelRenderer basketL;
-    ModelRenderer basketR;
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELSANDWICH) -> new ModelSandwich(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelSandwich {
 
-    ModelRenderer bread11;
-    ModelRenderer bread12;
-    ModelRenderer bread21;
-    ModelRenderer bread22;
-    ModelRenderer bread31;
-    ModelRenderer bread32;
+    private final ModelPart root;
+    private final ModelPart basketU;
+    private final ModelPart basketF;
+    private final ModelPart basketB;
+    private final ModelPart basketL;
+    private final ModelPart basketR;
+    private final ModelPart bread11;
+    private final ModelPart bread12;
+    private final ModelPart bread21;
+    private final ModelPart bread22;
+    private final ModelPart bread31;
+    private final ModelPart bread32;
+    private final ModelPart apple1;
+    private final ModelPart apple2;
+    private final ModelPart apple3;
+    private final ModelPart egg1;
+    private final ModelPart egg2;
+    private final ModelPart egg3;
+    private final ModelPart cassis1;
+    private final ModelPart cassis2;
+    private final ModelPart cassis3;
 
-    ModelRenderer apple1;
-    ModelRenderer apple2;
-    ModelRenderer apple3;
-    ModelRenderer egg1;
-    ModelRenderer egg2;
-    ModelRenderer egg3;
-    ModelRenderer cassis1;
-    ModelRenderer cassis2;
-    ModelRenderer cassis3;
-
-    public ModelSandwich() {
-        textureWidth = 64;
-        textureHeight = 32;
-
-        basketU = new ModelRenderer(this, 0, 0);
-        basketU.addBox(-6F, 0F, -4F, 12, 1, 8);
-        basketU.setRotationPoint(0F, 23F, 0F);
-        basketU.setTextureSize(64, 32);
-        basketU.mirror = true;
-        setRotation(basketU, 0F, 0F, 0F);
-        basketF = new ModelRenderer(this, 0, 10);
-        basketF.addBox(-6F, 0F, -4F, 12, 4, 1);
-        basketF.setRotationPoint(0F, 19F, 0F);
-        basketF.setTextureSize(64, 32);
-        basketF.mirror = true;
-        setRotation(basketF, 0F, 0F, 0F);
-        basketB = new ModelRenderer(this, 0, 10);
-        basketB.addBox(-6F, 0F, -4F, 12, 4, 1);
-        basketB.setRotationPoint(0F, 19F, 0F);
-        basketB.setTextureSize(64, 32);
-        basketB.mirror = true;
-        setRotation(basketB, 0F, 3.141593F, 0F);
-        basketL = new ModelRenderer(this, 40, 0);
-        basketL.addBox(-6F, 0F, -3F, 1, 4, 6);
-        basketL.setRotationPoint(0F, 19F, 0F);
-        basketL.setTextureSize(64, 32);
-        basketL.mirror = true;
-        setRotation(basketL, 0F, 0F, 0F);
-        basketR = new ModelRenderer(this, 40, 0);
-        basketR.addBox(-6F, 0F, -3F, 1, 4, 6);
-        basketR.setRotationPoint(0F, 19F, 0F);
-        basketR.setTextureSize(64, 32);
-        basketR.mirror = true;
-        setRotation(basketR, 0F, 3.141593F, 0F);
-        bread11 = new ModelRenderer(this, 0, 16);
-        bread11.addBox(-4.5F, 0F, -2.5F, 1, 3, 5);
-        bread11.setRotationPoint(0F, 18.5F, 0F);
-        bread11.setTextureSize(64, 32);
-        bread11.mirror = true;
-        setRotation(bread11, 0F, -0.0698132F, -0.0872665F);
-        bread12 = new ModelRenderer(this, 0, 16);
-        bread12.addBox(-3F, 0F, -2.5F, 1, 3, 5);
-        bread12.setRotationPoint(0F, 18.5F, 0F);
-        bread12.setTextureSize(64, 32);
-        bread12.mirror = true;
-        setRotation(bread12, 0F, -0.0698132F, -0.122173F);
-        bread21 = new ModelRenderer(this, 0, 16);
-        bread21.addBox(-1.5F, 0F, -2.5F, 1, 3, 5);
-        bread21.setRotationPoint(0F, 19F, 0F);
-        bread21.setTextureSize(64, 32);
-        bread21.mirror = true;
-        setRotation(bread21, 0F, 0F, -0.122173F);
-        bread22 = new ModelRenderer(this, 0, 16);
-        bread22.addBox(0F, 0F, -2.5F, 1, 3, 5);
-        bread22.setRotationPoint(0F, 19F, 0F);
-        bread22.setTextureSize(64, 32);
-        bread22.mirror = true;
-        setRotation(bread22, 0F, 0F, -0.122173F);
-        bread31 = new ModelRenderer(this, 0, 16);
-        bread31.addBox(2F, 0F, -2.5F, 1, 3, 5);
-        bread31.setRotationPoint(0F, 19F, 0F);
-        bread31.setTextureSize(64, 32);
-        bread31.mirror = true;
-        setRotation(bread31, 0F, 0F, 0.0349066F);
-        bread32 = new ModelRenderer(this, 0, 16);
-        bread32.addBox(3.5F, 0F, -2.5F, 1, 3, 5);
-        bread32.setRotationPoint(0F, 19F, 0F);
-        bread32.setTextureSize(64, 32);
-        bread32.mirror = true;
-        setRotation(bread32, 0F, 0F, 0F);
-        apple1 = new ModelRenderer(this, 0, 24);
-        apple1.addBox(-3.5F, 0F, -2F, 1, 3, 4);
-        apple1.setRotationPoint(0F, 19F, 0F);
-        apple1.setTextureSize(64, 32);
-        apple1.mirror = true;
-        setRotation(apple1, 0F, -0.0698132F, 0F);
-        apple2 = new ModelRenderer(this, 0, 24);
-        apple2.addBox(-0.5F, 0F, -2F, 1, 3, 4);
-        apple2.setRotationPoint(0F, 19.5F, 0F);
-        apple2.setTextureSize(64, 32);
-        apple2.mirror = true;
-        setRotation(apple2, 0F, 0F, 0F);
-        apple3 = new ModelRenderer(this, 0, 24);
-        apple3.addBox(3F, 0F, -2F, 1, 3, 4);
-        apple3.setRotationPoint(0F, 19.5F, 0F);
-        apple3.setTextureSize(64, 32);
-        apple3.mirror = true;
-        setRotation(apple3, 0F, 0F, 0F);
-        egg1 = new ModelRenderer(this, 10, 24);
-        egg1.addBox(-4F, 0F, -2F, 1, 3, 4);
-        egg1.setRotationPoint(0F, 19F, 0F);
-        egg1.setTextureSize(64, 32);
-        egg1.mirror = true;
-        setRotation(egg1, 0F, -0.0698132F, 0F);
-        egg2 = new ModelRenderer(this, 10, 24);
-        egg2.addBox(-1F, 0F, -2F, 1, 3, 4);
-        egg2.setRotationPoint(0F, 19.5F, 0F);
-        egg2.setTextureSize(64, 32);
-        egg2.mirror = true;
-        setRotation(egg2, 0F, 0F, 0F);
-        egg3 = new ModelRenderer(this, 10, 24);
-        egg3.addBox(2.5F, 0F, -2F, 1, 3, 4);
-        egg3.setRotationPoint(0F, 19.5F, 0F);
-        egg3.setTextureSize(64, 32);
-        egg3.mirror = true;
-        setRotation(egg3, 0F, 0F, 0F);
-        cassis1 = new ModelRenderer(this, 20, 24);
-        cassis1.addBox(-4F, 0F, -2F, 1, 3, 4);
-        cassis1.setRotationPoint(0F, 19F, 0F);
-        cassis1.setTextureSize(64, 32);
-        cassis1.mirror = true;
-        setRotation(cassis1, 0F, -0.0698132F, 0F);
-        cassis2 = new ModelRenderer(this, 20, 24);
-        cassis2.addBox(-1F, 0F, -2F, 1, 3, 4);
-        cassis2.setRotationPoint(0F, 19.5F, 0F);
-        cassis2.setTextureSize(64, 32);
-        cassis2.mirror = true;
-        setRotation(cassis2, 0F, 0F, 0F);
-        cassis3 = new ModelRenderer(this, 20, 24);
-        cassis3.addBox(2.5F, 0F, -2F, 1, 3, 4);
-        cassis3.setRotationPoint(0F, 19.5F, 0F);
-        cassis3.setTextureSize(64, 32);
-        cassis3.mirror = true;
-        setRotation(cassis3, 0F, 0F, 0F);
+    public ModelSandwich(ModelPart root) {
+        this.root = root;
+        this.basketU = root.getChild("basketU");
+        this.basketF = root.getChild("basketF");
+        this.basketB = root.getChild("basketB");
+        this.basketL = root.getChild("basketL");
+        this.basketR = root.getChild("basketR");
+        this.bread11 = root.getChild("bread11");
+        this.bread12 = root.getChild("bread12");
+        this.bread21 = root.getChild("bread21");
+        this.bread22 = root.getChild("bread22");
+        this.bread31 = root.getChild("bread31");
+        this.bread32 = root.getChild("bread32");
+        this.apple1 = root.getChild("apple1");
+        this.apple2 = root.getChild("apple2");
+        this.apple3 = root.getChild("apple3");
+        this.egg1 = root.getChild("egg1");
+        this.egg2 = root.getChild("egg2");
+        this.egg3 = root.getChild("egg3");
+        this.cassis1 = root.getChild("cassis1");
+        this.cassis2 = root.getChild("cassis2");
+        this.cassis3 = root.getChild("cassis3");
     }
 
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5, byte b0) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        basketU.render(f5);
-        basketF.render(f5);
-        basketB.render(f5);
-        basketL.render(f5);
-        basketR.render(f5);
-        bread11.render(f5);
-        bread12.render(f5);
-        bread21.render(f5);
-        bread22.render(f5);
-        bread31.render(f5);
-        bread32.render(f5);
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition basketU = partdefinition.addOrReplaceChild("basketU", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 0F, -4F, 12, 1, 8), PartPose.offset(0F, 23F, 0F));
+        PartDefinition basketF = partdefinition.addOrReplaceChild("basketF", CubeListBuilder.create().texOffs(0, 10).mirror().addBox(-6F, 0F, -4F, 12, 4, 1), PartPose.offset(0F, 19F, 0F));
+        PartDefinition basketB = partdefinition.addOrReplaceChild("basketB", CubeListBuilder.create().texOffs(0, 10).mirror().addBox(-6F, 0F, -4F, 12, 4, 1), PartPose.offsetAndRotation(0F, 19F, 0F, 0F, 3.141593F, 0F));
+        PartDefinition basketL = partdefinition.addOrReplaceChild("basketL", CubeListBuilder.create().texOffs(40, 0).mirror().addBox(-6F, 0F, -3F, 1, 4, 6), PartPose.offset(0F, 19F, 0F));
+        PartDefinition basketR = partdefinition.addOrReplaceChild("basketR", CubeListBuilder.create().texOffs(40, 0).mirror().addBox(-6F, 0F, -3F, 1, 4, 6), PartPose.offsetAndRotation(0F, 19F, 0F, 0F, 3.141593F, 0F));
+        PartDefinition bread11 = partdefinition.addOrReplaceChild("bread11", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-4.5F, 0F, -2.5F, 1, 3, 5), PartPose.offsetAndRotation(0F, 18.5F, 0F, 0F, -0.0698132F, -0.0872665F));
+        PartDefinition bread12 = partdefinition.addOrReplaceChild("bread12", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-3F, 0F, -2.5F, 1, 3, 5), PartPose.offsetAndRotation(0F, 18.5F, 0F, 0F, -0.0698132F, -0.122173F));
+        PartDefinition bread21 = partdefinition.addOrReplaceChild("bread21", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-1.5F, 0F, -2.5F, 1, 3, 5), PartPose.offsetAndRotation(0F, 19F, 0F, 0F, 0F, -0.122173F));
+        PartDefinition bread22 = partdefinition.addOrReplaceChild("bread22", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(0F, 0F, -2.5F, 1, 3, 5), PartPose.offsetAndRotation(0F, 19F, 0F, 0F, 0F, -0.122173F));
+        PartDefinition bread31 = partdefinition.addOrReplaceChild("bread31", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(2F, 0F, -2.5F, 1, 3, 5), PartPose.offsetAndRotation(0F, 19F, 0F, 0F, 0F, 0.0349066F));
+        PartDefinition bread32 = partdefinition.addOrReplaceChild("bread32", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(3.5F, 0F, -2.5F, 1, 3, 5), PartPose.offset(0F, 19F, 0F));
+        PartDefinition apple1 = partdefinition.addOrReplaceChild("apple1", CubeListBuilder.create().texOffs(0, 24).mirror().addBox(-3.5F, 0F, -2F, 1, 3, 4), PartPose.offsetAndRotation(0F, 19F, 0F, 0F, -0.0698132F, 0F));
+        PartDefinition apple2 = partdefinition.addOrReplaceChild("apple2", CubeListBuilder.create().texOffs(0, 24).mirror().addBox(-0.5F, 0F, -2F, 1, 3, 4), PartPose.offset(0F, 19.5F, 0F));
+        PartDefinition apple3 = partdefinition.addOrReplaceChild("apple3", CubeListBuilder.create().texOffs(0, 24).mirror().addBox(3F, 0F, -2F, 1, 3, 4), PartPose.offset(0F, 19.5F, 0F));
+        PartDefinition egg1 = partdefinition.addOrReplaceChild("egg1", CubeListBuilder.create().texOffs(10, 24).mirror().addBox(-4F, 0F, -2F, 1, 3, 4), PartPose.offsetAndRotation(0F, 19F, 0F, 0F, -0.0698132F, 0F));
+        PartDefinition egg2 = partdefinition.addOrReplaceChild("egg2", CubeListBuilder.create().texOffs(10, 24).mirror().addBox(-1F, 0F, -2F, 1, 3, 4), PartPose.offset(0F, 19.5F, 0F));
+        PartDefinition egg3 = partdefinition.addOrReplaceChild("egg3", CubeListBuilder.create().texOffs(10, 24).mirror().addBox(2.5F, 0F, -2F, 1, 3, 4), PartPose.offset(0F, 19.5F, 0F));
+        PartDefinition cassis1 = partdefinition.addOrReplaceChild("cassis1", CubeListBuilder.create().texOffs(20, 24).mirror().addBox(-4F, 0F, -2F, 1, 3, 4), PartPose.offsetAndRotation(0F, 19F, 0F, 0F, -0.0698132F, 0F));
+        PartDefinition cassis2 = partdefinition.addOrReplaceChild("cassis2", CubeListBuilder.create().texOffs(20, 24).mirror().addBox(-1F, 0F, -2F, 1, 3, 4), PartPose.offset(0F, 19.5F, 0F));
+        PartDefinition cassis3 = partdefinition.addOrReplaceChild("cassis3", CubeListBuilder.create().texOffs(20, 24).mirror().addBox(2.5F, 0F, -2F, 1, 3, 4), PartPose.offset(0F, 19.5F, 0F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
+    }
+
+
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, byte b0) {
+            basketU.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            basketF.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            basketB.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            basketL.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            basketR.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            bread11.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            bread12.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            bread21.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            bread22.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            bread31.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            bread32.render(poseStack, vertexConsumer, packedLight, packedOverlay);
 
         if (b0 == 1) {
-            egg1.render(f5);
-            egg2.render(f5);
-            egg3.render(f5);
+            egg1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            egg2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            egg3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         } else if (b0 == 2) {
-            cassis1.render(f5);
-            cassis2.render(f5);
-            cassis3.render(f5);
+            cassis1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            cassis2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            cassis3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         } else {
-            apple1.render(f5);
-            apple2.render(f5);
-            apple3.render(f5);
+            apple1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            apple2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            apple3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         }
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        this.basketU.yRot = f3 / (180F / (float) Math.PI);
+        this.basketF.yRot = f3 / (180F / (float) Math.PI);
+        this.basketB.yRot = 3.141593F + f3 / (180F / (float) Math.PI);
+        this.basketR.yRot = 3.141593F + f3 / (180F / (float) Math.PI);
+        this.basketL.yRot = f3 / (180F / (float) Math.PI);
+        this.bread11.yRot = -0.0698132F + f3 / (180F / (float) Math.PI);
+        this.bread12.yRot = -0.0698132F + f3 / (180F / (float) Math.PI);
+        this.bread21.yRot = f3 / (180F / (float) Math.PI);
+        this.bread22.yRot = f3 / (180F / (float) Math.PI);
+        this.bread31.yRot = f3 / (180F / (float) Math.PI);
+        this.bread32.yRot = f3 / (180F / (float) Math.PI);
+
+        this.apple1.yRot = -0.0698132F + f3 / (180F / (float) Math.PI);
+        this.apple2.yRot = f3 / (180F / (float) Math.PI);
+        this.apple3.yRot = f3 / (180F / (float) Math.PI);
+
+        this.egg1.yRot = -0.0698132F + f3 / (180F / (float) Math.PI);
+        this.egg2.yRot = f3 / (180F / (float) Math.PI);
+        this.egg3.yRot = f3 / (180F / (float) Math.PI);
+
+        this.cassis1.yRot = -0.0698132F + f3 / (180F / (float) Math.PI);
+        this.cassis2.yRot = f3 / (180F / (float) Math.PI);
+        this.cassis3.yRot = f3 / (180F / (float) Math.PI);
     }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        this.basketU.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.basketF.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.basketB.rotateAngleY = 3.141593F + f3 / (180F / (float) Math.PI);
-        this.basketR.rotateAngleY = 3.141593F + f3 / (180F / (float) Math.PI);
-        this.basketL.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.bread11.rotateAngleY = -0.0698132F + f3 / (180F / (float) Math.PI);
-        this.bread12.rotateAngleY = -0.0698132F + f3 / (180F / (float) Math.PI);
-        this.bread21.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.bread22.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.bread31.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.bread32.rotateAngleY = f3 / (180F / (float) Math.PI);
-
-        this.apple1.rotateAngleY = -0.0698132F + f3 / (180F / (float) Math.PI);
-        this.apple2.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.apple3.rotateAngleY = f3 / (180F / (float) Math.PI);
-
-        this.egg1.rotateAngleY = -0.0698132F + f3 / (180F / (float) Math.PI);
-        this.egg2.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.egg3.rotateAngleY = f3 / (180F / (float) Math.PI);
-
-        this.cassis1.rotateAngleY = -0.0698132F + f3 / (180F / (float) Math.PI);
-        this.cassis2.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.cassis3.rotateAngleY = f3 / (180F / (float) Math.PI);
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+        this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
-
 }

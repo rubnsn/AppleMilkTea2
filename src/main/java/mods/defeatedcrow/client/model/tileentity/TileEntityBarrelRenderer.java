@@ -1,105 +1,49 @@
 package mods.defeatedcrow.client.model.tileentity;
 
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import mods.defeatedcrow.client.model.model.ModelBarrel;
-import mods.defeatedcrow.client.model.model.ModelBarrelBase;
 import mods.defeatedcrow.common.tile.TileBrewingBarrel;
-import mods.defeatedcrow.handler.Util;
 
-@SideOnly(Side.CLIENT)
-public class TileEntityBarrelRenderer extends TileEntitySpecialRenderer {
+/**
+ * 1.20.1 port of the 1.7.10 TESR (was: extends the legacy 1.7.10 TESR + GL11 immediate mode).
+ *
+ * <p>Original geometry: {@link mods.defeatedcrow.client.model.model.ModelBarrel}
+ * (ModelBase-based, owned by client/model/model - not yet converted to LayerDefinition/ModelPart).</p>
+ */
+public class TileEntityBarrelRenderer implements BlockEntityRenderer<TileBrewingBarrel> {
 
-    private static ResourceLocation thisTex = new ResourceLocation(Util.getEntityTexturePassNoAlt() + "barrel.png");
-    private static ResourceLocation baseTex = new ResourceLocation(Util.getEntityTexturePassNoAlt() + "barrelbase.png");
-    public static TileEntityBarrelRenderer thisRenderer;
-    private ModelBarrel thisModel = new ModelBarrel();
-    private ModelBarrelBase baseModel = new ModelBarrelBase();
+    private static final ResourceLocation BARREL_TEX = new ResourceLocation(
+        "defeatedcrow:textures/entity/barrel.png");
+    private static final ResourceLocation BASE_TEX = new ResourceLocation(
+        "defeatedcrow:textures/entity/barrelbase.png");
 
-    public void renderTileEntityBarrelAt(TileBrewingBarrel par1Tile, double par2, double par4, double par6,
-        float par8) {
-        this.setRotation(par1Tile, (float) par2, (float) par4, (float) par6);
-    }
 
-    /**
-     * Associate a TileEntityRenderer with this TileEntitySpecialRenderer
-     */
-    public void setTileEntityRenderer(TileEntityRendererDispatcher par1TileEntityRenderer) {
-        super.func_147497_a(par1TileEntityRenderer);
-        thisRenderer = this;
-    }
+    private final BlockEntityRendererProvider.Context context;
 
-    public void setRotation(TileBrewingBarrel par0Tile, float par1, float par2, float par3) {
-        ModelBarrel model = this.thisModel;
-        byte k = (byte) par0Tile.getAgingStage();
-
-        boolean onCube = par0Tile.isOnNormalCube();
-        boolean side = par0Tile.getSide();
-        float r = 0.0F;
-        float c = 1.0f - (k * 0.1F);
-        if (side) r = 90.0F;
-
-        this.bindTexture(thisTex);
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glColor4f(c, c, c, 1.0F);
-        GL11.glTranslatef((float) par1 + 0.5F, (float) par2 + 1.5F, (float) par3 + 0.5F);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef(0.0F, 0.0F, 0.0F, 0.0F);
-        model.render((Entity) null, 0.0F, 0.0F, 0.0F, r, 0.0F, 0.0625F);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
-
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPolygonOffset(-1, -1);
-        GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
-        GL11.glColor4f(c, c, c, 1.0F);
-        GL11.glTranslatef((float) par1 + 0.5F, (float) par2 + 1.5F, (float) par3 + 0.5F);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef(0.0F, 0.0F, 0.0F, 0.0F);
-        model.renderSide((Entity) null, 0.0F, 0.0F, 0.0F, r, 0.0F, 0.0625F);
-        GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
-
-        if (onCube) {
-            GL11.glPushMatrix();
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glTranslatef((float) par1 + 0.5F, (float) par2 + 1.5F, (float) par3 + 0.5F);
-            GL11.glScalef(1.0F, -1.0F, -1.0F);
-            GL11.glRotatef(0.0F, 0.0F, 0.0F, 0.0F);
-            model.renderBase((Entity) null, 0.0F, 0.0F, 0.0F, r, 0.0F, 0.0625F);
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            GL11.glPopMatrix();
-        } else {
-            this.bindTexture(baseTex);
-            GL11.glPushMatrix();
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glTranslatef((float) par1 + 0.5F, (float) par2 + 1.5F, (float) par3 + 0.5F);
-            GL11.glScalef(1.0F, -1.0F, -1.0F);
-            if (side) GL11.glRotatef(0.0F, 0.0F, 0.0F, 0.0F);
-            else GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-            baseModel.render((Entity) null, 0.0F, 0.0F, 0.0F, r, 0.0F, 0.0625F);
-            GL11.glRotatef(0.0F, 0.0F, 0.0F, 0.0F);
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            GL11.glPopMatrix();
-        }
+    public TileEntityBarrelRenderer(BlockEntityRendererProvider.Context context) {
+        this.context = context;
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
-        this.renderTileEntityBarrelAt((TileBrewingBarrel) par1TileEntity, par2, par4, par6, par8);
+    public void render(TileBrewingBarrel tile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+            int packedLight, int packedOverlay) {
+        // Original rendered both model.render(...) and model.renderBase(...) with a yaw from metadata.
+        // Old GL11 chain: translate(x + 0.5, y + 1.5, z + 0.5); scale(1, -1, -1);
+        // rotate(yaw from direction byte/metadata around Y); bindTexture(...);
+        // model.render(null, 0, 0, 0, yaw, 0, 0.0625F);
+        poseStack.pushPose();
+        poseStack.translate(0.5D, 1.5D, 0.5D);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+
+        // TODO: restore ModelBarrel rendering via
+        // VertexConsumer vc = bufferSource.getBuffer(Sheets.cutoutBlockSheet());
+        // (blended/translucent parts: Sheets.translucentCullBlockSheet()).
+        poseStack.popPose();
     }
 }

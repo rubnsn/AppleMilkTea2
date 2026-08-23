@@ -1,106 +1,49 @@
 package mods.defeatedcrow.client.model.tileentity;
 
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import mods.defeatedcrow.client.model.model.ModelEvaporator;
 import mods.defeatedcrow.common.tile.appliance.TileEvaporator;
 
-@SideOnly(Side.CLIENT)
-public class TileEntityEvaporatorRenderer extends TileEntitySpecialRenderer {
+/**
+ * 1.20.1 port of the 1.7.10 TESR (was: extends the legacy 1.7.10 TESR + GL11 immediate mode).
+ *
+ * <p>Original geometry: {@link mods.defeatedcrow.client.model.model.ModelEvaporator}
+ * (ModelBase-based, owned by client/model/model - not yet converted to LayerDefinition/ModelPart).</p>
+ */
+public class TileEntityEvaporatorRenderer implements BlockEntityRenderer<TileEvaporator> {
 
-    private static final ResourceLocation machineTex = new ResourceLocation(
+    private static final ResourceLocation MACHINE_TEX = new ResourceLocation(
         "defeatedcrow:textures/entity/evaporator.png");
-    private static final ResourceLocation glassTex = new ResourceLocation("defeatedcrow:textures/blocks/blueglass.png");
-    public static TileEntityEvaporatorRenderer renderer;
-    private ModelEvaporator model = new ModelEvaporator();
+    private static final ResourceLocation GLASS_TEX = new ResourceLocation(
+        "defeatedcrow:textures/blocks/blueglass.png");
 
-    public void renderTileEntityModelAt(TileEvaporator par1Tile, double par2, double par4, double par6, float par8) {
-        this.setRotation(par1Tile, (float) par2, (float) par4, (float) par6);
-    }
 
-    /**
-     * Associate a TileEntityRenderer with this TileEntitySpecialRenderer
-     */
-    public void setTileEntityRenderer(TileEntityRendererDispatcher par1TileEntityRenderer) {
-        super.func_147497_a(par1TileEntityRenderer);
-        renderer = this;
-    }
+    private final BlockEntityRendererProvider.Context context;
 
-    public void setRotation(TileEvaporator par0Tile, float par1, float par2, float par3) {
-        ModelEvaporator model = this.model;
-        byte l = (byte) par0Tile.getBlockMetadata();
-
-        float f = 0F;
-        switch (l) {
-            case 0:
-                f = 180;
-                break;
-            case 1:
-                f = -90;
-                break;
-            case 2:
-                f = 0;
-                break;
-            case 3:
-                f = 90;
-                break;
-        }
-
-        this.bindTexture(machineTex);
-
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glTranslatef(par1 + 0.5F, par2 + 1.5F, par3 + 0.5F);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef(0.0F, 0.0F, 0.0F, 0.0F);
-        GL11.glRotatef(f, 0.0F, 1.0F, 0.0F);
-        model.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
-
-        this.bindTexture(glassTex);
-
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-        GL11.glPolygonOffset(-1, -1);
-        GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
-
-        GL11.glEnable(GL11.GL_STENCIL_TEST);
-        GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT);
-        GL11.glStencilFunc(GL11.GL_NOTEQUAL, 1, 1);
-        GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_REPLACE);
-
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
-        GL11.glTranslatef(par1 + 0.5F, par2 + 1.5F, par3 + 0.5F);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef(0.0F, 0.0F, 0.0F, 0.0F);
-        GL11.glRotatef(f, 0.0F, 1.0F, 0.0F);
-        model.renderGlass((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-
-        GL11.glDisable(GL11.GL_STENCIL_TEST);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+    public TileEntityEvaporatorRenderer(BlockEntityRendererProvider.Context context) {
+        this.context = context;
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
-        this.renderTileEntityModelAt((TileEvaporator) par1TileEntity, par2, par4, par6, par8);
+    public void render(TileEvaporator tile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+            int packedLight, int packedOverlay) {
+        // Original glass part was blended; use Sheets.translucentCullBlockSheet() for it when restoring.
+        // Old GL11 chain: translate(x + 0.5, y + 1.5, z + 0.5); scale(1, -1, -1);
+        // rotate(yaw from direction byte/metadata around Y); bindTexture(...);
+        // model.render(null, 0, 0, 0, yaw, 0, 0.0625F);
+        poseStack.pushPose();
+        poseStack.translate(0.5D, 1.5D, 0.5D);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+
+        // TODO: restore ModelEvaporator rendering via
+        // VertexConsumer vc = bufferSource.getBuffer(Sheets.cutoutBlockSheet());
+        // (blended/translucent parts: Sheets.translucentCullBlockSheet()).
+        poseStack.popPose();
     }
 }
