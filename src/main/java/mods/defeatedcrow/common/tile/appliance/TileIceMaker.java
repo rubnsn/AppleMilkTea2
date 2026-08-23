@@ -17,7 +17,7 @@ import mods.defeatedcrow.api.recipe.*;
 import mods.defeatedcrow.recipe.*;
 
 public class TileIceMaker extends BlockEntity implements WorldlyContainer {
-    public TileIceMaker(BlockPos pos, BlockState state) { super(null, pos, state); }
+    public TileIceMaker(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_ICE_MAKER.get(), pos, state); }
 
 
     // 現在のチャージ量
@@ -157,7 +157,7 @@ public class TileIceMaker extends BlockEntity implements WorldlyContainer {
                     if (be.iceItemStacks[2] == null) {
                         flag1 = true;
                     } else {
-                        if (be.iceItemStacks[2].isItemEqual(output)) {
+                        if (be.net.minecraft.world.item.ItemStack.isSameItemSameTags(iceItemStacks[2], output)) {
                             int result = be.iceItemStacks[2].getCount() + output.getCount();
                             flag1 = (result <= be.getMaxStackSize() && result <= output.getMaxStackSize());
                         }
@@ -166,7 +166,7 @@ public class TileIceMaker extends BlockEntity implements WorldlyContainer {
                     if (be.iceItemStacks[3] == null) {
                         flag2 = true;
                     } else {
-                        if (be.iceItemStacks[3].isItemEqual(container)) {
+                        if (be.net.minecraft.world.item.ItemStack.isSameItemSameTags(iceItemStacks[3], container)) {
                             int leave = be.iceItemStacks[3].getCount() + container.getCount();
                             flag2 = (leave <= be.getMaxStackSize() && leave <= container.getMaxStackSize());
                         }
@@ -179,7 +179,7 @@ public class TileIceMaker extends BlockEntity implements WorldlyContainer {
                     if (output == null) return false;
 
                     if (be.iceItemStacks[2] == null) return true;
-                    if (!be.iceItemStacks[2].isItemEqual(output)) return false;
+                    if (!be.net.minecraft.world.item.ItemStack.isSameItemSameTags(iceItemStacks[2], output)) return false;
 
                     int result = be.iceItemStacks[2].getCount() + output.getCount();
                     return (result <= be.getMaxStackSize() && result <= output.getMaxStackSize());
@@ -203,7 +203,7 @@ public class TileIceMaker extends BlockEntity implements WorldlyContainer {
 
             if (this.iceItemStacks[2] == null) {
                 this.iceItemStacks[2] = itemstack.copy();
-            } else if (this.iceItemStacks[2].isItemEqual(itemstack)) {
+            } else if (this.net.minecraft.world.item.ItemStack.isSameItemSameTags(iceItemStacks[2], itemstack)) {
                 this.iceItemStacks[2].getCount() += itemstack.getCount();
             }
 
@@ -211,7 +211,7 @@ public class TileIceMaker extends BlockEntity implements WorldlyContainer {
             {
                 if (this.iceItemStacks[3] == null) {
                     this.iceItemStacks[3] = container.copy();
-                } else if (this.iceItemStacks[3].isItemEqual(container)) {
+                } else if (this.net.minecraft.world.item.ItemStack.isSameItemSameTags(iceItemStacks[3], container)) {
                     this.iceItemStacks[3].getCount() += container.getCount();
                 }
             }
@@ -341,7 +341,7 @@ public class TileIceMaker extends BlockEntity implements WorldlyContainer {
                 this.iceItemStacks[par1] = null;
                 return itemstack;
             } else {
-                itemstack = this.iceItemStacks[par1].splitStack(par2);
+                itemstack = this.iceItemStacks[par1].split(par2);
 
                 if (this.iceItemStacks[par1].getCount() == 0) {
                     this.iceItemStacks[par1] = null;
@@ -374,7 +374,7 @@ public class TileIceMaker extends BlockEntity implements WorldlyContainer {
         this.iceItemStacks[par1] = par2ItemStack;
 
         if (par2ItemStack != null && par2ItemStack.getCount() > this.getMaxStackSize()) {
-            par2ItemStack.getCount() = this.getMaxStackSize();
+            par2ItemStack.setCount(this.getMaxStackSize());
         }
     }
 

@@ -1,0 +1,9 @@
+{
+  "conditions": [
+    { "condition": "minecraft:loot_table_id", "loot_table_id": "minecraft:chests/simple_dungeon" }
+  ],
+  "type": "defeatedcrow:add_item",
+  "item": "defeatedcrow:leaf_tea",
+  "count": { "min": 1, "max": 2 },
+  "chance": 0.15
+}

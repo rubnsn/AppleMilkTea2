@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import mods.defeatedcrow.api.appliance.SoupType;
 
 public class TileFilledSoupPan extends BlockEntity {
-    public TileFilledSoupPan(BlockPos pos, BlockState state) { super(null, pos, state); }
+    public TileFilledSoupPan(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_FILLED_SOUP_PAN.get(), pos, state); }
 
 
     private byte type = 0;
@@ -43,7 +43,7 @@ public class TileFilledSoupPan extends BlockEntity {
         par1CompoundTag.putByte("Type", this.type);
         par1CompoundTag.putByte("Remaining", this.remain);
         par1CompoundTag.putBoolean("Direction", this.direction);
-        par1CompoundTag.setString("Tex", tex);
+        par1CompoundTag.putString("Tex", tex);
         par1CompoundTag.putByte("CoolTime", this.coolTime);
     }
 
@@ -108,9 +108,11 @@ public class TileFilledSoupPan extends BlockEntity {
         return this.getType().texture;
     }
 
-    public String getDisplayName() {
-        return this.getType().display;
+    public net.minecraft.network.chat.Component getDisplayName() {
+        return net.minecraft.network.chat.Component.literal(this.getType().display);
     }
+    // compat shim for old String callers
+    public String getDisplayNameString() { return this.getType().display; }
 
     private byte getCoolTime() {
         return this.coolTime;

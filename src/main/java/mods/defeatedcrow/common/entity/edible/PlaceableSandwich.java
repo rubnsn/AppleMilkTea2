@@ -23,7 +23,7 @@ public class PlaceableSandwich extends PlaceableFoods {
 
     @Override
     protected ItemStack returnItem() {
-        return new ItemStack(DCsAppleMilk.appleSandwich, 1, this.getItemMetadata());
+        return new ItemStack(mods.defeatedcrow.common.registry.ModBlocks.APPLE_SANDWICH.get().asItem(), 1);
     }
 
 }

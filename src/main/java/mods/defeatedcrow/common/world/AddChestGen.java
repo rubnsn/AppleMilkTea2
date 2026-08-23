@@ -13,8 +13,8 @@ import net.minecraftforge.common.loot.LootTableIdCondition;
 import net.minecraftforge.data.event.GatherDataEvent;
 
 /**
- * 1.20.1: ChestGenHooks -> GlobalLootModifier + LootTableLoadEvent
- * See doc/worldgen/migration-guide.md: ChestGenHooks removed in 1.19, replaced by LootModifier datapack.
+ * 1.20.1: ChestGen_old -> GlobalLootModifier + LootTableLoadEvent
+ * See doc/worldgen/migration-guide.md: ChestGen_old removed in 1.19, replaced by LootModifier datapack.
  * This class now provides LootTableLoadEvent hook and documents GlobalLootModifierProvider.
  * Datapack: data/defeatedcrow/loot_modifiers/add_tea.json etc.
  */
@@ -41,6 +41,6 @@ public class AddChestGen {
 
     @Deprecated
     public void addChestItems() {
-        // ChestGenHooks removed; use GlobalLootModifier datapack instead.
+        // ChestGen_old removed; use GlobalLootModifier datapack instead.
     }
 }

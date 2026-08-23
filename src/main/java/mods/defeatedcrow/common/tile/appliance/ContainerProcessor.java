@@ -1,162 +1,95 @@
 package mods.defeatedcrow.common.tile.appliance;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ContainerListener; // ContainerListener -> ContainerListener in 1.20.1
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
-// SlotFurnace removed in 1.20.1 - use Slot
 import net.minecraft.world.item.ItemStack;
-// 1.20.1: Container -> AbstractContainerMenu (see doc/tile-entities/migration-guide.md)
+
+import mods.defeatedcrow.common.registry.ModMenuTypes;
+
+/**
+ * 1.20.1: Container -> AbstractContainerMenu + MenuType + ContainerData
+ * See doc/tile-entities/migration-guide.md:40
+ * Legacy IGuiHandler / Container decoupled: BlockEntity now uses MenuProvider, Container uses BlockPos via FriendlyByteBuf.
+ */
 public class ContainerProcessor extends AbstractContainerMenu {
 
-    protected TileProcessor tileentity;
-    protected TileProcessor inventory;
+    protected final TileProcessor tile;
+    private final ContainerData data;
 
-    private int lastCookTime;
-    private int lastBurnTime;
-
-    public ContainerProcessor(Player player, TileProcessor par2TileEntity) {
-        this.tileentity = par2TileEntity;
-        this.inventory = par2TileEntity;
-
-        // 燃料
-        this.addSlot(new Slot(this.inventory, 0, 9, 9));
-        // 材料
-        int j;
-        for (j = 0; j < 3; ++j) {
+    public ContainerProcessor(int id, Inventory inv, TileProcessor tile) {
+        super(ModMenuTypes.PROCESSOR.get(), id);
+        this.tile = tile;
+        this.data = new SimpleContainerData(2);
+        // fuel
+        this.addSlot(new Slot(tile, 0, 9, 9));
+        // material 3x3 (slots 2-10)
+        for (int j = 0; j < 3; ++j) {
             for (int k = 0; k < 3; ++k) {
-                this.addSlot(new Slot(this.inventory, 2 + k + j * 3, 33 + k * 18, 16 + j * 18));
+                this.addSlot(new Slot(tile, 2 + k + j * 3, 33 + k * 18, 16 + j * 18));
             }
         }
+        // output slots
+        this.addSlot(new Slot(tile, 1, 9, 55));
+        this.addSlot(new Slot(tile, 11, 118, 35));
+        this.addSlot(new Slot(tile, 12, 145, 35));
 
-        // 完成品
-        this.addSlot(new SlotFurnace(player, this.inventory, 1, 9, 55));
-        this.addSlot(new SlotFurnace(player, this.inventory, 11, 118, 35 + adj()));
-        this.addSlot(new SlotFurnace(player, this.inventory, 12, 145, 35 + adj()));
-
-        int i;
-
-        // 1 ～ 3段目のインベントリ
-        for (i = 0; i < 3; ++i) {
+        // player inventory 3 rows
+        for (int i = 0; i < 3; ++i) {
             for (int h = 0; h < 9; ++h) {
-                this.addSlot(new Slot(player.inventory, h + i * 9 + 9, 8 + h * 18, 84 + i * 18));
+                this.addSlot(new Slot(inv, h + i * 9 + 9, 8 + h * 18, 84 + i * 18));
             }
         }
-
-        // 4段目のインベントリ
-        for (i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(player.inventory, i, 8 + i * 18, 142));
+        // hotbar
+        for (int i = 0; i < 9; ++i) {
+            this.addSlot(new Slot(inv, i, 8 + i * 18, 142));
         }
+        this.addDataSlots(data);
     }
 
-    protected int adj() {
-        return 0;
+    public ContainerProcessor(int id, Inventory inv, BlockPos pos) {
+        this(id, inv, (TileProcessor) inv.player.level().getBlockEntity(pos));
     }
 
     @Override
-    public void addCraftingToCrafters(ContainerListener par1ContainerListener) {
-        super.addCraftingToCrafters(par1ContainerListener);
-        par1ContainerListener.sendProgressBarUpdate(this, 0, this.tileentity.cookTime);
-        par1ContainerListener.sendProgressBarUpdate(this, 1, this.tileentity.getChargeAmount());
+    public boolean stillValid(Player player) {
+        return tile.stillValid(player);
     }
 
-    // 更新を送る
-    @Override
-    public void detectAndSendChanges() {
-        super.detectAndSendChanges();
-
-        for (int i = 0; i < this.crafters.size(); ++i) {
-            ContainerListener icrafting = (ContainerListener) this.crafters.get(i);
-
-            if (this.lastCookTime != this.tileentity.cookTime) {
-                icrafting.sendProgressBarUpdate(this, 0, this.tileentity.cookTime);
-            }
-
-            if (this.lastBurnTime != this.tileentity.getChargeAmount()) {
-                icrafting.sendProgressBarUpdate(this, 1, this.tileentity.getChargeAmount());
-            }
-        }
-
-        this.lastCookTime = this.tileentity.cookTime;
-        this.lastBurnTime = this.tileentity.getChargeAmount();
+    // Legacy progress bar replaced by ContainerData; keep stub for compat
+    public void updateProgressBar(int id, int val) {
+        if (id == 0) tile.cookTime = val;
+        if (id == 1) tile.setChargeAmount(val);
     }
 
-    // 更新する
     @Override
-    
-    public void updateProgressBar(int par1, int par2) {
-        if (par1 == 0) {
-            this.tileentity.cookTime = par2;
-        }
-
-        if (par1 == 1) {
-            this.tileentity.setChargeAmount(par2);
-        }
-    }
-
-    // InventorySample内のstillValidメソッドを参照
-    @Override
-    public boolean canInteractWith(Player par1EntityPlayer) {
-        return this.inventory.stillValid(par1EntityPlayer);
-    }
-
-    // Shiftクリック
-    @Override
-    public ItemStack transferStackInSlot(Player par1EntityPlayer, int par2) {
-        ItemStack itemstack = null;
-        Slot slot = (Slot) this.inventorySlots.get(par2);
-        int lim = tileentity.getContainerSize();
-
-        if (slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
-            itemstack = itemstack1.copy();
-
-            // カーソルを排出スロットにあわせているとき
-            if (par2 == 1 || par2 == 11 || par2 == 12 || par2 == lim - 1) {
-                // アイテムの移動(スロット3～39へ)
-                if (!this.mergeItemStack(itemstack1, lim, 35 + lim, true)) {
-                    return null;
+    public ItemStack quickMoveStack(Player player, int index) {
+        ItemStack copy = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
+        if (slot != null && slot.hasItem()) {
+            ItemStack stack = slot.getItem();
+            copy = stack.copy();
+            int lim = tile.getContainerSize();
+            if (index == 1 || index == 11 || index == 12) {
+                if (!this.moveItemStackTo(stack, lim, lim + 36, true)) return ItemStack.EMPTY;
+            } else if (index >= lim) {
+                if (TileProcessor.isItemFuel(stack)) {
+                    if (!this.moveItemStackTo(stack, 0, 1, false)) return ItemStack.EMPTY;
+                } else {
+                    if (!this.moveItemStackTo(stack, 1, 10, false)) return ItemStack.EMPTY;
                 }
-
-                slot.onSlotChange(itemstack1, itemstack);
-            }
-            // カーソルをプレイヤーのインベントリにあわせている
-            else if (par2 >= lim) {
-                // 燃料である
-                if (TileProcessor.isItemFuel(itemstack)) {
-                    // アイテムの移動(スロット0～1へ)
-                    if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
-                        return null;
-                    }
-                } else// それ以外のアイテムはすべて材料欄に飛ばす
-                {
-                    // アイテムの移動(スロット2～10へ)
-                    if (!this.mergeItemStack(itemstack1, 1, 10, false)) {
-                        return null;
-                    }
-                }
-            }
-            // アイテムの移動(スロット3～39へ)
-            else if (!this.mergeItemStack(itemstack1, lim, 35 + lim, false)) {
-                return null;
-            }
-
-            if (itemstack1.stackSize == 0) {
-                slot.putStack((ItemStack) null);
             } else {
-                slot.onSlotChanged();
+                if (!this.moveItemStackTo(stack, lim, lim + 36, false)) return ItemStack.EMPTY;
             }
-
-            if (itemstack1.stackSize == itemstack.stackSize) {
-                return null;
-            }
-
-            slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+            if (stack.isEmpty()) slot.set(ItemStack.EMPTY);
+            else slot.setChanged();
+            if (stack.getCount() == copy.getCount()) return ItemStack.EMPTY;
+            slot.onTake(player, stack);
         }
-
-        return itemstack;
+        return copy;
     }
-
 }

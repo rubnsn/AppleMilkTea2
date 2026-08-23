@@ -54,7 +54,7 @@ public class PlaceableBaseSoup extends FoodBaseEntity {
 
     @Override
     protected ItemStack returnItem() {
-        return new ItemStack(DCsAppleMilk.baseSoupBowl, 1, this.getItemMetadata());
+        return new ItemStack(mods.defeatedcrow.common.registry.ModBlocks.BASE_SOUP_BOWL.get().asItem(), 1);
     }
 
 }

@@ -24,7 +24,7 @@ public class PlaceableIcecream extends PlaceableFoods {
 
     @Override
     protected ItemStack returnItem() {
-        return new ItemStack(DCsAppleMilk.blockIcecream, 1, this.getItemMetadata());
+        return new ItemStack(mods.defeatedcrow.common.registry.ModBlocks.BLOCK_ICECREAM.get().asItem(), 1);
     }
 
     @Override

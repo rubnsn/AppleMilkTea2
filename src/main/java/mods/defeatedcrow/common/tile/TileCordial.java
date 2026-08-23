@@ -14,7 +14,7 @@ import net.minecraft.world.level.biome.Biome;
  * 直射日光は厳禁。日光に当てると熟成時間がリセットされてしまう。
  */
 public class TileCordial extends BlockEntity {
-    public TileCordial(BlockPos pos, BlockState state) { super(null, pos, state); }
+    public TileCordial(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_CORDIAL.get(), pos, state); }
 
 
     private int aging = 0;
@@ -86,9 +86,6 @@ public class TileCordial extends BlockEntity {
     }
 
     public int getMetadata() { return 0; }
-
-        return flag;
-    }
 
     public boolean isDryBiome() { return level != null && level.getBiome(getBlockPos()).is(net.minecraft.tags.BiomeTags.IS_DESERT); }
 

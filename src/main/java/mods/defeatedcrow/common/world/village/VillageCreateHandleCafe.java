@@ -1,37 +1,11 @@
 package mods.defeatedcrow.common.world.village;
 
-import java.util.List;
-import java.util.Random;
-
-import net.minecraft.util.Mth;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.StructureVillagePieces;
-
-
-public class VillageCreateHandleCafe implements IVillageCreationHandler {
-
-    @Override
-    public StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int i) {
-        return new StructureVillagePieces.PieceWeight(
-            ComponentVillageCafe.class,
-            20,
-            Mth.getRandomIntegerInRange(random, i, i + 1));
-    }
-
-    @Override
-    public Class<?> getComponentClass() {
-        return ComponentVillageCafe.class;
-    }
-
-    @Override
-    public Object buildComponent(StructureVillagePieces.PieceWeight villagePiece,
-        StructureVillagePieces.Start startPiece, List pieces, Random random, int p3, int p4, int p5, int p6, int p7) {
-        StructureBoundingBox structureboundingbox = StructureBoundingBox
-            .getComponentToAddBoundingBox(p3, p4, p5, -1, -2, -1, 9, 8, 9, p6);
-        return StructureComponent.findIntersecting(pieces, structureboundingbox) == null
-            ? new ComponentVillageCafe(startPiece, p7, random, structureboundingbox, p6)
-            : null;
-    }
-
+/**
+ * 1.20.1 stub for VillageCreateHandleCafe — legacy IVillageCreationHandler.
+ * 1.20.1 uses StructureSet + Jigsaw via datapack (data/defeatedcrow/worldgen/structure + template_pool).
+ * This stub is retained for compilation only; registration is via datapack JSON, not code.
+ * See doc/worldgen/migration-guide.md:105
+ */
+public class VillageCreateHandleCafe {
+    // No-op stub — village generation is datapack-driven in 1.20.1
 }

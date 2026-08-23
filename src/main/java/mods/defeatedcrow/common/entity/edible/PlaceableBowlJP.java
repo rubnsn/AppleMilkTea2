@@ -24,7 +24,7 @@ public class PlaceableBowlJP extends PlaceableFoods {
 
     @Override
     protected ItemStack returnItem() {
-        return new ItemStack(DCsAppleMilk.bowlJP, 1, this.getItemMetadata());
+        return new ItemStack(mods.defeatedcrow.common.registry.ModBlocks.BOWL_JP.get().asItem(), 1);
     }
 
     @Override

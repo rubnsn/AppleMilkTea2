@@ -12,7 +12,7 @@ import mods.defeatedcrow.api.recipe.IPanRecipe;
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
 
 public class TilePanG extends BlockEntity {
-    public TilePanG(BlockPos pos, BlockState state) { super(null, pos, state); }
+    public TilePanG(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_PAN_G.get(), pos, state); }
 
 
     private byte remain = 1;
@@ -47,7 +47,7 @@ public class TilePanG extends BlockEntity {
 
         par1CompoundTag.putByte("Remaining", this.remain);
         par1CompoundTag.putBoolean("Direction", this.direction);
-        par1CompoundTag.setString("Tex", tex);
+        par1CompoundTag.putString("Tex", tex);
         par1CompoundTag.putByte("CoolTime", this.coolTime);
 
         if (this.getItemStack() != null) {
@@ -100,12 +100,16 @@ public class TilePanG extends BlockEntity {
         return this.tex;
     }
 
-    public String getDisplayName() {
+    public net.minecraft.network.chat.Component getDisplayName() {
         String s = "Empty";
         if (this.getRecipe() != null) {
-            s = this.getRecipe()
-                .getDisplayName();
+            s = this.getRecipe().getDisplayName();
         }
+        return net.minecraft.network.chat.Component.literal(s);
+    }
+    public String getDisplayNameString() {
+        String s = "Empty";
+        if (this.getRecipe() != null) s = this.getRecipe().getDisplayName();
         return s;
     }
 

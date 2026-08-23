@@ -14,7 +14,7 @@ import mods.defeatedcrow.common.DCsAppleMilk;
  * 情報の保存と、作動時間のカウントだけ行う。
  */
 public class TileIncenseBase extends BlockEntity {
-    public TileIncenseBase(BlockPos pos, BlockState state) { super(null, pos, state); }
+    public TileIncenseBase(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_INCENSE_BASE.get(), pos, state); }
 
 
     private ItemStack[] holdItem = new ItemStack[2];
@@ -114,13 +114,14 @@ public class TileIncenseBase extends BlockEntity {
     }
 
     private void addAsh() {
-        ItemStack ash = be.getAsh();
-        if (ash == null) {
-            ash = new ItemStack(DCsAppleMilk.dustWood, 1, 2);
-        } else if (ash.stackSize < 64) {
-            ++ash.stackSize;
+        ItemStack ash = this.getAsh();
+        if (ash == null || ash.isEmpty()) {
+            ash = new ItemStack(mods.defeatedcrow.common.registry.ModItems.WOOD_DUST.get(), 1);
+        } else if (ash.getCount() < 64) {
+            ash.grow(1);
         }
-        be.holdItem[1] = ash;
+        this.holdItem[1] = ash;
+        this.setChanged();
     }
 
 }

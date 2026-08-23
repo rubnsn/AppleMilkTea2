@@ -1,8 +1,8 @@
 package mods.defeatedcrow.common.base;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Level;
+import net.minecraft.world.level.Level;
 
 import mods.defeatedcrow.common.entity.edible.PlaceableFoods;
 

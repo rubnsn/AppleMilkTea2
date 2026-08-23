@@ -23,7 +23,7 @@ public class PlaceableTart extends PlaceableFoods {
 
     @Override
     protected ItemStack returnItem() {
-        return new ItemStack(DCsAppleMilk.appleTart, 1, this.getItemMetadata());
+        return new ItemStack(mods.defeatedcrow.common.registry.ModBlocks.APPLE_TART.get().asItem(), 1);
     }
 
 }

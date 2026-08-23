@@ -24,7 +24,7 @@ public class PlaceableAlcoholCup extends PlaceableFoods {
 
     @Override
     protected ItemStack returnItem() {
-        return new ItemStack(DCsAppleMilk.alcoholCup, 1, this.getItemMetadata());
+        return new ItemStack(mods.defeatedcrow.common.registry.ModBlocks.ALCOHOL_CUP.get().asItem(), 1);
     }
 
     @Override

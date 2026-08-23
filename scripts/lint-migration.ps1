@@ -75,6 +75,18 @@ if ($Check -eq "wtd" -or $Check -eq "all") {
   Lint-Grep -Pattern "AchievementPage" -Paths $owned -Label "AchievementPage (must be Advancement)"
   Lint-Grep -Pattern "Potion\.potionTypes" -Paths $owned -Label "Potion.potionTypes (must be Holder<MobEffect>)"
 }
+# WT-B extended 1.20.1 checks (plan.md:7.4) — must be 0 in WT-B owned
+if ($Check -eq "wtb" -or $Check -eq "all") {
+  Lint-Grep -Pattern "\.stackSize\b" -Paths $owned -Label "WT-B stackSize field (use getCount/setCount)"
+  Lint-Grep -Pattern "\.isItemEqual\(" -Paths $owned -Label "WT-B isItemEqual (use isSameItemSameTags)"
+  Lint-Grep -Pattern "getItemDamage|setItemDamage" -Paths $owned -Label "WT-B getItemDamage (use getDamageValue)"
+  Lint-Grep -Pattern "func_147447|func_150523" -Paths $owned -Label "WT-B SRG func_ (use mojmap: level.clip / BlockState)"
+  Lint-Grep -Pattern "Potion\.potionTypes|getPotionID|getActivePotionEffects" -Paths $owned -Label "WT-B Potion old (use MobEffectInstance)"
+  Lint-Grep -Pattern "LivingSpawnEvent\.CheckSpawn" -Paths $owned -Label "WT-B LivingSpawnEvent.CheckSpawn (use MobSpawnEvent)"
+  Lint-Grep -Pattern "worldObj" -Paths $owned -Label "WT-B worldObj (use level)"
+  Lint-Grep -Pattern "\.xCoord\b|\.yCoord\b|\.zCoord\b" -Paths $owned -Label "WT-B xCoord/yCoord/zCoord (use BlockPos / Vec3)"
+  Lint-Grep -Pattern "IWorldGenerator|ChestGenHooks" -Paths $owned -Label "WT-B IWorldGenerator/ChestGenHooks (use BiomeModifier)"
+}
 # Positive checks (should exist after bootstrap)
 if ($Check -eq "bootstrap" -or $Check -eq "all") {
   Lint-Grep -Pattern "DeferredRegister" -Paths @("src/main/java/mods/defeatedcrow/common/registry/*.java") -Label "DeferredRegister exists" -ExpectZero:$false

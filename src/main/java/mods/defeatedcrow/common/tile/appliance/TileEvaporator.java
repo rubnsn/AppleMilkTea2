@@ -23,7 +23,7 @@ import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.fluid.DCsTank;
 
 public class TileEvaporator extends MachineBase implements IFluidHandler, IPipeConnection {
-    public TileEvaporator(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) { super(pos, state); }
+    public TileEvaporator(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_EVAPORATOR.get(), pos, state); }
 
 
     public DCsTank productTank = new DCsTank(4000);
@@ -109,7 +109,7 @@ public class TileEvaporator extends MachineBase implements IFluidHandler, IPipeC
         FluidStack second = recipe.getSecondary();
 
         // 両方がnullのレシピはレシピとみなさない
-        if ((output == null && second == null) || (items.stackSize < recipe.getInput().stackSize)) return false;
+        if ((output == null && second == null) || (items.getCount() < recipe.getInput().getCount())) return false;
         else {
             flag1 = true;
         }
@@ -117,27 +117,28 @@ public class TileEvaporator extends MachineBase implements IFluidHandler, IPipeC
         ItemStack container = null;
         if (items.getItem() instanceof IEdibleItem) {
             IEdibleItem edible = (IEdibleItem) items.getItem();
-            container = edible.getReturnContainer(items.getItemDamage());
-        } else if (items.getItem() == DCsAppleMilk.moromi) {
+            container = edible.getReturnContainer(items.getDamageValue());
+        } else if (items.getItem() == mods.defeatedcrow.common.registry.ModItems.MOROMI.get()) {
 
         } else if (items.getItem()
-            .hasContainerItem(items)) {
+            .hasCraftingRemainingItem(items)) {
                 container = items.getItem()
-                    .getContainerItem(items);
-            } else if (items.getItem() == DCsAppleMilk.itemLargeBottle)// 特殊条件
+                    .getCraftingRemainingItem(items);
+            } else if (items.getItem() == mods.defeatedcrow.common.registry.ModItems.LARGE_BOTTLE.get())// 特殊条件
         {
-            if (items.getItemDamage() > 16) {
-                container = new ItemStack(DCsAppleMilk.itemLargeBottle, 1, items.getItemDamage() - 16);
+            if (items.getDamageValue() > 16) {
+                container = new ItemStack(mods.defeatedcrow.common.registry.ModItems.LARGE_BOTTLE.get(), 1);
+                container.setDamageValue(items.getDamageValue() - 16);
             } else {
-                container = new ItemStack(DCsAppleMilk.emptyBottle, 1, 0);
+                container = new ItemStack(mods.defeatedcrow.common.registry.ModBlocks.EMPTY_BOTTLE.get().asItem(), 1);
             }
         }
 
         if (this.itemstacks[3] == null || output == null) {
             flag2 = true;
         } else {
-            if (this.itemstacks[3].isItemEqual(output)) {
-                int result = this.itemstacks[3].stackSize + output.stackSize;
+            if (net.minecraft.world.item.ItemStack.isSameItemSameTags(this.itemstacks[3], output)) {
+                int result = this.itemstacks[3].getCount() + output.getCount();
                 flag2 = (result <= this.getMaxStackSize() && result <= output.getMaxStackSize());
             }
         }
@@ -146,8 +147,8 @@ public class TileEvaporator extends MachineBase implements IFluidHandler, IPipeC
             if (this.itemstacks[5] == null) {
                 flag4 = true;
             } else {
-                if (this.itemstacks[5].isItemEqual(container)) {
-                    int result = this.itemstacks[5].stackSize + container.stackSize;
+                if (this.net.minecraft.world.item.ItemStack.isSameItemSameTags(itemstacks[5], container)) {
+                    int result = this.itemstacks[5].getCount() + container.getCount();
                     flag4 = (result <= this.getMaxStackSize() && result <= container.getMaxStackSize());
                 }
             }
@@ -197,33 +198,34 @@ public class TileEvaporator extends MachineBase implements IFluidHandler, IPipeC
         ItemStack container = null;
         if (items.getItem() instanceof IEdibleItem) {
             IEdibleItem edible = (IEdibleItem) items.getItem();
-            container = edible.getReturnContainer(items.getItemDamage());
+            container = edible.getReturnContainer(items.getDamageValue());
         } else if (items.getItem()
-            .hasContainerItem(items)) {
+            .hasCraftingRemainingItem(items)) {
                 container = items.getItem()
-                    .getContainerItem(items);
-            } else if (items.getItem() == DCsAppleMilk.itemLargeBottle)// 特殊条件
+                    .getCraftingRemainingItem(items);
+            } else if (items.getItem() == mods.defeatedcrow.common.registry.ModItems.LARGE_BOTTLE.get())// 特殊条件
         {
-            if (items.getItemDamage() > 16) {
-                container = new ItemStack(DCsAppleMilk.itemLargeBottle, 1, items.getItemDamage() - 16);
+            if (items.getDamageValue() > 16) {
+                container = new ItemStack(mods.defeatedcrow.common.registry.ModItems.LARGE_BOTTLE.get(), 1);
+                container.setDamageValue(items.getDamageValue() - 16);
             } else {
-                container = new ItemStack(DCsAppleMilk.emptyBottle, 1, 0);
+                container = new ItemStack(mods.defeatedcrow.common.registry.ModBlocks.EMPTY_BOTTLE.get().asItem(), 1);
             }
         }
 
         // 材料を減らし、返却アイテムが有る場合は返却スロットへ。
         if (this.itemstacks[2] != null) {
-            this.itemstacks[2].stackSize -= recipe.getInput().stackSize;
+            this.itemstacks[2].shrink(recipe.getInput().getCount());
 
-            if (this.itemstacks[2].stackSize <= 0) {
+            if (this.itemstacks[2].getCount() <= 0) {
                 this.itemstacks[2] = null;
             }
 
             if (container != null && recipe.returnContainer()) {
                 if (this.itemstacks[5] == null) {
                     this.itemstacks[5] = container.copy();
-                } else if (this.itemstacks[5].isItemEqual(container)) {
-                    this.itemstacks[5].stackSize += container.stackSize;
+                } else if (this.net.minecraft.world.item.ItemStack.isSameItemSameTags(itemstacks[5], container)) {
+                    this.itemstacks[5].grow(container.getCount());
                 }
             }
 
@@ -241,8 +243,8 @@ public class TileEvaporator extends MachineBase implements IFluidHandler, IPipeC
             if (output != null) {
                 if (this.itemstacks[3] == null) {
                     this.itemstacks[3] = output.copy();
-                } else if (this.itemstacks[3].isItemEqual(output)) {
-                    this.itemstacks[3].stackSize += output.stackSize;
+                } else if (this.net.minecraft.world.item.ItemStack.isSameItemSameTags(itemstacks[3], output)) {
+                    this.itemstacks[3].grow(output.getCount());
                 }
             }
 
