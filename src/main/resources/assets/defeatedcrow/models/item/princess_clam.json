@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "defeatedcrow:item/appletart"
+    "layer0": "defeatedcrow:item/princessclam"
   }
 }
