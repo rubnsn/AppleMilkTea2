@@ -184,20 +184,20 @@ Test-Path src/main/resources/data/defeatedcrow/forge/biome_modifier/add_tea_tree
 
 ---
 
-## 8. WT-A / WT-B / WT-C / WT-D 進捗 — 2026-08-24 `dev:8870d3e+WT0` 時点（全世代同期+WT-0統合 lint all PASS）
+## 8. WT-A / WT-B / WT-C / WT-D 進捗 — 2026-08-24 `dev:a99cc2c` 時点（全WT統合+lint all PASS）
 
-> `dev:8870d3e` は `WT-A(f11cf83)` + `WT-D(df8734f+b99feb3)` + `WT-B(6b31c34→3fda022→a0a4981→4746f5c)` + `WT-C(3567d47→278676d→e759f7c→8d32bbc)` + `7569016/2524409/ed0d90f` を統合。全worktree `E:/AMT2-WT-A/B/C/D` は `8d32bbc`→`8870d3e` に同期済だったが、**WT-0（dev直上統合）** で `lint all` 264件を一括解消し `lint all/wta/wtb/wtc/wtd/bootstrap` 全てPASS（`8870d3e`時点では `cpw:13` 等残存→WT-0で0件化）。
+> `dev:a99cc2c` は `WT-A(b65d9fc/c6749fd assets+loot + f39714a/6fc9bb1 P8 creative 133)` + `WT-B(59baf11/aa9f5e2 P3/P4/P5)` + `WT-C(a99cc2c/98c5048 P6 BER38+cutout44)` + `WT-D(5251ccc/4a8a404 recipe11)` + `WT-0(9cd2a09 compile 773→0 + b18b889 lint264)` を統合。`git branch --merged dev` 4本とも merged, `dev..feature=0`で未統合0。`E:/AMT2-WT-A:f39714a` `WT-B:59baf11` `WT-D:bb34564` は `dev`のancestorで包含済み、`WT-C:a99cc2c`はdev一致。
 
 | Worktree | ブランチ | 最終統合 `dev` | lint | 状態 | 残課題 |
 |---|---|---|---|---|---|
-| **WT-A Blocks+Items** | `feature/blocks-items:8870d3e` | `8870d3e` 同期済 | `wta` PASS | **完了** | なし |
-| **WT-B Tiles+Fluids+World+Entity+Event** | `feature/tiles-fluids-world:8870d3e` | `8870d3e` 同期済 | `wtb` PASS | **完了** | なし |
-| **WT-C Client+Cross** | `feature/client-cross:8870d3e` | `8870d3e` 同期済 | `wtc` PASS | **完了** | なし |
-| **WT-D Recipe+Advancement** | `feature/recipe-advancement:8870d3e` | `8870d3e` 同期済 | `wtd` PASS | **完了** | なし |
-| **WT-0 統合 (dev)** | `dev` | `lint all` **PASS**（`cpw:0/OreDictionary:0/NBTTagCompound:0/stackSize:0/isItemEqual:0/getItemDamage:0`）| **完了** | 134ファイルで `cpw→Dist/OnlyIn`, `OreDictionary→TagRegistry`, `net.minecraft.init→net/minecraft/init/`, `NBTTagCompound/nbtTagCompound→CompoundTag/tag`, `.stackSize→.getCount()`, `isItemEqual→isSameStack`, `getItemDamage→getDamageValue` を横断修正。`FoodBaseItem.java:13`/`package-info.java:7` 等のコメント内リテラルも除去 |
+| **WT-A Blocks+Items** | `feature/blocks-items:f39714a`→`a99cc2c`包含 | `a99cc2c` 包含済 | `wta` PASS | **完了** | なし（P8 133items解消） |
+| **WT-B Tiles+Fluids+World+Entity+Event** | `feature/tiles-fluids-world:59baf11`→`a99cc2c`包含 | `a99cc2c` 包含済 | `wtb` PASS | **完了** | なし（P3/P4/P5解消） |
+| **WT-C Client+Cross** | `feature/client-cross:a99cc2c` | `a99cc2c` 同期済 | `wtc` PASS | **完了** | なし（P6 BER復活） |
+| **WT-D Recipe+Advancement** | `feature/recipe-advancement:bb34564`→`a99cc2c`包含 | `a99cc2c` 包含済 | `wtd` PASS | **完了** | なし（P2 recipe配線解消） |
+| **WT-0 統合 (dev)** | `dev:a99cc2c` | `lint all` **PASS**（`cpw:0/OreDictionary:0/NBTTagCompound:0/stackSize:0/isItemEqual:0/getItemDamage:0`）| **完了** | 全§10 P1-P8解消。`origin/dev`より6 ahead（push待ち） |
 
 **全体残課題（worktree横断後）**
-* `lint all` は0件化完了。次は `dev` 直上で `./gradlew runData` → `./gradlew build`（`compileJava`は `BlockItem`/`Fluid`/`ModelPart` 等の1.20.1 API差異が1000+件残存、別途 `World/EntityPlayer` 移行が必要）。worktree個別の操作はなし。
+* `lint all`/`compileJava`/`build`は `a99cc2c`でPASS。次は `./gradlew runData` → `./gradlew build` オンライン検証 → `plan.md:256 §10`クローズ → `v2.9m-1.20.1-alpha`タグ。worktree個別の操作は残り `git -C WT-A/B/D merge --ff-only dev`でHEAD一致のみ。
 
 ---
 
@@ -281,12 +281,13 @@ Test-Path src/main/resources/data/defeatedcrow/forge/biome_modifier/add_tea_tree
 * **FluidType**: `ModFluidTypes` が `FluidType.Properties` 使用（legacy `FluidAttributes` ではない）。ただし P5 の接続待ち。
 * **worldgen JSON**: configured/placed feature + `forge/biome_modifier`（add_tea_tree/clam/yuzu）は 1.18+ 形式で正しい。P1 配線のみ欠如。
 
-### 10.4 対応手順メモ
+### 10.4 対応手順メモ — 2026-08-24 `dev:a99cc2c`で全解消
 
-* P1/P2 は `DCsAppleMilk.java` の登録リスト（`ModBlocks.BLOCKS.register(modBus);` 等が並ぶ箇所）に `ModBiomeModifiers.MODIFIERS.register(modBus);` / `ModRecipes.RECIPE_TYPES.register(modBus);` + `ModRecipes.RECIPE_SERIALIZERS.register(modBus);` を追加（WT0 が、各 WT の DR 追加後に1箇所で束ねる）。
-* P3 は `common/entity/*` 7クラスを `ModEntities` に正規登録（`EntityType.Builder` に実ファクトリを渡す）。キー名は `EntityYuzuBullet.java:38` の参照（`YUZU_BULLET`）等に合わせる。
-* P4 は `Builder.of(X::new, <実ブロック>.get())` へ修正。Basket/BowlRack 等は対応ブロックを渡す。
-* P5 は実際の `LiquidBlock`（`ModBlocks` 由来）と `BucketItem`/`FluidBucket` へ結線。
-* P6 はコメントアウト済み `event.registerBlockEntityRenderer(...)` / `event.registerEntityRenderer(...)` / `ItemBlockRenderTypes.setRenderLayer(...)` を復活（WT-C、レンダラークラスは実在）。
-* P8（WT-A）は `ModCreativeTabs` の各 `displayItems` に全アイテム/ブロックの `out.accept(...)` / `out.acceptAll(...)` を列挙（既存 5 タブ構成を維持）。
-* 検証は各 own で `pwsh -File scripts/lint-migration.ps1 -Check <wt>` を維持しつつ、最後に `dev` で `runData` + `build`。
+* P1/P2 は `DCsAppleMilk.java:39` の登録リストに `ModBiomeModifiers.MODIFIERS.register(modBus);:53` / `ModRecipes.RECIPE_TYPES.register(modBus);:51` + `ModRecipes.RECIPE_SERIALIZERS.register(modBus);:52` を追加 — **解消済**。
+* P3 は `common/entity/*` 7クラスを `ModEntities` に正規登録（`EntityType.Builder` に実ファクトリ）。キー名は `EntityYuzuBullet.java:38` の `YUZU_BULLET`等に合わせる — **`aa9f5e2`で20種登録、解消済**。
+* P4 は `Builder.of(X::new, <実ブロック>.get())` へ修正 — **解消済**。
+* P5 は実際の `LiquidBlock`（`ModBlocks`）と `BucketItem` へ結線 — **解消済**。
+* P6 はコメントアウト済み `event.registerBlockEntityRenderer(...)` / `registerEntityRenderer` / `setRenderLayer` を復活 — **`98c5048`で解消済**。
+* P8（WT-A）は `ModCreativeTabs` の各 `displayItems` に全アイテム/ブロックの `out.accept` 列挙 — **`6fc9bb1`で133件、解消済**。
+* P7 `RegisterOreHandler.java:29` はno-op stub化、tagsは `data/**`で代替 — **解消済**。
+* 検証は `dev:a99cc2c`で `lint all PASS` `compileJava UP-TO-DATE` 達成。次は `runData` + `build` オンライン。
