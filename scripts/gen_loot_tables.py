@@ -37,8 +37,8 @@ for base in [root, alt_root]:
         # Special handling for crop_mint: should drop mint_seed when not fully grown? But we keep simple self-drop plus extra logic for age 3
         # For Sapling/Crop etc, self-drop is acceptable for initial.
         # For BlockWoodBox etc which have TileEntity with inventory, the loot should preserve NBT? In 1.20.1, we could add function copy_nbt, but spec says NBT維持, not DataComponents, so we keep simple.
-        # Write to data/defeatedcrow/loot_table/blocks (1.20.1 singular)
-        out_dir = base / f"src/main/resources/data/defeatedcrow/loot_table/blocks"
+        # Write to data/defeatedcrow/loot_tables/blocks (1.20.1 plural)
+        out_dir = base / f"src/main/resources/data/defeatedcrow/loot_tables/blocks"
         out_dir.mkdir(parents=True, exist_ok=True)
         out_path = out_dir / f"{name}.json"
         out_path.write_text(json.dumps(loot, indent=2)+"\n", encoding="utf-8")
@@ -47,6 +47,6 @@ for base in [root, alt_root]:
 
 # Verify
 for base in [root, alt_root]:
-    p1 = base / "src/main/resources/data/defeatedcrow/loot_table/blocks"
+    p1 = base / "src/main/resources/data/defeatedcrow/loot_tables/blocks"
     c1 = len(list(p1.glob("*.json"))) if p1.exists() else 0
-    print(f"{base} loot_table {c1}")
+    print(f"{base} loot_tables {c1}")
