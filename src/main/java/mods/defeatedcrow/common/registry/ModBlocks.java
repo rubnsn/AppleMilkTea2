@@ -12,6 +12,8 @@ import net.minecraftforge.registries.RegistryObject;
 /**
  * 1.20.1 Block registry — FG6 + mojmap + DeferredRegister.
  * Bootstrap-owned skeleton. WT-A/B/C append inside their commented sections only.
+ * Registry namespace is "defeatedcrow" for legacy world compat (1.7.10 GameRegistry used "defeatedcrow.*").
+ * ModID remains "DCsAppleMilk" (mods.toml). DeferredRegister namespace != modId is intentional for save compat.
  * See doc/blocks/migration-guide.md:174
  */
 public class ModBlocks {

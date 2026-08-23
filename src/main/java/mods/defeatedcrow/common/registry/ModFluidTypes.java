@@ -8,7 +8,7 @@ import net.minecraftforge.registries.RegistryObject;
 /**
  * 1.20.1 FluidType registry — separated from Fluid (Forge 1.19.3+).
  * See doc/fluids/migration-guide.md:12
- * WT-B owns all types.
+ * WT-B owns all types. ForgeFlowingFluid.Properties now takes (FluidType, Supplier<Fluid> still, Supplier<Fluid> flowing).
  */
 public class ModFluidTypes {
     public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, "defeatedcrow");

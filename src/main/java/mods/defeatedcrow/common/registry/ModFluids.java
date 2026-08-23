@@ -9,7 +9,7 @@ import net.minecraftforge.registries.RegistryObject;
 /**
  * 1.20.1 Fluid registry — FlowingFluid Source/Flowing + FluidType separation.
  * See doc/fluids/migration-guide.md:12
- * WT-B owns all fluids (18種). Bootstrap owns the DeferredRegister shells.
+ * WT-B owns all fluids (18種: vegitable_oil, camellia_oil + 16 brewing). Bootstrap owns the DeferredRegister shells.
  */
 public class ModFluids {
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, "defeatedcrow");

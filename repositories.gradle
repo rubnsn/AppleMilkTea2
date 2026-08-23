@@ -1,12 +1,12 @@
-// Add any additional repositories for your dependencies here.
+// Additional repositories for 1.20.1 dependencies.
+// Main repositories are defined in build.gradle. Keep this file minimal or empty.
+// IC2 maven is already defined in build.gradle; other repos (Modrinth, CurseMaven, Forge) are there as well.
 
-repositories {
-    maven {
-        name = "ic2"
-        url = uri("https://maven.ic2.player.to/")
-        metadataSources {
-            mavenPom()
-            artifact()
-        }
-    }
-}
+// repositories {
+//     // Example: uncomment if IC2 via build.gradle is insufficient
+//     // maven {
+//     //     name = "ic2"
+//     //     url = uri("https://maven.ic2.player.to/")
+//     //     metadataSources { mavenPom(); artifact() }
+//     // }
+// }

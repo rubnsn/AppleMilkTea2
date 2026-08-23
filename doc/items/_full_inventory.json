@@ -1,0 +1,2936 @@
+[
+  {
+    "file": "src/main/java/mods/defeatedcrow/api/ItemAPI.java",
+    "class": "ItemAPI",
+    "extends": "",
+    "implements": "",
+    "methods": [
+      [
+        "getItem",
+        "public static ItemStack getItem(String itemName, int meta) {"
+      ],
+      [
+        "getBlock",
+        "public static ItemStack getBlock(String blockName, int meta) {"
+      ],
+      [
+        "packageName",
+        "private static final String packageName() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/ItemBowlRack.java",
+    "class": "ItemBowlRack",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/ItemBreadBasket.java",
+    "class": "ItemBreadBasket",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/ItemChalcedony.java",
+    "class": "ItemChalcedony",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/ItemChalcedonyLamp.java",
+    "class": "ItemChalcedonyLamp",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getMaxItemUseDuration",
+        " public int getMaxItemUseDuration(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getItemUseAction",
+        " public EnumAction getItemUseAction(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/ItemChopsticksBox.java",
+    "class": "ItemChopsticksBox",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/ItemCLampOp.java",
+    "class": "ItemCLampOp",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/ItemCrowDoll.java",
+    "class": "ItemCrowDoll",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/ItemFlintBlock.java",
+    "class": "ItemFlintBlock",
+    "extends": "ItemBlock",
+    "implements": "ICompressedItem",
+    "methods": [
+      [
+        "getDisassembledItem",
+        " public ItemStack getDisassembledItem(ItemStack cont) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/ItemWoodPanel.java",
+    "class": "ItemWoodPanel",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "placeBlockAt",
+        " float hitX, float hitY, float hitZ, int metadata) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/fluid/ItemBottleCamOil.java",
+    "class": "ItemBottleCamOil",
+    "extends": "ItemBucket",
+    "implements": "",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/fluid/ItemBottleVegiOil.java",
+    "class": "ItemBottleVegiOil",
+    "extends": "ItemBucket",
+    "implements": "",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/fluid/ItemBucketCamOil.java",
+    "class": "ItemBucketCamOil",
+    "extends": "ItemBucket",
+    "implements": "",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/fluid/ItemBucketVegiOil.java",
+    "class": "ItemBucketVegiOil",
+    "extends": "ItemBucket",
+    "implements": "",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/fluid/ItemBucketYoungAlcohol.java",
+    "class": "ItemBucketYoungAlcohol",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/fluid/ItemDummyFluid.java",
+    "class": "ItemDummyFluid",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/fluid/ItemDummyFluid2.java",
+    "class": "ItemDummyFluid2",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemCarbonStick.java",
+    "class": "ItemCarbonStick",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemChalcedonyHammer.java",
+    "class": "ItemChalcedonyHammer",
+    "extends": "ItemPickaxe",
+    "implements": "",
+    "methods": [
+      [
+        "onBlockDestroyed",
+        " EntityLivingBase par7EntityLivingBase) {"
+      ],
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemChalcedonyKnife.java",
+    "class": "ItemChalcedonyKnife",
+    "extends": "ItemTool",
+    "implements": "",
+    "methods": [
+      [
+        "onBlockDestroyed",
+        " EntityLivingBase par7EntityLivingBase) {"
+      ],
+      [
+        "func_150897_b",
+        " public boolean func_150897_b(Block par1Block) {"
+      ],
+      [
+        "func_150893_a",
+        " public float func_150893_a(ItemStack par1ItemStack, Block par2Block) {"
+      ],
+      [
+        "itemInteractionForEntity",
+        " public boolean itemInteractionForEntity(ItemStack itemstack, EntityPlayer player, EntityLivingBase entity) {"
+      ],
+      [
+        "onBlockStartBreak",
+        " public boolean onBlockStartBreak(ItemStack itemstack, int x, int y, int z, EntityPlayer player) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemChalcedonyMonocle.java",
+    "class": "ItemChalcedonyMonocle",
+    "extends": "ItemArmor",
+    "implements": "",
+    "methods": [
+      [
+        "getArmorTexture",
+        " public String getArmorTexture(ItemStack item, Entity entity, int slot, String type) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemChalcedonyShears.java",
+    "class": "ItemChalcedonyShears",
+    "extends": "ItemTool",
+    "implements": "",
+    "methods": [
+      [
+        "onBlockDestroyed",
+        " EntityLivingBase par7EntityLivingBase) {"
+      ],
+      [
+        "func_150897_b",
+        " public boolean func_150897_b(Block par1Block) {"
+      ],
+      [
+        "func_150893_a",
+        " public float func_150893_a(ItemStack par1ItemStack, Block par2Block) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "onItemUse",
+        " float par8, float par9, float par10) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemChopsticks.java",
+    "class": "ItemChopsticks",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemContainerDoor.java",
+    "class": "ItemContainerDoor",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "onItemUse",
+        " float fy, float fz) {"
+      ],
+      [
+        "dropItem",
+        "private void dropItem(World world, EntityPlayer player, ItemStack item) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemDummyForTeppan.java",
+    "class": "ItemDummyForTeppan",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemDummyForTooltip.java",
+    "class": "ItemDummyForTooltip",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemEmptyWallMug.java",
+    "class": "ItemEmptyWallMug",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemEXItem.java",
+    "class": "ItemEXItem",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getMaxItemUseDuration",
+        "public int getMaxItemUseDuration(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getItemUseAction",
+        "public EnumAction getItemUseAction(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onItemRightClick",
+        "public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemFireStarter.java",
+    "class": "ItemFireStarter",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemFoodTea.java",
+    "class": "ItemFoodTea",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemInkStick.java",
+    "class": "ItemInkStick",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemLeafTea.java",
+    "class": "ItemLeafTea",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemMintSeed.java",
+    "class": "ItemMintSeed",
+    "extends": "ItemSeeds",
+    "implements": "IPlantable",
+    "methods": [
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "getPlantType",
+        " public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z) {"
+      ],
+      [
+        "getPlant",
+        " public Block getPlant(IBlockAccess world, int x, int y, int z) {"
+      ],
+      [
+        "getPlantMetadata",
+        " public int getPlantMetadata(IBlockAccess world, int x, int y, int z) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemOnixSword.java",
+    "class": "ItemOnixSword",
+    "extends": "ItemSword",
+    "implements": "",
+    "methods": [
+      [
+        "getItemAttributeModifiers",
+        " public Multimap getItemAttributeModifiers() {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getMaxItemUseDuration",
+        " public int getMaxItemUseDuration(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getItemUseAction",
+        " public EnumAction getItemUseAction(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "onPlayerStoppedUsing",
+        " int par4) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/ItemOreDust.java",
+    "class": "ItemOreDust",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/appliance/ItemAppliance.java",
+    "class": "ItemAppliance",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "addInformation",
+        "public void addInformation(ItemStack item, EntityPlayer player, List list, boolean b) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/appliance/ItemFilledSoupPan.java",
+    "class": "ItemFilledSoupPan",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/appliance/ItemMachineBlock.java",
+    "class": "ItemMachineBlock",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/appliance/ItemPanG.java",
+    "class": "ItemPanG",
+    "extends": "ItemAppliance",
+    "implements": "",
+    "methods": [
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/brewing/ItemBlockBottle.java",
+    "class": "ItemBlockBottle",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/brewing/ItemBlockCordial.java",
+    "class": "ItemBlockCordial",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/brewing/ItemCordial.java",
+    "class": "ItemCordial",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "canPlaceItemBlockOnSide",
+        " EntityPlayer par6EntityPlayer, ItemStack par7ItemStack) {"
+      ],
+      [
+        "placeBlockAt",
+        " float hitX, float hitY, float hitZ, int metadata) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "checkType",
+        "private int checkType(int par1) {"
+      ],
+      [
+        "checkRemain",
+        "private int checkRemain(int par1) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/brewing/ItemEmptyBarrel.java",
+    "class": "ItemEmptyBarrel",
+    "extends": "",
+    "implements": "",
+    "methods": []
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/brewing/ItemEmptyBottle.java",
+    "class": "ItemEmptyBottle",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "getItemAttributeModifiers",
+        " public Multimap getItemAttributeModifiers() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/brewing/ItemLargeBottle.java",
+    "class": "ItemLargeBottle",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "canPlaceItemBlockOnSide",
+        " EntityPlayer par6EntityPlayer, ItemStack par7ItemStack) {"
+      ],
+      [
+        "placeBlockAt",
+        " float hitX, float hitY, float hitZ, int metadata) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "checkType",
+        "private int checkType(int par1) {"
+      ],
+      [
+        "checkRemain",
+        "private int checkRemain(int par1) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemAppleBox.java",
+    "class": "ItemAppleBox",
+    "extends": "ItemBlock",
+    "implements": "ICompressedItem",
+    "methods": [
+      [
+        "getDisassembledItem",
+        " public ItemStack getDisassembledItem(ItemStack container) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemCardboard.java",
+    "class": "ItemCardboard",
+    "extends": "ItemBlock",
+    "implements": "ICompressedItem",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getDisassembledItem",
+        " public ItemStack getDisassembledItem(ItemStack cont) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemCharcoalBox.java",
+    "class": "ItemCharcoalBox",
+    "extends": "ItemBlock",
+    "implements": "ICompressedItem",
+    "methods": [
+      [
+        "getDisassembledItem",
+        " public ItemStack getDisassembledItem(ItemStack container) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemContainerBase.java",
+    "class": "ItemContainerBase",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemEggBasket.java",
+    "class": "ItemEggBasket",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemFlowerPot.java",
+    "class": "ItemFlowerPot",
+    "extends": "ItemBlock",
+    "implements": "ICompressedItem",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getDisassembledItem",
+        " public ItemStack getDisassembledItem(ItemStack cont) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemFlowerVase.java",
+    "class": "ItemFlowerVase",
+    "extends": "ItemBlock",
+    "implements": "ICompressedItem",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getDisassembledItem",
+        " public ItemStack getDisassembledItem(ItemStack cont) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemGunpowderContainer.java",
+    "class": "ItemGunpowderContainer",
+    "extends": "ItemBlock",
+    "implements": "ICompressedItem",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getDisassembledItem",
+        " public ItemStack getDisassembledItem(ItemStack cont) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemHedge.java",
+    "class": "ItemHedge",
+    "extends": "ItemBlock",
+    "implements": "ICompressedItem",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getDisassembledItem",
+        " public ItemStack getDisassembledItem(ItemStack cont) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemMelonBomb.java",
+    "class": "ItemMelonBomb",
+    "extends": "ItemBlock",
+    "implements": "ICompressedItem",
+    "methods": [
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getDisassembledItem",
+        " public ItemStack getDisassembledItem(ItemStack cont) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemMobDropBox.java",
+    "class": "ItemMobDropBox",
+    "extends": "ItemBlock",
+    "implements": "ICompressedItem",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getDisassembledItem",
+        " public ItemStack getDisassembledItem(ItemStack cont) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemMushBox.java",
+    "class": "ItemMushBox",
+    "extends": "ItemBlock",
+    "implements": "ICompressedItem",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "onItemUse",
+        " float p_77648_8_, float p_77648_9_, float p_77648_10_) {"
+      ],
+      [
+        "spownEntityFoods",
+        "protected boolean spownEntityFoods(World world, EntityPlayer player, ItemStack item, double x, double y, double z) {"
+      ],
+      [
+        "func_150936_a",
+        "public boolean func_150936_a(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item) {"
+      ],
+      [
+        "getDisassembledItem",
+        " public ItemStack getDisassembledItem(ItemStack cont) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemSilkyMelon.java",
+    "class": "ItemSilkyMelon",
+    "extends": "ItemBlock",
+    "implements": "ICompressedItem",
+    "methods": [
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getDisassembledItem",
+        " public ItemStack getDisassembledItem(ItemStack cont) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemVegiBag.java",
+    "class": "ItemVegiBag",
+    "extends": "ItemBlock",
+    "implements": "ICompressedItem",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getDisassembledItem",
+        " public ItemStack getDisassembledItem(ItemStack cont) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemWipeBox.java",
+    "class": "ItemWipeBox",
+    "extends": "ItemBlock",
+    "implements": "ICompressedItem",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getDisassembledItem",
+        " public ItemStack getDisassembledItem(ItemStack cont) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemWipeBox2.java",
+    "class": "ItemWipeBox2",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/container/ItemWoodBox.java",
+    "class": "ItemWoodBox",
+    "extends": "ItemBlock",
+    "implements": "ICompressedItem",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getDisassembledItem",
+        " public ItemStack getDisassembledItem(ItemStack cont) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/edible/ItemChocoGift.java",
+    "class": "ItemChocoGift",
+    "extends": "EdibleItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "explode",
+        "private void explode(World par1World, EntityPlayer par2EntityPlayer) {"
+      ],
+      [
+        "effectOnEaten",
+        " public ArrayList<PotionEffect> effectOnEaten(EntityPlayer player, int meta) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/edible/ItemIceBlock.java",
+    "class": "ItemIceBlock",
+    "extends": "EdibleItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "hungerOnEaten",
+        " public int[] hungerOnEaten(int meta) {"
+      ],
+      [
+        "effectOnEaten",
+        " public ArrayList<PotionEffect> effectOnEaten(EntityPlayer player, int meta) {"
+      ],
+      [
+        "iceEffect",
+        "public PotionEffect iceEffect(int meta) {"
+      ],
+      [
+        "itemInteractionForEntity",
+        " public boolean itemInteractionForEntity(ItemStack itemstack, EntityPlayer player, EntityLivingBase entity) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/energy/ItemBatBox.java",
+    "class": "ItemBatBox",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/energy/ItemGelBat.java",
+    "class": "ItemGelBat",
+    "extends": "BatteyItemBlockBase",
+    "implements": "",
+    "methods": [
+      [
+        "getMaxAmount",
+        " public int getMaxAmount(ItemStack item) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/plants/ItemCassisTree.java",
+    "class": "ItemCassisTree",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/plants/ItemClamSand.java",
+    "class": "ItemClamSand",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/plants/ItemTeaSapling.java",
+    "class": "ItemTeaSapling",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/plants/ItemTeaTree.java",
+    "class": "ItemTeaTree",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/block/plants/ItemYuzuLeaves.java",
+    "class": "ItemYuzuLeaves",
+    "extends": "ItemBlock",
+    "implements": "",
+    "methods": [
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/appliance/ItemBattery.java",
+    "class": "ItemBattery",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/appliance/ItemGrater.java",
+    "class": "ItemGrater",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "doesContainerItemLeaveCraftingGrid",
+        " public boolean doesContainerItemLeaveCraftingGrid(ItemStack par1ItemStack) {"
+      ],
+      [
+        "hasContainerItem",
+        " public boolean hasContainerItem(ItemStack stack) {"
+      ],
+      [
+        "getContainerItem",
+        " public ItemStack getContainerItem(ItemStack item) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/appliance/ItemIcyCrystal.java",
+    "class": "ItemIcyCrystal",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/appliance/ItemJawplate.java",
+    "class": "ItemJawplate",
+    "extends": "Item",
+    "implements": "IJawPlate",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack stack, EntityPlayer player, List par3List, boolean par4) {"
+      ],
+      [
+        "getTipName",
+        "private String getTipName(int meta) {"
+      ],
+      [
+        "getTier",
+        " public int getTier(ItemStack item) {"
+      ],
+      [
+        "returnItem",
+        " public ItemStack returnItem(ItemStack item) {"
+      ],
+      [
+        "maxCount",
+        "private int maxCount(int meta) {"
+      ],
+      [
+        "showDurabilityBar",
+        " public boolean showDurabilityBar(ItemStack stack) {"
+      ],
+      [
+        "getDurabilityForDisplay",
+        " public double getDurabilityForDisplay(ItemStack stack) {"
+      ],
+      [
+        "getCount",
+        "public int getCount(ItemStack stack) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/appliance/ItemSlotPanel.java",
+    "class": "ItemSlotPanel",
+    "extends": "Item",
+    "implements": "IProcessorPanel",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/appliance/ItemYuzuGatling.java",
+    "class": "ItemYuzuGatling",
+    "extends": "ItemBow",
+    "implements": "IBattery",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "getRarity",
+        " public EnumRarity getRarity(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMaxAmount",
+        " public int getMaxAmount(ItemStack item) {"
+      ],
+      [
+        "getMaxItemUseDuration",
+        " public int getMaxItemUseDuration(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getItemUseAction",
+        " public EnumAction getItemUseAction(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "looseYuzu",
+        "private boolean looseYuzu(EntityPlayer player, Item item, int meta, int count) {"
+      ],
+      [
+        "getChargeAmount",
+        " public int getChargeAmount(ItemStack item) {"
+      ],
+      [
+        "isFullCharged",
+        " public boolean isFullCharged(ItemStack item) {"
+      ],
+      [
+        "charge",
+        " public int charge(ItemStack item, int amount, boolean flag) {"
+      ],
+      [
+        "discharge",
+        " public int discharge(ItemStack item, int amount, boolean flag) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "showDurabilityBar",
+        " public boolean showDurabilityBar(ItemStack stack) {"
+      ],
+      [
+        "getDurabilityForDisplay",
+        " public double getDurabilityForDisplay(ItemStack stack) {"
+      ],
+      [
+        "isFull3D",
+        "public boolean isFull3D() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemAppleSandwich.java",
+    "class": "ItemAppleSandwich",
+    "extends": "EdibleEntityItem2",
+    "implements": "",
+    "methods": [
+      [
+        "hungerOnEaten",
+        " public int[] hungerOnEaten(int meta) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "spownEntityFoods",
+        " protected boolean spownEntityFoods(World world, EntityPlayer player, ItemStack item, double x, double y, double z) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemAppleTart.java",
+    "class": "ItemAppleTart",
+    "extends": "EdibleEntityItem2",
+    "implements": "",
+    "methods": [
+      [
+        "hungerOnEaten",
+        " public int[] hungerOnEaten(int meta) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "spownEntityFoods",
+        " protected boolean spownEntityFoods(World world, EntityPlayer player, ItemStack item, double x, double y, double z) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemBakedApple.java",
+    "class": "ItemBakedApple",
+    "extends": "ItemFood",
+    "implements": "",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemBaseSoupBowl.java",
+    "class": "ItemBaseSoupBowl",
+    "extends": "EdibleEntityItem2",
+    "implements": "",
+    "methods": [
+      [
+        "getReturnContainer",
+        " public ItemStack getReturnContainer(int meta) {"
+      ],
+      [
+        "hungerOnEaten",
+        " public int[] hungerOnEaten(int meta) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "spownEntityFoods",
+        " protected boolean spownEntityFoods(World world, EntityPlayer player, ItemStack item, double x, double y, double z) {"
+      ],
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemChocoFruits.java",
+    "class": "ItemChocoFruits",
+    "extends": "ItemFood",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemClam.java",
+    "class": "ItemClam",
+    "extends": "ItemFood",
+    "implements": "",
+    "methods": [
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "reduceMoisture",
+        "private void reduceMoisture(int par1, float par2, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemCondensedMilk.java",
+    "class": "ItemCondensedMilk",
+    "extends": "ItemFood",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemGratedApple.java",
+    "class": "ItemGratedApple",
+    "extends": "ItemFood",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemIcyToffyApple.java",
+    "class": "ItemIcyToffyApple",
+    "extends": "ItemFood",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "onFoodEaten",
+        " protected void onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemMincedFoods.java",
+    "class": "ItemMincedFoods",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemMoromi.java",
+    "class": "ItemMoromi",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemToffyApple.java",
+    "class": "ItemToffyApple",
+    "extends": "ItemFood",
+    "implements": "",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemWallMug.java",
+    "class": "ItemWallMug",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "onEaten",
+        " public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getItemUseAction",
+        "public EnumAction getItemUseAction(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getMaxItemUseDuration",
+        "public int getMaxItemUseDuration(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onItemRightClick",
+        "public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "checkType",
+        "private int checkType(int par1) {"
+      ],
+      [
+        "checkFruitType",
+        "private int checkFruitType(int par1) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getIconFromDamageForRenderPass",
+        "public IIcon getIconFromDamageForRenderPass(int par1, int par2) {"
+      ],
+      [
+        "requiresMultipleRenderPasses",
+        "public boolean requiresMultipleRenderPasses() {"
+      ],
+      [
+        "getIcon",
+        " public IIcon getIcon(ItemStack stack, int pass) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/edible/ItemYeast.java",
+    "class": "ItemYeast",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemDebugArm.java",
+    "class": "ItemDebugArm",
+    "extends": "Item",
+    "implements": "IBattery",
+    "methods": [
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "itemInteractionForEntity",
+        " public boolean itemInteractionForEntity(ItemStack item, EntityPlayer player, EntityLivingBase target) {"
+      ],
+      [
+        "onLeftClickEntity",
+        " public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {"
+      ],
+      [
+        "getItemUseAction",
+        " public EnumAction getItemUseAction(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getRarity",
+        " public EnumRarity getRarity(ItemStack par1ItemStack) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "getMaxAmount",
+        " public int getMaxAmount(ItemStack item) {"
+      ],
+      [
+        "getChargeAmount",
+        " public int getChargeAmount(ItemStack item) {"
+      ],
+      [
+        "isFullCharged",
+        " public boolean isFullCharged(ItemStack item) {"
+      ],
+      [
+        "charge",
+        " public int charge(ItemStack item, int amount, boolean flag) {"
+      ],
+      [
+        "discharge",
+        " public int discharge(ItemStack item, int amount, boolean flag) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "showDurabilityBar",
+        " public boolean showDurabilityBar(ItemStack stack) {"
+      ],
+      [
+        "getDurabilityForDisplay",
+        " public double getDurabilityForDisplay(ItemStack stack) {"
+      ],
+      [
+        "isFull3D",
+        "public boolean isFull3D() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemEssentialOil.java",
+    "class": "ItemEssentialOil",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemFossilCannon.java",
+    "class": "ItemFossilCannon",
+    "extends": "ItemBow",
+    "implements": "IBattery",
+    "methods": [
+      [
+        "getMaxAmount",
+        " public int getMaxAmount(ItemStack item) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "getRarity",
+        "public EnumRarity getRarity(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onPlayerStoppedUsing",
+        " int par4) {"
+      ],
+      [
+        "onEaten",
+        "public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getMaxItemUseDuration",
+        "public int getMaxItemUseDuration(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getItemUseAction",
+        "public EnumAction getItemUseAction(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onItemRightClick",
+        "public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getItemIconForUseDuration",
+        "public IIcon getItemIconForUseDuration(int par1) {"
+      ],
+      [
+        "getChargeAmount",
+        " public int getChargeAmount(ItemStack item) {"
+      ],
+      [
+        "isFullCharged",
+        " public boolean isFullCharged(ItemStack item) {"
+      ],
+      [
+        "charge",
+        " public int charge(ItemStack item, int amount, boolean flag) {"
+      ],
+      [
+        "discharge",
+        " public int discharge(ItemStack item, int amount, boolean flag) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "showDurabilityBar",
+        " public boolean showDurabilityBar(ItemStack stack) {"
+      ],
+      [
+        "getDurabilityForDisplay",
+        " public double getDurabilityForDisplay(ItemStack stack) {"
+      ],
+      [
+        "isFull3D",
+        "public boolean isFull3D() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemFossilScale.java",
+    "class": "ItemFossilScale",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "getRarity",
+        "public EnumRarity getRarity(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onPlayerStoppedUsing",
+        " int par4) {"
+      ],
+      [
+        "onEaten",
+        "public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getMaxItemUseDuration",
+        "public int getMaxItemUseDuration(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getItemUseAction",
+        "public EnumAction getItemUseAction(ItemStack par1ItemStack) {"
+      ],
+      [
+        "onItemRightClick",
+        "public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {"
+      ],
+      [
+        "getItemIconForUseDuration",
+        "public IIcon getItemIconForUseDuration(int par1) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseAgar.java",
+    "class": "ItemIncenseAgar",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseApple.java",
+    "class": "ItemIncenseApple",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseClam.java",
+    "class": "ItemIncenseClam",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseFrankincense.java",
+    "class": "ItemIncenseFrankincense",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseIce.java",
+    "class": "ItemIncenseIce",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseLavender.java",
+    "class": "ItemIncenseLavender",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseMint.java",
+    "class": "ItemIncenseMint",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseRose.java",
+    "class": "ItemIncenseRose",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseSandalwood.java",
+    "class": "ItemIncenseSandalwood",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseTear.java",
+    "class": "ItemIncenseTear",
+    "extends": "",
+    "implements": "",
+    "methods": []
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseVanilla.java",
+    "class": "ItemIncenseVanilla",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemIncenseYuzu.java",
+    "class": "ItemIncenseYuzu",
+    "extends": "Item",
+    "implements": "IIncenseEffect",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "effectAreaRange",
+        " public int effectAreaRange() {"
+      ],
+      [
+        "getEffectType",
+        " public EffectType getEffectType() {"
+      ],
+      [
+        "formEffect",
+        " public boolean formEffect(World world, int x, int y, int z, EntityLivingBase entity, IIncenseEffect incense) {"
+      ],
+      [
+        "particleIcon",
+        " public String particleIcon() {"
+      ],
+      [
+        "particleColorR",
+        " public float particleColorR() {"
+      ],
+      [
+        "particleColorG",
+        " public float particleColorG() {"
+      ],
+      [
+        "particleColorB",
+        " public float particleColorB() {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemPrincessClam.java",
+    "class": "ItemPrincessClam",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "onItemUse",
+        " int posY, int posZ, int side, float fx, float fy, float fz) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {"
+      ],
+      [
+        "moonCanWarp",
+        "public static boolean moonCanWarp(World world, int X, int Y, int Z) {"
+      ],
+      [
+        "itemInteractionForEntity",
+        " public boolean itemInteractionForEntity(ItemStack itemstack, EntityPlayer player, EntityLivingBase entity) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ],
+      [
+        "getRarity",
+        " public EnumRarity getRarity(ItemStack par1ItemStack) {"
+      ],
+      [
+        "hasEffect",
+        "public boolean hasEffect(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemStrangeSlag.java",
+    "class": "ItemStrangeSlag",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "onItemUse",
+        " int par5, int par6, int par7, float par8, float par9, float par10) {"
+      ],
+      [
+        "onItemRightClick",
+        " public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {"
+      ],
+      [
+        "returnItem",
+        "public ItemStack returnItem(ItemStack item, World world, EntityPlayer player) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/common/item/magic/ItemWoodDust.java",
+    "class": "ItemWoodDust",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "getIconFromDamage",
+        "public IIcon getIconFromDamage(int par1) {"
+      ],
+      [
+        "getMetadata",
+        " public int getMetadata(int par1) {"
+      ],
+      [
+        "getUnlocalizedName",
+        " public String getUnlocalizedName(ItemStack par1ItemStack) {"
+      ],
+      [
+        "getSubItems",
+        "public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {"
+      ],
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ]
+    ]
+  },
+  {
+    "file": "src/main/java/mods/defeatedcrow/plugin/ffm/ItemChalcedonyCircuit.java",
+    "class": "ItemChalcedonyCircuit",
+    "extends": "Item",
+    "implements": "",
+    "methods": [
+      [
+        "registerIcons",
+        "public void registerIcons(IIconRegister par1IconRegister) {"
+      ],
+      [
+        "addInformation",
+        "public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {"
+      ]
+    ]
+  }
+]

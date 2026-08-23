@@ -1,0 +1,135 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '6.0.+'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+println "Java: ${System.getProperty('java.version')}, JVM: ${System.getProperty('java.vm.version')}, Arch: ${System.getProperty('os.arch')}"
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                DCsAppleMilk {
+                    source sourceSets.main
+                }
+            }
+        }
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                DCsAppleMilk {
+                    source sourceSets.main
+                }
+            }
+        }
+        gameTestServer {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                DCsAppleMilk {
+                    source sourceSets.main
+                }
+            }
+        }
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            args '--mod', 'DCsAppleMilk', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            mods {
+                DCsAppleMilk {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+// addon.gradle was removed (回答⑥). version is defined in gradle.properties (modVersion).
+// Fallback if not set via gradle.properties:
+if (!project.hasProperty('modVersion') || project.modVersion == null || project.modVersion == "") {
+    project.ext.modVersion = "2.9m-1.20.1"
+}
+version = project.findProperty('modVersion') ?: "2.9m-1.20.1"
+group = project.findProperty('modGroup') ?: "mods.defeatedcrow"
+
+repositories {
+    mavenCentral()
+    maven { url = "https://maven.minecraftforge.net/" }
+    maven { url = "https://maven.blamejared.com" }
+    maven {
+        url = "https://www.cursemaven.com"
+        content { includeGroup "curse.maven" }
+    }
+    maven { url = "https://api.modrinth.com/maven" }
+    // IC2 direct maven (kept for commented IC2 example)
+    maven {
+        name = "ic2"
+        url = uri("https://maven.ic2.player.to/")
+        metadataSources {
+            mavenPom()
+            artifact()
+        }
+    }
+    gradlePluginPortal()
+}
+
+// Apply dependencies defined in dependencies.gradle
+apply from: 'dependencies.gradle'
+
+base {
+    archivesName = 'AppleMilkTea2'
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    def replaceProperties = [
+        minecraft_version: project.findProperty('minecraftVersion') ?: '1.20.1',
+        forge_version    : project.findProperty('forgeVersion') ?: '47.3.0',
+        mod_version      : project.version,
+        mod_id           : project.findProperty('modId') ?: 'DCsAppleMilk',
+        mod_name         : project.findProperty('modName') ?: 'Apple&Milk&Tea!',
+        mod_group        : project.findProperty('modGroup') ?: 'mods.defeatedcrow',
+        author           : project.findProperty('author') ?: 'defeatedcrow'
+    ]
+    inputs.properties replaceProperties
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties
+    }
+}
+
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes([
+            "Specification-Title"     : "AppleMilkTea2",
+            "Specification-Vendor"    : "defeatedcrow",
+            "Specification-Version"   : "1",
+            "Implementation-Title"    : project.name,
+            "Implementation-Version"  : project.version,
+            "Implementation-Vendor"   : "defeatedcrow",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+publishing {
+    publications {
+        register('maven', MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        // publish target is configured via env if needed; default GTNH nexus is removed for 1.20.1
+    }
+}

@@ -10,9 +10,8 @@ function Lint-Grep {
   param([string]$Pattern, [string[]]$Paths, [string]$Label, [bool]$ExpectZero = $true)
   $hits = @()
   foreach ($p in $Paths) {
-    # Support glob with ** via Get-ChildItem recursion
     $files = @()
-    if ($p -like "*`**`**" -or $p -like "*`*`**") {
+    if ($p.Contains("**")) {
       $base = ($p -split "\*\*")[0].TrimEnd('/','\')
       if ([string]::IsNullOrWhiteSpace($base)) { $base = "src" }
       $ext = [System.IO.Path]::GetExtension($p)
