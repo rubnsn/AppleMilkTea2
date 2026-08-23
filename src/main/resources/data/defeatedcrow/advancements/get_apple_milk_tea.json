@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:get_tea",
+  "criteria": {
+    "has_apple_milk_tea": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:milk_bucket"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.getAppleMilkTea.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:milk_bucket"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.getAppleMilkTea.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_apple_milk_tea"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

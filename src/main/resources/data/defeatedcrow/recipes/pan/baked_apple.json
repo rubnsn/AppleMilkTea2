@@ -1,0 +1,10 @@
+{
+  "type": "defeatedcrow:pan",
+  "cookingTime": 200,
+  "ingredient": {
+    "item": "minecraft:apple"
+  },
+  "result": {
+    "item": "defeatedcrow:baked_apple"
+  }
+}

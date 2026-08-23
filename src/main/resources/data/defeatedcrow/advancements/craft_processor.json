@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:craft_grater",
+  "criteria": {
+    "has_processor": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:crafting_table"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.craftProcessor.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:crafting_table"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.craftProcessor.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_processor"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

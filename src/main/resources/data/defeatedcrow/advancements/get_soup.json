@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:make_rice",
+  "criteria": {
+    "has_soup": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:mushroom_stew"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.getSoup.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:mushroom_stew"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.getSoup.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_soup"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

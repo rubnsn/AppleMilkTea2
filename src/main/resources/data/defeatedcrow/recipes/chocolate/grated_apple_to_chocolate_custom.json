@@ -1,0 +1,9 @@
+{
+  "type": "defeatedcrow:chocolate",
+  "ingredient": {
+    "item": "defeatedcrow:grated_apple"
+  },
+  "result": {
+    "item": "defeatedcrow:choco_fruits"
+  }
+}

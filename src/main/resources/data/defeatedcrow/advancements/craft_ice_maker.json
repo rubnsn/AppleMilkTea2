@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:make_tea_leaves",
+  "criteria": {
+    "has_ice_maker": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:ice"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.craftIceMaker.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:ice"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.craftIceMaker.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_ice_maker"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

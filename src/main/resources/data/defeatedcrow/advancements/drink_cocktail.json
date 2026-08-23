@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:get_alcohol",
+  "criteria": {
+    "has_cocktail": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:glass_bottle"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.drinkCocktail.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:glass_bottle"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.drinkCocktail.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_cocktail"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

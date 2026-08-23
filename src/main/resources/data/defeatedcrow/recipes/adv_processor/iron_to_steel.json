@@ -1,0 +1,12 @@
+{
+  "type": "defeatedcrow:adv_processor",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_ore"
+    }
+  ],
+  "result": {
+    "item": "defeatedcrow:ore_dust"
+  },
+  "tier": 1
+}

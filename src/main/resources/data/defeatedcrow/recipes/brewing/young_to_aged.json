@@ -1,0 +1,11 @@
+{
+  "type": "defeatedcrow:brewing",
+  "input": {
+    "amount": 1000,
+    "fluid": "defeatedcrow:shothu_young"
+  },
+  "output": {
+    "amount": 1000,
+    "fluid": "defeatedcrow:shothu"
+  }
+}

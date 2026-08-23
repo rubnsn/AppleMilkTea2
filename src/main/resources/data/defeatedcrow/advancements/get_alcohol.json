@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:craft_barrel",
+  "criteria": {
+    "has_alcohol": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:potion"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.getAlcohol.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:potion"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.getAlcohol.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_alcohol"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

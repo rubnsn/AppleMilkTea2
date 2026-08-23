@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:craft_chalcedony",
+  "criteria": {
+    "has_glass_lamp": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:sea_lantern"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.craftGlassLamp.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:sea_lantern"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.craftGlassLamp.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_glass_lamp"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -3,10 +3,13 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:gravel"
+      "tag": "forge:crops/cocoa"
+    },
+    {
+      "item": "minecraft:sugar"
     }
   ],
   "result": {
-    "item": "minecraft:sand"
+    "item": "minecraft:cookie"
   }
 }

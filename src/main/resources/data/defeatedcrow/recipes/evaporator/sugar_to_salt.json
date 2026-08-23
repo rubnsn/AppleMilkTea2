@@ -1,0 +1,10 @@
+{
+  "type": "defeatedcrow:evaporator",
+  "ingredient": {
+    "item": "minecraft:sugar"
+  },
+  "result": {
+    "item": "minecraft:gunpowder"
+  },
+  "time": 100
+}

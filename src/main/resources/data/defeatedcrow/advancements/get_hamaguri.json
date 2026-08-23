@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:craft_teppan",
+  "criteria": {
+    "has_hamaguri": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:prismarine_shard"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.getHamaguri.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:prismarine_shard"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.getHamaguri.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_hamaguri"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

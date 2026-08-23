@@ -1,0 +1,39 @@
+{
+  "parent": "defeatedcrow:craft_pan",
+  "criteria": {
+    "has_teppan": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:iron_ingot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png",
+    "description": {
+      "translate": "advancement.defeatedcrow.craftTeppan.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:iron_ingot"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.defeatedcrow.craftTeppan.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_teppan"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
