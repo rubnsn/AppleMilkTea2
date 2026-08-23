@@ -1,13 +1,15 @@
 package mods.defeatedcrow.common.tile.appliance;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
-import net.minecraft.item.ItemStack;
-
-public class ContainerEvaporator extends Container {
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ContainerListener; // ContainerListener -> ContainerListener in 1.20.1
+import net.minecraft.world.inventory.Slot;
+// SlotFurnace removed in 1.20.1 - use Slot
+import net.minecraft.world.item.ItemStack;
+// 1.20.1: Container -> AbstractContainerMenu (see doc/tile-entities/migration-guide.md)
+public class ContainerEvaporator extends AbstractContainerMenu {
 
     private TileEvaporator tileentity;
 
@@ -18,53 +20,53 @@ public class ContainerEvaporator extends Container {
     private int lastFluidAmount;
     private int lastFluidID;
 
-    public ContainerEvaporator(EntityPlayer player, TileEvaporator par2TileEntity) {
+    public ContainerEvaporator(Player player, TileEvaporator par2TileEntity) {
         this.tileentity = par2TileEntity;
         this.inventory = par2TileEntity;
 
         // 燃料
-        this.addSlotToContainer(new Slot(this.inventory, 0, 9, 9));
+        this.addSlot(new Slot(this.inventory, 0, 9, 9));
         // 材料
-        this.addSlotToContainer(new Slot(this.inventory, 2, 56, 17));
+        this.addSlot(new Slot(this.inventory, 2, 56, 17));
 
         // 完成品
-        this.addSlotToContainer(new SlotFurnace(player, this.inventory, 1, 9, 55));
-        this.addSlotToContainer(new SlotFurnace(player, this.inventory, 3, 110, 21));
-        this.addSlotToContainer(new Slot(this.inventory, 4, 141, 58));
-        this.addSlotToContainer(new SlotFurnace(player, this.inventory, 5, 56, 55));
+        this.addSlot(new SlotFurnace(player, this.inventory, 1, 9, 55));
+        this.addSlot(new SlotFurnace(player, this.inventory, 3, 110, 21));
+        this.addSlot(new Slot(this.inventory, 4, 141, 58));
+        this.addSlot(new SlotFurnace(player, this.inventory, 5, 56, 55));
 
         int i;
 
         // 1 ～ 3段目のインベントリ
         for (i = 0; i < 3; ++i) {
             for (int h = 0; h < 9; ++h) {
-                this.addSlotToContainer(new Slot(player.inventory, h + i * 9 + 9, 8 + h * 18, 84 + i * 18));
+                this.addSlot(new Slot(player.inventory, h + i * 9 + 9, 8 + h * 18, 84 + i * 18));
             }
         }
 
         // 4段目のインベントリ
         for (i = 0; i < 9; ++i) {
-            this.addSlotToContainer(new Slot(player.inventory, i, 8 + i * 18, 142));
+            this.addSlot(new Slot(player.inventory, i, 8 + i * 18, 142));
         }
     }
 
     @Override
-    public void addCraftingToCrafters(ICrafting par1ICrafting) {
-        super.addCraftingToCrafters(par1ICrafting);
-        par1ICrafting.sendProgressBarUpdate(this, 0, this.tileentity.cookTime);
-        par1ICrafting.sendProgressBarUpdate(this, 1, this.tileentity.getChargeAmount());
+    public void addCraftingToCrafters(ContainerListener par1ContainerListener) {
+        super.addCraftingToCrafters(par1ContainerListener);
+        par1ContainerListener.sendProgressBarUpdate(this, 0, this.tileentity.cookTime);
+        par1ContainerListener.sendProgressBarUpdate(this, 1, this.tileentity.getChargeAmount());
 
         if (this.tileentity.productTank.getFluid() != null) {
-            par1ICrafting.sendProgressBarUpdate(
+            par1ContainerListener.sendProgressBarUpdate(
                 this,
                 2,
                 this.tileentity.productTank.getFluid()
                     .getFluid()
                     .getID());
-            par1ICrafting.sendProgressBarUpdate(this, 3, this.tileentity.productTank.getFluidAmount());
+            par1ContainerListener.sendProgressBarUpdate(this, 3, this.tileentity.productTank.getFluidAmount());
         } else {
-            par1ICrafting.sendProgressBarUpdate(this, 2, 0);
-            par1ICrafting.sendProgressBarUpdate(this, 3, 0);
+            par1ContainerListener.sendProgressBarUpdate(this, 2, 0);
+            par1ContainerListener.sendProgressBarUpdate(this, 3, 0);
         }
 
     }
@@ -75,7 +77,7 @@ public class ContainerEvaporator extends Container {
         super.detectAndSendChanges();
 
         for (int i = 0; i < this.crafters.size(); ++i) {
-            ICrafting icrafting = (ICrafting) this.crafters.get(i);
+            ContainerListener icrafting = (ContainerListener) this.crafters.get(i);
 
             if (this.lastCookTime != this.tileentity.cookTime) {
                 icrafting.sendProgressBarUpdate(this, 0, this.tileentity.cookTime);
@@ -139,15 +141,15 @@ public class ContainerEvaporator extends Container {
         }
     }
 
-    // InventorySample内のisUseableByPlayerメソッドを参照
+    // InventorySample内のstillValidメソッドを参照
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-        return this.inventory.isUseableByPlayer(par1EntityPlayer);
+    public boolean canInteractWith(Player par1EntityPlayer) {
+        return this.inventory.stillValid(par1EntityPlayer);
     }
 
     // Shiftクリック
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+    public ItemStack transferStackInSlot(Player par1EntityPlayer, int par2) {
         ItemStack itemstack = null;
         Slot slot = (Slot) this.inventorySlots.get(par2);
 

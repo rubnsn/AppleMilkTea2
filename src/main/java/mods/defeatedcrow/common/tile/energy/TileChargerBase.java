@@ -1,12 +1,11 @@
 package mods.defeatedcrow.common.tile.energy;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
@@ -22,7 +21,7 @@ import mods.defeatedcrow.common.config.DCsConfig;
 import mods.defeatedcrow.handler.Util;
 
 /* AMT単体で動作させる場合は、このクラスだけで事足りる */
-public class TileChargerBase extends BlockEntity implements ISidedInventory, IChargeableMachine {
+public class TileChargerBase extends BlockEntity implements WorldlyContainer, IChargeableMachine {
     public TileChargerBase(BlockPos pos, BlockState state) { super(null, pos, state); }
 
 
@@ -37,14 +36,14 @@ public class TileChargerBase extends BlockEntity implements ISidedInventory, ICh
         super.load(par1CompoundTag);
 
         ListTag nbttaglist = par1CompoundTag.getList("Items", 10);
-        this.itemstacks = new ItemStack[this.getSizeInventory()];
+        this.itemstacks = new ItemStack[this.getContainerSize()];
 
-        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+        for (int i = 0; i < nbttaglist.size(); ++i) {
             CompoundTag nbttagcompound1 = (CompoundTag) nbttaglist.getCompound(i);
             byte b0 = nbttagcompound1.getByte("Slot");
 
             if (b0 >= 0 && b0 < this.itemstacks.length) {
-                this.itemstacks[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+                this.itemstacks[b0] = ItemStack.of(nbttagcompound1);
             }
         }
 
@@ -63,7 +62,7 @@ public class TileChargerBase extends BlockEntity implements ISidedInventory, ICh
                 CompoundTag nbttagcompound1 = new CompoundTag();
                 nbttagcompound1.putByte("Slot", (byte) i);
                 this.itemstacks[i].saveAdditional(nbttagcompound1);
-                nbttaglist.appendTag(nbttagcompound1);
+                nbttaglist.add(nbttagcompound1);
             }
         }
 
@@ -171,10 +170,10 @@ public class TileChargerBase extends BlockEntity implements ISidedInventory, ICh
             flag = i > 0 && (this.getChargeAmount() + i <= this.getMaxChargeAmount());
         }
 
-        if (this.getStackInSlot(0) == null) {
+        if (this.getItem(0) == null) {
             flag2 = true;
         } else {
-            ItemStack current = this.getStackInSlot(0);
+            ItemStack current = this.getItem(0);
             flag2 = item.isItemEqual(current) && (current.stackSize + item.stackSize < current.getMaxStackSize());
         }
 
@@ -325,18 +324,18 @@ public class TileChargerBase extends BlockEntity implements ISidedInventory, ICh
         return new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     }
 
-    public ItemStack[] itemstacks = new ItemStack[getSizeInventory()];
+    public ItemStack[] itemstacks = new ItemStack[getContainerSize()];
 
     // スロット数は各Tileでオーバーライドして増やすこと。2は最低限の値。
     @Override
-    public int getSizeInventory() {
+    public int getContainerSize() {
         return 10;
     }
 
     // インベントリ内の任意のスロットにあるアイテムを取得
     @Override
-    public ItemStack getStackInSlot(int par1) {
-        return par1 < this.getSizeInventory() ? this.itemstacks[par1] : null;
+    public ItemStack getItem(int par1) {
+        return par1 < this.getContainerSize() ? this.itemstacks[par1] : null;
     }
 
     @Override
@@ -363,7 +362,7 @@ public class TileChargerBase extends BlockEntity implements ISidedInventory, ICh
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1) {
+    public ItemStack removeItemNoUpdate(int par1) {
         if (this.itemstacks[par1] != null) {
             ItemStack itemstack = this.itemstacks[par1];
             this.itemstacks[par1] = null;
@@ -375,32 +374,32 @@ public class TileChargerBase extends BlockEntity implements ISidedInventory, ICh
 
     // インベントリ内のスロットにアイテムを入れる
     @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
+    public void setItem(int par1, ItemStack par2ItemStack) {
 
-        if (par1 > this.getSizeInventory()) par1 = 0;// 存在しないスロットに入れようとすると強制的に材料スロットに変更される。
+        if (par1 > this.getContainerSize()) par1 = 0;// 存在しないスロットに入れようとすると強制的に材料スロットに変更される。
 
         this.itemstacks[par1] = par2ItemStack;
 
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        if (par2ItemStack != null && par2ItemStack.stackSize > this.getMaxStackSize()) {
+            par2ItemStack.stackSize = this.getMaxStackSize();
         }
     }
 
     // インベントリの名前
     @Override
-    public String getInventoryName() {
+    public String getContainerName() {
         return "Battery Charger";
     }
 
     // 多言語対応かどうか
     @Override
-    public boolean hasCustomInventoryName() {
+    public boolean hasCustomName() {
         return true;
     }
 
     // インベントリ内のスタック限界値
     @Override
-    public int getInventoryStackLimit() {
+    public int getMaxStackSize() {
         return 64;
     }
 
@@ -411,10 +410,10 @@ public class TileChargerBase extends BlockEntity implements ISidedInventory, ICh
 
     // par1EntityPlayerがTileEntityを使えるかどうか
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
+    public boolean stillValid(Player par1EntityPlayer) {
         return this.level.getBlockEntity(this.getBlockPos()) != this ? false
             : par1EntityPlayer
-                .getDistanceSq((double) this.getBlockPos().getX() + 0.5D, (double) this.getBlockPos().getY() + 0.5D, (double) this.getBlockPos().getZ() + 0.5D)
+                .distanceToSqr((double) this.getBlockPos().getX() + 0.5D, (double) this.getBlockPos().getY() + 0.5D, (double) this.getBlockPos().getZ() + 0.5D)
                 <= 64.0D;
     }
 
@@ -425,7 +424,7 @@ public class TileChargerBase extends BlockEntity implements ISidedInventory, ICh
     public void closeInventory() {}
 
     @Override
-    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
+    public boolean canPlaceItem(int par1, ItemStack par2ItemStack) {
         if (par1 == 1) {
             return false;
         } else if (par1 == 0) {
@@ -437,19 +436,19 @@ public class TileChargerBase extends BlockEntity implements ISidedInventory, ICh
 
     // ホッパーにアイテムの受け渡しをする際の優先度
     @Override
-    public int[] getAccessibleSlotsFromSide(int par1) {
+    public int[] getSlotsForFace(int par1) {
         return par1 == 0 ? slotsBottom() : (par1 == 1 ? slotsTop() : slotsSides());
     }
 
     // ホッパーからアイテムを入れられるかどうか
     @Override
-    public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3) {
-        return this.isItemValidForSlot(par1, par2ItemStack);
+    public boolean canPlaceItemThroughFace(int par1, ItemStack par2ItemStack, int par3) {
+        return this.canPlaceItem(par1, par2ItemStack);
     }
 
     // 隣接するホッパーにアイテムを送れるかどうか
     @Override
-    public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3) {
+    public boolean canTakeItemThroughFace(int par1, ItemStack par2ItemStack, int par3) {
         if (par1 == 1) {
             return true;
         } else if (par1 > 1) {

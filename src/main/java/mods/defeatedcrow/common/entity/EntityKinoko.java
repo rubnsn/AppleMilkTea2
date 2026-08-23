@@ -1,7 +1,9 @@
 package mods.defeatedcrow.common.entity;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.Level;
 
 import mods.defeatedcrow.common.DCsAppleMilk;
@@ -44,8 +46,8 @@ public class EntityKinoko extends PlaceableFoods {
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer par1EntityPlayer) {
-        if (this.vehicle != null && this.vehicle instanceof EntityPlayer
+    public boolean interactFirst(Player par1EntityPlayer) {
+        if (this.vehicle != null && this.vehicle instanceof Player
             && this.vehicle != par1EntityPlayer) {
             return true;
         } else {

@@ -1,19 +1,22 @@
 package mods.defeatedcrow.common.entity;
 
+import net.minecraft.world.level.Level;
+
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.MapColor;
+// Material removed in 1.20.1 - use BlockState properties
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import net.minecraft.item.ItemFlintAndSteel;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.potion.Potion;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
@@ -115,17 +118,17 @@ public class EntitySilkyMelon extends Entity {
             this.setDamageTaken(this.getDamageTaken() + par2 * 10.0F);
             this.setBeenAttacked();
             // ダメージソースを確認
-            boolean flag = par1DamageSource.getEntity() instanceof EntityPlayer
-                && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode;
+            boolean flag = par1DamageSource.getEntity() instanceof Player
+                && ((Player) par1DamageSource.getEntity()).capabilities.isCreativeMode;
             // 起爆トリガー
             boolean explode = par1DamageSource.isExplosion() || par1DamageSource.isProjectile()
-                || !(par1DamageSource.getEntity() instanceof EntityPlayer);
+                || !(par1DamageSource.getEntity() instanceof Player);
 
-            EntityLivingBase igniter = null;
+            LivingEntity igniter = null;
             if (par1DamageSource instanceof EntityDamageSourceIndirect) {
                 Entity ent = ((EntityDamageSourceIndirect) par1DamageSource).getEntity();
-                if (ent instanceof EntityLivingBase) {
-                    igniter = (EntityLivingBase) ent;
+                if (ent instanceof LivingEntity) {
+                    igniter = (LivingEntity) ent;
                 }
 
             }
@@ -153,7 +156,7 @@ public class EntitySilkyMelon extends Entity {
         }
     }
 
-    protected void explode(EntityLivingBase igniter) {
+    protected void explode(LivingEntity igniter) {
         this.setExploded(4);
         if (DCsConfig.canExplodeMelon) {
             float f = 3.0F;
@@ -170,8 +173,8 @@ public class EntitySilkyMelon extends Entity {
             explosion.doExplosion();
         }
 
-        if (igniter instanceof EntityPlayer) {
-            ((EntityPlayer) igniter).triggerAchievement(AchievementRegister.useSilkMelon);
+        if (igniter instanceof Player) {
+            ((Player) igniter).triggerAchievement(AchievementRegister.useSilkMelon);
         }
 
         int X = Mth.floor_double(this.getX());
@@ -199,8 +202,8 @@ public class EntitySilkyMelon extends Entity {
                                     if (block.hasTileEntity(meta)) {
                                         // this.level.setBlockToAir(X + i, Y - j, Z + k);
                                         // 破壊しないようにしてみる
-                                    } else if (block.getMaterial() == Material.water
-                                        || block.getMaterial() == Material.lava
+                                    } else if (block.getMaterial() == /*/*Material*/ water*/ net.minecraft.world.level.material.Fluids.WATER
+                                        || block.getMaterial() == /*Material*/ lava
                                         || block instanceof LiquidBlock) {
                                             // 液体は消去
                                             this.level.setBlockToAir(X + i, Y - j, Z + k);
@@ -330,7 +333,7 @@ public class EntitySilkyMelon extends Entity {
                 this.getBoundingBox().maxZ);
 
             // 浮力
-            if (this.level.isAABBInMaterial(axisalignedbb, Material.water)) {
+            if (this.level.isAABBInMaterial(axisalignedbb, /*/*Material*/ water*/ net.minecraft.world.level.material.Fluids.WATER)) {
                 d0 += 1.0D / b0;
             }
         }
@@ -410,8 +413,8 @@ public class EntitySilkyMelon extends Entity {
             }
 
             // 乗っているEntityの前進速度
-            if (this.vehicle != null && this.vehicle instanceof EntityLivingBase) {
-                d4 = ((EntityLivingBase) this.vehicle).moveForward;
+            if (this.vehicle != null && this.vehicle instanceof LivingEntity) {
+                d4 = ((LivingEntity) this.vehicle).moveForward;
 
                 if (d4 > 0.0D) {
                     d5 = -Math.sin(this.vehicle.yRot * (float) Math.PI / 180.0F);
@@ -425,10 +428,10 @@ public class EntitySilkyMelon extends Entity {
             double speedLimit = 0.35D;
             int speedMag = 0;
 
-            if (this.vehicle != null && this.vehicle instanceof EntityLivingBase) {
-                EntityLivingBase living = (EntityLivingBase) this.vehicle;
-                if (living.isPotionActive(Potion.moveSpeed)) {
-                    speedMag = living.getActivePotionEffect(Potion.moveSpeed)
+            if (this.vehicle != null && this.vehicle instanceof LivingEntity) {
+                LivingEntity living = (LivingEntity) this.vehicle;
+                if (living.isPotionActive(net.minecraft.world.effect.MobEffects.MOVEMENT_SPEED)) {
+                    speedMag = living.getActivePotionEffect(net.minecraft.world.effect.MobEffects.MOVEMENT_SPEED)
                         .getAmplifier() + 1;
                 }
             }
@@ -572,11 +575,11 @@ public class EntitySilkyMelon extends Entity {
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer par1EntityPlayer) {
+    public boolean interactFirst(Player par1EntityPlayer) {
         // 他人が乗っている場合は乗れない
         ItemStack item = par1EntityPlayer.inventory.getCurrentItem();
         if (item != null && item.getItem() == DCsAppleMilk.chopsticks) {
-            if (this.vehicle != null && this.vehicle instanceof EntityPlayer
+            if (this.vehicle != null && this.vehicle instanceof Player
                 && this.vehicle != par1EntityPlayer) {
                 return true;
             } else {
@@ -650,9 +653,9 @@ public class EntitySilkyMelon extends Entity {
 
     protected void onCrash() {
         if (!this.level.isClientSide && !this.isRemoved()) {
-            EntityLivingBase rider = null;
-            if (this.vehicle != null && this.vehicle instanceof EntityLivingBase) {
-                rider = (EntityLivingBase) this.vehicle;
+            LivingEntity rider = null;
+            if (this.vehicle != null && this.vehicle instanceof LivingEntity) {
+                rider = (LivingEntity) this.vehicle;
             }
             this.discard();
             this.explode(rider);

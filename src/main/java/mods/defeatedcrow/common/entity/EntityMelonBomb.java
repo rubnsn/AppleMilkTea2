@@ -1,17 +1,20 @@
 package mods.defeatedcrow.common.entity;
 
+import net.minecraft.world.level.Level;
+
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.MapColor;
+// Material removed in 1.20.1 - use BlockState properties
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.potion.Potion;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.Mth;
@@ -108,12 +111,12 @@ public class EntityMelonBomb extends Entity {
             this.setDamageTaken(this.getDamageTaken() + par2 * 10.0F);
             this.setBeenAttacked();
             // ダメージソースを確認
-            boolean flag = par1DamageSource.getEntity() instanceof EntityPlayer
-                && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode;
+            boolean flag = par1DamageSource.getEntity() instanceof Player
+                && ((Player) par1DamageSource.getEntity()).capabilities.isCreativeMode;
 
             // 起爆トリガー
             boolean explode = par1DamageSource.isExplosion() || par1DamageSource.isProjectile()
-                || !(par1DamageSource.getEntity() instanceof EntityPlayer);
+                || !(par1DamageSource.getEntity() instanceof Player);
 
             // 壊れるときの動作
             if ((flag || this.getDamageTaken() > 40.0F) && !explode) {
@@ -235,7 +238,7 @@ public class EntityMelonBomb extends Entity {
                 this.getBoundingBox().maxZ);
 
             // 浮力
-            if (this.level.isAABBInMaterial(axisalignedbb, Material.water)) {
+            if (this.level.isAABBInMaterial(axisalignedbb, /*/*Material*/ water*/ net.minecraft.world.level.material.Fluids.WATER)) {
                 d0 += 1.0D / (double) b0;
             }
         }
@@ -315,8 +318,8 @@ public class EntityMelonBomb extends Entity {
             }
 
             // 乗っているEntityの前進速度
-            if (this.vehicle != null && this.vehicle instanceof EntityLivingBase) {
-                d4 = (double) ((EntityLivingBase) this.vehicle).moveForward;
+            if (this.vehicle != null && this.vehicle instanceof LivingEntity) {
+                d4 = (double) ((LivingEntity) this.vehicle).moveForward;
 
                 if (d4 > 0.0D) {
                     d5 = -Math.sin((double) (this.vehicle.yRot * (float) Math.PI / 180.0F));
@@ -330,10 +333,10 @@ public class EntityMelonBomb extends Entity {
             double speedLimit = 0.35D;
             int speedMag = 0;
 
-            if (this.vehicle != null && this.vehicle instanceof EntityLivingBase) {
-                EntityLivingBase living = (EntityLivingBase) this.vehicle;
-                if (living.isPotionActive(Potion.moveSpeed)) {
-                    speedMag = living.getActivePotionEffect(Potion.moveSpeed)
+            if (this.vehicle != null && this.vehicle instanceof LivingEntity) {
+                LivingEntity living = (LivingEntity) this.vehicle;
+                if (living.isPotionActive(net.minecraft.world.effect.MobEffects.MOVEMENT_SPEED)) {
+                    speedMag = living.getActivePotionEffect(net.minecraft.world.effect.MobEffects.MOVEMENT_SPEED)
                         .getAmplifier() + 1;
                 }
             }
@@ -477,11 +480,11 @@ public class EntityMelonBomb extends Entity {
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer par1EntityPlayer) {
+    public boolean interactFirst(Player par1EntityPlayer) {
         // 他人が乗っている場合は乗れない
         ItemStack item = par1EntityPlayer.inventory.getCurrentItem();
         if (item != null && item.getItem() == DCsAppleMilk.chopsticks) {
-            if (this.vehicle != null && this.vehicle instanceof EntityPlayer
+            if (this.vehicle != null && this.vehicle instanceof Player
                 && this.vehicle != par1EntityPlayer) {
                 return true;
             } else {
@@ -534,8 +537,8 @@ public class EntityMelonBomb extends Entity {
 
     protected void onCrash() {
         if (!this.level.isClientSide && !this.isRemoved()) {
-            if (this.vehicle instanceof EntityPlayer) {
-                EntityPlayer player = (EntityPlayer) this.vehicle;
+            if (this.vehicle instanceof Player) {
+                Player player = (Player) this.vehicle;
                 player.triggerAchievement(AchievementRegister.crashMelon);
             }
             this.discard();

@@ -1,29 +1,32 @@
 package mods.defeatedcrow.common.entity;
 
+import net.minecraft.world.level.Level;
+
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.MapColor;
+// Material removed in 1.20.1 - use BlockState properties
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.play.server.S2BPacketChangeGameState;
+// S2BPacketChangeGameState removed - use ClientboundGameEventPacket
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.util.EntityDamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.util.Vec3;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.Level;
 
 import mods.defeatedcrow.common.config.DCsConfig;
 
-public class EntityYuzuBullet extends Entity implements IProjectile {
+public class EntityYuzuBullet extends Entity implements Projectile {
 
     /* 地中判定に使うもの */
     protected int xTile = -1;
@@ -34,7 +37,7 @@ public class EntityYuzuBullet extends Entity implements IProjectile {
     protected boolean inGround;
 
     /* この弾を撃ったエンティティ */
-    public EntityLivingBase shootingEntity;
+    public LivingEntity shootingEntity;
 
     /* 地中・空中にいる時間 */
     protected int ticksInGround;
@@ -54,7 +57,7 @@ public class EntityYuzuBullet extends Entity implements IProjectile {
         this.damage = 5.0D;
     }
 
-    public EntityYuzuBullet(Level par1World, EntityLivingBase par2EntityLivingBase, float speed, float speed2,
+    public EntityYuzuBullet(Level par1World, LivingEntity par2EntityLivingBase, float speed, float speed2,
         float adjustX, float adjustZ, float adjustY) {
         super(type, level);
         this.renderDistanceWeight = 10.0D;
@@ -169,7 +172,7 @@ public class EntityYuzuBullet extends Entity implements IProjectile {
         Block i = this.level.getBlock(this.xTile, this.yTile, this.zTile);
         boolean air = this.level.isAirBlock(xTile, yTile, zTile);
 
-        if (i != null && i.getMaterial() != Material.air) {
+        if (i != null && i.getMaterial() != /*Material*/ air) {
             i.setBlockBoundsBasedOnState(this.level, this.xTile, this.yTile, this.zTile);
             AABB axisalignedbb = i
                 .getCollisionBoundingBoxFromPool(this.level, this.xTile, this.yTile, this.zTile);
@@ -241,7 +244,7 @@ public class EntityYuzuBullet extends Entity implements IProjectile {
                 Entity entity = null;
 
                 // ターゲットの場合
-                if (entity1 instanceof EntityLivingBase) {
+                if (entity1 instanceof LivingEntity) {
                     f1 = 0.3F;
                     AABB axisalignedbb1 = entity1.getBoundingBox().expand((double) f1, (double) f1, (double) f1);
                     BlockHitResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec3, vec31);
@@ -268,18 +271,18 @@ public class EntityYuzuBullet extends Entity implements IProjectile {
             if (entityTarget != null) {
                 Entity target = entityTarget.entityHit;
 
-                if (target instanceof EntityPlayer) {
+                if (target instanceof Player) {
                     // プレイヤーに当たった時
-                    EntityPlayer entityplayer = (EntityPlayer) target;
+                    Player entityplayer = (Player) target;
 
-                    if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer
-                        && !((EntityPlayer) this.shootingEntity).canAttackPlayer(entityplayer)) {
+                    if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof Player
+                        && !((Player) this.shootingEntity).canAttackPlayer(entityplayer)) {
                         // PvPが許可されていないと当たらない
                         canAttack = false;
                     } else if (entityplayer == this.shootingEntity) {
                         // 対象が撃った本人の場合も当たらない
                         canAttack = false;
-                    } else if (DCsConfig.PvPProhibitionMode && entityplayer instanceof EntityPlayer) {
+                    } else if (DCsConfig.PvPProhibitionMode && entityplayer instanceof Player) {
                         canAttack = false;
                     }
                 } else {
@@ -308,24 +311,24 @@ public class EntityYuzuBullet extends Entity implements IProjectile {
                 // 別メソッドでダメージソースを確認
                 damagesource = this.thisDamageSource(this.shootingEntity);
 
-                if (target instanceof IProjectile) {
+                if (target instanceof Projectile) {
                     // 対象が矢などの飛翔Entityの場合、打ち消すことが出来る
                     target.discard();
                 } else {
                     // ダメージを与える処理を呼ぶ
                     if (target.attackEntityFrom(damagesource, (float) i1)) {
                         // ダメージを与えることに成功したら以下の処理を行う
-                        if (target instanceof EntityLivingBase) {
-                            EntityLivingBase entitylivingbase = (EntityLivingBase) target;
+                        if (target instanceof LivingEntity) {
+                            LivingEntity entitylivingbase = (LivingEntity) target;
 
                             // 無敵時間はなし
                             target.hurtResistantTime = 0;
 
                             // マルチプレイ時に、両者がプレイヤーだった時のパケット送信処理
                             if (this.shootingEntity != null && target != this.shootingEntity
-                                && target instanceof EntityPlayer
-                                && this.shootingEntity instanceof EntityPlayerMP) {
-                                ((EntityPlayerMP) this.shootingEntity).playerNetServerHandler
+                                && target instanceof Player
+                                && this.shootingEntity instanceof ServerPlayer) {
+                                ((ServerPlayer) this.shootingEntity).playerNetServerHandler
                                     .sendPacket(new S2BPacketChangeGameState(6, 0.0F));
                             }
                         }
@@ -334,7 +337,7 @@ public class EntityYuzuBullet extends Entity implements IProjectile {
                         this.playSound("random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 
                         // 当たったあと、弾を消去する。エンティティ貫通がONの弾種はそのまま残す。
-                        if (!(target instanceof EntityEnderman)) {
+                        if (!(target instanceof EnderMan)) {
                             this.discard();
                         }
                     }
@@ -366,7 +369,7 @@ public class EntityYuzuBullet extends Entity implements IProjectile {
                     // 燃えている時
                     if (this.isBurning()) {
                         if (this.inTile == Blocks.ice) this.level.setBlock(xTile, yTile, zTile, Blocks.water);
-                        if (this.inTile.getMaterial() == Material.snow) {
+                        if (this.inTile.getMaterial() == /*Material*/ snow) {
                             this.level.setBlockToAir(xTile, yTile, zTile);
                             this.discard();
                         }

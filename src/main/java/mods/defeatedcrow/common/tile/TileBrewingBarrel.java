@@ -1,16 +1,15 @@
 package mods.defeatedcrow.common.tile;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.biome.net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
+import net.minecraft.world.level.biome.Biome;
+// BiomeDictionary removed - use TagKey<Biome> + Holder<Biome>
 import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;

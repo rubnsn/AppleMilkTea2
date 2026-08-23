@@ -2,11 +2,11 @@ package mods.defeatedcrow.event;
 
 import java.util.ArrayList;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayer;
 
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,8 +19,8 @@ public class CraftingEvent {
     @SubscribeEvent
     public void onCraftingEvent(PlayerEvent.ItemCraftedEvent event) {
 
-        EntityPlayer player = event.player;
-        IInventory craftMatrix = event.craftMatrix;
+        Player player = event.player;
+        Container craftMatrix = event.craftMatrix;
         ItemStack crafting = event.crafting;
 
         // 実績
@@ -112,7 +112,7 @@ public class CraftingEvent {
     @SubscribeEvent
     public void onSmelting(PlayerEvent.ItemSmeltedEvent event) {
 
-        EntityPlayer player = event.player;
+        Player player = event.player;
         ItemStack item = event.smelting;
 
         if (item != null) {

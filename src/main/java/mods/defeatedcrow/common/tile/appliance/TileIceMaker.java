@@ -1,25 +1,22 @@
 package mods.defeatedcrow.common.tile.appliance;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.biome.net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
-
+import net.minecraft.world.level.biome.Biome;
+// BiomeDictionary removed - use TagKey<Biome> + Holder<Biome>
 import mods.defeatedcrow.api.recipe.*;
 import mods.defeatedcrow.recipe.*;
 
-public class TileIceMaker extends BlockEntity implements ISidedInventory {
+public class TileIceMaker extends BlockEntity implements WorldlyContainer {
     public TileIceMaker(BlockPos pos, BlockState state) { super(null, pos, state); }
 
 
@@ -39,14 +36,14 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
 
         // アイテムの読み込み
         ListTag nbttaglist = par1CompoundTag.getList("Items", 10);
-        this.iceItemStacks = new ItemStack[this.getSizeInventory()];
+        this.iceItemStacks = new ItemStack[this.getContainerSize()];
 
-        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+        for (int i = 0; i < nbttaglist.size(); ++i) {
             CompoundTag nbttagcompound1 = (CompoundTag) nbttaglist.getCompound(i);
             byte b0 = nbttagcompound1.getByte("Slot");
 
             if (b0 >= 0 && b0 < this.iceItemStacks.length) {
-                this.iceItemStacks[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+                this.iceItemStacks[b0] = ItemStack.of(nbttagcompound1);
             }
         }
 
@@ -61,7 +58,7 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
         super.saveAdditional(par1CompoundTag);
 
         // 燃焼時間や調理時間などの書き込み
-        par1CompoundTag.putShort("ChargeAmount", (byte) this.chargeAmount);
+        par1CompoundTag.putShort("ChargeAmount", (short) this.chargeAmount);
         par1CompoundTag.putShort("CookTime", (short) this.cookTime);
         par1CompoundTag.putByte("CoolTime", (byte) this.coolTime);
 
@@ -73,7 +70,7 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
                 CompoundTag nbttagcompound1 = new CompoundTag();
                 nbttagcompound1.putByte("Slot", (byte) i);
                 this.iceItemStacks[i].saveAdditional(nbttagcompound1);
-                nbttaglist.appendTag(nbttagcompound1);
+                nbttaglist.add(nbttagcompound1);
             }
         }
 
@@ -147,7 +144,7 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
             if (recipe != null) {
 
                 // スタックサイズのチェック
-                if (be.iceItemStacks[0].stackSize < recipe.getInput().stackSize) return false;
+                if (be.iceItemStacks[0].getCount() < recipe.getInput().getCount()) return false;
 
                 if (recipe.getContainer() != null) {
                     ItemStack container = recipe.getContainer();
@@ -161,8 +158,8 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
                         flag1 = true;
                     } else {
                         if (be.iceItemStacks[2].isItemEqual(output)) {
-                            int result = be.iceItemStacks[2].stackSize + output.stackSize;
-                            flag1 = (result <= be.getInventoryStackLimit() && result <= output.getMaxStackSize());
+                            int result = be.iceItemStacks[2].getCount() + output.getCount();
+                            flag1 = (result <= be.getMaxStackSize() && result <= output.getMaxStackSize());
                         }
                     }
 
@@ -170,8 +167,8 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
                         flag2 = true;
                     } else {
                         if (be.iceItemStacks[3].isItemEqual(container)) {
-                            int leave = be.iceItemStacks[3].stackSize + container.stackSize;
-                            flag2 = (leave <= be.getInventoryStackLimit() && leave <= container.getMaxStackSize());
+                            int leave = be.iceItemStacks[3].getCount() + container.getCount();
+                            flag2 = (leave <= be.getMaxStackSize() && leave <= container.getMaxStackSize());
                         }
                     }
 
@@ -184,8 +181,8 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
                     if (be.iceItemStacks[2] == null) return true;
                     if (!be.iceItemStacks[2].isItemEqual(output)) return false;
 
-                    int result = be.iceItemStacks[2].stackSize + output.stackSize;
-                    return (result <= be.getInventoryStackLimit() && result <= output.getMaxStackSize());
+                    int result = be.iceItemStacks[2].getCount() + output.getCount();
+                    return (result <= be.getMaxStackSize() && result <= output.getMaxStackSize());
                 }
             }
 
@@ -202,12 +199,12 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
             ItemStack itemstack = recipe.getOutput();
             ItemStack container = recipe.getContainer();
 
-            if (this.iceItemStacks[0].stackSize < recipe.getInput().stackSize) return;
+            if (this.iceItemStacks[0].getCount() < recipe.getInput().getCount()) return;
 
             if (this.iceItemStacks[2] == null) {
                 this.iceItemStacks[2] = itemstack.copy();
             } else if (this.iceItemStacks[2].isItemEqual(itemstack)) {
-                this.iceItemStacks[2].stackSize += itemstack.stackSize;
+                this.iceItemStacks[2].getCount() += itemstack.getCount();
             }
 
             if (container != null)// 材料スロットに残すアイテム
@@ -215,13 +212,13 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
                 if (this.iceItemStacks[3] == null) {
                     this.iceItemStacks[3] = container.copy();
                 } else if (this.iceItemStacks[3].isItemEqual(container)) {
-                    this.iceItemStacks[3].stackSize += container.stackSize;
+                    this.iceItemStacks[3].getCount() += container.getCount();
                 }
             }
 
-            this.iceItemStacks[0].stackSize -= recipe.getInput().stackSize;
+            this.iceItemStacks[0].getCount() -= recipe.getInput().getCount();
 
-            if (this.iceItemStacks[0].stackSize <= 0) {
+            if (this.iceItemStacks[0].getCount() <= 0) {
                 this.iceItemStacks[0] = null;
             }
 
@@ -265,12 +262,12 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
             // {
             // Block block = Block.getBlockFromItem(item);
             //
-            // if (block.getMaterial() == Material.craftedSnow)
+            // if (block.getMaterial() == /*Material*/ craftedSnow)
             // {
             // return 4;
             // }
             //
-            // if (block.getMaterial() == Material.ice)
+            // if (block.getMaterial() == /*Material*/ ice)
             // {
             // return 8;
             // }
@@ -301,19 +298,16 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
      * どれにも属さない（BiomeDictionaryに登録していない）場合は一律で1。
      */
     public int isHotBiome() {
+        // 1.20.1: BiomeDictionary -> TagKey<Biome> + Holder<Biome>
+        net.minecraft.core.Holder<net.minecraft.world.level.biome.Biome> biomeHolder = level.getBiome(getBlockPos());
         int l = 1;
-        net.minecraft.world.level.biome.Biome biome = level.getBiome(getBlockPos()).value().getX(), getBlockPos().getZ());
-
-        if (false
-            || false
-            || false) {
+        if (biomeHolder.is(net.minecraft.tags.BiomeTags.IS_DESERT) || biomeHolder.is(net.minecraft.tags.BiomeTags.IS_JUNGLE) || biomeHolder.is(net.minecraft.tags.BiomeTags.IS_SAVANNA)) {
             l = 2;
-        } else if (false) {
+        } else if (biomeHolder.is(net.minecraft.tags.BiomeTags.IS_SNOWY) || biomeHolder.is(net.minecraft.tags.BiomeTags.IS_TAIGA)) {
             l = 0;
         } else {
             l = 1;
         }
-
         return l;
     }
 
@@ -327,13 +321,13 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
 
     // スロット数
     @Override
-    public int getSizeInventory() {
+    public int getContainerSize() {
         return this.iceItemStacks.length;
     }
 
     // インベントリ内の任意のスロットにあるアイテムを取得
     @Override
-    public ItemStack getStackInSlot(int par1) {
+    public ItemStack getItem(int par1) {
         return this.iceItemStacks[par1];
     }
 
@@ -342,14 +336,14 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
         if (this.iceItemStacks[par1] != null) {
             ItemStack itemstack;
 
-            if (this.iceItemStacks[par1].stackSize <= par2) {
+            if (this.iceItemStacks[par1].getCount() <= par2) {
                 itemstack = this.iceItemStacks[par1];
                 this.iceItemStacks[par1] = null;
                 return itemstack;
             } else {
                 itemstack = this.iceItemStacks[par1].splitStack(par2);
 
-                if (this.iceItemStacks[par1].stackSize == 0) {
+                if (this.iceItemStacks[par1].getCount() == 0) {
                     this.iceItemStacks[par1] = null;
                 }
 
@@ -361,7 +355,7 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1) {
+    public ItemStack removeItemNoUpdate(int par1) {
         if (this.iceItemStacks[par1] != null) {
             ItemStack itemstack = this.iceItemStacks[par1];
             this.iceItemStacks[par1] = null;
@@ -373,46 +367,46 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
 
     // インベントリ内のスロットにアイテムを入れる
     @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
+    public void setItem(int par1, ItemStack par2ItemStack) {
 
         if (par1 > 3) par1 = 0;// 存在しないスロットに入れようとすると強制的に材料スロットに変更される。
 
         this.iceItemStacks[par1] = par2ItemStack;
 
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        if (par2ItemStack != null && par2ItemStack.getCount() > this.getMaxStackSize()) {
+            par2ItemStack.getCount() = this.getMaxStackSize();
         }
     }
 
     // インベントリの名前
     @Override
-    public String getInventoryName() {
+    public String getContainerName() {
         return "Ice Maker";
     }
 
     // 多言語対応かどうか
     @Override
-    public boolean hasCustomInventoryName() {
+    public boolean hasCustomName() {
         return true;
     }
 
     // インベントリ内のスタック限界値
     @Override
-    public int getInventoryStackLimit() {
+    public int getMaxStackSize() {
         return 64;
     }
 
     @Override
     public void setChanged() {
-        setChanged();
+        super.setChanged();
     }
 
     // par1EntityPlayerがTileEntityを使えるかどうか
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
+    public boolean stillValid(Player par1EntityPlayer) {
         return this.level.getBlockEntity(this.getBlockPos()) != this ? false
             : par1EntityPlayer
-                .getDistanceSq((double) this.getBlockPos().getX() + 0.5D, (double) this.getBlockPos().getY() + 0.5D, (double) this.getBlockPos().getZ() + 0.5D)
+                .distanceToSqr((double) this.getBlockPos().getX() + 0.5D, (double) this.getBlockPos().getY() + 0.5D, (double) this.getBlockPos().getZ() + 0.5D)
                 <= 64.0D;
     }
 
@@ -423,25 +417,25 @@ public class TileIceMaker extends BlockEntity implements ISidedInventory {
     public void closeInventory() {}
 
     @Override
-    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
+    public boolean canPlaceItem(int par1, ItemStack par2ItemStack) {
         return par1 > 1 ? false : (par1 == 1 ? this.isItemFuel(par2ItemStack) : true);
     }
 
     // ホッパーにアイテムの受け渡しをする際の優先度
     @Override
-    public int[] getAccessibleSlotsFromSide(int par1) {
+    public int[] getSlotsForFace(int par1) {
         return par1 == 0 ? slots_bottom : (par1 == 1 ? slots_top : slots_sides);
     }
 
     // ホッパーからアイテムを入れられるかどうか
     @Override
-    public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3) {
-        return this.isItemValidForSlot(par1, par2ItemStack);
+    public boolean canPlaceItemThroughFace(int par1, ItemStack par2ItemStack, int par3) {
+        return this.canPlaceItem(par1, par2ItemStack);
     }
 
     // 隣接するホッパーにアイテムを送れるかどうか
     @Override
-    public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3) {
+    public boolean canTakeItemThroughFace(int par1, ItemStack par2ItemStack, int par3) {
         return par3 != 0 || par1 != 1;
     }
 

@@ -1,20 +1,20 @@
 package mods.defeatedcrow.common.tile.appliance;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.MapColor;
+// Material removed in 1.20.1 - use BlockState properties
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.Mth;
 import net.minecraft.core.Direction;
 import mods.defeatedcrow.api.recipe.IPlateRecipe;
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
@@ -22,7 +22,7 @@ import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.DCsConfig;
 
-public class TileTeppanII extends BlockEntity implements ISidedInventory, IPipeConnection {
+public class TileTeppanII extends BlockEntity implements WorldlyContainer, IPipeConnection {
     public TileTeppanII(BlockPos pos, BlockState state) { super(null, pos, state); }
 
 
@@ -43,14 +43,14 @@ public class TileTeppanII extends BlockEntity implements ISidedInventory, IPipeC
 
         // アイテムの読み込み
         ListTag nbttaglist = par1CompoundTag.getList("Items", 10);
-        this.plateItems = new ItemStack[this.getSizeInventory()];
+        this.plateItems = new ItemStack[this.getContainerSize()];
 
-        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+        for (int i = 0; i < nbttaglist.size(); ++i) {
             CompoundTag nbttagcompound1 = nbttaglist.getCompound(i);
             byte b0 = nbttagcompound1.getByte("Slot");
 
             if (b0 >= 0 && b0 < this.plateItems.length) {
-                this.plateItems[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+                this.plateItems[b0] = ItemStack.of(nbttagcompound1);
             }
         }
 
@@ -82,7 +82,7 @@ public class TileTeppanII extends BlockEntity implements ISidedInventory, IPipeC
                 CompoundTag nbttagcompound1 = new CompoundTag();
                 nbttagcompound1.putByte("Slot", (byte) i);
                 this.plateItems[i].saveAdditional(nbttagcompound1);
-                nbttaglist.appendTag(nbttagcompound1);
+                nbttaglist.add(nbttagcompound1);
             }
         }
 
@@ -120,9 +120,9 @@ public class TileTeppanII extends BlockEntity implements ISidedInventory, IPipeC
     public void refreshPlate() {
         this.fisnished = false;
         this.failed = false;
-        this.setInventorySlotContents(0, (ItemStack) null);
-        this.setInventorySlotContents(1, (ItemStack) null);
-        this.setInventorySlotContents(2, (ItemStack) null);
+        this.setItem(0, (ItemStack) null);
+        this.setItem(1, (ItemStack) null);
+        this.setItem(2, (ItemStack) null);
         this.cookTime = 0;
         this.setCookFinishTime(0);
         this.setChanged();
@@ -150,7 +150,7 @@ public class TileTeppanII extends BlockEntity implements ISidedInventory, IPipeC
 
     // 失敗時間は必ず調理時間の2倍
     public void setCookFinishTime(int par1) {
-        int i = DCsConfig.teppannRandomCookTime ? this.level.rand.nextInt(par1 + 1) : par1;
+        int i = DCsConfig.teppannRandomCookTime ? this.level.random.nextInt(par1 + 1) : par1;
         int k = DCsConfig.teppannReadyTime > 0 ? par1 + DCsConfig.teppannReadyTime : par1 * 2;
         this.cookFinishTime = i;
         this.cookFailTime = k;
@@ -194,7 +194,7 @@ public class TileTeppanII extends BlockEntity implements ISidedInventory, IPipeC
 
         IPlateRecipe recipe = RecipeRegisterManager.plateRecipe.getRecipe(item);
         if (recipe != null) {
-            this.setInventorySlotContents(0, item);
+            this.setItem(0, item);
             this.setCookFinishTime(recipe.cookingTime());
             return true;
         }
@@ -209,7 +209,7 @@ public class TileTeppanII extends BlockEntity implements ISidedInventory, IPipeC
         Block block = level.getBlockState(pos.below()).getBlock();
         int meta = 0;
         if (block != null) {
-            AMTLogger.debugInfo("Current block : " + block.getUnlocalizedName() + ":" + meta);
+            AMTLogger.debugInfo("Current block : " + block.getDescriptionId() + ":" + meta);
             return RecipeRegisterManager.plateRecipe.isHeatSource(block, meta);
         } else {
             AMTLogger.debugInfo("Current block is null");
@@ -218,14 +218,14 @@ public class TileTeppanII extends BlockEntity implements ISidedInventory, IPipeC
     }
 
     public boolean isOvenMode() {
+        // 1.20.1: Material#getMaterial removed, use BlockState fluid checks
         int count = 0;
         boolean b = false;
 
         if (level.canSeeSky(pos)) {
             for (int i = 0; i < 3; i++) {
                 if (!level.isEmptyBlock(pos.above(i+1))
-                    && level.getBlockState(pos.above(i+1)).getBlock()
-                        .getMaterial() != Material.water) {
+                    && !level.getFluidState(pos.above(i+1)).is(net.minecraft.tags.FluidTags.WATER)) {
                     b = true;
                 }
             }
@@ -237,15 +237,12 @@ public class TileTeppanII extends BlockEntity implements ISidedInventory, IPipeC
         for (Direction dir : Direction.values()) {
             if (dir == Direction.DOWN || dir == Direction.UP) continue;
             else {
-                int x = getBlockPos().getX() + dir.getStepX();
-                int y = getBlockPos().getY();
-                int z = getBlockPos().getZ() + dir.getStepZ();
+                BlockPos npos = getBlockPos().relative(dir);
                 Block block = level.getBlockState(getBlockPos()).getBlock();
-                if (block == null || level.isAirBlock(x, y, z)) continue;
+                if (block == null || level.isEmptyBlock(npos)) continue;
 
-                if (block.getMaterial() != Material.water && block.getMaterial() != Material.air);
-
-                {
+                // 1.20.1: getMaterial removed, use fluid tag check
+                if (!level.getFluidState(npos).is(net.minecraft.tags.FluidTags.WATER) && !level.getFluidState(npos).isEmpty()) {
                     count++;
                 }
             }
@@ -274,20 +271,20 @@ public class TileTeppanII extends BlockEntity implements ISidedInventory, IPipeC
 
     // スロット数
     @Override
-    public int getSizeInventory() {
+    public int getContainerSize() {
         return this.plateItems.length;
     }
 
     // インベントリ内の任意のスロットにあるアイテムを取得
     @Override
-    public ItemStack getStackInSlot(int par1) {
-        par1 = MathHelper.clamp_int(par1, 0, this.getSizeInventory());
+    public ItemStack getItem(int par1) {
+        par1 = Mth.clamp(par1, 0, this.getContainerSize());
         return this.plateItems[par1];
     }
 
     @Override
     public ItemStack decrStackSize(int par1, int par2) {
-        par1 = MathHelper.clamp_int(par1, 0, this.getSizeInventory());
+        par1 = Mth.clamp(par1, 0, this.getContainerSize());
         if (this.plateItems[par1] != null) {
             ItemStack itemstack = null;
 
@@ -310,8 +307,8 @@ public class TileTeppanII extends BlockEntity implements ISidedInventory, IPipeC
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1) {
-        par1 = MathHelper.clamp_int(par1, 0, this.getSizeInventory());
+    public ItemStack removeItemNoUpdate(int par1) {
+        par1 = Mth.clamp(par1, 0, this.getContainerSize());
         if (this.plateItems[par1] != null) {
             ItemStack itemstack = this.plateItems[par1];
             this.plateItems[par1] = null;
@@ -323,45 +320,45 @@ public class TileTeppanII extends BlockEntity implements ISidedInventory, IPipeC
 
     // インベントリ内のスロットにアイテムを入れる
     @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
+    public void setItem(int par1, ItemStack par2ItemStack) {
 
         if (par1 > 2) par1 = 0;// 存在しないスロットに入れようとすると強制的に材料スロットに変更される。
 
         this.plateItems[par1] = par2ItemStack;
 
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        if (par2ItemStack != null && par2ItemStack.stackSize > this.getMaxStackSize()) {
+            par2ItemStack.stackSize = this.getMaxStackSize();
         }
     }
 
     // インベントリの名前
     @Override
-    public String getInventoryName() {
+    public String getContainerName() {
         return "Teppan";
     }
 
     // 多言語対応かどうか
     @Override
-    public boolean hasCustomInventoryName() {
+    public boolean hasCustomName() {
         return true;
     }
 
     // インベントリ内のスタック限界値
     @Override
-    public int getInventoryStackLimit() {
+    public int getMaxStackSize() {
         return 1;// 1個ずつ
     }
 
     @Override
     public void setChanged() {
-        setChanged();
+        super.setChanged();
     }
 
     // par1EntityPlayerがTileEntityを使えるかどうか
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
+    public boolean stillValid(Player par1EntityPlayer) {
         return this.level.getBlockEntity(this.getBlockPos()) != this ? false
-            : par1EntityPlayer.getDistanceSq(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D) <= 64.0D;
+            : par1EntityPlayer.distanceToSqr(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -371,25 +368,25 @@ public class TileTeppanII extends BlockEntity implements ISidedInventory, IPipeC
     public void closeInventory() {}
 
     @Override
-    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
+    public boolean canPlaceItem(int par1, ItemStack par2ItemStack) {
         return par1 == 0 ? (!this.fisnished && this.canSetRecipe(par2ItemStack) ? true : false) : false;
     }
 
     // ホッパーにアイテムの受け渡しをする際の優先度
     @Override
-    public int[] getAccessibleSlotsFromSide(int par1) {
+    public int[] getSlotsForFace(int par1) {
         return par1 == 0 ? slots_bottom : (par1 == 1 ? slots_top : slots_sides);
     }
 
     // ホッパーからアイテムを入れられるかどうか
     @Override
-    public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3) {
-        return this.isItemValidForSlot(par1, par2ItemStack);
+    public boolean canPlaceItemThroughFace(int par1, ItemStack par2ItemStack, int par3) {
+        return this.canPlaceItem(par1, par2ItemStack);
     }
 
     // 隣接するホッパーにアイテムを送れるかどうか
     @Override
-    public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3) {
+    public boolean canTakeItemThroughFace(int par1, ItemStack par2ItemStack, int par3) {
         return par1 != 0;
     }
 

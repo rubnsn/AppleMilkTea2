@@ -20,7 +20,7 @@ import mods.defeatedcrow.api.energy.IBattery;
 import mods.defeatedcrow.common.config.DCsConfig;
 
 /**
- * 1.20.1: TileEntity -> BlockEntity, S35 -> ClientboundBlockEntityDataPacket, worldObj->level, xCoord->getBlockPos(), updateEntity->tick
+ * 1.20.1: TileEntity -> BlockEntity, S35 -> ClientboundBlockEntityDataPacket, level->level, xCoord->getBlockPos(), updateEntity->tick
  * RF/IEnergyHandler -> Forge Energy IEnergyStorage capability (MachineBase now uses ForgeCapabilities.ENERGY via IChargeableMachine bridge)
  * See doc/tile-entities/migration-guide.md
  */
@@ -154,7 +154,7 @@ public abstract class MachineBase extends BlockEntity implements net.minecraft.w
         return ret;
     }
 
-    // Container impl (ISidedInventory -> Container + WorldlyContainer in 1.20)
+    // Container impl (WorldlyContainer -> Container + WorldlyContainer in 1.20)
     protected abstract int[] slotsTop();
     protected abstract int[] slotsBottom();
     protected abstract int[] slotsSides();
@@ -184,9 +184,9 @@ public abstract class MachineBase extends BlockEntity implements net.minecraft.w
     @Override public void clearContent() { for (int i=0;i<itemstacks.length;i++) itemstacks[i]=ItemStack.EMPTY; }
     @Override public int getMaxStackSize() { return 64; }
     public boolean hasCustomName() { return true; }
-    public String getInventoryName() { return "MachineBase"; }
-    public boolean isItemValidForSlot(int slot, ItemStack stack) { return (slot==0 ? isItemFuel(stack) : !isItemFuel(stack)); }
+    public String getContainerName() { return "MachineBase"; }
+    public boolean canPlaceItem(int slot, ItemStack stack) { return (slot==0 ? isItemFuel(stack) : !isItemFuel(stack)); }
     public int[] getSlotsForFace(Direction dir) { return dir == Direction.DOWN ? slotsBottom() : dir == Direction.UP ? slotsTop() : slotsSides(); }
-    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction dir) { return isItemValidForSlot(slot, stack); }
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction dir) { return canPlaceItem(slot, stack); }
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction dir) { return true; }
 }

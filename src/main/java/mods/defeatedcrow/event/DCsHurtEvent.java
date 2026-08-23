@@ -2,11 +2,11 @@ package mods.defeatedcrow.event;
 
 import java.util.Iterator;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
@@ -19,7 +19,7 @@ public class DCsHurtEvent {
 
     @SubscribeEvent
     public void onHurtEvent(LivingHurtEvent event) {
-        EntityLivingBase target = event.entityLiving;
+        LivingEntity target = event.entityLiving;
         DamageSource source = event.source;
         float damage = event.ammount;
 

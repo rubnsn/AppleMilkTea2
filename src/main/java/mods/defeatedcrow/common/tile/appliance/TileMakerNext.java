@@ -1,9 +1,8 @@
 package mods.defeatedcrow.common.tile.appliance;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
@@ -34,7 +33,7 @@ public class TileMakerNext extends BlockEntity implements ITeaMaker {
         super.load(par1CompoundTag);
 
         if (par1CompoundTag.contains("Input")) {
-            this.setItemStack(ItemStack.loadItemStackFromNBT(par1CompoundTag.getCompound("Input")));
+            this.setItemStack(ItemStack.of(par1CompoundTag.getCompound("Input")));
         }
 
         this.remain = par1CompoundTag.getByte("Remaining");

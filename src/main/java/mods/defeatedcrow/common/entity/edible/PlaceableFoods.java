@@ -1,20 +1,23 @@
 package mods.defeatedcrow.common.entity.edible;
 
+import net.minecraft.world.level.Level;
+
 import java.util.List;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.material.MapColor;
+// Material removed in 1.20.1 - use BlockState properties
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tileentity.IHopper;
-import net.minecraft.tileentity.BlockEntity;
+import net.minecraft.world.level.block.entity.HopperBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.util.EntityDamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Level;
 import net.minecraftforge.common.MinecraftForge;
@@ -154,9 +157,9 @@ public abstract class PlaceableFoods extends Entity {
             this.setBeenAttacked();
             if (par1DamageSource instanceof EntityDamageSource) {
                 Entity by = ((EntityDamageSource) par1DamageSource).getEntity();
-                if (by != null && by instanceof EntityPlayer) {
+                if (by != null && by instanceof Player) {
                     if (DCsAppleMilk.debugMode) {
-                        EntityPlayer player = (EntityPlayer) by;
+                        Player player = (Player) by;
                         player.addChatComponentMessage(
                             new ChatComponentText(
                                 "current metadata : " + this.getItemMetadata() + ", chopsticks : " + this.allowChops));
@@ -249,7 +252,7 @@ public abstract class PlaceableFoods extends Entity {
                 this.getBoundingBox().maxZ);
 
             // 浮力
-            if (this.level.isAABBInMaterial(axisalignedbb, Material.water)) {
+            if (this.level.isAABBInMaterial(axisalignedbb, /*/*Material*/ water*/ net.minecraft.world.level.material.Fluids.WATER)) {
                 d0 += 1.0D / (double) b0;
                 spl = true;
             }
@@ -261,9 +264,10 @@ public abstract class PlaceableFoods extends Entity {
             int j = Mth.floor_double(getY());
             int k = Mth.floor_double(getZ());
 
-            if (!this.level.isAirBlock(i, j - 1, k) && this.level.getTileEntity(i, j - 1, k) != null) {
-                BlockEntity tile = this.level.getTileEntity(i, j - 1, k);
-                if (tile instanceof IHopper) {
+            BlockPos hopperPos = new BlockPos(i, j - 1, k);
+            if (!this.level.isEmptyBlock(hopperPos) && this.level.getBlockEntity(hopperPos) != null) {
+                BlockEntity tile = this.level.getBlockEntity(hopperPos);
+                if (tile instanceof net.minecraft.world.level.block.entity.HopperBlockEntity) {
                     ItemStack drop = this.returnItem();
                     this.entityDropItem(drop, 0.1F);
                     this.discard();
@@ -343,8 +347,8 @@ public abstract class PlaceableFoods extends Entity {
             }
 
             // 乗っているEntityの前進速度
-            if (this.vehicle != null && this.vehicle instanceof EntityLivingBase) {
-                d4 = (double) ((EntityLivingBase) this.vehicle).moveForward;
+            if (this.vehicle != null && this.vehicle instanceof LivingEntity) {
+                d4 = (double) ((LivingEntity) this.vehicle).moveForward;
 
                 if (d4 > 0.0D) {
                     d5 = -Math.sin((double) (this.vehicle.yRot * (float) Math.PI / 180.0F));
@@ -465,7 +469,7 @@ public abstract class PlaceableFoods extends Entity {
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer par1EntityPlayer) {
+    public boolean interactFirst(Player par1EntityPlayer) {
         ItemStack item = par1EntityPlayer.inventory.getCurrentItem();
 
         AMTFoodEntityRightClickEvent event = new AMTFoodEntityRightClickEvent(level, par1EntityPlayer, item, this);
@@ -496,7 +500,7 @@ public abstract class PlaceableFoods extends Entity {
                 return false;
             }
         } else if (item != null && item.getItem() == Items.stick) {
-            if (this.vehicle != null && this.vehicle instanceof EntityPlayer
+            if (this.vehicle != null && this.vehicle instanceof Player
                 && this.vehicle != par1EntityPlayer) {
                 return true;
             } else {

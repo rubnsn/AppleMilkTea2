@@ -1,10 +1,12 @@
 package mods.defeatedcrow.common.fluid;
 
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
+/**
+ * 1.20.1: FluidTank migrated, FluidRegistry removed. Use FluidStack with FluidType.
+ * See doc/fluids/migration-guide.md
+ */
 public class DCsTank extends FluidTank {
 
     public DCsTank(int capacity) {
@@ -12,43 +14,41 @@ public class DCsTank extends FluidTank {
     }
 
     public DCsTank(FluidStack stack, int capacity) {
-        super(stack, capacity);
+        super(capacity);
+        if (stack != null && !stack.isEmpty()) setFluid(stack);
     }
 
-    public DCsTank(Fluid fluid, int amount, int capacity) {
-        super(fluid, amount, capacity);
+    public DCsTank(net.minecraft.world.level.material.Fluid fluid, int amount, int capacity) {
+        super(capacity);
+        if (fluid != null) setFluid(new FluidStack(fluid, amount));
     }
 
     public boolean isEmpty() {
-        return (getFluid() == null) || (getFluid().amount <= 0);
+        return getFluid().isEmpty() || getFluidAmount() <= 0;
     }
 
     public boolean isFull() {
-        return (getFluid() != null) && (getFluid().amount == getCapacity());
+        return !getFluid().isEmpty() && getFluidAmount() == getCapacity();
     }
 
-    public Fluid getFluidType() {
-        return getFluid() != null ? getFluid().getFluid() : null;
+    public net.minecraft.world.level.material.Fluid getFluidType() {
+        return getFluid().isEmpty() ? null : getFluid().getFluid();
     }
 
     public String getFluidName() {
-        return (this.fluid != null) && (this.fluid.getFluid() != null) ? this.fluid.getFluid()
-            .getLocalizedName(this.fluid) : "Empty";
+        return getFluid().isEmpty() ? "Empty" : getFluid().getDisplayName().getString();
     }
 
-        public void setAmount(int par1) {
-        if (this.fluid != null && this.fluid.getFluid() != null) {
-            this.fluid.amount = par1;
+    public void setAmount(int par1) {
+        if (!getFluid().isEmpty()) {
+            getFluid().setAmount(par1);
         }
     }
 
-        public void setFluidById(int par1) {
-        Fluid f = FluidRegistry.getFluid(par1);
-        if (f != null) {
-            this.fluid = new FluidStack(f, this.getFluidAmount());
-        } else {
-            this.fluid = (FluidStack) null;
-        }
+    // 1.20.1: FluidRegistry.getFluid(int) removed - use ResourceLocation lookup
+    @Deprecated
+    public void setFluidById(int par1) {
+        // No-op: fluid IDs removed in 1.20.1 (use Registry lookup)
+        this.setFluid(FluidStack.EMPTY);
     }
-
 }

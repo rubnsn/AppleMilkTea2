@@ -1,7 +1,8 @@
 package mods.defeatedcrow.common.entity.dummy;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.level.material.MapColor;
+// Material removed in 1.20.1 - use BlockState properties
+import net.minecraft.world.entity.Entity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.damagesource.DamageSource;
@@ -95,7 +96,7 @@ public class EntityIllusionMobs extends Entity {
                 this.getBoundingBox().maxZ);
 
             // 浮力
-            if (this.level.isAABBInMaterial(axisalignedbb, Material.water)) {
+            if (this.level.isAABBInMaterial(axisalignedbb, /*/*Material*/ water*/ net.minecraft.world.level.material.Fluids.WATER)) {
                 d0 += 1.0D / (double) b0;
             }
         }
