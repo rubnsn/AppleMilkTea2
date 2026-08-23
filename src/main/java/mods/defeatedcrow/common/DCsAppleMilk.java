@@ -32,7 +32,7 @@ import mods.defeatedcrow.common.registry.ModRecipes;
 @Mod(DCsAppleMilk.MODID)
 public class DCsAppleMilk {
 
-    public static final String MODID = "DCsAppleMilk";
+    public static final String MODID = "dcsapplemilk";
     public static final String MOD_NAME = "Apple&Milk&Tea!";
     public static final Logger LOGGER = LogManager.getLogger(MODID);
 

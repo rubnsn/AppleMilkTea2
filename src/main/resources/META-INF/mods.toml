@@ -14,14 +14,14 @@ credits="defeatedcrow, AppleMilkTea2 contributors"
 authors="${author}"
 description="Apple&Milk&Tea! - Large content mod for tea, cooking, brewing, chalcedony, incense, energy. (1.20.1, Forge 47.x, mojmap, JDK17)"
 
-[[dependencies.DCsAppleMilk]]
+[[dependencies.dcsapplemilk]]
 modId="forge"
 mandatory=true
 versionRange="[47,)"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.DCsAppleMilk]]
+[[dependencies.dcsapplemilk]]
 modId="minecraft"
 mandatory=true
 versionRange="[1.20.1,1.21)"

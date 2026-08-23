@@ -5,5 +5,13 @@ import net.minecraft.world.level.material.FlowingFluid;
 import java.util.function.Supplier;
 import net.minecraft.world.level.material.Fluid;
 public class BlockCamOilFluid extends LiquidBlock {
-    public BlockCamOilFluid(Supplier<? extends Fluid> fluid, BlockBehaviour.Properties props){ super((FlowingFluid)fluid.get(), props); }
+    private final Supplier<? extends Fluid> fluidSupplier;
+    public BlockCamOilFluid(Supplier<? extends Fluid> fluid, BlockBehaviour.Properties props){
+        super((FlowingFluid)net.minecraft.world.level.material.Fluids.FLOWING_WATER, props);
+        this.fluidSupplier = fluid;
+    }
+    @Override
+    public net.minecraft.world.level.material.FlowingFluid getFluid() {
+        return (FlowingFluid) fluidSupplier.get();
+    }
 }
