@@ -196,21 +196,142 @@ public class ModItems {
         () -> new BlockItem(ModBlocks.TEA_MAKER_BLACK.get(), new Item.Properties()));
     public static final RegistryObject<Item> EMPTY_CUP_ITEM = ITEMS.register("empty_cup",
         () -> new BlockItem(ModBlocks.EMPTY_CUP.get(), new Item.Properties()));
+    public static final RegistryObject<Item> EMPTY_PAN_G_ITEM = ITEMS.register("empty_pan_g",
+        () -> new BlockItem(ModBlocks.EMPTY_PAN_G.get(), new Item.Properties()));
+    public static final RegistryObject<Item> FILLED_SOUP_PAN_ITEM = ITEMS.register("filled_soup_pan",
+        () -> new BlockItem(ModBlocks.FILLED_SOUP_PAN.get(), new Item.Properties()));
+    public static final RegistryObject<Item> ICE_MAKER_ITEM = ITEMS.register("ice_maker",
+        () -> new BlockItem(ModBlocks.ICE_MAKER.get(), new Item.Properties()));
+    public static final RegistryObject<Item> TEPPAN_II_ITEM = ITEMS.register("teppan_ii",
+        () -> new BlockItem(ModBlocks.TEPPAN_II.get(), new Item.Properties()));
+    public static final RegistryObject<Item> PROCESSOR_ITEM = ITEMS.register("processor",
+        () -> new BlockItem(ModBlocks.PROCESSOR.get(), new Item.Properties()));
+    public static final RegistryObject<Item> ADV_PROCESSOR_ITEM = ITEMS.register("adv_processor",
+        () -> new BlockItem(ModBlocks.ADV_PROCESSOR.get(), new Item.Properties()));
+    public static final RegistryObject<Item> EVAPORATOR_ITEM = ITEMS.register("evaporator",
+        () -> new BlockItem(ModBlocks.EVAPORATOR.get(), new Item.Properties()));
+    public static final RegistryObject<Item> INCENSE_BASE_ITEM = ITEMS.register("incense_base",
+        () -> new BlockItem(ModBlocks.INCENSE_BASE.get(), new Item.Properties()));
     public static final RegistryObject<Item> WOOD_BOX_ITEM = ITEMS.register("wood_box",
         () -> new BlockItem(ModBlocks.WOOD_BOX.get(), new Item.Properties()));
+    public static final RegistryObject<Item> APPLE_BOX_ITEM = ITEMS.register("apple_box",
+        () -> new BlockItem(ModBlocks.APPLE_BOX.get(), new Item.Properties()));
+    public static final RegistryObject<Item> VEGI_BAG_ITEM = ITEMS.register("vegi_bag",
+        () -> new BlockItem(ModBlocks.VEGI_BAG.get(), new Item.Properties()));
+    public static final RegistryObject<Item> CARDBOARD_ITEM = ITEMS.register("cardboard",
+        () -> new BlockItem(ModBlocks.CARDBOARD.get(), new Item.Properties()));
+    public static final RegistryObject<Item> CHARCOAL_BOX_ITEM = ITEMS.register("charcoal_box",
+        () -> new BlockItem(ModBlocks.CHARCOAL_BOX.get(), new Item.Properties()));
+    public static final RegistryObject<Item> GUNPOWDER_CONTAINER_ITEM = ITEMS.register("gunpowder_container",
+        () -> new BlockItem(ModBlocks.GUNPOWDER_CONTAINER.get(), new Item.Properties()));
+    public static final RegistryObject<Item> EGG_BASKET_ITEM = ITEMS.register("egg_basket",
+        () -> new BlockItem(ModBlocks.EGG_BASKET.get(), new Item.Properties()));
+    public static final RegistryObject<Item> MUSH_BOX_ITEM = ITEMS.register("mushroom_box",
+        () -> new BlockItem(ModBlocks.MUSH_BOX.get(), new Item.Properties()));
+    public static final RegistryObject<Item> MELON_BOMB_ITEM = ITEMS.register("melon_bomb",
+        () -> new BlockItem(ModBlocks.MELON_BOMB.get(), new Item.Properties()));
+    public static final RegistryObject<Item> WIPE_BOX_ITEM = ITEMS.register("wipe_box",
+        () -> new BlockItem(ModBlocks.WIPE_BOX.get(), new Item.Properties()));
+    public static final RegistryObject<Item> WIPE_BOX2_ITEM = ITEMS.register("wipe_box2",
+        () -> new BlockItem(ModBlocks.WIPE_BOX2.get(), new Item.Properties()));
+    public static final RegistryObject<Item> MOB_BLOCK_ITEM = ITEMS.register("mob_block",
+        () -> new BlockItem(ModBlocks.MOB_BLOCK.get(), new Item.Properties()));
+    public static final RegistryObject<Item> SILKY_MELON_ITEM = ITEMS.register("silky_melon",
+        () -> new BlockItem(ModBlocks.SILKY_MELON.get(), new Item.Properties()));
+    public static final RegistryObject<Item> FLOWER_POT_ITEM = ITEMS.register("flower_pot",
+        () -> new BlockItem(ModBlocks.FLOWER_POT.get(), new Item.Properties()));
+    public static final RegistryObject<Item> FLOWER_VASE_ITEM = ITEMS.register("flower_vase",
+        () -> new BlockItem(ModBlocks.FLOWER_VASE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> HEDGE_ITEM = ITEMS.register("hedge",
+        () -> new BlockItem(ModBlocks.HEDGE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> CONTAINER_WATER_BOTTLE_ITEM = ITEMS.register("container_water_bottle",
+        () -> new BlockItem(ModBlocks.CONTAINER_WATER_BOTTLE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> CONTAINER_SADDLE_ITEM = ITEMS.register("container_saddle",
+        () -> new BlockItem(ModBlocks.CONTAINER_SADDLE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> FILLED_CUP_ITEM = ITEMS.register("filled_cup",
+        () -> new BlockItem(ModBlocks.FILLED_CUP.get(), new Item.Properties()));
+    public static final RegistryObject<Item> FILLED_CUP2_ITEM = ITEMS.register("filled_cup2",
+        () -> new BlockItem(ModBlocks.FILLED_CUP2.get(), new Item.Properties()));
+    public static final RegistryObject<Item> ICE_CREAM_ITEM = ITEMS.register("ice_cream_block",
+        () -> new BlockItem(ModBlocks.ICE_CREAM.get(), new Item.Properties()));
+    public static final RegistryObject<Item> COCKTAIL_ITEM = ITEMS.register("cocktail",
+        () -> new BlockItem(ModBlocks.COCKTAIL.get(), new Item.Properties()));
+    public static final RegistryObject<Item> COCKTAIL2_ITEM = ITEMS.register("cocktail2",
+        () -> new BlockItem(ModBlocks.COCKTAIL2.get(), new Item.Properties()));
+    public static final RegistryObject<Item> COCKTAIL_SP_ITEM = ITEMS.register("cocktail_sp",
+        () -> new BlockItem(ModBlocks.COCKTAIL_SP.get(), new Item.Properties()));
+    public static final RegistryObject<Item> ALCOHOL_CUP_ITEM = ITEMS.register("alcohol_cup",
+        () -> new BlockItem(ModBlocks.ALCOHOL_CUP.get(), new Item.Properties()));
+    public static final RegistryObject<Item> BOWL_BLOCK_ITEM = ITEMS.register("bowl_block",
+        () -> new BlockItem(ModBlocks.BOWL_BLOCK.get(), new Item.Properties()));
+    public static final RegistryObject<Item> BOWL_JP_ITEM = ITEMS.register("bowl_jp",
+        () -> new BlockItem(ModBlocks.BOWL_JP.get(), new Item.Properties()));
+    public static final RegistryObject<Item> FOOD_PLATE_ITEM = ITEMS.register("food_plate",
+        () -> new BlockItem(ModBlocks.FOOD_PLATE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> CHOCO_BLOCK_ITEM = ITEMS.register("choco_block",
+        () -> new BlockItem(ModBlocks.CHOCO_BLOCK.get(), new Item.Properties()));
+    public static final RegistryObject<Item> BARREL_ITEM = ITEMS.register("barrel",
+        () -> new BlockItem(ModBlocks.BARREL.get(), new Item.Properties()));
+    public static final RegistryObject<Item> SAPLING_TEA_ITEM = ITEMS.register("sapling_tea",
+        () -> new BlockItem(ModBlocks.SAPLING_TEA.get(), new Item.Properties()));
+    public static final RegistryObject<Item> TEA_TREE_ITEM = ITEMS.register("tea_tree",
+        () -> new BlockItem(ModBlocks.TEA_TREE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> CASSIS_TREE_ITEM = ITEMS.register("cassis_tree",
+        () -> new BlockItem(ModBlocks.CASSIS_TREE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> CLAM_SAND_ITEM = ITEMS.register("clam_sand",
+        () -> new BlockItem(ModBlocks.CLAM_SAND.get(), new Item.Properties()));
+    public static final RegistryObject<Item> CROP_MINT_ITEM = ITEMS.register("crop_mint",
+        () -> new BlockItem(ModBlocks.CROP_MINT.get(), new Item.Properties()));
+    public static final RegistryObject<Item> SAPLING_YUZU_ITEM = ITEMS.register("sapling_yuzu",
+        () -> new BlockItem(ModBlocks.SAPLING_YUZU.get(), new Item.Properties()));
+    public static final RegistryObject<Item> LOG_YUZU_ITEM = ITEMS.register("log_yuzu",
+        () -> new BlockItem(ModBlocks.LOG_YUZU.get(), new Item.Properties()));
+    public static final RegistryObject<Item> LEAVES_YUZU_ITEM = ITEMS.register("leaves_yuzu",
+        () -> new BlockItem(ModBlocks.LEAVES_YUZU.get(), new Item.Properties()));
+    public static final RegistryObject<Item> BOWL_RACK_ITEM = ITEMS.register("bowl_rack",
+        () -> new BlockItem(ModBlocks.BOWL_RACK.get(), new Item.Properties()));
     public static final RegistryObject<Item> BASKET_ITEM = ITEMS.register("basket",
         () -> new BlockItem(ModBlocks.BASKET.get(), new Item.Properties()));
+    public static final RegistryObject<Item> CHOPSTICKS_BOX_ITEM = ITEMS.register("chopsticks_box",
+        () -> new BlockItem(ModBlocks.CHOPSTICKS_BOX.get(), new Item.Properties()));
+    public static final RegistryObject<Item> WOOD_PANEL_ITEM = ITEMS.register("wood_panel",
+        () -> new BlockItem(ModBlocks.WOOD_PANEL.get(), new Item.Properties()));
+    public static final RegistryObject<Item> YUZU_FENCE_ITEM = ITEMS.register("yuzu_fence",
+        () -> new BlockItem(ModBlocks.YUZU_FENCE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> FLINT_BLOCK_ITEM = ITEMS.register("flint_block",
+        () -> new BlockItem(ModBlocks.FLINT_BLOCK.get(), new Item.Properties()));
+    public static final RegistryObject<Item> CHALCEDONY_ITEM = ITEMS.register("chalcedony",
+        () -> new BlockItem(ModBlocks.CHALCEDONY.get(), new Item.Properties()));
+    public static final RegistryObject<Item> CHALCEDONY_LAMP_ITEM = ITEMS.register("chalcedony_lamp",
+        () -> new BlockItem(ModBlocks.CHALCEDONY_LAMP.get(), new Item.Properties()));
+    public static final RegistryObject<Item> CHALCEDONY_LAMP_OP_ITEM = ITEMS.register("chalcedony_lamp_op",
+        () -> new BlockItem(ModBlocks.CHALCEDONY_LAMP_OP.get(), new Item.Properties()));
+    public static final RegistryObject<Item> CHALCEDONY_PANEL_ITEM = ITEMS.register("chalcedony_panel",
+        () -> new BlockItem(ModBlocks.CHALCEDONY_PANEL.get(), new Item.Properties()));
+    public static final RegistryObject<Item> ROTARY_DIAL_ITEM = ITEMS.register("rotary_dial",
+        () -> new BlockItem(ModBlocks.ROTARY_DIAL.get(), new Item.Properties()));
     public static final RegistryObject<Item> CROW_DOLL_ITEM = ITEMS.register("crow_doll",
         () -> new BlockItem(ModBlocks.CROW_DOLL.get(), new Item.Properties()));
-    // Additional BlockItems can be added per need; generic fallback is ModBlocks.* used via displayItems
+    public static final RegistryObject<Item> BAT_BOX_ITEM = ITEMS.register("bat_box",
+        () -> new BlockItem(ModBlocks.BAT_BOX.get(), new Item.Properties()));
+    public static final RegistryObject<Item> RED_GEL_ITEM = ITEMS.register("red_gel",
+        () -> new BlockItem(ModBlocks.RED_GEL.get(), new Item.Properties()));
+    public static final RegistryObject<Item> YUZU_LIGHT_ITEM = ITEMS.register("yuzu_light",
+        () -> new BlockItem(ModBlocks.YUZU_LIGHT.get(), new Item.Properties()));
+    public static final RegistryObject<Item> YUZU_BAT_ITEM = ITEMS.register("yuzu_bat",
+        () -> new BlockItem(ModBlocks.YUZU_BAT.get(), new Item.Properties()));
+    public static final RegistryObject<Item> GEL_BAT_ITEM = ITEMS.register("gel_bat",
+        () -> new BlockItem(ModBlocks.GEL_BAT.get(), new Item.Properties()));
+    public static final RegistryObject<Item> HANDLE_ENGINE_ITEM = ITEMS.register("handle_engine",
+        () -> new BlockItem(ModBlocks.HANDLE_ENGINE.get(), new Item.Properties()));
 
     // --- WT-A: BREWING ITEMS (itemLargeBottle, itemCordial, etc.) ---
     public static final RegistryObject<Item> LARGE_BOTTLE = ITEMS.register("large_bottle",
-        () -> new ItemLargeBottle(new Item.Properties().stacksTo(1)));
+        () -> new ItemLargeBottle(ModBlocks.LARGE_BOTTLE.get(), new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> CORDIAL = ITEMS.register("cordial",
-        () -> new ItemCordial(new Item.Properties().stacksTo(1)));
+        () -> new ItemCordial(ModBlocks.CORDIAL.get(), new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> EMPTY_BOTTLE_ITEM = ITEMS.register("empty_bottle",
-        () -> new ItemEmptyBottle(new Item.Properties().stacksTo(16)));
+        () -> new ItemEmptyBottle(ModBlocks.EMPTY_BOTTLE.get(), new Item.Properties().stacksTo(16)));
 
     // --- WT-C: INCENSE (incenseApple..incenseVanilla 11種) — may stay in ModItems or move to WT-C section ---
     public static final RegistryObject<Item> INCENSE_APPLE = ITEMS.register("incense_apple",
