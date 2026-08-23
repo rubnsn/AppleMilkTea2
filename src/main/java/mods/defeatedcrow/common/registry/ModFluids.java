@@ -19,11 +19,11 @@ public class ModFluids {
 
     private static ForgeFlowingFluid.Properties vegOilProps() {
         return new ForgeFlowingFluid.Properties(ModFluidTypes.VEGITABLE_OIL, () -> net.minecraft.world.level.material.Fluids.WATER, () -> net.minecraft.world.level.material.Fluids.WATER)
-            .block(() -> (LiquidBlock) Blocks.AIR).bucket(() -> net.minecraft.world.item.Items.AIR).slopeFindDistance(2).levelDecreasePerBlock(1);
+            .block(() -> (LiquidBlock) ModBlocks.BLOCK_VEGI_OIL.get()).bucket(() -> net.minecraft.world.item.Items.BUCKET).slopeFindDistance(2).levelDecreasePerBlock(1);
     }
     private static ForgeFlowingFluid.Properties camOilProps() {
         return new ForgeFlowingFluid.Properties(ModFluidTypes.CAMELLIA_OIL, () -> net.minecraft.world.level.material.Fluids.WATER, () -> net.minecraft.world.level.material.Fluids.WATER)
-            .block(() -> (LiquidBlock) Blocks.AIR).bucket(() -> net.minecraft.world.item.Items.AIR).slopeFindDistance(2).levelDecreasePerBlock(1);
+            .block(() -> (LiquidBlock) ModBlocks.BLOCK_CAMELLIA_OIL.get()).bucket(() -> net.minecraft.world.item.Items.BUCKET).slopeFindDistance(2).levelDecreasePerBlock(1);
     }
 
     // --- WT-B: OILS (vegitable_oil, camellia_oil) ---
