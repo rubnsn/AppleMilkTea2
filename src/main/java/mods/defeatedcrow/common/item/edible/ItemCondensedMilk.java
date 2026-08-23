@@ -39,10 +39,10 @@ public class ItemCondensedMilk extends Item {
      * import java.util.List;
      * 
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
-     * import net.minecraft.creativetab.CreativeTabs;
-     * import net.minecraft.item.Item;
-     * import net.minecraft.item.ItemFood;
-     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.world.item.CreativeModeTab;
+     * import net.minecraft.world.item.Item;
+     * import net.minecraft.world.item.ItemFood;
+     * import net.minecraft.world.item.ItemStack;
      * import net.minecraft.src.*;
      * import net.minecraft.util.BlockTexture;
      * import net.minecraft.util.MathHelper;

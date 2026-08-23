@@ -30,8 +30,8 @@ public class ItemDummyForTeppan extends Item {
      * package mods.defeatedcrow.common.item;
      * 
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
-     * import net.minecraft.item.Item;
-     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.world.item.Item;
+     * import net.minecraft.world.item.ItemStack;
      * import net.minecraft.util.BlockTexture;
      * import net.minecraft.util.MathHelper;
      * 

@@ -4,7 +4,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.MapColor;
 // Material removed in 1.20.1 - use BlockState properties
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.level.LevellyContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

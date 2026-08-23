@@ -1,7 +1,7 @@
 package mods.defeatedcrow.client.entity;
 
-import net.minecraft.client.model.ModelPart;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * EdibleEntityのレンダ―モデルやテクスチャパスを返すインターフェイス。

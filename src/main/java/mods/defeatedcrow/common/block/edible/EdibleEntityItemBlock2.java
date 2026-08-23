@@ -60,9 +60,9 @@ public class EdibleEntityItemBlock2 extends Block {
      * Original 1.7.10 source (kept for reference, SJIS -> UTF-8):
      * package mods.defeatedcrow.common.block.edible;
      * 
-     * import net.minecraft.block.Block;
-     * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.world.level.block.Block;
+     * import net.minecraft.world.entity.player.Player;
+     * import net.minecraft.world.item.ItemStack;
      * import mods.defeatedcrow.common.DCsAppleMilk;
      * import mods.defeatedcrow.plugin.LoadAppleCorePlugin;
      * import squeek.applecore.api.food.FoodValues;

@@ -43,16 +43,16 @@ public class ItemEXItem extends Item {
      * import java.util.List;
      * 
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
-     * import net.minecraft.creativetab.CreativeTabs;
-     * import net.minecraft.entity.player.EntityPlayer;
+     * import net.minecraft.world.item.CreativeModeTab;
+     * import net.minecraft.world.entity.player.Player;
      * import net.minecraft.item.EnumAction;
-     * import net.minecraft.item.Item;
-     * import net.minecraft.item.ItemDye;
-     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.world.item.Item;
+     * import net.minecraft.world.item.ItemDye;
+     * import net.minecraft.world.item.ItemStack;
      * import net.minecraft.src.*;
      * import net.minecraft.util.BlockTexture;
      * import net.minecraft.util.MathHelper;
-     * import net.minecraft.world.World;
+     * import net.minecraft.world.level.Level;
      * import mods.defeatedcrow.*;
      * import mods.defeatedcrow.common.config.DCsConfig;
      * 

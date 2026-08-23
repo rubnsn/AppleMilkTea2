@@ -1,7 +1,7 @@
 package mods.defeatedcrow.common.tile.appliance;
 
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.level.LevellyContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

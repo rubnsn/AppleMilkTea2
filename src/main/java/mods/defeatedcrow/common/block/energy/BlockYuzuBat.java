@@ -62,11 +62,11 @@ public class BlockYuzuBat extends Block {
      * 
      * import java.util.Random;
      * 
-     * import net.minecraft.block.Block;
-     * import net.minecraft.block.material.Material;
+     * import net.minecraft.world.level.block.Block;
+     * import net.minecraft.world.level.material.MapColor;
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
      * import net/minecraft/init/Blocks;
-     * import net.minecraft.item.Item;
+     * import net.minecraft.world.item.Item;
      * import net.minecraft.util.BlockTexture;
      * import mods.defeatedcrow.common.DCsAppleMilk;
      * 

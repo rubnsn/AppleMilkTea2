@@ -64,19 +64,19 @@ public class BlockYuzuFence extends Block {
      * 
      * import java.util.List;
      * 
-     * import net.minecraft.block.Block;
-     * import net.minecraft.block.material.Material;
+     * import net.minecraft.world.level.block.Block;
+     * import net.minecraft.world.level.material.MapColor;
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
      * import net.minecraft.entity.Entity;
      * import net.minecraft.entity.EntityLiving;
      * import net.minecraft.entity.passive.EntityHorse;
      * import net.minecraft.entity.passive.EntityTameable;
      * import net.minecraft.entity.passive.EntityVillager;
-     * import net.minecraft.entity.player.EntityPlayer;
+     * import net.minecraft.world.entity.player.Player;
      * import net.minecraft.util.AxisAlignedBB;
      * import net.minecraft.util.DamageSource;
      * import net.minecraft.world.IBlockAccess;
-     * import net.minecraft.world.World;
+     * import net.minecraft.world.level.Level;
      * import net.minecraftforge.common.util.ForgeDirection;
      * import mods.defeatedcrow.common.DCsAppleMilk;
      * import mods.defeatedcrow.handler.Util;

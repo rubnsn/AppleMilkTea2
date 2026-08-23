@@ -30,7 +30,7 @@ public class ItemCarbonStick extends Item {
      * package mods.defeatedcrow.common.item;
      * 
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
-     * import net.minecraft.item.Item;
+     * import net.minecraft.world.item.Item;
      * 
      * public class ItemCarbonStick extends Item {
      * 

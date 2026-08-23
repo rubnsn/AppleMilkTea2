@@ -2,8 +2,8 @@ package mods.defeatedcrow.client.entity;
 
 import java.util.List;
 
-import net.minecraft.client.model.ModelPart;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * IEdibleRendetHandlerの登録用インターフェース。

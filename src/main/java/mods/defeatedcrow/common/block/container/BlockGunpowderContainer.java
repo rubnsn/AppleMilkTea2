@@ -63,20 +63,20 @@ public class BlockGunpowderContainer extends Block {
      * import java.util.List;
      * import java.util.Random;
      * 
-     * import net.minecraft.block.Block;
+     * import net.minecraft.world.level.block.Block;
      * import net.minecraft.block.IGrowable;
-     * import net.minecraft.block.material.Material;
+     * import net.minecraft.world.level.material.MapColor;
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
-     * import net.minecraft.creativetab.CreativeTabs;
+     * import net.minecraft.world.item.CreativeModeTab;
      * import net.minecraft.entity.EntityLivingBase;
      * import net/minecraft/init/Blocks;
-     * import net.minecraft.item.Item;
-     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.world.item.Item;
+     * import net.minecraft.world.item.ItemStack;
      * import net.minecraft.util.AxisAlignedBB;
      * import net.minecraft.util.BlockTexture;
      * import net.minecraft.world.IBlockAccess;
-     * import net.minecraft.world.World;
-     * import net.minecraft.world.biome.BiomeGenBase;
+     * import net.minecraft.world.level.Level;
+     * import net.minecraft.world.level.biome.Biome;
      * import net.minecraftforge.common.BiomeDictionary;
      * import net.minecraftforge.common.MinecraftForge;
      * import net.minecraftforge.event.entity.player.BonemealEvent;

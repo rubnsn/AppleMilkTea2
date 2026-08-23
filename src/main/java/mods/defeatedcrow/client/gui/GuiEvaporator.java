@@ -9,7 +9,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.world.level.material.FluidStack;
 
 import mods.defeatedcrow.common.config.PropertyHandler;
 import mods.defeatedcrow.common.tile.appliance.ContainerEvaporator;

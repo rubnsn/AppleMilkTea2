@@ -3,7 +3,7 @@ package mods.defeatedcrow.recipe;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 import mods.defeatedcrow.api.recipe.IBrewingRecipe;
 
@@ -13,19 +13,19 @@ public class BrewingRecipe implements IBrewingRecipe {
 
     BrewingRecipe() {}
 
-    public static Map<Fluid, Fluid> recipe = new HashMap<Fluid, Fluid>();
+    public static Map<FluidStack, FluidStack> recipe = new HashMap<FluidStack, FluidStack>();
 
     @Override
-    public void registerRecipe(Fluid input, Fluid output) {
-        if (input != null) {
-            if (output != null) {
+    public void registerRecipe(FluidStack input, FluidStack output) {
+        if (input != null && !input.isEmpty()) {
+            if (output != null && !output.isEmpty()) {
                 recipe.put(input, output);
             }
         }
     }
 
     @Override
-    public Map<Fluid, Fluid> recipeMap() {
+    public Map<FluidStack, FluidStack> recipeMap() {
         return this.recipe;
     }
 

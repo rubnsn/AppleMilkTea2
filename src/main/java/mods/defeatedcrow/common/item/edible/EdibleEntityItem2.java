@@ -36,8 +36,8 @@ public class EdibleEntityItem2 extends Item {
      * Original 1.7.10 source (truncated, full in git history):
      * package mods.defeatedcrow.common.item.edible;
      * 
-     * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.world.entity.player.Player;
+     * import net.minecraft.world.item.ItemStack;
      * import mods.defeatedcrow.common.DCsAppleMilk;
      * import mods.defeatedcrow.plugin.LoadAppleCorePlugin;
      * import squeek.applecore.api.food.FoodValues;

@@ -33,9 +33,9 @@ public class ItemChalcedonyMonocle extends Item {
      * 
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
      * import net.minecraft.entity.Entity;
-     * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.item.ItemArmor;
-     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.world.entity.player.Player;
+     * import net.minecraft.world.item.ItemArmor;
+     * import net.minecraft.world.item.ItemStack;
      * import net.minecraft.util.EnumChatFormatting;
      * import mods.defeatedcrow.common.DCsAppleMilk;
      * 

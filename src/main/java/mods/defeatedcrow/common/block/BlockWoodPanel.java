@@ -64,14 +64,14 @@ public class BlockWoodPanel extends Block {
      * 
      * import java.util.Random;
      * 
-     * import net.minecraft.block.Block;
-     * import net.minecraft.block.material.Material;
+     * import net.minecraft.world.level.block.Block;
+     * import net.minecraft.world.level.material.MapColor;
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
-     * import net.minecraft.item.Item;
+     * import net.minecraft.world.item.Item;
      * import net.minecraft.util.AxisAlignedBB;
      * import net.minecraft.util.BlockTexture;
      * import net.minecraft.world.IBlockAccess;
-     * import net.minecraft.world.World;
+     * import net.minecraft.world.level.Level;
      * import net.minecraftforge.common.util.ForgeDirection;
      * import mods.defeatedcrow.common.DCsAppleMilk;
      * import mods.defeatedcrow.handler.Util;

@@ -35,9 +35,9 @@ public class ItemIncenseSandalwood extends Item {
      * import net.minecraft.entity.EntityLivingBase;
      * import net.minecraft.entity.item.EntityItem;
      * import net.minecraft.entity.passive.EntityTameable;
-     * import net.minecraft.item.Item;
-     * import net.minecraft.item.ItemStack;
-     * import net.minecraft.world.World;
+     * import net.minecraft.world.item.Item;
+     * import net.minecraft.world.item.ItemStack;
+     * import net.minecraft.world.level.Level;
      * import mods.defeatedcrow.api.charm.EffectType;
      * import mods.defeatedcrow.api.charm.IIncenseEffect;
      * import mods.defeatedcrow.handler.Util;

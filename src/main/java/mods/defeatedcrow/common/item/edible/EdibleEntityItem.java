@@ -50,18 +50,18 @@ public class EdibleEntityItem extends Item {
      * import java.util.ArrayList;
      * import java.util.List;
      * 
-     * import net.minecraft.block.Block;
+     * import net.minecraft.world.level.block.Block;
      * import net.minecraft.entity.Entity;
      * import net.minecraft.entity.EntityLivingBase;
-     * import net.minecraft.entity.player.EntityPlayer;
+     * import net.minecraft.world.entity.player.Player;
      * import net/minecraft/init/Blocks;
      * import net.minecraft.item.EnumAction;
-     * import net.minecraft.item.Item;
-     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.world.item.Item;
+     * import net.minecraft.world.item.ItemStack;
      * import net.minecraft.potion.Potion;
-     * import net.minecraft.potion.PotionEffect;
+     * import net.minecraft.world.effect.MobEffectInstance;
      * import net.minecraft.util.StatCollector;
-     * import net.minecraft.world.World;
+     * import net.minecraft.world.level.Level;
      * import net.minecraftforge.common.MinecraftForge;
      * import mods.defeatedcrow.api.edibles.IEdibleItem;
      * import mods.defeatedcrow.api.events.EatEdiblesEvent;

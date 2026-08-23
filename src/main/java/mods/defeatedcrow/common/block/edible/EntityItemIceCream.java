@@ -63,13 +63,13 @@ public class EntityItemIceCream extends Block {
      * import java.util.ArrayList;
      * import java.util.List;
      * 
-     * import net.minecraft.block.Block;
-     * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.world.level.block.Block;
+     * import net.minecraft.world.entity.player.Player;
+     * import net.minecraft.world.item.ItemStack;
      * import net.minecraft.potion.Potion;
-     * import net.minecraft.potion.PotionEffect;
-     * import net.minecraft.world.World;
-     * import net.minecraft.world.biome.BiomeGenBase;
+     * import net.minecraft.world.effect.MobEffectInstance;
+     * import net.minecraft.world.level.Level;
+     * import net.minecraft.world.level.biome.Biome;
      * import net.minecraftforge.common.BiomeDictionary;
      * import net.minecraftforge.common.BiomeDictionary.Type;
      * import mods.defeatedcrow.api.potion.AMTPotionManager;

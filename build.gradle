@@ -111,6 +111,7 @@ tasks.named('processResources', ProcessResources).configure {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Xmaxerrs', '10000']
 }
 
 tasks.named('jar', Jar).configure {

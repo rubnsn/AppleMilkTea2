@@ -11,14 +11,14 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 
 // legacy imports kept as comments for 1.7.10 diff visibility
-// import net.minecraft.block.Block; // 1.7.10 Block
+// import net.minecraft.world.level.block.Block; // 1.7.10 Block
 // import net.minecraft.world.entity.LivingEntity;
 // import net.minecraft.world.entity.player.Player;
 // import net.minecraft.world.effect.MobEffect;
 // import net.minecraft.world.effect.MobEffectInstance;
 // import net.minecraft.util.Mth;
 // import net.minecraft.world.Level;
-// import net.minecraft.world.biome.BiomeGenBase;
+// import net.minecraft.world.level.biome.Biome;
 
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.common.config.DCsConfig;

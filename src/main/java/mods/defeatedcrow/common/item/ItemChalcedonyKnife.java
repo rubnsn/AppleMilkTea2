@@ -33,18 +33,18 @@ public class ItemChalcedonyKnife extends Item {
      * import java.util.Random;
      * import java.util.Set;
      * 
-     * import net.minecraft.block.Block;
+     * import net.minecraft.world.level.block.Block;
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
      * import net.minecraft.enchantment.Enchantment;
      * import net.minecraft.enchantment.EnchantmentHelper;
      * import net.minecraft.entity.EntityLivingBase;
      * import net.minecraft.entity.item.EntityItem;
-     * import net.minecraft.entity.player.EntityPlayer;
+     * import net.minecraft.world.entity.player.Player;
      * import net/minecraft/init/Blocks;
-     * import net.minecraft.item.ItemStack;
-     * import net.minecraft.item.ItemTool;
+     * import net.minecraft.world.item.ItemStack;
+     * import net.minecraft.world.item.ItemTool;
      * import net.minecraft.stats.StatList;
-     * import net.minecraft.world.World;
+     * import net.minecraft.world.level.Level;
      * import net.minecraftforge.common.IShearable;
      * import net.minecraftforge.common.MinecraftForge;
      * 

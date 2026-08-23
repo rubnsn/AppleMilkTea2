@@ -63,12 +63,12 @@ public class BlockWoodBox extends Block {
      * import java.util.List;
      * import java.util.Random;
      * 
-     * import net.minecraft.block.Block;
-     * import net.minecraft.block.material.Material;
+     * import net.minecraft.world.level.block.Block;
+     * import net.minecraft.world.level.material.MapColor;
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
-     * import net.minecraft.creativetab.CreativeTabs;
-     * import net.minecraft.item.Item;
-     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.world.item.CreativeModeTab;
+     * import net.minecraft.world.item.Item;
+     * import net.minecraft.world.item.ItemStack;
      * import net.minecraft.util.BlockTexture;
      * import mods.defeatedcrow.handler.Util;
      * 

@@ -37,7 +37,7 @@ public class ItemBakedApple extends Item {
      * package mods.defeatedcrow.common.item.edible;
      * 
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
-     * import net.minecraft.item.ItemFood;
+     * import net.minecraft.world.item.ItemFood;
      * import net.minecraft.src.*;
      * import mods.defeatedcrow.*;
      * 

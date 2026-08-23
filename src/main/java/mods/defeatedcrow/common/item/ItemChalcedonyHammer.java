@@ -42,18 +42,18 @@ public class ItemChalcedonyHammer extends Item {
      * 
      * import java.util.Set;
      * 
-     * import net.minecraft.block.Block;
-     * import net.minecraft.block.material.Material;
+     * import net.minecraft.world.level.block.Block;
+     * import net.minecraft.world.level.material.MapColor;
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
      * import net.minecraft.enchantment.Enchantment;
      * import net.minecraft.entity.EntityLivingBase;
-     * import net.minecraft.entity.player.EntityPlayer;
+     * import net.minecraft.world.entity.player.Player;
      * import net/minecraft/init/Blocks;
-     * import net.minecraft.item.Item;
-     * import net.minecraft.item.ItemPickaxe;
-     * import net.minecraft.item.ItemStack;
-     * import net.minecraft.nbt.NBTTagList;
-     * import net.minecraft.world.World;
+     * import net.minecraft.world.item.Item;
+     * import net.minecraft.world.item.ItemPickaxe;
+     * import net.minecraft.world.item.ItemStack;
+     * import net.minecraft.nbt.ListTag;
+     * import net.minecraft.world.level.Level;
      * 
      * import com.google.common.collect.Sets;
      * import mods.defeatedcrow.common.AMTLogger;

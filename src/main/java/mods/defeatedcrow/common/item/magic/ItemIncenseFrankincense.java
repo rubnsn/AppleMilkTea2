@@ -33,8 +33,8 @@ public class ItemIncenseFrankincense extends Item {
      * import net.minecraft.entity.EntityCreature;
      * import net.minecraft.entity.EntityLivingBase;
      * import net.minecraft.entity.monster.EntityMob;
-     * import net.minecraft.item.Item;
-     * import net.minecraft.world.World;
+     * import net.minecraft.world.item.Item;
+     * import net.minecraft.world.level.Level;
      * import mods.defeatedcrow.api.charm.EffectType;
      * import mods.defeatedcrow.api.charm.IIncenseEffect;
      * 

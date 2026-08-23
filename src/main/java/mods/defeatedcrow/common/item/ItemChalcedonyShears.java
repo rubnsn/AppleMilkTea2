@@ -42,18 +42,18 @@ public class ItemChalcedonyShears extends Item {
      * 
      * import java.util.Set;
      * 
-     * import net.minecraft.block.Block;
-     * import net.minecraft.block.BlockStem;
+     * import net.minecraft.world.level.block.Block;
+     * import net.minecraft.world.level.block.BlockStem;
      * import net.minecraft.block.IGrowable;
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
      * import net.minecraft.enchantment.Enchantment;
      * import net.minecraft.entity.EntityLivingBase;
-     * import net.minecraft.entity.player.EntityPlayer;
+     * import net.minecraft.world.entity.player.Player;
      * import net/minecraft/init/Blocks;
-     * import net.minecraft.item.ItemStack;
-     * import net.minecraft.item.ItemTool;
-     * import net.minecraft.nbt.NBTTagList;
-     * import net.minecraft.world.World;
+     * import net.minecraft.world.item.ItemStack;
+     * import net.minecraft.world.item.ItemTool;
+     * import net.minecraft.nbt.ListTag;
+     * import net.minecraft.world.level.Level;
      * import net.minecraftforge.common.IShearable;
      * 
      * import com.google.common.collect.Sets;

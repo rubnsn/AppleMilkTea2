@@ -1,7 +1,7 @@
 package mods.defeatedcrow.api.recipe;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.world.level.material.FluidStack;
 
 public interface IEvaporatorRecipe {
 

@@ -71,16 +71,16 @@ public class BlockHandleEngine extends Block implements EntityBlock {
      * Original 1.7.10 source (kept for reference, SJIS -> UTF-8):
      * package mods.defeatedcrow.common.block.energy;
      * 
-     * import net.minecraft.block.Block;
-     * import net.minecraft.block.Block;
-     * import net.minecraft.block.material.Material;
+     * import net.minecraft.world.level.block.Block;
+     * import net.minecraft.world.level.block.Block;
+     * import net.minecraft.world.level.material.MapColor;
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
-     * import net.minecraft.entity.player.EntityPlayer;
-     * import net.minecraft.tileentity.TileEntity;
+     * import net.minecraft.world.entity.player.Player;
+     * import net.minecraft.world.level.block.entity.BlockEntity;
      * import net.minecraft.util.AxisAlignedBB;
      * import net.minecraft.util.BlockTexture;
      * import net.minecraft.world.IBlockAccess;
-     * import net.minecraft.world.World;
+     * import net.minecraft.world.level.Level;
      * import net.minecraftforge.common.util.FakePlayer;
      * import mods.defeatedcrow.common.tile.energy.*;
      * import mods.defeatedcrow.plugin.SSector.LoadSSectorPlugin;

@@ -60,7 +60,7 @@ public class BlockTeaMakerBlack extends Block {
      * Original 1.7.10 source (kept for reference, SJIS -> UTF-8):
      * package mods.defeatedcrow.common.block.appliance;
      * 
-     * import net.minecraft.block.Block;
+     * import net.minecraft.world.level.block.Block;
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
      * import net.minecraft.entity.Entity;
      * import net.minecraft.entity.boss.EntityDragon;

@@ -64,15 +64,15 @@ public class EntityItemTeaCup2 extends Block {
      * import java.util.Iterator;
      * import java.util.List;
      * 
-     * import net.minecraft.block.Block;
+     * import net.minecraft.world.level.block.Block;
      * import net.minecraft.entity.EntityLivingBase;
-     * import net.minecraft.entity.player.EntityPlayer;
+     * import net.minecraft.world.entity.player.Player;
      * import net.minecraft.item.EnumAction;
-     * import net.minecraft.item.Item;
-     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.world.item.Item;
+     * import net.minecraft.world.item.ItemStack;
      * import net.minecraft.potion.Potion;
-     * import net.minecraft.potion.PotionEffect;
-     * import net.minecraft.world.World;
+     * import net.minecraft.world.effect.MobEffectInstance;
+     * import net.minecraft.world.level.Level;
      * import mods.defeatedcrow.api.potion.AMTPotionManager;
      * import mods.defeatedcrow.common.DCsAppleMilk;
      * import mods.defeatedcrow.common.entity.edible.PlaceableCup2;

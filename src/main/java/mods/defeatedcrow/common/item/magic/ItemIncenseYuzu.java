@@ -31,8 +31,8 @@ public class ItemIncenseYuzu extends Item {
      * 
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
      * import net.minecraft.entity.EntityLivingBase;
-     * import net.minecraft.item.Item;
-     * import net.minecraft.world.World;
+     * import net.minecraft.world.item.Item;
+     * import net.minecraft.world.level.Level;
      * import mods.defeatedcrow.api.charm.EffectType;
      * import mods.defeatedcrow.api.charm.IIncenseEffect;
      * 

@@ -45,13 +45,13 @@ public class ItemOnixSword extends Item {
      * import net.minecraft.enchantment.EnchantmentHelper;
      * import net.minecraft.entity.SharedMonsterAttributes;
      * import net.minecraft.entity.ai.attributes.AttributeModifier;
-     * import net.minecraft.entity.player.EntityPlayer;
+     * import net.minecraft.world.entity.player.Player;
      * import net.minecraft.item.EnumAction;
-     * import net.minecraft.item.ItemStack;
-     * import net.minecraft.item.ItemSword;
+     * import net.minecraft.world.item.ItemStack;
+     * import net.minecraft.world.item.ItemSword;
      * import net.minecraft.potion.Potion;
-     * import net.minecraft.potion.PotionEffect;
-     * import net.minecraft.world.World;
+     * import net.minecraft.world.effect.MobEffectInstance;
+     * import net.minecraft.world.level.Level;
      * 
      * import com.google.common.collect.Multimap;
      * import mods.defeatedcrow.common.DCsAppleMilk;

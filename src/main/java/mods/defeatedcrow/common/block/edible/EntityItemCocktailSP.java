@@ -63,14 +63,14 @@ public class EntityItemCocktailSP extends Block {
      * import java.util.ArrayList;
      * import java.util.List;
      * 
-     * import net.minecraft.block.Block;
-     * import net.minecraft.entity.player.EntityPlayer;
+     * import net.minecraft.world.level.block.Block;
+     * import net.minecraft.world.entity.player.Player;
      * import net.minecraft.item.EnumAction;
-     * import net.minecraft.item.ItemStack;
+     * import net.minecraft.world.item.ItemStack;
      * import net.minecraft.potion.Potion;
-     * import net.minecraft.potion.PotionEffect;
+     * import net.minecraft.world.effect.MobEffectInstance;
      * import net.minecraft.util.MathHelper;
-     * import net.minecraft.world.World;
+     * import net.minecraft.world.level.Level;
      * import mods.defeatedcrow.common.AchievementRegister;
      * import mods.defeatedcrow.common.config.DCsConfigCocktail;
      * import mods.defeatedcrow.common.entity.edible.PlaceableCocktailSP;

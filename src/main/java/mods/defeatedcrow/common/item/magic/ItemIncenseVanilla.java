@@ -29,12 +29,12 @@ public class ItemIncenseVanilla extends Item {
      * Original 1.7.10 source (truncated, full in git history):
      * package mods.defeatedcrow.common.item.magic;
      * 
-     * import net.minecraft.block.Block;
+     * import net.minecraft.world.level.block.Block;
      * import net.minecraft.client.renderer.texture.BlockIconRegister;
      * import net.minecraft.entity.EntityLivingBase;
-     * import net.minecraft.item.Item;
-     * import net.minecraft.tileentity.TileEntity;
-     * import net.minecraft.world.World;
+     * import net.minecraft.world.item.Item;
+     * import net.minecraft.world.level.block.entity.BlockEntity;
+     * import net.minecraft.world.level.Level;
      * import mods.defeatedcrow.api.charm.EffectType;
      * import mods.defeatedcrow.api.charm.IIncenseEffect;
      * import mods.defeatedcrow.common.tile.TileBrewingBarrel;
