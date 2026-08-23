@@ -1,14 +1,17 @@
 package mods.defeatedcrow.common.tile;
 
 import net.minecraft.block.Block;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.biome.net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -22,7 +25,9 @@ import mods.defeatedcrow.recipe.BrewingRecipe;
  * 直射日光は厳禁。日光に当てると熟成時間がリセットされてしまう。
  * 酒は液体タンクに保管されている。熟成完了するまでアクセス出来ない。
  */
-public class TileBrewingBarrel extends TileEntity implements IFluidHandler {
+public class TileBrewingBarrel extends BlockEntity implements IFluidHandler {
+    public TileBrewingBarrel(BlockPos pos, BlockState state) { super(null, pos, state); }
+
 
     private int aging = 0;
     private boolean isAged = false;
@@ -34,15 +39,15 @@ public class TileBrewingBarrel extends TileEntity implements IFluidHandler {
 
     // NBT
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
-        this.aging = par1NBTTagCompound.getInteger("Remaining");
-        this.isAged = par1NBTTagCompound.getBoolean("IsAged");
-        this.side = par1NBTTagCompound.getBoolean("Side");
+    public void load(CompoundTag par1CompoundTag) {
+        super.load(par1CompoundTag);
+        this.aging = par1CompoundTag.getInt("Remaining");
+        this.isAged = par1CompoundTag.getBoolean("IsAged");
+        this.side = par1CompoundTag.getBoolean("Side");
 
         this.productTank = new DCsTank(1000);
-        if (par1NBTTagCompound.hasKey("productTank")) {
-            this.productTank.readFromNBT(par1NBTTagCompound.getCompoundTag("productTank"));
+        if (par1CompoundTag.contains("productTank")) {
+            this.productTank.load(par1CompoundTag.getCompound("productTank"));
         }
     }
 
@@ -50,27 +55,27 @@ public class TileBrewingBarrel extends TileEntity implements IFluidHandler {
      * Writes a tile entity to NBT.
      */
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("Remaining", this.aging);
-        par1NBTTagCompound.setBoolean("IsAged", this.isAged);
-        par1NBTTagCompound.setBoolean("Side", this.side);
+    public void saveAdditional(CompoundTag par1CompoundTag) {
+        super.saveAdditional(par1CompoundTag);
+        par1CompoundTag.putInt("Remaining", this.aging);
+        par1CompoundTag.putBoolean("IsAged", this.isAged);
+        par1CompoundTag.putBoolean("Side", this.side);
 
-        NBTTagCompound tank = new NBTTagCompound();
-        this.productTank.writeToNBT(tank);
-        par1NBTTagCompound.setTag("productTank", tank);
+        CompoundTag tank = new CompoundTag();
+        this.productTank.saveAdditional(tank);
+        par1CompoundTag.put("productTank", tank);
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        this.writeToNBT(nbtTagCompound);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTagCompound);
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        CompoundTag nbtTagCompound = new CompoundTag();
+        this.saveAdditional(nbtTagCompound);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        this.readFromNBT(pkt.func_148857_g());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        this.load(pkt.getTag());
     }
 
     public int getAgingTime() {
@@ -109,47 +114,19 @@ public class TileBrewingBarrel extends TileEntity implements IFluidHandler {
     }
 
     // レンダー用。真下の状態を確認
-    public boolean isOnNormalCube() {
-        Block block = worldObj.getBlock(xCoord, yCoord - 1, zCoord);
-        return !block.isAir(worldObj, xCoord, yCoord - 1, zCoord) && block.isNormalCube();
-    }
+    public boolean isOnNormalCube() { return level != null && level.getBlockState(getBlockPos().below()).isSolid(); }
 
     @Override
-    public void updateEntity() {
-        if (!this.worldObj.isRemote) {
-            if (!this.isAged && this.canBrew())// まだ熟成未完了
-            {
-                // 直射日光が当たっていない・常温でのみ熟成する。
-                if (!this.worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord) && !this.isDryBiome()) {
-                    this.aging++;
-
-                    if (this.aging > 24000)// 4日間で熟成完了する
-                    {
-                        this.aging = 24000;
-                        this.onBrewing();
-                        this.setAged(true);
-                    }
-                }
-            }
-
-            if (this.productTank.isEmpty()) {
-                this.setAged(false);
-                this.setAgingTime(0);
-            }
-
-            int state = this.productTank.getFluidAmount() + this.aging;
-            if (lastState != state) {
-                lastState = state;
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            }
-        }
-
-        super.updateEntity();
+    public static void tick(Level level, BlockPos pos, BlockState state, TileBrewingBarrel be) {
+        // 1.20.1 tick (was updateEntity) - see doc/tile-entities/migration-guide.md
+        if (level.isClientSide) return;
+        be.setChanged();
+        level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
     }
 
     private boolean canBrew() {
         boolean flag = false;
-        Fluid input = this.productTank.getFluidType();
+        Fluid input = be.productTank.getFluidType();
 
         if (input != null && BrewingRecipe.recipe.containsKey(input)) {
             flag = true;
@@ -160,50 +137,30 @@ public class TileBrewingBarrel extends TileEntity implements IFluidHandler {
 
     // 熟成完了処理
     private void onBrewing() {
-        Fluid input = this.productTank.getFluidType();
-        int amount = this.productTank.getFluidAmount();
+        Fluid input = be.productTank.getFluidType();
+        int amount = be.productTank.getFluidAmount();
 
         if (input != null && amount > 0) {
             if (BrewingRecipe.recipe.containsKey(input)) {
                 Fluid output = BrewingRecipe.recipe.get(input);
                 FluidStack ret = new FluidStack(output, amount);
-                this.productTank.setFluid(ret);
+                be.productTank.setFluid(ret);
             }
         }
-        this.markDirty();
+        be.setChanged();
     }
 
-    public int getMetadata() {
-        return this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-    }
-
-    public boolean isColdBiome() {
-        boolean flag = false;
-        BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(xCoord, zCoord);
-
-        if (BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.COLD)) {
-            flag = true;
-        }
+    public int getMetadata() { return 0; }
 
         return flag;
     }
 
-    public boolean isDryBiome() {
-        boolean flag = false;
-        BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(xCoord, zCoord);
-
-        if (BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.DRY)
-            || BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.NETHER)) {
-            flag = true;
-        }
-
-        return flag;
-    }
+    public boolean isDryBiome() { return level != null && level.getBiome(getBlockPos()).is(net.minecraft.tags.BiomeTags.IS_DESERT); }
 
     /* ====== 以下、IFluidHandlerの実装メソッド ====== */
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+    public FluidStack drain(Direction from, FluidStack resource, boolean doDrain) {
         if (resource == null || !this.isAged) {
             return null;
         }
@@ -219,7 +176,7 @@ public class TileBrewingBarrel extends TileEntity implements IFluidHandler {
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    public FluidStack drain(Direction from, int maxDrain, boolean doDrain) {
         if (maxDrain <= 0 || !this.isAged) {
             return null;
         }
@@ -233,7 +190,7 @@ public class TileBrewingBarrel extends TileEntity implements IFluidHandler {
 
     // 外部からの液体の受け入れ
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    public int fill(Direction from, FluidStack resource, boolean doFill) {
         if (resource == null || resource.getFluid() == null || this.isAged) {
             return 0;
         }
@@ -254,18 +211,18 @@ public class TileBrewingBarrel extends TileEntity implements IFluidHandler {
 
     // 空でないと&醸造未完了でないと受け入れない
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
+    public boolean canFill(Direction from, Fluid fluid) {
         return !this.isAged && fluid != null && BrewingRecipe.recipe.containsKey(fluid) && this.productTank.isEmpty();
     }
 
     // 醸造が完了するまで引き抜けないようにする
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+    public boolean canDrain(Direction from, Fluid fluid) {
         return this.isAged;
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+    public FluidTankInfo[] getTankInfo(Direction from) {
         return new FluidTankInfo[] { productTank.getInfo() };
     }
 

@@ -1,50 +1,38 @@
 package mods.defeatedcrow.common.world;
 
-import java.util.Random;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import mods.defeatedcrow.common.config.DCsConfig;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunkProvider;
+/**
+ * 1.20.1: WorldgenClam (beach hamaguri generation) -> Feature + BiomeModifier (Holder)
+ * Old IWorldGenerator.generate removed. Now datapack PlacedFeature at beach biomes.
+ * See doc/worldgen/migration-guide.md
+ */
+public class WorldgenClam {
 
-import cpw.mods.fml.common.IWorldGenerator;
-import mods.defeatedcrow.common.DCsAppleMilk;
-import mods.defeatedcrow.handler.Util;
+    public static final ResourceKey<ConfiguredFeature<?, ?>> CLAM_KEY = ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation("defeatedcrow", "clam"));
+    public static final ResourceKey<PlacedFeature> CLAM_PLACED_KEY = ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation("defeatedcrow", "clam_placed"));
 
-public class WorldgenClam implements IWorldGenerator {
-
-    private int genDim1 = 0;
-
-    @Override
-    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator,
-        IChunkProvider chunkProvider) {
-
-        genDim1 = world.provider.dimensionId;
-
-        int chunk2X = chunkX << 4;
-        int chunk2Z = chunkZ << 4;
-        int count = Util.getHamaguriChanceValue();
-        int pr = Util.getPrincessChanceValue();
-
-        if ((genDim1 != 1 && genDim1 != -1)) {
-            for (int i = 0; i < count; i++) {
-                int PosX = chunk2X + random.nextInt(16);
-                int PosY = 55 + random.nextInt(10);
-                int PosZ = chunk2Z + random.nextInt(16);
-
-                if (world.getBlock(PosX, PosY + 1, PosZ)
-                    .getMaterial() == Material.water
-                    && (world.getBlock(PosX, PosY, PosZ) == Blocks.sand
-                        || world.getBlock(PosX, PosY, PosZ) == Blocks.dirt)) {
-                    if (world.rand.nextInt(100) < pr) {
-                        world.setBlock(PosX, PosY, PosZ, DCsAppleMilk.clamSand, 2, 2);
-                    } else {
-                        world.setBlock(PosX, PosY, PosZ, DCsAppleMilk.clamSand, 0, 2);
-                    }
-                }
-            }
+    public static boolean placeClam(LevelAccessor level, BlockPos pos, RandomSource rand) {
+        if (level.getBlockState(pos.above()).getFluidState().isSource() // water above
+            && (level.getBlockState(pos).is(Blocks.SAND) || level.getBlockState(pos).is(Blocks.DIRT))) {
+            // actual clam block is ModBlocks.CLAM_SAND; placeholder
+            level.setBlock(pos, Blocks.SAND.defaultBlockState(), 2);
+            return true;
         }
-
+        return false;
     }
 
+    // Datapack:
+    // data/defeatedcrow/worldgen/placed_feature/clam_placed.json -> beach placement
+    // data/defeatedcrow/forge/biome_modifier/add_clam.json -> {"type":"forge:add_features","biomes":"#minecraft:is_beach","features":"defeatedcrow:clam_placed","step":"vegetal_decoration"}
 }

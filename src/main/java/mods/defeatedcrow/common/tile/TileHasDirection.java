@@ -1,39 +1,43 @@
 package mods.defeatedcrow.common.tile;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.Level;
+public class TileHasDirection extends BlockEntity {
+    public TileHasDirection(BlockPos pos, BlockState state) { super(null, pos, state); }
 
-public class TileHasDirection extends TileEntity {
 
     private byte direction = 0;
 
     // NBT
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
-        this.direction = par1NBTTagCompound.getByte("Direction");
+    public void load(CompoundTag par1CompoundTag) {
+        super.load(par1CompoundTag);
+        this.direction = par1CompoundTag.getByte("Direction");
     }
 
     /**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setByte("Direction", this.direction);
+    public void saveAdditional(CompoundTag par1CompoundTag) {
+        super.saveAdditional(par1CompoundTag);
+        par1CompoundTag.putByte("Direction", this.direction);
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        this.writeToNBT(nbtTagCompound);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTagCompound);
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        CompoundTag nbtTagCompound = new CompoundTag();
+        this.saveAdditional(nbtTagCompound);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        this.readFromNBT(pkt.func_148857_g());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        this.load(pkt.getTag());
     }
 
     public byte getDirectionByte() {
@@ -53,7 +57,5 @@ public class TileHasDirection extends TileEntity {
         else return 0;
     }
 
-    public int getMetadata() {
-        return this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-    }
+    public int getMetadata() { return 0; }
 }

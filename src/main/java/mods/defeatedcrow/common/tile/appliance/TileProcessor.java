@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraftforge.oredict.OreDictionary;
 
 import mods.defeatedcrow.api.appliance.IProcessorPanel;
@@ -18,24 +20,26 @@ import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
 import mods.defeatedcrow.common.AMTLogger;
 
 public class TileProcessor extends MachineBase {
+    public TileProcessor(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) { super(pos, state); }
+
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
+    public void load(CompoundTag par1CompoundTag) {
+        super.load(par1CompoundTag);
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
+    public void saveAdditional(CompoundTag par1CompoundTag) {
+        super.saveAdditional(par1CompoundTag);
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        return super.getDescriptionPacket();
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return super.getUpdatePacket();
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         super.onDataPacket(net, pkt);
     }
 
@@ -152,7 +156,7 @@ public class TileProcessor extends MachineBase {
             ItemStack sec = activeRecipe.getSecondary();
             ItemStack cont = activeRecipe.getContainerItem(items);
             float chance = activeRecipe.getChance();
-            boolean getSec = worldObj.rand.nextFloat() <= chance;
+            boolean getSec = level.rand.nextFloat() <= chance;
 
             for (int i = 2; i < 11; i++) {
                 ItemStack slot = this.itemstacks[i];
@@ -195,7 +199,7 @@ public class TileProcessor extends MachineBase {
                             } else {
                                 this.decrStackSize(i, 1);
                             }
-                            this.markDirty();
+                            this.setChanged();
                             break;
                         }
                     }
@@ -233,7 +237,7 @@ public class TileProcessor extends MachineBase {
 
             this.onRecipeOutput();
 
-            this.markDirty();
+            this.setChanged();
         }
     }
 

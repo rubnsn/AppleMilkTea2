@@ -1,17 +1,16 @@
 package mods.defeatedcrow.event;
 
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
+import net.minecraftforge.fluids./* FLUID_CONTAINER_REMOVED removed - use ForgeCapabilities.FLUID_HANDLER */.FluidContainerData;
 import net.minecraftforge.fluids.FluidStack;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.handler.FluidContMap;
 
 public class FluidContainerRegisterEvent {
 
     @SubscribeEvent
-    public void onRegister(FluidContainerRegistry.FluidContainerRegisterEvent event) {
+    public void onRegister(/* FLUID_CONTAINER_REMOVED removed - use ForgeCapabilities.FLUID_HANDLER */.FluidContainerRegisterEvent event) {
         FluidContainerData data = event.data;
         FluidStack fluid = data.fluid;
         if (data != null && fluid != null && fluid.getFluid() != null) {

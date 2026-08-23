@@ -1,16 +1,20 @@
 package mods.defeatedcrow.common.tile.appliance;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.Level;
 import mods.defeatedcrow.api.recipe.IPanRecipe;
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
 
-public class TilePanG extends TileEntity {
+public class TilePanG extends BlockEntity {
+    public TilePanG(BlockPos pos, BlockState state) { super(null, pos, state); }
+
 
     private byte remain = 1;
     private boolean direction = false;
@@ -22,49 +26,49 @@ public class TilePanG extends TileEntity {
 
     // NBT
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
+    public void load(CompoundTag par1CompoundTag) {
+        super.load(par1CompoundTag);
 
-        if (par1NBTTagCompound.hasKey("Input")) {
-            this.setItemStack(ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("Input")));
+        if (par1CompoundTag.contains("Input")) {
+            this.setItemStack(ItemStack.loadItemStackFromNBT(par1CompoundTag.getCompound("Input")));
         }
 
-        this.remain = par1NBTTagCompound.getByte("Remaining");
-        this.direction = par1NBTTagCompound.getBoolean("Direction");
-        this.tex = par1NBTTagCompound.getString("Tex");
-        this.coolTime = par1NBTTagCompound.getByte("CoolTime");
+        this.remain = par1CompoundTag.getByte("Remaining");
+        this.direction = par1CompoundTag.getBoolean("Direction");
+        this.tex = par1CompoundTag.getString("Tex");
+        this.coolTime = par1CompoundTag.getByte("CoolTime");
     }
 
     /**
      * Writes a tile entity to NBT.
      */
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
+    public void saveAdditional(CompoundTag par1CompoundTag) {
+        super.saveAdditional(par1CompoundTag);
 
-        par1NBTTagCompound.setByte("Remaining", this.remain);
-        par1NBTTagCompound.setBoolean("Direction", this.direction);
-        par1NBTTagCompound.setString("Tex", tex);
-        par1NBTTagCompound.setByte("CoolTime", this.coolTime);
+        par1CompoundTag.putByte("Remaining", this.remain);
+        par1CompoundTag.putBoolean("Direction", this.direction);
+        par1CompoundTag.setString("Tex", tex);
+        par1CompoundTag.putByte("CoolTime", this.coolTime);
 
         if (this.getItemStack() != null) {
-            par1NBTTagCompound.setTag(
+            par1CompoundTag.put(
                 "Input",
                 this.getItemStack()
-                    .writeToNBT(new NBTTagCompound()));
+                    .saveAdditional(new CompoundTag()));
         }
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        this.writeToNBT(nbtTagCompound);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTagCompound);
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        CompoundTag nbtTagCompound = new CompoundTag();
+        this.saveAdditional(nbtTagCompound);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        this.readFromNBT(pkt.func_148857_g());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        this.load(pkt.getTag());
     }
 
     public byte getRemainByte() {
@@ -90,7 +94,7 @@ public class TilePanG extends TileEntity {
     public void setItemStack(ItemStack item) {
         this.input = item;
         this.setTexture(item);
-        this.markDirty();
+        this.setChanged();
     }
 
     public String getCurrentTexture() {
@@ -133,23 +137,14 @@ public class TilePanG extends TileEntity {
         this.coolTime = t;
     }
 
-    public int getMetadata() {
-        return this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-    }
+    public int getMetadata() { return 0; }
 
     @Override
-    public void updateEntity() {
-        // インベントリのチェックをしている
-        if (this.input == null) {
-            this.clearTile();
-        }
-
-        if (this.coolTime == 0) {
-            this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            this.setCoolTime((byte) 20);
-        }
-
-        super.updateEntity();
+    public static void tick(Level level, BlockPos pos, BlockState state, TilePanG be) {
+        // 1.20.1 tick (was updateEntity) - see doc/tile-entities/migration-guide.md
+        if (level.isClientSide) return;
+        be.setChanged();
+        level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
     }
 
     public IPanRecipe getRecipe() {

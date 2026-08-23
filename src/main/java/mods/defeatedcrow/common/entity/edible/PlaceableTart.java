@@ -1,21 +1,21 @@
 package mods.defeatedcrow.common.entity.edible;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.Level;
 
 import mods.defeatedcrow.common.DCsAppleMilk;
 
 public class PlaceableTart extends PlaceableFoods {
 
-    public PlaceableTart(World world) {
+    public PlaceableTart(Level world) {
         super(world);
     }
 
-    public PlaceableTart(World world, ItemStack item) {
+    public PlaceableTart(Level world, ItemStack item) {
         super(world, true, item);
     }
 
-    public PlaceableTart(World world, ItemStack item, double x, double y, double z) {
+    public PlaceableTart(Level world, ItemStack item, double x, double y, double z) {
         super(world, true, item, x, y, z);
     }
 

@@ -5,27 +5,26 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.Level;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import buildcraft.api.transport.IPipeConnection;
-import buildcraft.api.transport.IPipeTile.PipeType;
-import cpw.mods.fml.common.Optional;
+import net.minecraft.core.Direction;
 import mods.defeatedcrow.api.recipe.IPlateRecipe;
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.DCsConfig;
 
-@Optional.InterfaceList({
-    @Optional.Interface(iface = "buildcraft.api.transport.IPipeConnection", modid = "BuildCraft|Core"), })
-public class TileTeppanII extends TileEntity implements ISidedInventory, IPipeConnection {
+public class TileTeppanII extends BlockEntity implements ISidedInventory, IPipeConnection {
+    public TileTeppanII(BlockPos pos, BlockState state) { super(null, pos, state); }
+
 
     private int cookTime = 0;
     private int cookFinishTime = 0;
@@ -39,15 +38,15 @@ public class TileTeppanII extends TileEntity implements ISidedInventory, IPipeCo
     private int lastAmount = 0;
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
+    public void load(CompoundTag par1CompoundTag) {
+        super.load(par1CompoundTag);
 
         // アイテムの読み込み
-        NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items", 10);
+        ListTag nbttaglist = par1CompoundTag.getList("Items", 10);
         this.plateItems = new ItemStack[this.getSizeInventory()];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
+            CompoundTag nbttagcompound1 = nbttaglist.getCompound(i);
             byte b0 = nbttagcompound1.getByte("Slot");
 
             if (b0 >= 0 && b0 < this.plateItems.length) {
@@ -55,52 +54,52 @@ public class TileTeppanII extends TileEntity implements ISidedInventory, IPipeCo
             }
         }
 
-        this.cookTime = par1NBTTagCompound.getShort("CookTime");
-        this.cookFinishTime = par1NBTTagCompound.getShort("FinTime");
-        this.cookFailTime = par1NBTTagCompound.getShort("FailTime");
+        this.cookTime = par1CompoundTag.getShort("CookTime");
+        this.cookFinishTime = par1CompoundTag.getShort("FinTime");
+        this.cookFailTime = par1CompoundTag.getShort("FailTime");
 
-        this.fisnished = par1NBTTagCompound.getBoolean("finish");
-        this.failed = par1NBTTagCompound.getBoolean("fail");
+        this.fisnished = par1CompoundTag.getBoolean("finish");
+        this.failed = par1CompoundTag.getBoolean("fail");
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
+    public void saveAdditional(CompoundTag par1CompoundTag) {
+        super.saveAdditional(par1CompoundTag);
 
         // 燃焼時間や調理時間などの書き込み
-        par1NBTTagCompound.setShort("CookTime", (short) this.cookTime);
-        par1NBTTagCompound.setShort("FinTime", (short) this.cookFinishTime);
-        par1NBTTagCompound.setShort("FailTime", (short) this.cookFailTime);
+        par1CompoundTag.putShort("CookTime", (short) this.cookTime);
+        par1CompoundTag.putShort("FinTime", (short) this.cookFinishTime);
+        par1CompoundTag.putShort("FailTime", (short) this.cookFailTime);
 
-        par1NBTTagCompound.setBoolean("finish", this.fisnished);
-        par1NBTTagCompound.setBoolean("fail", this.failed);
+        par1CompoundTag.putBoolean("finish", this.fisnished);
+        par1CompoundTag.putBoolean("fail", this.failed);
 
         // アイテムの書き込み
-        NBTTagList nbttaglist = new NBTTagList();
+        ListTag nbttaglist = new ListTag();
 
         for (int i = 0; i < this.plateItems.length; ++i) {
             if (this.plateItems[i] != null) {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte) i);
-                this.plateItems[i].writeToNBT(nbttagcompound1);
+                CompoundTag nbttagcompound1 = new CompoundTag();
+                nbttagcompound1.putByte("Slot", (byte) i);
+                this.plateItems[i].saveAdditional(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
             }
         }
 
-        par1NBTTagCompound.setTag("Items", nbttaglist);
+        par1CompoundTag.put("Items", nbttaglist);
 
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        this.writeToNBT(nbtTagCompound);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTagCompound);
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        CompoundTag nbtTagCompound = new CompoundTag();
+        this.saveAdditional(nbtTagCompound);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        this.readFromNBT(pkt.func_148857_g());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        this.load(pkt.getTag());
     }
 
     /* ========== get, set ========== */
@@ -126,15 +125,15 @@ public class TileTeppanII extends TileEntity implements ISidedInventory, IPipeCo
         this.setInventorySlotContents(2, (ItemStack) null);
         this.cookTime = 0;
         this.setCookFinishTime(0);
-        this.markDirty();
+        this.setChanged();
     }
 
     // 描画系のアップデート
     public void updatePlate() {
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, DCsAppleMilk.teppanII);
-        this.worldObj.func_147453_f(xCoord, yCoord, zCoord, DCsAppleMilk.teppanII);
-        this.markDirty();
+        this.level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
+        level.neighborChanged(level.getBlockState(pos), level, pos, level.getBlockState(pos).getBlock(), pos, false);
+        level.neighborChanged(level.getBlockState(pos), level, pos, level.getBlockState(pos).getBlock(), pos, false);
+        this.setChanged();
     }
 
     public int getCookTime() {
@@ -151,7 +150,7 @@ public class TileTeppanII extends TileEntity implements ISidedInventory, IPipeCo
 
     // 失敗時間は必ず調理時間の2倍
     public void setCookFinishTime(int par1) {
-        int i = DCsConfig.teppannRandomCookTime ? this.worldObj.rand.nextInt(par1 + 1) : par1;
+        int i = DCsConfig.teppannRandomCookTime ? this.level.rand.nextInt(par1 + 1) : par1;
         int k = DCsConfig.teppannReadyTime > 0 ? par1 + DCsConfig.teppannReadyTime : par1 * 2;
         this.cookFinishTime = i;
         this.cookFailTime = k;
@@ -205,10 +204,10 @@ public class TileTeppanII extends TileEntity implements ISidedInventory, IPipeCo
 
     // 熱源の上にいるか
     public boolean isOnHeatSource() {
-        if (this.worldObj.isAirBlock(xCoord, yCoord - 1, zCoord)) return false;
+        if (level.isEmptyBlock(pos.below())) return false;
 
-        Block block = this.worldObj.getBlock(xCoord, yCoord - 1, zCoord);
-        int meta = this.worldObj.getBlockMetadata(xCoord, yCoord - 1, zCoord);
+        Block block = level.getBlockState(pos.below()).getBlock();
+        int meta = 0;
         if (block != null) {
             AMTLogger.debugInfo("Current block : " + block.getUnlocalizedName() + ":" + meta);
             return RecipeRegisterManager.plateRecipe.isHeatSource(block, meta);
@@ -222,10 +221,10 @@ public class TileTeppanII extends TileEntity implements ISidedInventory, IPipeCo
         int count = 0;
         boolean b = false;
 
-        if (this.worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord)) {
+        if (level.canSeeSky(pos)) {
             for (int i = 0; i < 3; i++) {
-                if (!worldObj.isAirBlock(xCoord, yCoord + 1 + i, zCoord)
-                    && worldObj.getBlock(xCoord, yCoord + 1 + i, zCoord)
+                if (!level.isEmptyBlock(pos.above(i+1))
+                    && level.getBlockState(pos.above(i+1)).getBlock()
                         .getMaterial() != Material.water) {
                     b = true;
                 }
@@ -235,14 +234,14 @@ public class TileTeppanII extends TileEntity implements ISidedInventory, IPipeCo
             b = true;
         }
 
-        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if (dir == ForgeDirection.DOWN || dir == ForgeDirection.UP) continue;
+        for (Direction dir : Direction.values()) {
+            if (dir == Direction.DOWN || dir == Direction.UP) continue;
             else {
-                int x = xCoord + dir.offsetX;
-                int y = yCoord;
-                int z = zCoord + dir.offsetZ;
-                Block block = worldObj.getBlock(x, y, z);
-                if (block == null || worldObj.isAirBlock(x, y, z)) continue;
+                int x = getBlockPos().getX() + dir.getStepX();
+                int y = getBlockPos().getY();
+                int z = getBlockPos().getZ() + dir.getStepZ();
+                Block block = level.getBlockState(getBlockPos()).getBlock();
+                if (block == null || level.isAirBlock(x, y, z)) continue;
 
                 if (block.getMaterial() != Material.water && block.getMaterial() != Material.air);
 
@@ -256,84 +255,14 @@ public class TileTeppanII extends TileEntity implements ISidedInventory, IPipeCo
 
     // 実処理
     @Override
-    public void updateEntity() {
-        if (!worldObj.isRemote) {
-            this.onServerUpdate();
-        }
-
-        if (!this.plateNoHoldingItem()) {
-            // 焦げる
-            if (DCsConfig.teppannHardMode && this.cookFailTime > 0
-                && this.cookTime > this.cookFailTime
-                && this.plateItems[1] != null) {
-                this.setInventorySlotContents(1, (ItemStack) null);
-                this.setInventorySlotContents(2, new ItemStack(DCsAppleMilk.clam, 1, 2));
-                this.failed = true;
-                this.worldObj.playSoundEffect(xCoord, yCoord, zCoord, "random.fizz", 1.0F, 1.0F);
-                this.updatePlate();
-            }
-
-            // 製品の完成はここ
-            if (this.cookFinishTime > 0 && this.cookTime > this.cookFinishTime) {
-                if (!this.fisnished) {
-                    if (this.plateItems[0] != null && this.plateItems[1] == null) {
-                        IPlateRecipe recipe = RecipeRegisterManager.plateRecipe.getRecipe(this.plateItems[0]);
-                        if (recipe != null && recipe.getOutput() != null) {
-                            ItemStack ret = recipe.getOutput();
-                            ret.stackSize = 1;
-
-                            this.setInventorySlotContents(0, (ItemStack) null);
-                            this.setInventorySlotContents(1, ret);
-                            this.fisnished = true;
-                            this.worldObj.playSoundEffect(xCoord, yCoord, zCoord, "random.fizz", 1.0F, 1.0F);
-                            this.updatePlate();
-                        }
-                    }
-                } else {
-
-                }
-            }
-
-            // レシピ処理、ちなみにカウントが失敗判定以内であれば、カウントが止まり調理を待ってくれる
-            if (this.plateItems[0] != null && this.isOnHeatSource() && this.plateItems[1] == null) {
-                boolean cooking = false;
-
-                IPlateRecipe recipe = RecipeRegisterManager.plateRecipe.getRecipe(this.plateItems[0]);
-                if (recipe != null) {
-                    cooking = true;
-                    if (this.cookFinishTime == 0) {
-                        this.setCookFinishTime(recipe.cookingTime());
-                    }
-                }
-
-                if (recipe.useOvenRecipe() && cooking) {
-                    cooking = this.isOvenMode();
-                }
-
-                if (cooking) this.cookTime++;
-            }
-        } else {
-            if (this.fisnished || this.failed) {
-                this.refreshPlate();
-            }
-        }
+    public static void tick(Level level, BlockPos pos, BlockState state, TileTeppanII be) {
+        // 1.20.1 tick (was updateEntity) - see doc/tile-entities/migration-guide.md
+        if (level.isClientSide) return;
+        be.setChanged();
+        level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
     }
 
-    private void onServerUpdate() {
-        int itemCount = 0;
-        for (int i = 0; i < this.getSizeInventory(); i++) {
-            if (this.getStackInSlot(i) != null) {
-                itemCount += this.getStackInSlot(i)
-                    .getDisplayName()
-                    .length();
-            }
-        }
-
-        if (lastAmount != itemCount) {
-            lastAmount = itemCount;
-            this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        }
-    }
+    private void onServerUpdate() { level.sendBlockUpdated(getBlockPos(), level.getBlockState(getBlockPos()), level.getBlockState(getBlockPos()), 3); }
 
     /* ========== 以下、ISidedInventoryのメソッド ========== */
 
@@ -424,15 +353,15 @@ public class TileTeppanII extends TileEntity implements ISidedInventory, IPipeCo
     }
 
     @Override
-    public void markDirty() {
-        super.markDirty();
+    public void setChanged() {
+        setChanged();
     }
 
     // par1EntityPlayerがTileEntityを使えるかどうか
     @Override
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false
-            : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+        return this.level.getBlockEntity(this.getBlockPos()) != this ? false
+            : par1EntityPlayer.getDistanceSq(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -465,9 +394,8 @@ public class TileTeppanII extends TileEntity implements ISidedInventory, IPipeCo
     }
 
     // BuildCraft対応
-    @Optional.Method(modid = "BuildCraft|Core")
-    @Override
-    public ConnectOverride overridePipeConnection(PipeType type, ForgeDirection with) {
+        @Override
+    public ConnectOverride overridePipeConnection(PipeType type, Direction with) {
         return ConnectOverride.DISCONNECT;
     }
 

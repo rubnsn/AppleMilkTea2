@@ -3,23 +3,19 @@ package mods.defeatedcrow.common.tile.appliance;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import buildcraft.api.transport.IPipeConnection;
-import buildcraft.api.transport.IPipeTile.PipeType;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.edibles.IEdibleItem;
 import mods.defeatedcrow.api.recipe.IEvaporatorRecipe;
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
@@ -27,99 +23,49 @@ import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.fluid.DCsTank;
 
-@Optional.InterfaceList({
-    @Optional.Interface(iface = "buildcraft.api.transport.IPipeConnection", modid = "BuildCraft|Core"), })
 public class TileEvaporator extends MachineBase implements IFluidHandler, IPipeConnection {
+    public TileEvaporator(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) { super(pos, state); }
+
 
     public DCsTank productTank = new DCsTank(4000);
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
+    public void load(CompoundTag par1CompoundTag) {
+        super.load(par1CompoundTag);
         this.productTank = new DCsTank(4000);
-        if (par1NBTTagCompound.hasKey("productTank")) {
-            this.productTank.readFromNBT(par1NBTTagCompound.getCompoundTag("productTank"));
+        if (par1CompoundTag.contains("productTank")) {
+            this.productTank.load(par1CompoundTag.getCompound("productTank"));
         }
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-        NBTTagCompound tank = new NBTTagCompound();
-        this.productTank.writeToNBT(tank);
-        par1NBTTagCompound.setTag("productTank", tank);
+    public void saveAdditional(CompoundTag par1CompoundTag) {
+        super.saveAdditional(par1CompoundTag);
+        CompoundTag tank = new CompoundTag();
+        this.productTank.saveAdditional(tank);
+        par1CompoundTag.put("productTank", tank);
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        return super.getDescriptionPacket();
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return super.getUpdatePacket();
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         super.onDataPacket(net, pkt);
     }
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
-
-        // 液体を取り出す部分
-        boolean flag1 = false;
-        boolean flag2 = false;
-        int drainAmount = 0;
-        Fluid fluid = null;
-        ItemStack returnStack = null;
-
-        if (this.productTank.getFluid() != null && this.productTank.getFluidType() != null) {
-            fluid = this.productTank.getFluidType();
-            flag1 = (fluid != null);
-        }
-
-        if (flag1 && this.itemstacks[4] != null) {
-            ItemStack cur = this.itemstacks[4].copy();
-
-            if (cur.getItem() == Item.getItemFromBlock(Blocks.sand)) {
-                this.productTank.drain(this.productTank.getFluidAmount(), true);
-            } else if (cur.getItem() == Items.bucket)// バケツの場合
-            {
-                returnStack = FluidContainerRegistry.fillFluidContainer(
-                    new FluidStack(this.productTank.getFluidType(), 1000),
-                    new ItemStack(Items.bucket));
-                flag2 = (returnStack != null && this.productTank.getFluidAmount() >= 1000 * cur.stackSize);
-                drainAmount = 1000 * cur.stackSize;
-            } else if (cur.getItem() == Item.getItemFromBlock(DCsAppleMilk.emptyBottle)) {
-                returnStack = FluidContainerRegistry.fillFluidContainer(
-                    new FluidStack(this.productTank.getFluidType(), 200),
-                    new ItemStack(DCsAppleMilk.emptyBottle));
-                flag2 = (returnStack != null && this.productTank.getFluidAmount() >= 200 * cur.stackSize);
-                drainAmount = 200 * cur.stackSize;
-            } else // その他の場合は1000mBのみチェック
-            {
-                returnStack = FluidContainerRegistry.fillFluidContainer(
-                    new FluidStack(this.productTank.getFluidType(), 1000),
-                    new ItemStack(cur.getItem(), 1, cur.getItemDamage()));
-                flag2 = (returnStack != null && this.productTank.getFluidAmount() >= 1000 * cur.stackSize);
-                drainAmount = 1000 * cur.stackSize;
-            }
-        }
-
-        if (flag1 && flag2 && returnStack != null) {
-            ItemStack result = new ItemStack(
-                returnStack.getItem(),
-                this.itemstacks[4].stackSize,
-                returnStack.getItemDamage());
-
-            if (this.productTank.drain(drainAmount, true) != null) {
-                this.itemstacks[4] = result;
-            }
-        }
-
-        this.markDirty();
+    public static void tick(Level level, BlockPos pos, BlockState state, TileEvaporator be) {
+        // 1.20.1 tick (was updateEntity) - see doc/tile-entities/migration-guide.md
+        if (level.isClientSide) return;
+        be.setChanged();
+        level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
     }
 
     // 調理中の矢印の描画
-    @SideOnly(Side.CLIENT)
+    
     public int getFluidAmountScaled(int par1) {
         return this.productTank.getFluidAmount() * par1 / 4000;
     }
@@ -309,7 +255,7 @@ public class TileEvaporator extends MachineBase implements IFluidHandler, IPipeC
                 this.productTank.fill(second, true);
             }
 
-            this.markDirty();
+            this.setChanged();
         }
     }
 
@@ -353,42 +299,41 @@ public class TileEvaporator extends MachineBase implements IFluidHandler, IPipeC
     /* ====== 以下、IFluidHandlerの実装メソッド ====== */
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+    public FluidStack drain(Direction from, FluidStack resource, boolean doDrain) {
         if (resource == null) return null;
         if (productTank.getFluidType() == resource.getFluid()) return productTank.drain(resource.amount, doDrain);
         return null;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    public FluidStack drain(Direction from, int maxDrain, boolean doDrain) {
         return this.productTank.drain(maxDrain, doDrain);
     }
 
     // 外部からの液体の受け入れはなし
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    public int fill(Direction from, FluidStack resource, boolean doFill) {
         return 0;
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
+    public boolean canFill(Direction from, Fluid fluid) {
         return false;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+    public boolean canDrain(Direction from, Fluid fluid) {
         return true;
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+    public FluidTankInfo[] getTankInfo(Direction from) {
         return new FluidTankInfo[] { productTank.getInfo() };
     }
 
     // BuildCraft対応
-    @Optional.Method(modid = "BuildCraft|Core")
-    @Override
-    public ConnectOverride overridePipeConnection(PipeType type, ForgeDirection with) {
+        @Override
+    public ConnectOverride overridePipeConnection(PipeType type, Direction with) {
         return type == PipeType.FLUID ? ConnectOverride.CONNECT : ConnectOverride.DISCONNECT;
     }
 

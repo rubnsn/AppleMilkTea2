@@ -1,62 +1,28 @@
 package mods.defeatedcrow.common.fluid;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fluids.BlockFluidClassic;
-import net.minecraftforge.fluids.Fluid;
+import java.util.function.Supplier;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 
-public class BlockOilFluid extends BlockFluidClassic {
+/**
+ * 1.20.1: ClassicFluidBlock -> LiquidBlock
+ * Vegitable oil fluid block. No Icon, textures via FluidType stillTexture.
+ * See doc/fluids/migration-guide.md
+ */
+public class BlockOilFluid extends LiquidBlock {
 
-    @SideOnly(Side.CLIENT)
-    protected IIcon baseIcon;
-    @SideOnly(Side.CLIENT)
-    protected IIcon sideIcon;
-
-    public BlockOilFluid(Fluid fluid, Material material) {
-        super(fluid, material);
-        this.setQuantaPerBlock(6);
-        this.displacements.put(Blocks.water, false);
-        this.displacements.put(Blocks.lava, false);
+    public BlockOilFluid(Supplier<? extends Fluid> fluid, BlockBehaviour.Properties props) {
+        super(fluid, props);
     }
 
     @Override
-    public IIcon getIcon(int side, int meta) {
-        return side != 0 && side != 1 ? this.sideIcon : this.baseIcon;
+    public boolean canBeReplaced(BlockState state, net.minecraft.world.level.material.Fluid fluid) {
+        return false;
     }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.baseIcon = par1IconRegister.registerIcon("defeatedcrow:fluid/oil_still");
-        this.sideIcon = par1IconRegister.registerIcon("defeatedcrow:fluid/oil_still");
-
-    }
-
-    @Override
-    public boolean canDisplace(IBlockAccess world, int x, int y, int z) {
-        Material mat = world.getBlock(x, y, z)
-            .getMaterial();
-        if (mat.isLiquid()) {
-            return false;
-        }
-        return super.canDisplace(world, x, y, z);
-    }
-
-    @Override
-    public boolean displaceIfPossible(World world, int x, int y, int z) {
-        Material mat = world.getBlock(x, y, z)
-            .getMaterial();
-        if (mat.isLiquid()) {
-            return false;
-        }
-        return super.displaceIfPossible(world, x, y, z);
-    }
-
 }

@@ -1,22 +1,22 @@
 package mods.defeatedcrow.common.entity.edible;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.Level;
 
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.handler.Util;
 
 public class PlaceableCocktailSP extends PlaceableFoods {
 
-    public PlaceableCocktailSP(World world) {
+    public PlaceableCocktailSP(Level world) {
         super(world);
     }
 
-    public PlaceableCocktailSP(World world, ItemStack item) {
+    public PlaceableCocktailSP(Level world, ItemStack item) {
         super(world, true, item);
     }
 
-    public PlaceableCocktailSP(World world, ItemStack item, double x, double y, double z) {
+    public PlaceableCocktailSP(Level world, ItemStack item, double x, double y, double z) {
         super(world, true, item, x, y, z);
     }
 

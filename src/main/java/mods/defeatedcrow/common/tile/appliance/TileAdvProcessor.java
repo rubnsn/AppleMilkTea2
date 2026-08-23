@@ -1,11 +1,10 @@
 package mods.defeatedcrow.common.tile.appliance;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import mods.defeatedcrow.api.appliance.IJawPlate;
 import mods.defeatedcrow.api.recipe.IProcessorRecipe;
 import mods.defeatedcrow.common.DCsAppleMilk;
@@ -21,22 +20,22 @@ import mods.defeatedcrow.common.DCsAppleMilk;
 public class TileAdvProcessor extends TileProcessor {
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
+    public void load(CompoundTag par1CompoundTag) {
+        super.load(par1CompoundTag);
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
+    public void saveAdditional(CompoundTag par1CompoundTag) {
+        super.saveAdditional(par1CompoundTag);
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        return super.getDescriptionPacket();
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return super.getUpdatePacket();
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         super.onDataPacket(net, pkt);
     }
 

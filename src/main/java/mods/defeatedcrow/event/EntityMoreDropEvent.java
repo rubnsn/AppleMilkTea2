@@ -11,10 +11,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraft.world.World;
+import net.minecraft.world.Level;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.common.DCsAppleMilk;
 
@@ -28,7 +28,7 @@ public class EntityMoreDropEvent {
         ItemStack hold = event.entityLiving.getHeldItem();
 
         // 以下、死んだモブの位置情報
-        World world = entity.worldObj;
+        Level world = entity.level;
         double posX = entity.posX;
         double posY = entity.posY;
         double posZ = entity.posZ;

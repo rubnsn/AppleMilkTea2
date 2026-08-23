@@ -3,7 +3,7 @@ package mods.defeatedcrow.common.world.village;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
+import net.minecraft.world.Level;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import net.minecraftforge.common.ChestGenHooks;
@@ -25,7 +25,7 @@ public class ComponentVillageCafe extends StructureVillagePieces.Village {
     }
 
     @Override
-    public boolean addComponentParts(World world, Random random, StructureBoundingBox structureboundingbox) {
+    public boolean addComponentParts(Level world, Random random, StructureBoundingBox structureboundingbox) {
 
         if (this.field_143015_k < 0)// 地面の平均高さのチェックかな？
         {

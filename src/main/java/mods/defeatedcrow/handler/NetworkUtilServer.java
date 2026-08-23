@@ -2,7 +2,6 @@ package mods.defeatedcrow.handler;
 
 import net.minecraft.server.integrated.IntegratedServer;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.common.DCsAppleMilk;
 
@@ -38,7 +37,7 @@ public class NetworkUtilServer {
     }
 
     public void setIngratedServerMode() {
-        this.ownerName = FMLClientHandler.instance()
+        this.ownerName = net.minecraftforge.fml.ModList.get()
             .getServer()
             .getServerOwner();
         if (this.ownerName.equalsIgnoreCase("ForgeDevName")) {
@@ -48,7 +47,7 @@ public class NetworkUtilServer {
             this.allowedNether = true;
             this.allowedPvP = true;
             DCsAppleMilk.debugMode = true;
-        } else if (FMLClientHandler.instance()
+        } else if (net.minecraftforge.fml.ModList.get()
             .getServer() instanceof IntegratedServer) {
                 AMTLogger.info("Recognized Integrated Server. It's only runnable in Client.");
                 this.isIntegratedServer = true;

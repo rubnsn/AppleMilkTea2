@@ -1,4 +1,67 @@
-package mods.defeatedcrow.event;
+import pathlib, re
+root = pathlib.Path(r"E:\AMT2-WT-B")
+
+# Fix DCsBonemealEvent
+p = root / "src/main/java/mods/defeatedcrow/event/DCsBonemealEvent.java"
+t = p.read_text(encoding='utf-8')
+new = """package mods.defeatedcrow.event;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.eventbus.api.Event.Result;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import mods.defeatedcrow.common.DCsAppleMilk;
+import mods.defeatedcrow.common.block.plants.BlockCassisTree;
+import mods.defeatedcrow.common.block.plants.BlockMintCrop;
+import mods.defeatedcrow.common.block.plants.BlockSaplingTea;
+import mods.defeatedcrow.common.block.plants.BlockTeaTree;
+import mods.defeatedcrow.common.block.plants.BlockYuzuSapling;
+
+/**
+ * 1.20.1: BonemealEvent now uses Level + BlockPos + BlockState (no int x,y,z)
+ * See doc/events/migration-guide.md
+ */
+public class DCsBonemealEvent {
+
+    @SubscribeEvent
+    public void useBoneMeal(BonemealEvent event) {
+        Level level = event.getLevel();
+        BlockPos pos = event.getPos();
+        Block block = level.getBlockState(pos).getBlock();
+        if (block == DCsAppleMilk.cropMint) {
+            if (((BlockMintCrop) DCsAppleMilk.cropMint).isValidBonemealTarget(level, pos, level.getBlockState(pos), false)) {
+                event.setResult(Result.ALLOW);
+            }
+        } else if (block == DCsAppleMilk.cassisTree) {
+            if (((BlockCassisTree) DCsAppleMilk.cassisTree).isValidBonemealTarget(level, pos, level.getBlockState(pos), false)) {
+                event.setResult(Result.ALLOW);
+            }
+        } else if (block == DCsAppleMilk.teaTree) {
+            if (((BlockTeaTree) DCsAppleMilk.teaTree).isValidBonemealTarget(level, pos, level.getBlockState(pos), false)) {
+                event.setResult(Result.ALLOW);
+            }
+        } else if (block == DCsAppleMilk.saplingTea) {
+            if (((BlockSaplingTea) DCsAppleMilk.saplingTea).isValidBonemealTarget(level, pos, level.getBlockState(pos), false)) {
+                event.setResult(Result.ALLOW);
+            }
+        } else if (block == DCsAppleMilk.saplingYuzu) {
+            if (((BlockYuzuSapling) DCsAppleMilk.saplingYuzu).isValidBonemealTarget(level, pos, level.getBlockState(pos), false)) {
+                event.setResult(Result.ALLOW);
+            }
+        }
+    }
+
+}
+"""
+p.write_text(new, encoding='utf-8')
+print("fixed DCsBonemealEvent")
+
+# Fix DispenserEvent
+p = root / "src/main/java/mods/defeatedcrow/event/DispenserEvent.java"
+t = p.read_text(encoding='utf-8')
+new = """package mods.defeatedcrow.event;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -141,3 +204,57 @@ public class DispenserEvent {
         });
     }
 }
+"""
+p.write_text(new, encoding='utf-8')
+print("fixed DispenserEvent")
+
+# Fix FluidDispenser
+p = root / "src/main/java/mods/defeatedcrow/event/FluidDispenser.java"
+new = """package mods.defeatedcrow.event;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.dispenser.BlockSource;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DispenserBlock;
+
+/**
+ * 1.20.1: BlockDispenser.dispenseBehaviorRegistry -> DispenserBlock.registerBehavior
+ * IBlockSource -> BlockSource, func_149937_b -> getValue(FACING), BlockPos
+ */
+public class FluidDispenser {
+
+    private FluidDispenser() {}
+
+    public static void load() {
+        // Bucket pickup / place is now handled via DispenserBlock.registerBehavior for oils
+        // Combined handler for bucket -> check for oil blocks at dispense pos
+        DispenserBlock.registerBehavior(Items.BUCKET, new DefaultDispenseItemBehavior() {
+            @Override
+            protected ItemStack execute(BlockSource source, ItemStack stack) {
+                Level level = source.getLevel();
+                Direction dir = source.getBlockState().getValue(DispenserBlock.FACING);
+                BlockPos pos = source.getPos().relative(dir);
+                if (!level.isClientSide) {
+                    if (level.getBlockState(pos).is(mods.defeatedcrow.common.registry.ModBlocks.BLOCK_CAMELLIA_OIL.get())) {
+                        level.removeBlock(pos, false);
+                        level.levelEvent(1009, pos, 0);
+                        return new ItemStack(mods.defeatedcrow.common.DCsAppleMilk.bucketCamOil);
+                    }
+                    if (level.getBlockState(pos).is(mods.defeatedcrow.common.registry.ModBlocks.BLOCK_VEGI_OIL.get())) {
+                        level.removeBlock(pos, false);
+                        level.levelEvent(1009, pos, 0);
+                        return new ItemStack(mods.defeatedcrow.common.DCsAppleMilk.bucketVegiOil);
+                    }
+                }
+                return super.execute(source, stack);
+            }
+        });
+    }
+}
+"""
+p.write_text(new, encoding='utf-8')
+print("fixed FluidDispenser")

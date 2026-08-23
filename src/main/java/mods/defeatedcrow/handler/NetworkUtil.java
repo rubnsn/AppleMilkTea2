@@ -2,9 +2,6 @@ package mods.defeatedcrow.handler;
 
 import net.minecraft.server.MinecraftServer;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import cpw.mods.fml.server.FMLServerHandler;
 import mods.defeatedcrow.common.AMTLogger;
 
 public class NetworkUtil {
@@ -40,24 +37,24 @@ public class NetworkUtil {
         }
     }
 
-    @SideOnly(Side.SERVER)
+    
     public static void initServer() {
-        if (FMLServerHandler.instance()
+        if (net.minecraftforge.fml.ModList.get()
             .getServer() != null) {
             AMTLogger.debugInfo("Recognized to Server Mode.");
-            String name = FMLServerHandler.instance()
+            String name = net.minecraftforge.fml.ModList.get()
                 .getServer()
                 .getServerOwner();
             if (name == null) {
                 name = "unknown";
             }
-            boolean online = FMLServerHandler.instance()
+            boolean online = net.minecraftforge.fml.ModList.get()
                 .getServer()
                 .isServerInOnlineMode();
-            boolean nether = FMLServerHandler.instance()
+            boolean nether = net.minecraftforge.fml.ModList.get()
                 .getServer()
                 .getAllowNether();
-            boolean pvp = FMLServerHandler.instance()
+            boolean pvp = net.minecraftforge.fml.ModList.get()
                 .getServer()
                 .isPVPEnabled();
             NetworkUtilServer.INSTANCE.setServerMode(name, online, nether, pvp);

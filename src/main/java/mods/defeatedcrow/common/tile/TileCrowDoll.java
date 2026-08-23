@@ -1,63 +1,57 @@
 package mods.defeatedcrow.common.tile;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.Level;
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.handler.CoordListRegister;
 
-public class TileCrowDoll extends TileEntity {
+public class TileCrowDoll extends BlockEntity {
+    public TileCrowDoll(BlockPos pos, BlockState state) { super(null, pos, state); }
+
 
     private boolean active = false;
 
     public double range = 0.0D;
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
-        this.range = par1NBTTagCompound.getDouble("Shake");
+    public void load(CompoundTag par1CompoundTag) {
+        super.load(par1CompoundTag);
+        this.range = par1CompoundTag.getDouble("Shake");
     }
 
     /**
      * Writes a tile entity to NBT.
      */
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setDouble("Shake", this.range);
+    public void saveAdditional(CompoundTag par1CompoundTag) {
+        super.saveAdditional(par1CompoundTag);
+        par1CompoundTag.putDouble("Shake", this.range);
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        this.writeToNBT(nbtTagCompound);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTagCompound);
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        CompoundTag nbtTagCompound = new CompoundTag();
+        this.saveAdditional(nbtTagCompound);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        this.readFromNBT(pkt.func_148857_g());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        this.load(pkt.getTag());
     }
 
     @Override
-    public void updateEntity() {
-        if (!worldObj.isRemote) {
-            if (!active) {
-                int cX = xCoord >> 4;
-                int cZ = zCoord >> 4;
-                if (CoordListRegister.setCood(worldObj, xCoord, yCoord, zCoord, cX, cZ)) {
-                    AMTLogger.debugInfo("add coord");
-                }
-            }
-        }
-        if (range * range > 0.01D) {
-            range *= -0.9D;
-        } else {
-            range = 0.0D;
-        }
+    public static void tick(Level level, BlockPos pos, BlockState state, TileCrowDoll be) {
+        // 1.20.1 tick (was updateEntity) - see doc/tile-entities/migration-guide.md
+        if (level.isClientSide) return;
+        be.setChanged();
+        level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
     }
 
 }

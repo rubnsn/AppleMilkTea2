@@ -10,7 +10,7 @@ import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import mods.defeatedcrow.api.potion.PotionReflexBase;
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.potion.*;
@@ -27,7 +27,7 @@ public class DCsHurtEvent {
         int reduceAmp = 0;
 
         // 遠隔クライアントサイドでは何もしない
-        if (target != null && !target.worldObj.isRemote) {
+        if (target != null && !target.level.isClientSide) {
             // PotionEffectのリスト
             Iterator iterator = target.getActivePotionEffects()
                 .iterator();

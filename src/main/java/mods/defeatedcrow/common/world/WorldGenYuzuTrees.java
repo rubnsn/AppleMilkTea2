@@ -1,10 +1,12 @@
 package mods.defeatedcrow.common.world;
 
+import net.minecraft.core.BlockPos;
+
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.world.World;
+import net.minecraft.world.Level;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -28,7 +30,7 @@ public class WorldGenYuzuTrees extends WorldGenAbstractTree {
         this.metaWood = logMeta;
     }
 
-    public boolean generate(World world, Random rand, int x, int y, int z) {
+    public boolean generate(Level world, Random rand, int x, int y, int z) {
         int height = rand.nextInt(4) + this.minTreeHeight;
         boolean flag = true;
 
@@ -135,7 +137,7 @@ public class WorldGenYuzuTrees extends WorldGenAbstractTree {
     }
 
     @Override
-    protected boolean isReplaceable(World world, int x, int y, int z) {
+    protected boolean isReplaceable(Level world, int x, int y, int z) {
         Block block = world.getBlock(x, y, z);
         return block.isAir(world, x, y, z) || block.isLeaves(world, x, y, z)
             || block.isWood(world, x, y, z)
