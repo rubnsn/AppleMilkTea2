@@ -1,21 +1,18 @@
 package mods.defeatedcrow.common.block.plants;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemTeaSapling extends ItemBlock {
 
     private static final String[] type = new String[] { "_tea", "_cassis", "_camellia" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon iconItemType[];
+    
+    private BlockTexture iconItemType[];
 
     public ItemTeaSapling(Block block) {
         super(block);
@@ -37,16 +34,16 @@ public class ItemTeaSapling extends ItemBlock {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1) {
+    
+    public BlockTexture getBlockTextureFromDamage(int par1) {
         int j = MathHelper.clamp_int(par1, 0, 2);
-        return this.field_150939_a.getIcon(0, par1);
+        return this.field_150939_a.getBlockTexture(0, par1);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
-        this.iconItemType = new IIcon[3];
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
+        this.iconItemType = new BlockTexture[3];
 
         for (int i = 0; i < 3; ++i) {
             this.iconItemType[i] = par1IconRegister.registerIcon("defeatedcrow:sapling" + type[i]);

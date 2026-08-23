@@ -3,9 +3,9 @@ package mods.defeatedcrow.common.block.appliance;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,24 +14,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.tile.appliance.TileEvaporator;
 
-public class BlockEvaporator extends BlockContainer {
+public class BlockEvaporator extends Block {
 
     protected Random rand = new Random();
 
-    @SideOnly(Side.CLIENT)
-    private IIcon glassTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon baseTex;
+    
+    private BlockTexture glassTex;
+    
+    private BlockTexture baseTex;
 
     public BlockEvaporator() {
         super(Material.ground);
@@ -48,7 +45,7 @@ public class BlockEvaporator extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -80,8 +77,8 @@ public class BlockEvaporator extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         return par1 == 1 ? this.glassTex : (par1 == 0 ? this.blockIcon : this.baseTex);
     }
 
@@ -232,8 +229,8 @@ public class BlockEvaporator extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = par1IconRegister.registerIcon("defeatedcrow:porcelain");
         this.baseTex = par1IconRegister.registerIcon("defeatedcrow:teppann");
         this.glassTex = par1IconRegister.registerIcon("defeatedcrow:blueglass");

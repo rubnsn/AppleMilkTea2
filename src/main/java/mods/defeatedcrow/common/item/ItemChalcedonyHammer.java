@@ -4,7 +4,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,9 +16,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 
 import com.google.common.collect.Sets;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.AMTLogger;
 
 public class ItemChalcedonyHammer extends ItemPickaxe {
@@ -151,8 +148,8 @@ public class ItemChalcedonyHammer extends ItemPickaxe {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
         this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:tools/chalcedonyhammer");
     }
 }

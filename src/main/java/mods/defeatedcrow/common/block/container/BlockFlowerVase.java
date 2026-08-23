@@ -4,16 +4,13 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.handler.Util;
 
@@ -21,10 +18,10 @@ public class BlockFlowerVase extends Block {
 
     private static final String[] leaves = new String[] { "rose", "peony", "lilac", "sun" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] baseTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] leafTex;
+    
+    private BlockTexture[] baseTex;
+    
+    private BlockTexture[] leafTex;
 
     public BlockFlowerVase() {
         super(Material.wood);
@@ -53,8 +50,8 @@ public class BlockFlowerVase extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = par2 & 3;
         if (par1 == 0) {
             return this.leafTex[i];
@@ -72,7 +69,7 @@ public class BlockFlowerVase extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
@@ -81,11 +78,11 @@ public class BlockFlowerVase extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge_base1");
-        this.baseTex = new IIcon[4];
-        this.leafTex = new IIcon[4];
+        this.baseTex = new BlockTexture[4];
+        this.leafTex = new BlockTexture[4];
 
         for (int i = 0; i < 4; ++i) {
             this.baseTex[i] = par1IconRegister

@@ -7,16 +7,13 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.src.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockFlint extends BlockBreakable {
 
@@ -33,7 +30,7 @@ public class BlockFlint extends BlockBreakable {
         return Item.getItemFromBlock(this);
     }
 
-    @SideOnly(Side.CLIENT)
+    
     public int getRenderBlockPass() {
         return 0;
     }
@@ -53,12 +50,12 @@ public class BlockFlint extends BlockBreakable {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public int getBlockColor() {
         return 0x808080;
     }
 
-    @SideOnly(Side.CLIENT)
+    
     public int getRenderColor(int par1) {
         return 0x808080;
     }
@@ -68,8 +65,8 @@ public class BlockFlint extends BlockBreakable {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = Blocks.stone_slab.getBlockTextureFromSide(1);
     }
 

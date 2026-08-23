@@ -3,9 +3,9 @@ package mods.defeatedcrow.common.block.brewing;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,11 +19,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidHandlerHelper;
 import net.minecraftforge.fluids.FluidStack;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.AchievementRegister;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.tile.TileBrewingBarrel;
@@ -34,7 +31,7 @@ import mods.defeatedcrow.recipe.BrewingRecipe;
  * 基本仕様はCordialの流用で、但し外見から熟成段階が見えない。
  * Cordialとの違いは、樽のままではレシピに使用できず、いったん瓶に移さないとならない点である。
  */
-public class BlockBarrel extends BlockContainer {
+public class BlockBarrel extends Block {
 
     public BlockBarrel() {
         super(Material.wood);
@@ -67,16 +64,16 @@ public class BlockBarrel extends BlockContainer {
 
             if (item.getItem() == Items.bucket && fluid.amount > 1000)// バケツ
             {
-                ret = FluidContainerRegistry
+                ret = FluidHandlerHelper
                     .fillFluidContainer(new FluidStack(fluid.getFluid(), 1000), new ItemStack(Items.bucket));
                 if (Util.notEmptyItem(ret)) drainAmount = 1000;
             } else if (item.getItem() == Item.getItemFromBlock(DCsAppleMilk.emptyBottle) && fluid.amount > 200)// ビン
             {
-                ret = FluidContainerRegistry
+                ret = FluidHandlerHelper
                     .fillFluidContainer(new FluidStack(fluid.getFluid(), 200), new ItemStack(DCsAppleMilk.emptyBottle));
                 if (Util.notEmptyItem(ret)) drainAmount = 200;
             } else {
-                ret = FluidContainerRegistry.fillFluidContainer(
+                ret = FluidHandlerHelper.fillFluidContainer(
                     new FluidStack(fluid.getFluid(), 1000),
                     new ItemStack(item.getItem(), 1, item.getItemDamage()));
                 if (Util.notEmptyItem(ret)) drainAmount = 1000;
@@ -112,11 +109,11 @@ public class BlockBarrel extends BlockContainer {
 
             return true;
         } else if (Util.notEmptyItem(item) && tile.productTank.isEmpty()) {
-            if (FluidContainerRegistry.isFilledContainer(item)) {
-                FluidStack input = FluidContainerRegistry.getFluidForFilledItem(item);
+            if (FluidHandlerHelper.isFilledContainer(item)) {
+                FluidStack input = FluidHandlerHelper.getFluidForFilledItem(item);
                 if (input != null) {
                     if (BrewingRecipe.recipe.containsKey(input.getFluid())) {
-                        ItemStack ret = FluidContainerRegistry.drainFluidContainer(item);
+                        ItemStack ret = FluidHandlerHelper.drainFluidContainer(item);
                         Fluid fluid = input.getFluid();
                         int amount = input.amount;
 
@@ -231,7 +228,7 @@ public class BlockBarrel extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -258,9 +255,9 @@ public class BlockBarrel extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.blockIcon = par1IIconRegister.registerIcon("defeatedcrow:barrel");
+    
+    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
+        this.blockIcon = par1BlockIconRegister.registerIcon("defeatedcrow:barrel");
     }
 
     @Override

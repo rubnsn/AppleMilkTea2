@@ -6,16 +6,13 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.handler.Util;
 
@@ -24,10 +21,10 @@ import mods.defeatedcrow.handler.Util;
  */
 public class BlockWoodPanel extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] cover;
-    @SideOnly(Side.CLIENT)
-    private IIcon inner;
+    
+    private BlockTexture[] cover;
+    
+    private BlockTexture inner;
 
     public BlockWoodPanel() {
         super(Material.wood);
@@ -59,7 +56,7 @@ public class BlockWoodPanel extends Block {
         return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
     }
 
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -90,15 +87,15 @@ public class BlockWoodPanel extends Block {
         return Item.getItemFromBlock(this);
     }
 
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         return par1 > 3 ? inner : cover[par1];
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.cover = new IIcon[4];
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
+        this.cover = new BlockTexture[4];
 
         this.blockIcon = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "woodpanel_3");
         this.cover[0] = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "woodpanel");

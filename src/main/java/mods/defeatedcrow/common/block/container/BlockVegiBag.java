@@ -3,36 +3,33 @@ package mods.defeatedcrow.common.block.container;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.tile.TileVegiBag;
 import mods.defeatedcrow.handler.Util;
 
-public class BlockVegiBag extends BlockContainer {
+public class BlockVegiBag extends Block {
 
     private static final String[] bagVegi = new String[] { "_leaves", "_potato", "_carrot", "_pumpkin", "_seed",
         "_reed", "_cactus", "_cocoa", "_wart", "_sugar" };
     public static final String[] bagTexType = new String[] { "LeavesBag_T", "PotatoBag_T", "CarrotBag_T",
         "PumpkinBag_T", "SeedBag_T", "ReedBag_T", "CactusBag_T", "CocoaBag_T", "WartBag_T", "SugarBag_T" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] wheatBagTop;
-    @SideOnly(Side.CLIENT)
-    private IIcon wheatBagSide;
+    
+    private BlockTexture[] wheatBagTop;
+    
+    private BlockTexture wheatBagSide;
 
     public BlockVegiBag() {
         super(Material.wood);
@@ -52,8 +49,8 @@ public class BlockVegiBag extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = par2;
         if (i > 9) i = 9;
         if (par1 == 1) {
@@ -72,7 +69,7 @@ public class BlockVegiBag extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
@@ -87,11 +84,11 @@ public class BlockVegiBag extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "bag_wheat_B");
         this.wheatBagSide = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "bag_wheat_S");
-        this.wheatBagTop = new IIcon[10];
+        this.wheatBagTop = new BlockTexture[10];
 
         for (int i = 0; i < 10; ++i) {
             this.wheatBagTop[i] = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "bag" + bagVegi[i] + "_T");
@@ -140,7 +137,7 @@ public class BlockVegiBag extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);

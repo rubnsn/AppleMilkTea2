@@ -3,9 +3,9 @@ package mods.defeatedcrow.common.block;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,19 +15,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.events.AMTBlockRightClickEvent;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.tile.TileBowlRack;
 
-public class BlockBowlRack extends BlockContainer {
+public class BlockBowlRack extends Block {
 
     public BlockBowlRack() {
         super(Material.wood);
@@ -120,7 +117,7 @@ public class BlockBowlRack extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -137,9 +134,9 @@ public class BlockBowlRack extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
-        return Blocks.planks.getIcon(1, 0);
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
+        return Blocks.planks.getBlockTexture(1, 0);
     }
 
     @Override
@@ -148,9 +145,9 @@ public class BlockBowlRack extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.blockIcon = Blocks.planks.getIcon(1, 0);
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
+        this.blockIcon = Blocks.planks.getBlockTexture(1, 0);
     }
 
     @Override

@@ -2,25 +2,22 @@ package mods.defeatedcrow.common.item.edible;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.*;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.*;
 import mods.defeatedcrow.common.entity.edible.*;
 
 public class ItemAppleSandwich extends EdibleEntityItem2 {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon iconSandwichType[];
+    
+    private BlockTexture iconSandwichType[];
 
     private static final String[] sandwichType = new String[] { "_apple", "_egg", "_cassis", "_yuzu" };
 
@@ -36,8 +33,8 @@ public class ItemAppleSandwich extends EdibleEntityItem2 {
         return new int[] { 4, 2 };
     }
 
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1) {
+    
+    public BlockTexture getBlockTextureFromDamage(int par1) {
         int j = MathHelper.clamp_int(par1, 0, 3);
         return this.iconSandwichType[j];
     }
@@ -53,7 +50,7 @@ public class ItemAppleSandwich extends EdibleEntityItem2 {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(this, 1, 0));
         par3List.add(new ItemStack(this, 1, 1));
@@ -62,9 +59,9 @@ public class ItemAppleSandwich extends EdibleEntityItem2 {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
-        this.iconSandwichType = new IIcon[4];
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
+        this.iconSandwichType = new BlockTexture[4];
 
         for (int i = 0; i < 4; ++i) {
             this.iconSandwichType[i] = par1IconRegister.registerIcon("defeatedcrow:sandwich" + sandwichType[i]);

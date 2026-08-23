@@ -2,7 +2,7 @@ package mods.defeatedcrow.common.item.edible;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -10,11 +10,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemWallMug extends Item {
 
@@ -29,10 +26,10 @@ public class ItemWallMug extends Item {
         "Damage Boost" };
     private static final String[] timeType = new String[] { "(60sec)", "(2min)", "(4min)", "(5min)" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] thisTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] topTex;
+    
+    private BlockTexture[] thisTex;
+    
+    private BlockTexture[] topTex;
 
     public ItemWallMug() {
         super();
@@ -122,7 +119,7 @@ public class ItemWallMug extends Item {
         return par1ItemStack;
     }
 
-    @SideOnly(Side.CLIENT)
+    
     // マウスオーバー時の表示情報
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
         super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
@@ -173,33 +170,33 @@ public class ItemWallMug extends Item {
     }
 
     // 以下はサブタイプやアイコン登録など
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1) {
+    
+    public BlockTexture getBlockTextureFromDamage(int par1) {
         int j = par1 & 7;
         return this.thisTex[j];
     }
 
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamageForRenderPass(int par1, int par2) {
+    
+    public BlockTexture getBlockTextureFromDamageForRenderPass(int par1, int par2) {
         int type = this.checkFruitType(par1);
 
-        return par2 == 0 ? this.topTex[type] : super.getIconFromDamageForRenderPass(par1, par2);
+        return par2 == 0 ? this.topTex[type] : super.getBlockTextureFromDamageForRenderPass(par1, par2);
     }
 
-    @SideOnly(Side.CLIENT)
+    
     public boolean requiresMultipleRenderPasses() {
         return true;
     }
 
     @Override
-    public IIcon getIcon(ItemStack stack, int pass) {
+    public BlockTexture getBlockTexture(ItemStack stack, int pass) {
         int m = stack.getMaxDamage();
         int type = m & 7;
         int fruit = this.checkFruitType(m);
         if (pass == 0) {
             return this.topTex[fruit];
         } else {
-            return getIconFromDamageForRenderPass(stack.getItemDamage(), pass);
+            return getBlockTextureFromDamageForRenderPass(stack.getItemDamage(), pass);
         }
     }
 
@@ -214,7 +211,7 @@ public class ItemWallMug extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(this, 1, 0));
         par3List.add(new ItemStack(this, 1, 1));
@@ -223,11 +220,11 @@ public class ItemWallMug extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
 
-        this.thisTex = new IIcon[8];
-        this.topTex = new IIcon[4];
+        this.thisTex = new BlockTexture[8];
+        this.topTex = new BlockTexture[4];
 
         for (int i = 0; i < 4; ++i) {
             this.thisTex[i] = par1IconRegister.registerIcon("defeatedcrow:wallmug" + contents[i]);

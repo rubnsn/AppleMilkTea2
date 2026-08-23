@@ -3,36 +3,33 @@ package mods.defeatedcrow.common.block.appliance;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.events.AMTBlockRightClickEvent;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.DCsConfig;
 import mods.defeatedcrow.common.tile.TileCupHandle;
 
-public class BlockEmptyCup extends BlockContainer {
+public class BlockEmptyCup extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon itemIIcon;
-    @SideOnly(Side.CLIENT)
-    private IIcon boxIIcon;
-    @SideOnly(Side.CLIENT)
-    private IIcon summerboxIIcon;
+    
+    private BlockTexture itemBlockTexture;
+    
+    private BlockTexture boxBlockTexture;
+    
+    private BlockTexture summerboxBlockTexture;
 
     public BlockEmptyCup() {
         super(Material.circuits);
@@ -106,7 +103,7 @@ public class BlockEmptyCup extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -186,15 +183,15 @@ public class BlockEmptyCup extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = par2;
         if (par1 == 0) {
-            return this.boxIIcon;
+            return this.boxBlockTexture;
         } else if (par1 == 1) {
-            return this.summerboxIIcon;
+            return this.summerboxBlockTexture;
         } else {
-            return this.itemIIcon;
+            return this.itemBlockTexture;
         }
     }
 
@@ -204,11 +201,11 @@ public class BlockEmptyCup extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.boxIIcon = par1IIconRegister.registerIcon("defeatedcrow:porcelain");
-        this.itemIIcon = par1IIconRegister.registerIcon("defeatedcrow:cup_empty");
-        this.summerboxIIcon = par1IIconRegister.registerIcon("defeatedcrow:summercup_side");
+    
+    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
+        this.boxBlockTexture = par1BlockIconRegister.registerIcon("defeatedcrow:porcelain");
+        this.itemBlockTexture = par1BlockIconRegister.registerIcon("defeatedcrow:cup_empty");
+        this.summerboxBlockTexture = par1BlockIconRegister.registerIcon("defeatedcrow:summercup_side");
     }
 
 }

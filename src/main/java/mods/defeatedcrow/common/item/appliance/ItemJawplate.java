@@ -2,25 +2,22 @@ package mods.defeatedcrow.common.item.appliance;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.appliance.IJawPlate;
 import mods.defeatedcrow.common.DCsAppleMilk;
 
 public class ItemJawplate extends Item implements IJawPlate {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon iconType[];
+    
+    private BlockTexture iconType[];
     private static final String[] itemType = new String[] { "sterilized", "stone", "chal", "iron", "steel", "alloy" };
 
     public ItemJawplate() {
@@ -31,8 +28,8 @@ public class ItemJawplate extends Item implements IJawPlate {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1) {
+    
+    public BlockTexture getBlockTextureFromDamage(int par1) {
         int j = MathHelper.clamp_int(par1, 0, 5);
         return this.iconType[j];
     }
@@ -48,7 +45,7 @@ public class ItemJawplate extends Item implements IJawPlate {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(this, 1, 0));
         par3List.add(new ItemStack(this, 1, 1));
@@ -59,11 +56,11 @@ public class ItemJawplate extends Item implements IJawPlate {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
 
         this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:tools/jawplate_stone");
-        this.iconType = new IIcon[6];
+        this.iconType = new BlockTexture[6];
         for (int i = 0; i < 6; ++i) {
             this.iconType[i] = par1IconRegister.registerIcon("defeatedcrow:tools/jawplate_" + itemType[i]);
         }
@@ -71,7 +68,7 @@ public class ItemJawplate extends Item implements IJawPlate {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void addInformation(ItemStack stack, EntityPlayer player, List par3List, boolean par4) {
         super.addInformation(stack, player, par3List, par4);
         if (stack != null) {

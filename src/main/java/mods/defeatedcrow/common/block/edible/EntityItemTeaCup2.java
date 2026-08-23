@@ -13,9 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.potion.AMTPotionManager;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.entity.edible.PlaceableCup2;
@@ -201,7 +198,7 @@ public class EntityItemTeaCup2 extends EdibleEntityItemBlock2 {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     // マウスオーバー時の表示情報
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
         super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);

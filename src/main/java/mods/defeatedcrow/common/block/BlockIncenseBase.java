@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -22,10 +22,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.charm.EffectType;
 import mods.defeatedcrow.api.charm.IIncenseEffect;
 import mods.defeatedcrow.api.events.AMTBlockRightClickEvent;
@@ -39,7 +35,7 @@ import mods.defeatedcrow.common.tile.TileIncenseBase;
 /**
  * インセンスアイテムのアップデート処理はここにある。
  */
-public class BlockIncenseBase extends BlockContainer {
+public class BlockIncenseBase extends Block {
 
     public BlockIncenseBase() {
         super(Material.circuits);
@@ -153,7 +149,7 @@ public class BlockIncenseBase extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -248,12 +244,12 @@ public class BlockIncenseBase extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.blockIcon = par1IIconRegister.registerIcon("defeatedcrow:chalcedony");
+    
+    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
+        this.blockIcon = par1BlockIconRegister.registerIcon("defeatedcrow:chalcedony");
     }
 
-    @SideOnly(Side.CLIENT)
+    
     @Override
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         int l = par1World.getBlockMetadata(par2, par3, par4);
@@ -293,7 +289,7 @@ public class BlockIncenseBase extends BlockContainer {
             EntityDCCloudFX cloud = new EntityDCCloudFX(par1World, d0, d1, d2, 0.0D, d4, 0.0D);
             cloud.setParticleIcon(
                 ParticleTex.getInstance()
-                    .getIcon(FXName));
+                    .getBlockTexture(FXName));
             cloud.setRBGColorF(R, G, B);
             cloud.setAlphaF(0.75F);
             FMLClientHandler.instance()

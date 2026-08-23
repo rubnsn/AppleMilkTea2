@@ -1,18 +1,15 @@
 package mods.defeatedcrow.common.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemDummyForTeppan extends Item {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon iconItemType[];
+    
+    private BlockTexture iconItemType[];
 
     public ItemDummyForTeppan() {
         super();
@@ -21,8 +18,8 @@ public class ItemDummyForTeppan extends Item {
         this.setHasSubtypes(true);
     }
 
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1) {
+    
+    public BlockTexture getBlockTextureFromDamage(int par1) {
         int j = MathHelper.clamp_int(par1, 0, 1);
         return this.iconItemType[j];
     }
@@ -39,10 +36,10 @@ public class ItemDummyForTeppan extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
         this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:teppan_dummy");
-        this.iconItemType = new IIcon[2];
+        this.iconItemType = new BlockTexture[2];
         this.iconItemType[0] = par1IconRegister.registerIcon("defeatedcrow:teppan_dummy");
         this.iconItemType[1] = par1IconRegister.registerIcon("defeatedcrow:teppan_dummy_oven");
     }

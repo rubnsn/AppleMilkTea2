@@ -4,27 +4,24 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.entity.EntityMelonBomb;
 
 public class BlockMelonBomb extends Block {
 
-    @SideOnly(Side.CLIENT)
-    protected IIcon itemIcon;
-    @SideOnly(Side.CLIENT)
-    protected IIcon boxIcon;
+    
+    protected BlockTexture itemIcon;
+    
+    protected BlockTexture boxIcon;
 
     protected final int[] sideX = new int[] { 1, -1, 0, 0, 0, 0 };
     protected final int[] sideY = new int[] { 0, 0, 1, -1, 0, 0 };
@@ -142,7 +139,7 @@ public class BlockMelonBomb extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -159,8 +156,8 @@ public class BlockMelonBomb extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = par2;
         if (par1 == 0 || par1 == 1) {
             return this.boxIcon;
@@ -175,8 +172,8 @@ public class BlockMelonBomb extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = par1IconRegister.registerIcon("defeatedcrow:melonbox");
         this.boxIcon = par1IconRegister.registerIcon("defeatedcrow:melonbox_top");
         this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:melonbox");

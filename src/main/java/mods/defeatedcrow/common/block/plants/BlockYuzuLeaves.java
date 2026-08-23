@@ -8,7 +8,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeavesBase;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,15 +16,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.plants.IRightClickHarvestable;
 import mods.defeatedcrow.api.plants.PlantsClickEvent;
 import mods.defeatedcrow.common.AchievementRegister;
@@ -39,9 +35,9 @@ import mods.defeatedcrow.handler.Util;
 public class BlockYuzuLeaves extends BlockLeavesBase implements IShearable, IRightClickHarvestable {
 
     int[] around;
-    @SideOnly(Side.CLIENT)
+    
     protected int graphicsLevel;
-    protected IIcon[] leavesIcon;
+    protected BlockTexture[] leavesIcon;
     private static final String[] type = new String[] { "yuzu" };
 
     public BlockYuzuLeaves() {
@@ -56,16 +52,16 @@ public class BlockYuzuLeaves extends BlockLeavesBase implements IShearable, IRig
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_) {
         p_149666_3_.add(new ItemStack(p_149666_1_, 1, 3));
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "leaves_yuzu_0");
-        this.leavesIcon = new IIcon[3];
+        this.leavesIcon = new BlockTexture[3];
 
         for (int i = 0; i < 3; ++i) {
             if (i == 2 && DCsAppleMilk.CAL.get(Calendar.MONTH) == 3 && DCsAppleMilk.CAL.get(Calendar.DATE) == 1) {
@@ -256,7 +252,7 @@ public class BlockYuzuLeaves extends BlockLeavesBase implements IShearable, IRig
      * A randomly called display update to be able to add particles or other items for display
      */
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void randomDisplayTick(World p_149734_1_, int p_149734_2_, int p_149734_3_, int p_149734_4_,
         Random p_149734_5_) {
         if (p_149734_1_.canLightningStrikeAt(p_149734_2_, p_149734_3_ + 1, p_149734_4_)
@@ -336,8 +332,8 @@ public class BlockYuzuLeaves extends BlockLeavesBase implements IShearable, IRig
      * Gets the block's texture. Args: side, meta
      */
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int meta = par2 & 3;
         return meta == 0 ? this.leavesIcon[0] : this.leavesIcon[meta - 1];
     }
@@ -345,7 +341,7 @@ public class BlockYuzuLeaves extends BlockLeavesBase implements IShearable, IRig
     /**
      * Pass true to draw this block using fancy graphics, or false for fast graphics.
      */
-    @SideOnly(Side.CLIENT)
+    
     public void setGraphicsLevel(boolean p_150122_1_) {
         this.field_150121_P = p_150122_1_;
         this.graphicsLevel = p_150122_1_ ? 0 : 1;

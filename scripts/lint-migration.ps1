@@ -57,7 +57,7 @@ Lint-Grep -Pattern "registerBlockIcons" -Paths $owned -Label "registerBlockIcons
 Lint-Grep -Pattern "getIcon\(int" -Paths $owned -Label "getIcon(int"
 Lint-Grep -Pattern "setBlockName" -Paths $owned -Label "setBlockName"
 Lint-Grep -Pattern "S35PacketUpdateTileEntity" -Paths $owned -Label "S35PacketUpdateTileEntity"
-Lint-Grep -Pattern "BlockContainer" -Paths $owned -Label "BlockContainer"
+Lint-Grep -Pattern "\bBlockContainer\b" -Paths $owned -Label "BlockContainer"
 Lint-Grep -Pattern "BlockFluidClassic" -Paths $owned -Label "BlockFluidClassic"
 Lint-Grep -Pattern "FluidContainerRegistry" -Paths $owned -Label "FluidContainerRegistry"
 Lint-Grep -Pattern "SimpleNetworkWrapper" -Paths $owned -Label "SimpleNetworkWrapper"

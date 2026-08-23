@@ -4,29 +4,26 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.tile.TileFlowerPot;
 
-public class BlockFlowerPot extends BlockContainer {
+public class BlockFlowerPot extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] flowerIcon;
+    
+    private BlockTexture[] flowerIcon;
 
     public BlockFlowerPot() {
         super(Material.ground);
@@ -53,7 +50,7 @@ public class BlockFlowerPot extends BlockContainer {
         return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
     }
 
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -118,15 +115,15 @@ public class BlockFlowerPot extends BlockContainer {
         return new TileFlowerPot();
     }
 
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 4));
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         if (par1 == 0) {
             return this.blockIcon;
         } else {
@@ -135,11 +132,11 @@ public class BlockFlowerPot extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = par1IconRegister.registerIcon("defeatedcrow:basket_B0");
 
-        this.flowerIcon = new IIcon[2];
+        this.flowerIcon = new BlockTexture[2];
 
         this.flowerIcon[0] = par1IconRegister.registerIcon("defeatedcrow:flowerpot_red");
         this.flowerIcon[1] = par1IconRegister.registerIcon("defeatedcrow:flowerpot_yellow");

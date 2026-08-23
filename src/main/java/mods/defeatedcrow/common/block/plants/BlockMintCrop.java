@@ -7,25 +7,22 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.IGrowable;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.handler.Util;
 
 public class BlockMintCrop extends BlockBush implements IGrowable {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] iconArray;
+    
+    private BlockTexture[] iconArray;
 
     public BlockMintCrop() {
         super();
@@ -140,8 +137,8 @@ public class BlockMintCrop extends BlockBush implements IGrowable {
         return f;
     }
 
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int j = MathHelper.clamp_int(par2, 0, 3);
         return this.iconArray[j];
     }
@@ -206,14 +203,14 @@ public class BlockMintCrop extends BlockBush implements IGrowable {
         return 0;
     }
 
-    @SideOnly(Side.CLIENT)
+    
     public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_) {
         return this.getSeedItem();
     }
 
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.iconArray = new IIcon[4];
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
+        this.iconArray = new BlockTexture[4];
 
         for (int i = 0; i < this.iconArray.length; ++i) {
             this.iconArray[i] = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "crop_mint" + "_stage_" + i);

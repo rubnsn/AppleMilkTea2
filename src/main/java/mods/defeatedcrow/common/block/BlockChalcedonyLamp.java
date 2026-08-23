@@ -4,40 +4,36 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.client.particle.EntityOrbFX;
 import mods.defeatedcrow.client.particle.ParticleTex;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.DCsConfig;
 import mods.defeatedcrow.common.tile.TileCLamp;
 
-public class BlockChalcedonyLamp extends BlockContainer {
+public class BlockChalcedonyLamp extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] color;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] burst;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] force;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] sword;
-    @SideOnly(Side.CLIENT)
-    private IIcon inner;
+    
+    private BlockTexture[] color;
+    
+    private BlockTexture[] burst;
+    
+    private BlockTexture[] force;
+    
+    private BlockTexture[] sword;
+    
+    private BlockTexture inner;
 
     public BlockChalcedonyLamp(Material material, boolean flag) {
         super(Material.glass);
@@ -174,8 +170,8 @@ public class BlockChalcedonyLamp extends BlockContainer {
 
     // rendering
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         /*
          * 0~3 : ノーマルランプ
          * 4~7 : ガラスランプ
@@ -200,7 +196,7 @@ public class BlockChalcedonyLamp extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         for (int i = 0; i < 8; ++i) {
             par3List.add(new ItemStack(this, 1, i));
@@ -217,12 +213,12 @@ public class BlockChalcedonyLamp extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public int getRenderBlockPass() {
         return 1;
     }
 
-    @SideOnly(Side.CLIENT)
+    
     @Override
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         int l = par1World.getBlockMetadata(par2, par3, par4);
@@ -239,7 +235,7 @@ public class BlockChalcedonyLamp extends BlockContainer {
                 EntityOrbFX cloud = new EntityOrbFX(par1World, d0, d1, d2, 0.0D, d3, 0.0D);
                 cloud.setParticleIcon(
                     ParticleTex.getInstance()
-                        .getIcon("orb"));
+                        .getBlockTexture("orb"));
                 FMLClientHandler.instance()
                     .getClient().effectRenderer.addEffect(cloud);
             }
@@ -248,9 +244,9 @@ public class BlockChalcedonyLamp extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.color = new IIcon[4];
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
+        this.color = new BlockTexture[4];
         for (int i = 0; i < 4; ++i) {
             if (i == 0) this.color[i] = par1IconRegister.registerIcon("defeatedcrow:chalcedony");
             else if (i == 1) this.color[i] = par1IconRegister.registerIcon("defeatedcrow:chalcedony_orange");
@@ -258,17 +254,17 @@ public class BlockChalcedonyLamp extends BlockContainer {
             else this.color[i] = par1IconRegister.registerIcon("defeatedcrow:chalcedony_black");
 
         }
-        this.force = new IIcon[2];
+        this.force = new BlockTexture[2];
         for (int i = 0; i < 2; ++i) {
             this.force[i] = par1IconRegister.registerIcon("defeatedcrow:lampside_force_" + i);
 
         }
-        this.burst = new IIcon[3];
+        this.burst = new BlockTexture[3];
         for (int i = 0; i < 3; ++i) {
             this.burst[i] = par1IconRegister.registerIcon("defeatedcrow:lampside_burst_" + i);
 
         }
-        this.sword = new IIcon[3];
+        this.sword = new BlockTexture[3];
         for (int i = 0; i < 3; ++i) {
             this.sword[i] = par1IconRegister.registerIcon("defeatedcrow:lampside_stone_" + i);
 

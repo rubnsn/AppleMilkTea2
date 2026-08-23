@@ -3,9 +3,9 @@ package mods.defeatedcrow.common.block.appliance;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
@@ -15,14 +15,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.recipe.IPlateRecipe;
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
 import mods.defeatedcrow.common.AMTLogger;
@@ -32,10 +29,10 @@ import mods.defeatedcrow.common.config.DCsConfig;
 import mods.defeatedcrow.common.tile.appliance.TileTeppanII;
 import mods.defeatedcrow.handler.Util;
 
-public class BlockTeppanII extends BlockContainer {
+public class BlockTeppanII extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon cageTex;
+    
+    private BlockTexture cageTex;
 
     public BlockTeppanII() {
         super(Material.iron);
@@ -73,7 +70,7 @@ public class BlockTeppanII extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -110,8 +107,8 @@ public class BlockTeppanII extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         if (par2 == 0) {
             if (par1 == 0 || par1 == 1) return DCsConfig.useAltTeppanTex ? this.cageTex : this.blockIcon;
             else return this.blockIcon;
@@ -121,8 +118,8 @@ public class BlockTeppanII extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = par1IconRegister.registerIcon("defeatedcrow:teppann");
         this.cageTex = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "cage");
     }

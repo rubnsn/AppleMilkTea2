@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -14,29 +14,26 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.events.AMTBlockRightClickEvent;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.tile.TileAlcoholCup;
 
-public class BlockAlcoholCup extends BlockContainer {
+public class BlockAlcoholCup extends Block {
 
     // shothu, sake, beer, wine, gin, rum, vodka, whiskey, apple, tea, cassis, plum, shothu, brandy, amaretto
     public static final String[] contents = new String[] { "_water", "_juice", "_tomato", "_water", "_juice", "_water",
         "_juice", "_lemon", "_tea", "_grape", "_juice", "_water", "_tea", "_tea" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon boxTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] contentsTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon bubbleTex;
+    
+    private BlockTexture boxTex;
+    
+    private BlockTexture[] contentsTex;
+    
+    private BlockTexture bubbleTex;
 
     public BlockAlcoholCup() {
         super(Material.glass);
@@ -115,7 +112,7 @@ public class BlockAlcoholCup extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -132,8 +129,8 @@ public class BlockAlcoholCup extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = Math.min(par2, 13);
         if (par1 == 1) {
             if (par2 == 0 || par2 == 11 || par2 == 4 || par2 == 5) {
@@ -151,7 +148,7 @@ public class BlockAlcoholCup extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         for (int i = 0; i < 14; ++i) {
             par3List.add(new ItemStack(this, 1, i));
@@ -164,11 +161,11 @@ public class BlockAlcoholCup extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.boxTex = par1IconRegister.registerIcon("defeatedcrow:blueglass");
         this.bubbleTex = par1IconRegister.registerIcon("defeatedcrow:contents_sugar");
-        this.contentsTex = new IIcon[14];
+        this.contentsTex = new BlockTexture[14];
         for (int i = 0; i < 14; ++i) {
             this.contentsTex[i] = par1IconRegister.registerIcon("defeatedcrow:contents" + contents[i]);
         }

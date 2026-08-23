@@ -3,29 +3,26 @@ package mods.defeatedcrow.common.block.energy;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.tile.energy.TileGelBat;
 
-public class BlockGelBat extends BlockContainer {
+public class BlockGelBat extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon texTop;
-    @SideOnly(Side.CLIENT)
-    private IIcon texSide;
+    
+    private BlockTexture texTop;
+    
+    private BlockTexture texSide;
 
     protected Random rand = new Random();
 
@@ -41,8 +38,8 @@ public class BlockGelBat extends BlockContainer {
         return null;
     }
 
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         return par1 == 1 ? this.texTop : this.texSide;
     }
 
@@ -62,11 +59,11 @@ public class BlockGelBat extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.blockIcon = par1IIconRegister.registerIcon("defeatedcrow:porcelain");
-        this.texTop = par1IIconRegister.registerIcon("defeatedcrow:porcelain");
-        this.texSide = par1IIconRegister.registerIcon("defeatedcrow:redgel");
+    
+    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
+        this.blockIcon = par1BlockIconRegister.registerIcon("defeatedcrow:porcelain");
+        this.texTop = par1BlockIconRegister.registerIcon("defeatedcrow:porcelain");
+        this.texSide = par1BlockIconRegister.registerIcon("defeatedcrow:redgel");
 
     }
 

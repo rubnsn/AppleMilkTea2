@@ -8,7 +8,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,17 +16,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.plants.IRightClickHarvestable;
 import mods.defeatedcrow.api.plants.PlantsClickEvent;
 import mods.defeatedcrow.common.AchievementRegister;
@@ -35,12 +31,12 @@ import mods.defeatedcrow.handler.Util;
 
 public class BlockTeaTree extends Block implements IShearable, IPlantable, IRightClickHarvestable {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon leafIcon;
-    @SideOnly(Side.CLIENT)
-    private IIcon newleafIcon;
-    @SideOnly(Side.CLIENT)
-    private IIcon logIcon;
+    
+    private BlockTexture leafIcon;
+    
+    private BlockTexture newleafIcon;
+    
+    private BlockTexture logIcon;
 
     public BlockTeaTree() {
         super(Material.wood);
@@ -123,8 +119,8 @@ public class BlockTeaTree extends Block implements IShearable, IPlantable, IRigh
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = par2;
         if (par1 == 0) {
             return this.logIcon;
@@ -136,7 +132,7 @@ public class BlockTeaTree extends Block implements IShearable, IPlantable, IRigh
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
@@ -189,8 +185,8 @@ public class BlockTeaTree extends Block implements IShearable, IPlantable, IRigh
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.leafIcon = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "tealeaf");
         this.newleafIcon = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "tealeaf_2");
         this.logIcon = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "tealog");

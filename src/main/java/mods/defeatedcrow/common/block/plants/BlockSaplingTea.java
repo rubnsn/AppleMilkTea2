@@ -7,29 +7,26 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.handler.Util;
 
 public class BlockSaplingTea extends Block implements IPlantable {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] saplingIcon;
+    
+    private BlockTexture[] saplingIcon;
 
     private static final String[] index = new String[] { "tea", "cassis", "camellia" };
 
@@ -164,7 +161,7 @@ public class BlockSaplingTea extends Block implements IPlantable {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
@@ -172,16 +169,16 @@ public class BlockSaplingTea extends Block implements IPlantable {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int meta = MathHelper.clamp_int(par2, 0, 2);
         return this.saplingIcon[meta];
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.saplingIcon = new IIcon[3];
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
+        this.saplingIcon = new BlockTexture[3];
         for (int i = 0; i < 3; ++i) {
             this.saplingIcon[i] = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "sapling_" + index[i]);
         }

@@ -11,9 +11,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.AchievementRegister;
 import mods.defeatedcrow.common.config.DCsConfigCocktail;
 import mods.defeatedcrow.common.entity.edible.PlaceableCocktailSP;
@@ -120,7 +117,7 @@ public class EntityItemCocktailSP extends EdibleEntityItemBlock2 {
         return false;
     }
 
-    @SideOnly(Side.CLIENT)
+    
     // マウスオーバー時の表示情報
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
         super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);

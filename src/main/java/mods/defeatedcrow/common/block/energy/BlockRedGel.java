@@ -4,19 +4,16 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.handler.Util;
 
@@ -28,8 +25,8 @@ import mods.defeatedcrow.handler.Util;
  */
 public class BlockRedGel extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon texSide;
+    
+    private BlockTexture texSide;
 
     public BlockRedGel() {
         super(Material.circuits);
@@ -77,8 +74,8 @@ public class BlockRedGel extends Block {
 
     // アイコンの特殊動作。固形ブロックに張り付いている時、そのブロックの外見に偽装する。
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+    
+    public BlockTexture getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
         int meta = world.getBlockMetadata(x, y, z);
         int m = meta & 7;
         ForgeDirection dir = ForgeDirection.getOrientation(m);
@@ -86,13 +83,13 @@ public class BlockRedGel extends Block {
         int meta2 = world.getBlockMetadata(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
 
         if (block != null && block.isNormalCube()) {
-            return block.getIcon(side, meta2);
+            return block.getBlockTexture(side, meta2);
         } else {
-            return this.getIcon(side, meta);
+            return this.getBlockTexture(side, meta);
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    
     public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
         ForgeDirection dir = ForgeDirection.getOrientation(meta & 7);
@@ -111,8 +108,8 @@ public class BlockRedGel extends Block {
     }
 
     // @Override
-    // @SideOnly(Side.CLIENT)
-    // public IIcon getIcon(int par1, int par2)
+    // 
+    // public BlockTexture getBlockTexture(int par1, int par2)
     // {
     // return par1 == 1 ? this.blockIcon : this.texSide;
     // }
@@ -226,10 +223,10 @@ public class BlockRedGel extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.texSide = par1IIconRegister.registerIcon("defeatedcrow:redgel");
-        this.blockIcon = par1IIconRegister.registerIcon("defeatedcrow:redgel");
+    
+    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
+        this.texSide = par1BlockIconRegister.registerIcon("defeatedcrow:redgel");
+        this.blockIcon = par1BlockIconRegister.registerIcon("defeatedcrow:redgel");
 
     }
 

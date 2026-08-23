@@ -3,9 +3,9 @@ package mods.defeatedcrow.common.block.appliance;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -18,16 +18,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fluids.FluidHandlerHelper;
 import mods.defeatedcrow.api.appliance.SoupType;
 import mods.defeatedcrow.api.recipe.IFondueSource;
 import mods.defeatedcrow.api.recipe.IPanRecipe;
@@ -43,12 +39,12 @@ import mods.defeatedcrow.common.tile.appliance.TilePanG;
 import mods.defeatedcrow.handler.Util;
 import mods.defeatedcrow.plugin.LoadBambooPlugin;
 
-public class BlockEmptyPanG extends BlockContainer {
+public class BlockEmptyPanG extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon boxTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon chainTex;
+    
+    private BlockTexture boxTex;
+    
+    private BlockTexture chainTex;
 
     public BlockEmptyPanG() {
         super(Material.ground);
@@ -231,8 +227,8 @@ public class BlockEmptyPanG extends BlockContainer {
                 world.playSoundAtEntity(entity, "random.pop", 0.4F, 1.8F);
 
                 ItemStack container = null;
-                if (FluidContainerRegistry.isFilledContainer(input)) {
-                    container = FluidContainerRegistry.drainFluidContainer(input);
+                if (FluidHandlerHelper.isFilledContainer(input)) {
+                    container = FluidHandlerHelper.drainFluidContainer(input);
                 } else {
                     container = input.getItem()
                         .getContainerItem(input);
@@ -380,7 +376,7 @@ public class BlockEmptyPanG extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -397,8 +393,8 @@ public class BlockEmptyPanG extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = par2;
         if (par1 == 1) {
             return this.boxTex;
@@ -415,13 +411,13 @@ public class BlockEmptyPanG extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.boxTex = par1IIconRegister.registerIcon("defeatedcrow:porcelain");
-        this.chainTex = par1IIconRegister.registerIcon(Util.getTexturePassNoAlt() + "chain");
+    
+    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
+        this.boxTex = par1BlockIconRegister.registerIcon("defeatedcrow:porcelain");
+        this.chainTex = par1BlockIconRegister.registerIcon(Util.getTexturePassNoAlt() + "chain");
     }
 
-    @SideOnly(Side.CLIENT)
+    
     @Override
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         int l = par1World.getBlockMetadata(par2, par3, par4);
@@ -443,7 +439,7 @@ public class BlockEmptyPanG extends BlockContainer {
             EntityDCCloudFX cloud = new EntityDCCloudFX(par1World, d0, d1, d2, 0.0D, d3, 0.0D);
             cloud.setParticleIcon(
                 ParticleTex.getInstance()
-                    .getIcon("cloud"));
+                    .getBlockTexture("cloud"));
             FMLClientHandler.instance()
                 .getClient().effectRenderer.addEffect(cloud);
         }

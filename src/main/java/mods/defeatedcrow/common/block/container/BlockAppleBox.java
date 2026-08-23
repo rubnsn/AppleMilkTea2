@@ -4,25 +4,22 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.handler.Util;
 
 public class BlockAppleBox extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon appleBoxTop;
-    @SideOnly(Side.CLIENT)
-    private IIcon appleBoxSide;
+    
+    private BlockTexture appleBoxTop;
+    
+    private BlockTexture appleBoxSide;
 
     public BlockAppleBox() {
         super(Material.wood);
@@ -37,15 +34,15 @@ public class BlockAppleBox extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         return par1 == 1 ? this.appleBoxTop
             : (par1 == 0 ? this.appleBoxSide : (par1 != 2 && par1 != 4 ? this.blockIcon : this.appleBoxSide));
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "WoodBox");
         this.appleBoxTop = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "applebox");
         this.appleBoxSide = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "WoodBox");
@@ -88,7 +85,7 @@ public class BlockAppleBox extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);

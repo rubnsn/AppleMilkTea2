@@ -5,7 +5,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -15,13 +15,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.handler.Util;
 
@@ -30,20 +27,20 @@ public class BlockHedge extends Block {
     private static final String[] leaves = new String[] { "_boxwood_n", "_podocarp", "_photinia", "_snakegourd",
         "_osmanthus", "_boxwood_g", "_tatibana_n" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] baseTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] leafTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon tamazusaN;
-    @SideOnly(Side.CLIENT)
-    private IIcon tamazusaC;
-    @SideOnly(Side.CLIENT)
-    private IIcon tatibanaF;
-    @SideOnly(Side.CLIENT)
-    private IIcon tatibanaL;
-    @SideOnly(Side.CLIENT)
-    private IIcon boxW;
+    
+    private BlockTexture[] baseTex;
+    
+    private BlockTexture[] leafTex;
+    
+    private BlockTexture tamazusaN;
+    
+    private BlockTexture tamazusaC;
+    
+    private BlockTexture tatibanaF;
+    
+    private BlockTexture tatibanaL;
+    
+    private BlockTexture boxW;
 
     public BlockHedge() {
         super(Material.wood);
@@ -74,8 +71,8 @@ public class BlockHedge extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = par2 & 7;
         boolean flag = par2 > 7;
         if (i > 7) i = 7;
@@ -133,7 +130,7 @@ public class BlockHedge extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
@@ -159,16 +156,16 @@ public class BlockHedge extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge_base1");
         this.tamazusaN = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge_snakegourd_f");
         this.tamazusaC = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge_snakegourd_c");
         this.tatibanaF = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge_tatibana_f");
         this.tatibanaL = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge_tatibana_l");
         this.boxW = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge_boxwood_w");
-        this.baseTex = new IIcon[3];
-        this.leafTex = new IIcon[7];
+        this.baseTex = new BlockTexture[3];
+        this.leafTex = new BlockTexture[7];
 
         for (int i = 0; i < 3; ++i) {
             this.baseTex[i] = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "hedge/hedge_base" + (i + 1));
@@ -187,7 +184,7 @@ public class BlockHedge extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);

@@ -7,22 +7,19 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 
 public class BlockChalcedonyLampOp extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] color;
+    
+    private BlockTexture[] color;
 
     private String[] name = { "", "_orange", "_white", "_black" };
 
@@ -75,14 +72,14 @@ public class BlockChalcedonyLampOp extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int type = par2 & 3;
         return this.color[type];
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         for (int i = 0; i < 4; ++i) {
             par3List.add(new ItemStack(this, 1, i));
@@ -90,9 +87,9 @@ public class BlockChalcedonyLampOp extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.color = new IIcon[4];
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
+        this.color = new BlockTexture[4];
         for (int i = 0; i < 4; ++i) {
             this.color[i] = par1IconRegister.registerIcon("defeatedcrow:chalcedony_opaq" + name[i]);
         }

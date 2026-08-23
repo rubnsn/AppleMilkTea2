@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -17,12 +17,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.tile.TileCordial;
 import mods.defeatedcrow.handler.Util;
@@ -32,12 +29,12 @@ import mods.defeatedcrow.handler.Util;
  * 熟成の度合い等はTileEntityにて管理。
  * 破壊時にNBTに各種データを移し替える。
  */
-public class BlockCordial extends BlockContainer {
+public class BlockCordial extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon contentsIIcon[];// 中身テクスチャ
-    @SideOnly(Side.CLIENT)
-    private IIcon drinkIIcon[];// 中身テクスチャ
+    
+    private BlockTexture contentsBlockTexture[];// 中身テクスチャ
+    
+    private BlockTexture drinkBlockTexture[];// 中身テクスチャ
 
     private static String[] type = new String[] { "apple", "tea", "cassis", "plum", "apricot" };
 
@@ -177,7 +174,7 @@ public class BlockCordial extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -194,14 +191,14 @@ public class BlockCordial extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = Math.min(par2, 4);
-        return par1 == 0 ? this.contentsIIcon[i] : this.drinkIIcon[i];
+        return par1 == 0 ? this.contentsBlockTexture[i] : this.drinkBlockTexture[i];
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         // par3List.add(new ItemStack(this, 1, 0));
         // par3List.add(new ItemStack(this, 1, 1));
@@ -221,14 +218,14 @@ public class BlockCordial extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.blockIcon = par1IIconRegister.registerIcon(Util.getTexturePassNoAlt() + "cordial_drink");
-        this.drinkIIcon = new IIcon[5];
-        this.contentsIIcon = new IIcon[5];
+    
+    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
+        this.blockIcon = par1BlockIconRegister.registerIcon(Util.getTexturePassNoAlt() + "cordial_drink");
+        this.drinkBlockTexture = new BlockTexture[5];
+        this.contentsBlockTexture = new BlockTexture[5];
         for (int i = 0; i < 5; ++i) {
-            this.drinkIIcon[i] = par1IIconRegister.registerIcon("defeatedcrow:cordial_drink_" + this.type[i]);
-            this.contentsIIcon[i] = par1IIconRegister.registerIcon("defeatedcrow:cordial_inner_" + this.type[i]);
+            this.drinkBlockTexture[i] = par1BlockIconRegister.registerIcon("defeatedcrow:cordial_drink_" + this.type[i]);
+            this.contentsBlockTexture[i] = par1BlockIconRegister.registerIcon("defeatedcrow:cordial_inner_" + this.type[i]);
         }
     }
 

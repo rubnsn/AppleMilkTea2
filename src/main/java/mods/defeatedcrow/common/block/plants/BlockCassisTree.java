@@ -8,7 +8,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,17 +16,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.plants.IRightClickHarvestable;
 import mods.defeatedcrow.api.plants.PlantsClickEvent;
 import mods.defeatedcrow.common.DCsAppleMilk;
@@ -34,12 +30,12 @@ import mods.defeatedcrow.handler.Util;
 
 public class BlockCassisTree extends Block implements IShearable, IPlantable, IRightClickHarvestable {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon leafIIcon;// 内側
-    @SideOnly(Side.CLIENT)
-    private IIcon[] newleafIIcon;// 外側
-    @SideOnly(Side.CLIENT)
-    private IIcon logIIcon;
+    
+    private BlockTexture leafBlockTexture;// 内側
+    
+    private BlockTexture[] newleafBlockTexture;// 外側
+    
+    private BlockTexture logBlockTexture;
 
     public BlockCassisTree() {
         super(Material.wood);
@@ -133,20 +129,20 @@ public class BlockCassisTree extends Block implements IShearable, IPlantable, IR
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = Math.min(par2, 7);
         if (par1 == 0) {
-            return this.logIIcon;
+            return this.logBlockTexture;
         } else if (par1 == 1) {
-            return this.leafIIcon;
+            return this.leafBlockTexture;
         } else {
-            return this.newleafIIcon[i];
+            return this.newleafBlockTexture[i];
         }
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(DCsAppleMilk.cassisTree, 1, 3));
         par3List.add(new ItemStack(DCsAppleMilk.cassisTree, 1, 7));
@@ -204,20 +200,20 @@ public class BlockCassisTree extends Block implements IShearable, IPlantable, IR
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.leafIIcon = par1IIconRegister.registerIcon(Util.getTexturePassNoAlt() + "tealeaf");
-        this.logIIcon = par1IIconRegister.registerIcon(Util.getTexturePassNoAlt() + "tealog");
-        this.blockIcon = par1IIconRegister.registerIcon(Util.getTexturePassNoAlt() + "tealeaf");
+    
+    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
+        this.leafBlockTexture = par1BlockIconRegister.registerIcon(Util.getTexturePassNoAlt() + "tealeaf");
+        this.logBlockTexture = par1BlockIconRegister.registerIcon(Util.getTexturePassNoAlt() + "tealog");
+        this.blockIcon = par1BlockIconRegister.registerIcon(Util.getTexturePassNoAlt() + "tealeaf");
 
-        this.newleafIIcon = new IIcon[8];
+        this.newleafBlockTexture = new BlockTexture[8];
         for (int i = 0; i < 8; ++i) {
             if (i < 4) {
                 int j = Math.max(i, 1);
-                this.newleafIIcon[i] = par1IIconRegister.registerIcon(Util.getTexturePassNoAlt() + "cassisleaf_" + j);
+                this.newleafBlockTexture[i] = par1BlockIconRegister.registerIcon(Util.getTexturePassNoAlt() + "cassisleaf_" + j);
             } else if (i < 8) {
                 int j = Math.max(i, 1) - 4;
-                this.newleafIIcon[i] = par1IIconRegister.registerIcon(Util.getTexturePassNoAlt() + "camellialeaf_" + j);
+                this.newleafBlockTexture[i] = par1BlockIconRegister.registerIcon(Util.getTexturePassNoAlt() + "camellialeaf_" + j);
             }
 
         }

@@ -1,6 +1,6 @@
 package mods.defeatedcrow.common.item.magic;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -9,9 +9,6 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.charm.EffectType;
 import mods.defeatedcrow.api.charm.IIncenseEffect;
 import mods.defeatedcrow.handler.Util;
@@ -25,8 +22,8 @@ public class ItemIncenseSandalwood extends Item implements IIncenseEffect {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
+    
+    public void registerIcons(BlockIconRegister par1IconRegister) {
 
         this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:incense_sandalwood");
     }

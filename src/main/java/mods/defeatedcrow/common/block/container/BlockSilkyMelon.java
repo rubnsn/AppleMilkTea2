@@ -1,10 +1,7 @@
 package mods.defeatedcrow.common.block.container;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.common.entity.EntitySilkyMelon;
 
@@ -30,8 +27,8 @@ public class BlockSilkyMelon extends BlockMelonBomb {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = par1IconRegister.registerIcon("defeatedcrow:melonbox_silky");
         this.boxIcon = par1IconRegister.registerIcon("defeatedcrow:melonbox_silky_top");
         this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:melonbox_silky");

@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -18,15 +18,11 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.events.AMTBlockRightClickEvent;
 import mods.defeatedcrow.client.particle.EntityDCCloudFX;
 import mods.defeatedcrow.client.particle.ParticleTex;
@@ -34,17 +30,17 @@ import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.DCsConfig;
 import mods.defeatedcrow.common.tile.TileSteak;
 
-public class BlockFoodPlate extends BlockContainer {
+public class BlockFoodPlate extends Block {
 
     private static final String[] contents = new String[] { "_cookedbeef", "_cookedpork", "_cookedpork", "_clam" };
     private static final String[] tsukeawase = new String[] { "_tea", "_juice_milk" };
 
-    @SideOnly(Side.CLIENT)
-    private IIcon boxTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] contentsTex;
-    @SideOnly(Side.CLIENT)
-    private IIcon[] tsukeawaseTex;
+    
+    private BlockTexture boxTex;
+    
+    private BlockTexture[] contentsTex;
+    
+    private BlockTexture[] tsukeawaseTex;
 
     public BlockFoodPlate() {
         super(Material.circuits);
@@ -159,7 +155,7 @@ public class BlockFoodPlate extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -176,14 +172,14 @@ public class BlockFoodPlate extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         int i = par2;
         if (i > 3) i = 3;
         if (par1 == 1) {
             return this.boxTex;
         } else if (par1 == 0) {
-            return Blocks.planks.getIcon(0, 0);
+            return Blocks.planks.getBlockTexture(0, 0);
         } else if (par1 == 2) {
             return this.contentsTex[i];
         } else if (par1 == 3) {
@@ -273,7 +269,7 @@ public class BlockFoodPlate extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         for (int i = 0; i < 4; ++i) {
             par3List.add(new ItemStack(this, 1, i));
@@ -286,21 +282,21 @@ public class BlockFoodPlate extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.boxTex = par1IconRegister.registerIcon("defeatedcrow:porcelain");
-        this.contentsTex = new IIcon[4];
+        this.contentsTex = new BlockTexture[4];
         for (int i = 0; i < 4; ++i) {
             this.contentsTex[i] = par1IconRegister.registerIcon("defeatedcrow:foodstaff" + contents[i]);
         }
 
-        this.tsukeawaseTex = new IIcon[2];
+        this.tsukeawaseTex = new BlockTexture[2];
         for (int i = 0; i < 2; ++i) {
             this.tsukeawaseTex[i] = par1IconRegister.registerIcon("defeatedcrow:contents" + tsukeawase[i]);
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    
     @Override
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         int l = par1World.getBlockMetadata(par2, par3, par4);
@@ -315,7 +311,7 @@ public class BlockFoodPlate extends BlockContainer {
             EntityDCCloudFX cloud = new EntityDCCloudFX(par1World, d0, d1, d2, 0.0D, d3, 0.0D);
             cloud.setParticleIcon(
                 ParticleTex.getInstance()
-                    .getIcon("cloud"));
+                    .getBlockTexture("cloud"));
             FMLClientHandler.instance()
                 .getClient().effectRenderer.addEffect(cloud);
         }

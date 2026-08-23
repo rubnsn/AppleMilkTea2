@@ -4,26 +4,22 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.common.IFuelHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.handler.Util;
 
 public class BlockCharcoalBox extends Block implements IFuelHandler {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon charcoalBoxTop;
-    @SideOnly(Side.CLIENT)
-    private IIcon charcoalBoxSide;
+    
+    private BlockTexture charcoalBoxTop;
+    
+    private BlockTexture charcoalBoxSide;
 
     public BlockCharcoalBox() {
         super(Material.ground);
@@ -46,18 +42,18 @@ public class BlockCharcoalBox extends Block implements IFuelHandler {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
+    
+    public BlockTexture getBlockTexture(int par1, int par2) {
         return par1 == 1 ? this.charcoalBoxTop
             : (par1 == 0 ? this.charcoalBoxSide : (par1 != 2 && par1 != 4 ? this.blockIcon : this.charcoalBoxSide));
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.blockIcon = par1IIconRegister.registerIcon(Util.getTexturePassNoAlt() + "container_S");
-        this.charcoalBoxTop = par1IIconRegister.registerIcon(Util.getTexturePassNoAlt() + "container_charcoal_T");
-        this.charcoalBoxSide = par1IIconRegister.registerIcon(Util.getTexturePassNoAlt() + "container_S");
+    
+    public void registerBlockTextures(BlockIconRegister par1BlockIconRegister) {
+        this.blockIcon = par1BlockIconRegister.registerIcon(Util.getTexturePassNoAlt() + "container_S");
+        this.charcoalBoxTop = par1BlockIconRegister.registerIcon(Util.getTexturePassNoAlt() + "container_charcoal_T");
+        this.charcoalBoxSide = par1BlockIconRegister.registerIcon(Util.getTexturePassNoAlt() + "container_S");
     }
 
     // ハーフブロック化
@@ -97,7 +93,7 @@ public class BlockCharcoalBox extends Block implements IFuelHandler {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);

@@ -5,7 +5,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,20 +13,17 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 
 public class BlockMushBox extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon itemIcon;
-    @SideOnly(Side.CLIENT)
-    private IIcon boxIcon;
+    
+    private BlockTexture itemIcon;
+    
+    private BlockTexture boxIcon;
 
     public BlockMushBox() {
         super(Material.wood);
@@ -96,7 +93,7 @@ public class BlockMushBox extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -118,7 +115,7 @@ public class BlockMushBox extends Block {
     // }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         for (int i = 0; i < 2; ++i) {
             par3List.add(new ItemStack(this, 1, i));
@@ -136,9 +133,9 @@ public class BlockMushBox extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.blockIcon = Blocks.red_mushroom.getIcon(0, 0);
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
+        this.blockIcon = Blocks.red_mushroom.getBlockTexture(0, 0);
     }
 
 }

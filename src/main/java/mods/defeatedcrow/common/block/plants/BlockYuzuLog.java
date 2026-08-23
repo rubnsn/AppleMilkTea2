@@ -5,23 +5,20 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.BlockIconRegister;
 import net.minecraft.item.Item;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockTexture;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.handler.Util;
 
 public class BlockYuzuLog extends BlockRotatedPillar {
 
-    @SideOnly(Side.CLIENT)
-    protected IIcon sideIcon;
-    @SideOnly(Side.CLIENT)
-    protected IIcon topIcon;
+    
+    protected BlockTexture sideIcon;
+    
+    protected BlockTexture topIcon;
 
     public BlockYuzuLog() {
         super(Material.wood);
@@ -63,13 +60,13 @@ public class BlockYuzuLog extends BlockRotatedPillar {
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    protected IIcon getSideIcon(int p_150163_1_) {
+    
+    protected BlockTexture getSideIcon(int p_150163_1_) {
         return this.sideIcon;
     }
 
-    @SideOnly(Side.CLIENT)
-    protected IIcon getTopIcon(int p_150161_1_) {
+    
+    protected BlockTexture getTopIcon(int p_150161_1_) {
         return this.topIcon;
     }
 
@@ -84,8 +81,8 @@ public class BlockYuzuLog extends BlockRotatedPillar {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
+    
+    public void registerBlockTextures(BlockIconRegister par1IconRegister) {
         this.blockIcon = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "log_yuzu_top");
         this.sideIcon = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "log_yuzu_side");
         this.topIcon = par1IconRegister.registerIcon(Util.getTexturePassNoAlt() + "log_yuzu_top");
