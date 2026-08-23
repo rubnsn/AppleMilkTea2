@@ -1,0 +1,17 @@
+{
+  "type": "defeatedcrow:processor",
+  "ingredients": [
+    { "item": "minecraft:gravel" }
+  ],
+  "result": {
+    "item": "minecraft:sand",
+    "count": 1
+  },
+  "secondary": {
+    "item": "minecraft:flint",
+    "count": 1
+  },
+  "secondaryChance": 0.1,
+  "tier": 0,
+  "isFood": false
+}

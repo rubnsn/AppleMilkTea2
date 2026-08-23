@@ -1,11 +1,11 @@
-package mods.defeatedcrow.recipe;
+﻿package mods.defeatedcrow.recipe;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.world.item.ItemStack;
+import mods.defeatedcrow.handler.TagHelper;
 
 import mods.defeatedcrow.api.appliance.SoupType;
 import mods.defeatedcrow.api.recipe.IChocoFruitsRecipe;
@@ -40,7 +40,7 @@ public class ChocolateRecipe implements IChocoFruitsRecipe {
         for (Object key : recipes.keySet()) {
             if (key instanceof String) {
                 String s = (String) key;
-                List<ItemStack> items = OreDictionary.getOres(s);
+                List<ItemStack> items = TagHelper.getTagItems(s);
                 for (int i = 0; i < items.size(); i++) {
                     if (matchItem(input, items.get(i))) {
                         ret = recipes.get(key);
@@ -66,7 +66,7 @@ public class ChocolateRecipe implements IChocoFruitsRecipe {
         if (input.getItem() == null || key.getItem() == null) return false;
         else {
             return (input.getItem() == key.getItem() && (input.getItemDamage() == key.getItemDamage()
-                || key.getItemDamage() == OreDictionary.WILDCARD_VALUE));
+                || key.getItemDamage() == 32767));
         }
     }
 
@@ -94,3 +94,4 @@ public class ChocolateRecipe implements IChocoFruitsRecipe {
     }
 
 }
+

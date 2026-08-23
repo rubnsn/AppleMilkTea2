@@ -1,11 +1,11 @@
-package mods.defeatedcrow.recipe;
+﻿package mods.defeatedcrow.recipe;
 
 import java.util.ArrayList;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
+import mods.defeatedcrow.handler.TagHelper;
 
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
 import mods.defeatedcrow.common.AMTLogger;
@@ -13,22 +13,20 @@ import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.PropertyHandler;
 
 /*
- * ここでは他MODの鉱石辞書登録内容を走査し、
- * クラッシャへの粉砕レシピ登録や、奇妙なボタからのドロップ登録を行う。
- */
+ * 縺薙％縺ｧ縺ｯ莉邦OD縺ｮ驩ｱ遏ｳ霎樊嶌逋ｻ骭ｲ蜀・ｮｹ繧定ｵｰ譟ｻ縺励・ * 繧ｯ繝ｩ繝・す繝｣縺ｸ縺ｮ邊臥輔Ξ繧ｷ繝皮匳骭ｲ繧・∝･・ｦ吶↑繝懊ち縺九ｉ縺ｮ繝峨Ο繝・・逋ｻ骭ｲ繧定｡後≧縲・ */
 public class OreCrushRecipe {
 
     private OreCrushRecipe() {}
 
-    // 土砂 55%
+    // 蝨溽・55%
     public static ArrayList<ItemStack> tier1 = new ArrayList<ItemStack>();
-    // 鉱石ナゲット 30%
+    // 驩ｱ遏ｳ繝翫ご繝・ヨ 30%
     public static ArrayList<ItemStack> tier2 = new ArrayList<ItemStack>();
-    // 鉱石砂 10%
+    // 驩ｱ遏ｳ遐・10%
     public static ArrayList<ItemStack> tier3 = new ArrayList<ItemStack>();
-    // ジェム 4%
+    // 繧ｸ繧ｧ繝 4%
     public static ArrayList<ItemStack> tier4 = new ArrayList<ItemStack>();
-    // レアアイテム 1%
+    // 繝ｬ繧｢繧｢繧､繝・Β 1%
     public static ArrayList<ItemStack> tier5 = new ArrayList<ItemStack>();
 
     public static void searchOreName() {
@@ -40,22 +38,22 @@ public class OreCrushRecipe {
 
         int[] d = PropertyHandler.getDustGen();
 
-        // その1
+        // 縺昴・1
         for (int i = 0; i < ores1.length; i++) {
             String ore = "ore" + ores1[i];
             ItemStack nugget = null;
             ItemStack dust = null;
 
-            if (OreDictionary.getOres("nugget" + ores1[i]) != null && !OreDictionary.getOres("nugget" + ores1[i])
+            if (TagHelper.getTagItems("nugget" + ores1[i]) != null && !TagHelper.getTagItems("nugget" + ores1[i])
                 .isEmpty())
-                nugget = OreDictionary.getOres("nugget" + ores1[i])
+                nugget = TagHelper.getTagItems("nugget" + ores1[i])
                     .get(0);
-            if (OreDictionary.getOres("dust" + ores1[i]) != null && !OreDictionary.getOres("dust" + ores1[i])
+            if (TagHelper.getTagItems("dust" + ores1[i]) != null && !TagHelper.getTagItems("dust" + ores1[i])
                 .isEmpty())
-                dust = OreDictionary.getOres("dust" + ores1[i])
+                dust = TagHelper.getTagItems("dust" + ores1[i])
                     .get(0);
 
-            if (OreDictionary.getOres(ore) != null && !OreDictionary.getOres(ore)
+            if (TagHelper.getTagItems(ore) != null && !TagHelper.getTagItems(ore)
                 .isEmpty() && dust != null) {
                 RecipeRegisterManager.processorRecipe.addRecipe(
                     new ItemStack(dust.getItem(), d[0], dust.getItemDamage()),
@@ -71,17 +69,17 @@ public class OreCrushRecipe {
             }
         }
 
-        // その2
+        // 縺昴・2
         for (int i = 0; i < ores2.length; i++) {
             String ore = "ore" + ores2[i];
             ItemStack dust = null;
             ItemStack ingot = null;
-            if (OreDictionary.getOres("dust" + ores2[i]) != null && !OreDictionary.getOres("dust" + ores2[i])
+            if (TagHelper.getTagItems("dust" + ores2[i]) != null && !TagHelper.getTagItems("dust" + ores2[i])
                 .isEmpty())
-                dust = OreDictionary.getOres("dust" + ores2[i])
+                dust = TagHelper.getTagItems("dust" + ores2[i])
                     .get(0);
 
-            if (OreDictionary.getOres(ore) != null && !OreDictionary.getOres(ore)
+            if (TagHelper.getTagItems(ore) != null && !TagHelper.getTagItems(ore)
                 .isEmpty() && dust != null) {
                 RecipeRegisterManager.processorRecipe.addRecipe(
                     new ItemStack(dust.getItem(), d[0], dust.getItemDamage()),
@@ -92,9 +90,9 @@ public class OreCrushRecipe {
                     new Object[] { ore });
             }
 
-            if (OreDictionary.getOres("ingot" + ores2[i]) != null && !OreDictionary.getOres("ingot" + ores2[i])
+            if (TagHelper.getTagItems("ingot" + ores2[i]) != null && !TagHelper.getTagItems("ingot" + ores2[i])
                 .isEmpty()) {
-                ingot = OreDictionary.getOres("ingot" + ores2[i])
+                ingot = TagHelper.getTagItems("ingot" + ores2[i])
                     .get(0);
             }
 
@@ -103,17 +101,17 @@ public class OreCrushRecipe {
             }
         }
 
-        // その3
+        // 縺昴・3
         for (int i = 0; i < ores3.length; i++) {
             String ore = "ore" + ores3[i];
             ItemStack dust = null;
             ItemStack ingot = null;
-            if (OreDictionary.getOres("dust" + ores3[i]) != null && !OreDictionary.getOres("dust" + ores3[i])
+            if (TagHelper.getTagItems("dust" + ores3[i]) != null && !TagHelper.getTagItems("dust" + ores3[i])
                 .isEmpty())
-                dust = OreDictionary.getOres("dust" + ores3[i])
+                dust = TagHelper.getTagItems("dust" + ores3[i])
                     .get(0);
 
-            if (OreDictionary.getOres(ore) != null && !OreDictionary.getOres(ore)
+            if (TagHelper.getTagItems(ore) != null && !TagHelper.getTagItems(ore)
                 .isEmpty() && dust != null) {
                 RecipeRegisterManager.processorRecipe.addRecipe(
                     new ItemStack(dust.getItem(), d[0], dust.getItemDamage()),
@@ -124,9 +122,9 @@ public class OreCrushRecipe {
                     new Object[] { ore });
             }
 
-            if (OreDictionary.getOres("ingot" + ores3[i]) != null && !OreDictionary.getOres("ingot" + ores3[i])
+            if (TagHelper.getTagItems("ingot" + ores3[i]) != null && !TagHelper.getTagItems("ingot" + ores3[i])
                 .isEmpty()) {
-                ingot = OreDictionary.getOres("ingot" + ores3[i])
+                ingot = TagHelper.getTagItems("ingot" + ores3[i])
                     .get(0);
             }
 
@@ -135,16 +133,16 @@ public class OreCrushRecipe {
             }
         }
 
-        // その4
+        // 縺昴・4
         for (int i = 0; i < gems.length; i++) {
             String ore = "ore" + gems[i];
             ItemStack gem = null;
-            if (OreDictionary.getOres("gem" + gems[i]) != null && !OreDictionary.getOres("gem" + gems[i])
+            if (TagHelper.getTagItems("gem" + gems[i]) != null && !TagHelper.getTagItems("gem" + gems[i])
                 .isEmpty())
-                gem = OreDictionary.getOres("gem" + gems[i])
+                gem = TagHelper.getTagItems("gem" + gems[i])
                     .get(0);
 
-            if (OreDictionary.getOres(ore) != null && !OreDictionary.getOres(ore)
+            if (TagHelper.getTagItems(ore) != null && !TagHelper.getTagItems(ore)
                 .isEmpty() && gem != null) {
                 RecipeRegisterManager.processorRecipe.addRecipe(
                     new ItemStack(gem.getItem(), d[0], gem.getItemDamage()),
@@ -160,16 +158,16 @@ public class OreCrushRecipe {
             }
         }
 
-        // その5
+        // 縺昴・5
         for (int i = 0; i < gems2.length; i++) {
             String ore = "ore" + gems2[i];
             ItemStack gem = null;
-            if (OreDictionary.getOres("gem" + gems2[i]) != null && !OreDictionary.getOres("gem" + gems2[i])
+            if (TagHelper.getTagItems("gem" + gems2[i]) != null && !TagHelper.getTagItems("gem" + gems2[i])
                 .isEmpty())
-                gem = OreDictionary.getOres("gem" + gems2[i])
+                gem = TagHelper.getTagItems("gem" + gems2[i])
                     .get(0);
 
-            if (OreDictionary.getOres(ore) != null && !OreDictionary.getOres(ore)
+            if (TagHelper.getTagItems(ore) != null && !TagHelper.getTagItems(ore)
                 .isEmpty() && gem != null) {
                 RecipeRegisterManager.processorRecipe.addRecipe(
                     new ItemStack(gem.getItem(), d[0], gem.getItemDamage()),
@@ -185,7 +183,7 @@ public class OreCrushRecipe {
             }
         }
 
-        // 残りのボタ枠を埋める
+        // 谿九ｊ縺ｮ繝懊ち譫繧貞沂繧√ｋ
         tier1.add(new ItemStack(Items.bone));
         tier1.add(new ItemStack(Items.clay_ball));
         tier1.add(new ItemStack(Blocks.dirt));
@@ -204,17 +202,12 @@ public class OreCrushRecipe {
         tier5.add(new ItemStack(Items.spawn_egg, 1, 120));
         tier5.add(new ItemStack(DCsAppleMilk.fossilScale));
 
-        // ボタ山設定以外のdust取得
-        // ingotが存在しないと焼くレシピも存在しない
-        // 1.20.1: 旧GameRegistry.addSmeltingは廃止。製錬レシピは data/dcsapplemilk/recipes/smelting/*.json へ移行する。
-        // TODO(datapack): oreDust meta i → ingotX の製錬レシピJSONを生成する（無ければ鉄インゴットへ）。
-        String[] ores4 = new String[] { "Iron", "Tin", "Copper", "Silver", "Lead", "Gold", "Nickel", "Platinum" };
+        // 繝懊ち螻ｱ險ｭ螳壻ｻ･螟悶・dust蜿門ｾ・        // ingot縺悟ｭ伜惠縺励↑縺・→辟ｼ縺上Ξ繧ｷ繝斐ｂ蟄伜惠縺励↑縺・        // 1.20.1: 譌ｧGameRegistry.addSmelting縺ｯ蟒・ｭ｢縲り｣ｽ骭ｬ繝ｬ繧ｷ繝斐・ data/dcsapplemilk/recipes/smelting/*.json 縺ｸ遘ｻ陦後☆繧九・        // TODO(datapack): oreDust meta i 竊・ingotX 縺ｮ陬ｽ骭ｬ繝ｬ繧ｷ繝寧SON繧堤函謌舌☆繧具ｼ育┌縺代ｌ縺ｰ驩・う繝ｳ繧ｴ繝・ヨ縺ｸ・峨・        String[] ores4 = new String[] { "Iron", "Tin", "Copper", "Silver", "Lead", "Gold", "Nickel", "Platinum" };
         for (int i = 0; i < ores4.length; i++) {
-            if (OreDictionary.getOres("ingot" + ores4[i]) != null && !OreDictionary.getOres("ingot" + ores4[i])
+            if (TagHelper.getTagItems("ingot" + ores4[i]) != null && !TagHelper.getTagItems("ingot" + ores4[i])
                 .isEmpty()) {
                 AMTLogger.debugInfo("smelting recipe (datapack pending): oreDust:" + i + " -> ingot" + ores4[i]);
-            } else// なかったら鉄になる
-            {
+            } else// 縺ｪ縺九▲縺溘ｉ驩・↓縺ｪ繧・            {
                 AMTLogger.debugInfo("smelting recipe (datapack pending): oreDust:" + i + " -> iron_ingot");
             }
         }
@@ -222,3 +215,4 @@ public class OreCrushRecipe {
     }
 
 }
+

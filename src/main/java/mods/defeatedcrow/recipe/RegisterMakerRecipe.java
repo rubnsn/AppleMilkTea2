@@ -1,12 +1,12 @@
-package mods.defeatedcrow.recipe;
+﻿package mods.defeatedcrow.recipe;
 
 import java.util.ArrayList;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
+import mods.defeatedcrow.handler.TagHelper;
 
 import mods.defeatedcrow.api.appliance.SoupType;
 import mods.defeatedcrow.api.charge.ChargeItemManager;
@@ -19,7 +19,7 @@ import mods.defeatedcrow.plugin.LoadModHandler;
 public class RegisterMakerRecipe {
 
     public void registerTea() {
-        // 登録メソッド
+        // 逋ｻ骭ｲ繝｡繧ｽ繝・ラ
         // teacup1
         RecipeRegisterManager.teaRecipe.registerCanMilk(
             new ItemStack(Items.milk_bucket, 1),
@@ -27,7 +27,7 @@ public class RegisterMakerRecipe {
             new ItemStack(DCsAppleMilk.teacupBlock, 1, 1),
             new String("defeatedcrow:textures/blocks/contents_milk.png"));
 
-        // 牛乳を追加投入できるものは下記のメソッドで登録
+        // 迚帑ｹｳ繧定ｿｽ蜉謚募・縺ｧ縺阪ｋ繧ゅ・縺ｯ荳玖ｨ倥・繝｡繧ｽ繝・ラ縺ｧ逋ｻ骭ｲ
         RecipeRegisterManager.teaRecipe.registerCanMilk(
             new ItemStack(Items.dye, 1, 3),
             new ItemStack(DCsAppleMilk.teacupBlock, 1, 6),
@@ -323,8 +323,7 @@ public class RegisterMakerRecipe {
     }
 
     public void registerProcessor() {
-        // プロセッサー用の新規レシピ
-        RecipeRegisterManager.processorRecipe
+        // 繝励Ο繧ｻ繝・し繝ｼ逕ｨ縺ｮ譁ｰ隕上Ξ繧ｷ繝・        RecipeRegisterManager.processorRecipe
             .addRecipe(new ItemStack(DCsAppleMilk.foodTea, 2, 0), true, null, new Object[] { DCsAppleMilk.leafTea });
 
         RecipeRegisterManager.processorRecipe
@@ -336,9 +335,7 @@ public class RegisterMakerRecipe {
             null,
             new Object[] { "cropApple", Items.sugar, DCsAppleMilk.bowlBlock });
 
-        // おろし金レシピの移植
-        // 茶葉
-        RecipeRegisterManager.processorRecipe
+        // 縺翫ｍ縺鈴≡繝ｬ繧ｷ繝斐・遘ｻ讀・        // 闌ｶ闡・        RecipeRegisterManager.processorRecipe
             .addRecipe(new ItemStack(DCsAppleMilk.gratedApple, 1, 0), true, null, new Object[] { "cropApple" });
 
         RecipeRegisterManager.processorRecipe
@@ -413,8 +410,7 @@ public class RegisterMakerRecipe {
             null,
             new Object[] { "cropApple", new ItemStack(DCsAppleMilk.foodTea, 1, 1) });
 
-        // 鍋材料
-        RecipeRegisterManager.processorRecipe.addRecipe(
+        // 骰区攝譁・        RecipeRegisterManager.processorRecipe.addRecipe(
             new ItemStack(DCsAppleMilk.mincedFoods, 1, 0),
             true,
             null,
@@ -510,8 +506,7 @@ public class RegisterMakerRecipe {
             null,
             new Object[] { new ItemStack(DCsAppleMilk.mincedFoods, 1, 8), "bucketMilk" });
 
-        // 砕石機
-        RecipeRegisterManager.processorRecipe.addRecipe(
+        // 遐慕浹讖・        RecipeRegisterManager.processorRecipe.addRecipe(
             new ItemStack(Items.flint),
             false,
             0,
@@ -556,7 +551,7 @@ public class RegisterMakerRecipe {
             null,
             new Object[] { new ItemStack(Items.coal, 1, 1) });
 
-        // ツール還元
+        // 繝・・繝ｫ驍・・
         RecipeRegisterManager.processorRecipe.addRecipe(
             new ItemStack(DCsAppleMilk.EXItems, 24, 7),
             false,
@@ -667,7 +662,7 @@ public class RegisterMakerRecipe {
     }
 
     public void registerEvaporator() {
-        // エッセンス
+        // 繧ｨ繝・そ繝ｳ繧ｹ
         RecipeRegisterManager.evaporatorRecipe
             .addRecipe(new ItemStack(DCsAppleMilk.essentialOil, 1, 0), null, new ItemStack(Items.apple, 8, 0));
 
@@ -688,8 +683,7 @@ public class RegisterMakerRecipe {
             null,
             new ItemStack(DCsAppleMilk.icyCrystal, 1, 0));
 
-        // 酒
-        RecipeRegisterManager.evaporatorRecipe.addRecipe(
+        // 驟・        RecipeRegisterManager.evaporatorRecipe.addRecipe(
             null,
             new FluidStack(DCsAppleMilk.whiskey_young, 100),
             new ItemStack(DCsAppleMilk.moromi, 1, 1),
@@ -727,7 +721,7 @@ public class RegisterMakerRecipe {
             new FluidStack(DCsAppleMilk.brandy_young, 100),
             new ItemStack(DCsAppleMilk.itemLargeBottle, 1, 51));
 
-        // 製油
+        // 陬ｽ豐ｹ
         RecipeRegisterManager.evaporatorRecipe.addRecipe(
             new ItemStack(DCsAppleMilk.dustWood, 1, 3),
             new FluidStack(DCsAppleMilk.camelliaOil, 100),
@@ -858,7 +852,7 @@ public class RegisterMakerRecipe {
 
     }
 
-    // フォンデュ
+    // 繝輔か繝ｳ繝・Η
     public static void registerSoupSource() {
         RecipeRegisterManager.fondueRecipe
             .registerSource(new ItemStack(DCsAppleMilk.mincedFoods, 1, 8), SoupType.EMPTY, SoupType.CHOCO);
@@ -881,10 +875,11 @@ public class RegisterMakerRecipe {
     }
 
     public static void testRecipe() {
-        OreDictionary.registerOre("logYuzuWood", new ItemStack(DCsAppleMilk.logYuzu, 1, 0));
+        // TagHelper.registerOre (datapack)("logYuzuWood", new ItemStack(DCsAppleMilk.logYuzu, 1, 0));
 
         RecipeRegisterManager.processorRecipe
             .addRecipe(new ItemStack(DCsAppleMilk.dustWood, 1, 0), false, 0, null, new Object[] { "logYuzuWood" });
     }
 
 }
+
