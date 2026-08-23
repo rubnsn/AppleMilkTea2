@@ -1,8 +1,8 @@
-package mods.defeatedcrow.recipe;
+﻿package mods.defeatedcrow.recipe;
 
 import java.util.HashMap;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 import mods.defeatedcrow.api.recipe.IIceRecipe;
 import mods.defeatedcrow.api.recipe.ITeaRecipe;
@@ -50,3 +50,4 @@ public class RegisteredRecipeGet {
     }
 
 }
+

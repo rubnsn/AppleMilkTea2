@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": {
+      "item": "defeatedcrow:leaf_tea"
+    },
+    "title": {
+      "translate": "advancement.defeatedcrow.getTeaLeaves.title"
+    },
+    "description": {
+      "translate": "advancement.defeatedcrow.getTeaLeaves.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "defeatedcrow:textures/gui/advancement_bg.png"
+  },
+  "parent": "minecraft:story/root",
+  "criteria": {
+    "has_leaf_tea": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["defeatedcrow:leaf_tea"]
+          }
+        ]
+      }
+    }
+  }
+}

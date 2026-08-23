@@ -1,0 +1,15 @@
+{
+  "type": "defeatedcrow:tea",
+  "ingredient": {
+    "item": "defeatedcrow:leaf_tea"
+  },
+  "result": {
+    "item": "defeatedcrow:filled_cup",
+    "count": 1
+  },
+  "textures": [
+    "defeatedcrow:textures/blocks/contents_greentea.png",
+    "defeatedcrow:textures/blocks/contents_greentea_milk.png"
+  ],
+  "canMilk": true
+}

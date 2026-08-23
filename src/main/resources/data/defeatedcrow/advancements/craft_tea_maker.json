@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "defeatedcrow:tea_maker_next"
+    },
+    "title": {
+      "translate": "advancement.defeatedcrow.craftTeaMaker.title"
+    },
+    "description": {
+      "translate": "advancement.defeatedcrow.craftTeaMaker.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "defeatedcrow:make_tea_leaves",
+  "criteria": {
+    "has_tea_maker": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["defeatedcrow:tea_maker_next"]
+          }
+        ]
+      }
+    }
+  }
+}

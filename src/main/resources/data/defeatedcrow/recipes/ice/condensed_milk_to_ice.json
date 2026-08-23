@@ -1,0 +1,13 @@
+{
+  "type": "defeatedcrow:ice",
+  "ingredient": {
+    "item": "defeatedcrow:condensed_milk"
+  },
+  "result": {
+    "item": "defeatedcrow:ice_cream_block",
+    "count": 1
+  },
+  "container": {
+    "item": "minecraft:bowl"
+  }
+}

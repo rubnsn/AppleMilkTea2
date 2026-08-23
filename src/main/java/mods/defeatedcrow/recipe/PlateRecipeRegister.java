@@ -1,11 +1,11 @@
-package mods.defeatedcrow.recipe;
+﻿package mods.defeatedcrow.recipe;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import mods.defeatedcrow.api.recipe.ICookingHeatSource;
 import mods.defeatedcrow.api.recipe.IPlateRecipe;
@@ -164,3 +164,4 @@ public class PlateRecipeRegister implements IPlateRecipeRegister {
     }
 
 }
+

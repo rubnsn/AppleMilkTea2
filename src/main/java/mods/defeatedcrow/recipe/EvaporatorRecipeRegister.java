@@ -1,9 +1,9 @@
-package mods.defeatedcrow.recipe;
+﻿package mods.defeatedcrow.recipe;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import mods.defeatedcrow.api.recipe.IEvaporatorRecipe;
@@ -107,3 +107,4 @@ public class EvaporatorRecipeRegister implements IEvaporatorRecipeRegister {
     }
 
 }
+

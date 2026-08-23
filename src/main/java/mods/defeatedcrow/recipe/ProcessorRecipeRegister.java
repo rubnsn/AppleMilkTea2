@@ -1,15 +1,15 @@
-package mods.defeatedcrow.recipe;
+ï»¿package mods.defeatedcrow.recipe;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.util.Mth;
 
-import net.minecraftforge.oredict.OreDictionary;
+import mods.defeatedcrow.handler.TagHelper;
 
 import mods.defeatedcrow.api.appliance.IJawPlate;
 import mods.defeatedcrow.api.appliance.IProcessorPanel;
@@ -33,7 +33,7 @@ public class ProcessorRecipeRegister implements IProcessorRecipeRegister {
     @Override
     public void addRecipe(ItemStack output, boolean isFood, int tier, boolean forceReturn, ItemStack secondary,
         float secondaryChance, Object... input) {
-        float c = MathHelper.clamp_float(0.0F, secondaryChance, 1.0F);
+        float c = Mth.clamp(0.0F, secondaryChance, 1.0F);
         if (output == null || output.stackSize == 0) output = null;
         if (secondary == null || secondary.stackSize == 0) secondary = null;
         recipes.add(new ProcessorRecipe(output, secondary, isFood, forceReturn, tier, secondaryChance, input));
@@ -106,7 +106,7 @@ public class ProcessorRecipeRegister implements IProcessorRecipeRegister {
             }
             for (int i = 0; i < inputs.length; i++) {
                 if (inputs[i] instanceof String) {
-                    processedInput.add(OreDictionary.getOres((String) inputs[i]));
+                    processedInput.add(TagHelper.getTagItems((String) inputs[i]));
                 } else if (inputs[i] instanceof ItemStack) {
                     processedInput.add(((ItemStack) inputs[i]).copy());
                 } else if (inputs[i] instanceof Item) {
@@ -154,7 +154,7 @@ public class ProcessorRecipeRegister implements IProcessorRecipeRegister {
                     if (cont != null && cont.getItem() != next.getItem()) {
                         break;
                     } else {
-                        // ‹Œ1.7.10‚Ì—¬‘ÌƒRƒ“ƒeƒi”roAPI‚Ì’uŠ· (Forge capabilityŒo—R)
+                        // æ—§1.7.10ã®æµä½“ã‚³ãƒ³ãƒ†ãƒŠæŽ’å‡ºAPIã®ç½®æ› (Forge capabilityçµŒç”±)
                         cont = drainFluidContainer(next);
                         if (cont != null) {
                             break;
@@ -219,11 +219,11 @@ public class ProcessorRecipeRegister implements IProcessorRecipeRegister {
                         Object next = req.next();
 
                         if (next instanceof ItemStack) {
-                            match = OreDictionary.itemMatches((ItemStack) next, slot, false);
+                            match = TagHelper.itemMatches((ItemStack) next, slot, false);
                         } else if (next instanceof ArrayList) {
                             Iterator<ItemStack> itr = ((ArrayList<ItemStack>) next).iterator();
                             while (itr.hasNext() && !match) {
-                                match = OreDictionary.itemMatches(itr.next(), slot, false);
+                                match = TagHelper.itemMatches(itr.next(), slot, false);
                             }
                         }
 
@@ -261,3 +261,4 @@ public class ProcessorRecipeRegister implements IProcessorRecipeRegister {
         }
     }
 }
+

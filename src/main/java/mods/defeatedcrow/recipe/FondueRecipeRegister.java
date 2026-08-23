@@ -1,13 +1,13 @@
-package mods.defeatedcrow.recipe;
+﻿package mods.defeatedcrow.recipe;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import mods.defeatedcrow.handler.TagHelper;
 
 import mods.defeatedcrow.api.appliance.SoupType;
 import mods.defeatedcrow.api.recipe.IFondueRecipe;
@@ -100,7 +100,7 @@ public class FondueRecipeRegister implements IFondueRegister {
             this.type = t;
             processedInput = new ArrayList<ItemStack>();
             if (input instanceof String) {
-                processedInput.addAll(OreDictionary.getOres((String) input));
+                processedInput.addAll(TagHelper.getTagItems((String) input));
             } else if (input instanceof ItemStack) {
                 processedInput.add(((ItemStack) input).copy());
             } else if (input instanceof Item) {
@@ -139,7 +139,7 @@ public class FondueRecipeRegister implements IFondueRegister {
                 Iterator<ItemStack> itr = required.iterator();
                 boolean match = false;
                 while (itr.hasNext() && !match) {
-                    match = OreDictionary.itemMatches(itr.next(), item, false);
+                    match = TagHelper.itemMatches(itr.next(), item, false);
                 }
                 return match;
             }
@@ -161,7 +161,7 @@ public class FondueRecipeRegister implements IFondueRegister {
             this.before = bef;
             processedInput = new ArrayList<ItemStack>();
             if (input instanceof String) {
-                processedInput.addAll(OreDictionary.getOres((String) input));
+                processedInput.addAll(TagHelper.getTagItems((String) input));
             } else if (input instanceof ItemStack) {
                 processedInput.add(((ItemStack) input).copy());
             } else if (input instanceof Item) {
@@ -200,7 +200,7 @@ public class FondueRecipeRegister implements IFondueRegister {
                 Iterator<ItemStack> itr = required.iterator();
                 boolean match = false;
                 while (itr.hasNext() && !match) {
-                    match = OreDictionary.itemMatches(itr.next(), item, false);
+                    match = TagHelper.itemMatches(itr.next(), item, false);
                 }
                 return match;
             }
@@ -210,3 +210,4 @@ public class FondueRecipeRegister implements IFondueRegister {
     }
 
 }
+

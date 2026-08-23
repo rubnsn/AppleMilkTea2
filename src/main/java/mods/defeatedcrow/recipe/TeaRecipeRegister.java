@@ -1,9 +1,9 @@
-package mods.defeatedcrow.recipe;
+﻿package mods.defeatedcrow.recipe;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 import mods.defeatedcrow.api.recipe.ITeaRecipe;
 import mods.defeatedcrow.api.recipe.ITeaRecipeRegister;
@@ -128,3 +128,4 @@ public class TeaRecipeRegister implements ITeaRecipeRegister {
     }
 
 }
+
