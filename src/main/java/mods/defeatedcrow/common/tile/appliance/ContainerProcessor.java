@@ -7,9 +7,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public class ContainerProcessor extends Container {
 
     protected TileProcessor tileentity;
@@ -86,7 +83,7 @@ public class ContainerProcessor extends Container {
 
     // 更新する
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void updateProgressBar(int par1, int par2) {
         if (par1 == 0) {
             this.tileentity.cookTime = par2;

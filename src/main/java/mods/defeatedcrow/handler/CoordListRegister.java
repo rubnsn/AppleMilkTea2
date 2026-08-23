@@ -3,10 +3,15 @@ package mods.defeatedcrow.handler;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import mods.defeatedcrow.common.AMTLogger;
 
+/**
+ * 1.20.1: World,int x,y,z -> Level, BlockPos
+ * CoordListRegister now uses BlockPos + Level.dimension()
+ */
 public class CoordListRegister {
 
     private static CoordListRegister instance;
@@ -22,27 +27,25 @@ public class CoordListRegister {
         return instance;
     }
 
-    /** 指定した座礁のブロックをChunkLoaderとして起動する */
-    public static boolean setCood(World world, int x, int y, int z, int i, int j) {
-
-        if (world.isRemote) return false;
-        Coord cood = new Coord(i, j, world.provider.dimensionId);
-        Pos pos = new Pos(x, y, z);
+    /** 指定した座標のブロックをChunkLoaderとして起動する */
+    public static boolean setCood(Level level, BlockPos pos, int chunkX, int chunkZ) {
+        if (level.isClientSide) return false;
+        Coord cood = new Coord(chunkX, chunkZ, level.dimension().location().toString().hashCode());
+        Pos p = new Pos(pos);
 
         if (!isCoodIncluded(cood)) {
             coodList.add(cood);
             ArrayList<Pos> posList = new ArrayList<Pos>();
-            posList.add(pos);
+            posList.add(p);
             coodCounter.put(cood, posList);
             return true;
         } else {
             boolean f = false;
-            for (Pos p : coodCounter.get(cood)) {
-                if (p.equals(pos)) f = true;
+            for (Pos existing : coodCounter.get(cood)) {
+                if (existing.equals(p)) f = true;
             }
             if (!f) {
-                coodCounter.get(cood)
-                    .add(pos);
+                coodCounter.get(cood).add(p);
                 AMTLogger.debugInfo("already added coord");
                 return false;
             }
@@ -50,30 +53,38 @@ public class CoordListRegister {
         }
     }
 
-    /** 指定した座礁のChunkLoaderを停止する */
-    public static boolean deleteCood(World world, int x, int y, int z, int i, int j) {
-
-        if (world.isRemote) return false;
-        Coord cood = new Coord(i, j, world.provider.dimensionId);
-        Pos pos = new Pos(x, y, z);
+    /** 指定した座標のChunkLoaderを停止する */
+    public static boolean deleteCood(Level level, BlockPos pos, int chunkX, int chunkZ) {
+        if (level.isClientSide) return false;
+        Coord cood = new Coord(chunkX, chunkZ, level.dimension().location().toString().hashCode());
+        Pos p = new Pos(pos);
 
         if (isCoodIncluded(cood)) {
             boolean f = false;
-            for (Pos p : coodCounter.get(cood)) {
-                if (p.equals(pos)) f = true;
+            for (Pos existing : coodCounter.get(cood)) {
+                if (existing.equals(p)) f = true;
             }
             if (f) {
-                coodCounter.get(cood)
-                    .remove(pos);
+                coodCounter.get(cood).remove(p);
                 AMTLogger.debugInfo("remove pos");
-                if (coodCounter.get(cood)
-                    .isEmpty()) {
+                if (coodCounter.get(cood).isEmpty()) {
                     coodList.remove(cood);
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    // legacy overloads for compat (deprecated)
+    @Deprecated
+    public static boolean setCood(Level level, int x, int y, int z, int i, int j) {
+        return setCood(level, new BlockPos(x, y, z), i, j);
+    }
+
+    @Deprecated
+    public static boolean deleteCood(Level level, int x, int y, int z, int i, int j) {
+        return deleteCood(level, new BlockPos(x, y, z), i, j);
     }
 
     public static boolean isCoodIncluded(Coord cood) {
@@ -85,5 +96,4 @@ public class CoordListRegister {
         }
         return false;
     }
-
 }

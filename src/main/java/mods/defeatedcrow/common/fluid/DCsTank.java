@@ -5,9 +5,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public class DCsTank extends FluidTank {
 
     public DCsTank(int capacity) {
@@ -39,15 +36,13 @@ public class DCsTank extends FluidTank {
             .getLocalizedName(this.fluid) : "Empty";
     }
 
-    @SideOnly(Side.CLIENT)
-    public void setAmount(int par1) {
+        public void setAmount(int par1) {
         if (this.fluid != null && this.fluid.getFluid() != null) {
             this.fluid.amount = par1;
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    public void setFluidById(int par1) {
+        public void setFluidById(int par1) {
         Fluid f = FluidRegistry.getFluid(par1);
         if (f != null) {
             this.fluid = new FluidStack(f, this.getFluidAmount());

@@ -19,7 +19,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
+import net.minecraft.world.Level;
 
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.common.config.DCsConfig;
@@ -34,15 +34,15 @@ import mods.defeatedcrow.common.config.DCsConfig;
 public class CustomExplosion extends Explosion {
 
     private final Random rand = new Random();
-    private final World worldObj;
+    private final Level level;
     private final EntityLivingBase igniter;
     private final Type type;
     private Map playerMap = new HashMap();
 
-    public CustomExplosion(World world, Entity source, EntityLivingBase ign, double posX, double posY, double posZ,
+    public CustomExplosion(Level world, Entity source, EntityLivingBase ign, double posX, double posY, double posZ,
         float size, Type t, boolean smoke) {
         super(world, source, posX, posY, posZ, size);
-        this.worldObj = world;
+        this.level = world;
         this.type = t;
         this.igniter = ign;
         this.isFlaming = false;
@@ -66,7 +66,7 @@ public class CustomExplosion extends Explosion {
         int j2 = MathHelper.floor_double(this.explosionY + this.explosionSize + 1.0D);
         k = MathHelper.floor_double(this.explosionZ - this.explosionSize - 1.0D);
         int k2 = MathHelper.floor_double(this.explosionZ + this.explosionSize + 1.0D);
-        List list = this.worldObj
+        List list = this.level
             .getEntitiesWithinAABBExcludingEntity(this.exploder, AxisAlignedBB.getBoundingBox(i, j, k, i2, j2, k2));
         Vec3 vec3 = Vec3.createVectorHelper(this.explosionX, this.explosionY, this.explosionZ);
 
@@ -152,13 +152,13 @@ public class CustomExplosion extends Explosion {
         }
 
         this.explosionSize = f;
-        this.worldObj.playSoundEffect(
+        this.level.playSoundEffect(
             this.explosionX,
             this.explosionY,
             this.explosionZ,
             "random.explode",
             4.0F,
-            (1.0F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
+            (1.0F + (this.level.rand.nextFloat() - this.level.rand.nextFloat()) * 0.2F) * 0.7F);
     }
 
     public static enum Type {

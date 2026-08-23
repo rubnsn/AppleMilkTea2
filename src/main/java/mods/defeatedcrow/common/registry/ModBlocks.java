@@ -247,8 +247,10 @@ public class ModBlocks {
         () -> new BlockHandleEngine(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.5F).sound(SoundType.METAL).noOcclusion()));
 
     // --- WT-B: FLUID BLOCKS (blockVegitableOil, blockCamelliaOil) — LiquidBlock, see ModFluids ---
-    // public static final RegistryObject<net.minecraft.world.level.block.LiquidBlock> BLOCK_VEGI_OIL = BLOCKS.register("block_vegi_oil",
-    //     () -> new net.minecraft.world.level.block.LiquidBlock(ModFluids.VEG_OIL_SOURCE, BlockBehaviour.Properties.of().mapColor(MapColor.WATER).noCollission().strength(100.0F).noLootTable().liquid()));
+    public static final RegistryObject<net.minecraft.world.level.block.LiquidBlock> BLOCK_VEGI_OIL = BLOCKS.register("block_vegi_oil",
+        () -> new mods.defeatedcrow.common.fluid.BlockOilFluid(ModFluids.VEGITABLE_OIL_SOURCE, BlockBehaviour.Properties.of().mapColor(MapColor.WATER).noCollission().strength(100.0F).noLootTable().liquid()));
+    public static final RegistryObject<net.minecraft.world.level.block.LiquidBlock> BLOCK_CAMELLIA_OIL = BLOCKS.register("block_camellia_oil",
+        () -> new mods.defeatedcrow.common.fluid.BlockCamOilFluid(ModFluids.CAMELLIA_OIL_SOURCE, BlockBehaviour.Properties.of().mapColor(MapColor.WATER).noCollission().strength(100.0F).noLootTable().liquid()));
 
     private ModBlocks() {}
 }

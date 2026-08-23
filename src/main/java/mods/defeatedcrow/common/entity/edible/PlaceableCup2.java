@@ -1,22 +1,22 @@
 package mods.defeatedcrow.common.entity.edible;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.Level;
 
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.handler.Util;
 
 public class PlaceableCup2 extends PlaceableFoods {
 
-    public PlaceableCup2(World world) {
+    public PlaceableCup2(Level world) {
         super(world);
     }
 
-    public PlaceableCup2(World world, ItemStack item) {
+    public PlaceableCup2(Level world, ItemStack item) {
         super(world, true, item);
     }
 
-    public PlaceableCup2(World world, ItemStack item, double x, double y, double z) {
+    public PlaceableCup2(Level world, ItemStack item, double x, double y, double z) {
         super(world, true, item, x, y, z);
     }
 

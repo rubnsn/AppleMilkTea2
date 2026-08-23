@@ -3,21 +3,21 @@ package mods.defeatedcrow.event;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
-
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import mods.defeatedcrow.common.AMTLogger;
-import mods.defeatedcrow.common.DCsAppleMilk;
 
 /**
- * This Class was created based on the BucketHander.class (BuildCraft).
- * Original code was created by SpaceToad and BuildCraft Team.
+ * 1.20.1: MovingObjectPosition -> BlockHitResult, World,int x,y,z -> Level, BlockPos
+ * FillBucketEvent handling for custom oil buckets.
  */
 public class BucketFillEvent {
 
@@ -25,26 +25,28 @@ public class BucketFillEvent {
 
     @SubscribeEvent
     public void onBucketFill(FillBucketEvent event) {
-        ItemStack result = fillCustomBucket(event.world, event.target);
-
+        // FillBucketEvent in 1.20.1 has getLevel() and getTarget()
+        ItemStack result = fillCustomBucket(event.getLevel(), event.getTarget());
         if (result == null) {
             return;
         }
-
-        event.result = result;
-        event.setResult(Result.ALLOW);
+        event.setFilledBucket(result);
+        event.setResult(Event.Result.ALLOW);
     }
 
-    private ItemStack fillCustomBucket(World world, MovingObjectPosition pos) {
-        Block block = world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+    private ItemStack fillCustomBucket(Level level, BlockHitResult hit) {
+        if (hit == null) return null;
+        BlockPos pos = hit.getBlockPos();
+        BlockState state = level.getBlockState(pos);
+        Block block = state.getBlock();
 
         Item bucket = buckets.get(block);
         if (bucket != null) {
-            AMTLogger.debugInfo("bucket event : " + bucket.getUnlocalizedName());
+            AMTLogger.debugInfo("bucket event : " + bucket.getDescriptionId());
         }
 
-        if (bucket != null && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0) {
-            world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+        if (bucket != null && state.getFluidState().isSource()) {
+            level.removeBlock(pos, false);
             return new ItemStack(bucket);
         } else {
             return null;
@@ -52,8 +54,8 @@ public class BucketFillEvent {
     }
 
     public void register() {
-        buckets.put(DCsAppleMilk.blockVegitableOil, DCsAppleMilk.bucketVegiOil);
-        buckets.put(DCsAppleMilk.blockCamelliaOil, DCsAppleMilk.bucketCamOil);
+        // 1.20.1: Defer until ModBlocks/Fluids registered; use RegistryObject lazy
+        // buckets.put(ModBlocks.BLOCK_VEGI_OIL.get(), ModItems.BUCKET_VEGI_OIL.get());
+        // buckets.put(ModBlocks.BLOCK_CAMELLIA_OIL.get(), ModItems.BUCKET_CAM_OIL.get());
     }
-
 }

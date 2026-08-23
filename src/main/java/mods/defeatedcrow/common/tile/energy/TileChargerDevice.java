@@ -1,19 +1,16 @@
 package mods.defeatedcrow.common.tile.energy;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import cofh.api.energy.IEnergyConnection;
-import cofh.api.energy.IEnergyHandler;
-import cofh.api.tileentity.IEnergyInfo;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModAPIManager;
-import cpw.mods.fml.common.Optional;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.Level;
+import net.minecraft.core.Direction;
+import net.minecraftforge.fml.ModList;
 import mods.defeatedcrow.common.config.PropertyHandler;
 import mods.defeatedcrow.plugin.IC2.EUItemHandler;
 import mods.defeatedcrow.plugin.IC2.EUSinkManager;
@@ -26,11 +23,6 @@ import shift.sextiarysector.api.gearforce.tileentity.IGearForceHandler;
  * TileChargerBaseの発展型。
  * 他MODのエネルギー受け入れのために用意したもの。
  */
-@Optional.InterfaceList({ @Optional.Interface(iface = "cofh.api.energy.IEnergyHandler", modid = "CoFHAPI|energy"),
-    @Optional.Interface(iface = "cofh.api.tileentity.IEnergyInfo", modid = "CoFHAPI|tileentity"),
-    @Optional.Interface(
-        iface = "shift.sextiarysector.api.gearforce.tileentity.IGearForceHandler",
-        modid = "SextiarySector") })
 public class TileChargerDevice extends TileChargerBase implements IEnergyHandler, IEnergyInfo, IGearForceHandler {
 
     protected IEUSinkChannel EUChannel;
@@ -38,35 +30,35 @@ public class TileChargerDevice extends TileChargerBase implements IEnergyHandler
     // このTileにはコンストラクタが要る
     public TileChargerDevice() {
         super();
-        if (Loader.isModLoaded("IC2")) {
+        if (ModList.get().isLoaded("ic2")) {
             EUChannel = EUSinkManager.getChannel(this, MAX_CHARGE, 3);
         }
     }
 
     // このへんはオーバーライドしとかないとイマイチ動きが悪い
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
+    public void load(CompoundTag par1CompoundTag) {
         if (EUChannel != null) {
-            EUChannel.readFromNBT2(par1NBTTagCompound);
+            EUChannel.readFromNBT2(par1CompoundTag);
         }
-        super.readFromNBT(par1NBTTagCompound);
+        super.load(par1CompoundTag);
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
+    public void saveAdditional(CompoundTag par1CompoundTag) {
         if (EUChannel != null) {
-            EUChannel.writeToNBT2(par1NBTTagCompound);
+            EUChannel.writeToNBT2(par1CompoundTag);
         }
-        super.writeToNBT(par1NBTTagCompound);
+        super.saveAdditional(par1CompoundTag);
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        return super.getDescriptionPacket();
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return super.getUpdatePacket();
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         super.onDataPacket(net, pkt);
     }
 
@@ -97,13 +89,13 @@ public class TileChargerDevice extends TileChargerBase implements IEnergyHandler
     public boolean isChargeableBattery(ItemStack item) {
         boolean flag = false;
 
-        if (Loader.isModLoaded("SextiarySector")) {
+        if (ModList.get().isLoaded("sextiarysector")) {
             flag = SS2ItemHandler.isGFItem(item);
         }
-        if (ModAPIManager.INSTANCE.hasAPI("CoFHAPI|energy") && !flag) {
+        if (ModList.get().isLoaded("cofh_core") && !flag) {
             flag = RFItemHandler.isChargeable(item);
         }
-        if (!flag && Loader.isModLoaded("IC2") && !flag) {
+        if (!flag && ModList.get().isLoaded("ic2") && !flag) {
             flag = EUItemHandler.isChargeable(item);
         }
 
@@ -119,15 +111,15 @@ public class TileChargerDevice extends TileChargerBase implements IEnergyHandler
     @Override
     public int chargeAnotherBattery(ItemStack item, int inc, boolean flag) {
         int ret = 0;
-        if (Loader.isModLoaded("SextiarySector")) {
+        if (ModList.get().isLoaded("sextiarysector")) {
             int i = SS2ItemHandler.chargeAmount(item, inc * this.exchangeRateGF(), flag);
             ret = Math.round(i / this.exchangeRateGF());
         }
-        if (ModAPIManager.INSTANCE.hasAPI("CoFHAPI|energy") && ret == 0) {
+        if (ModList.get().isLoaded("cofh_core") && ret == 0) {
             int i = RFItemHandler.chargeAmount(item, inc * this.exchangeRateRF(), flag);
             ret = Math.round(i / this.exchangeRateRF());
         }
-        if (Loader.isModLoaded("IC2") && ret == 0) {
+        if (ModList.get().isLoaded("ic2") && ret == 0) {
             int i = EUItemHandler.chargeAmount(item, inc * this.exchangeRateEU(), flag);
             ret = Math.round(i / this.exchangeRateEU());
         }
@@ -136,7 +128,7 @@ public class TileChargerDevice extends TileChargerBase implements IEnergyHandler
 
     // こちら側からネットワークへのチェックが要るIC2ケーブルからのEU受け入れはこのメソッドで行う。
     @Override
-    public int acceptChargeFromDir(ForgeDirection dir) {
+    public int acceptChargeFromDir(Direction dir) {
         int ret = 0;
         // EU受入量は指定する必要があるので、とりあえず512とする。
         if (EUChannel != null) {
@@ -166,15 +158,15 @@ public class TileChargerDevice extends TileChargerBase implements IEnergyHandler
             int ret = 0;
             int inc = 16; // 速度はチャージバッテリーと同じ
 
-            if (Loader.isModLoaded("SextiarySector") && ret == 0) {
+            if (ModList.get().isLoaded("sextiarysector") && ret == 0) {
                 int i = SS2ItemHandler.dischargeAmount(item, inc * exchangeRateGF(), true);
                 ret = Math.round(i / exchangeRateGF());
             }
-            if (ModAPIManager.INSTANCE.hasAPI("CoFHAPI|energy") && ret == 0) {
+            if (ModList.get().isLoaded("cofh_core") && ret == 0) {
                 int i = RFItemHandler.dischargeAmount(item, inc * exchangeRateRF(), true);
                 ret = Math.round(i / exchangeRateRF());
             }
-            if (Loader.isModLoaded("IC2") && ret == 0) {
+            if (ModList.get().isLoaded("ic2") && ret == 0) {
                 int i = EUItemHandler.dischargeAmount(item, inc * exchangeRateEU(), true);
                 ret = Math.round(i / exchangeRateEU());
             }
@@ -190,7 +182,7 @@ public class TileChargerDevice extends TileChargerBase implements IEnergyHandler
             int ret = 0;
             int inc = amount;
 
-            if (Loader.isModLoaded("SextiarySector") && ret == 0) {
+            if (ModList.get().isLoaded("sextiarysector") && ret == 0) {
                 int i = SS2ItemHandler.dischargeAmount(item, inc * exchangeRateGF(), false);
                 ret = Math.round(i / exchangeRateGF());
 
@@ -203,7 +195,7 @@ public class TileChargerDevice extends TileChargerBase implements IEnergyHandler
                     }
                 }
             }
-            if (ModAPIManager.INSTANCE.hasAPI("CoFHAPI|energy") && ret == 0) {
+            if (ModList.get().isLoaded("cofh_core") && ret == 0) {
                 int i = RFItemHandler.dischargeAmount(item, inc * exchangeRateRF(), false);
                 ret = Math.round(i / exchangeRateRF());
 
@@ -217,7 +209,7 @@ public class TileChargerDevice extends TileChargerBase implements IEnergyHandler
 
                 }
             }
-            if (Loader.isModLoaded("IC2") && ret == 0) {
+            if (ModList.get().isLoaded("ic2") && ret == 0) {
                 int i = EUItemHandler.dischargeAmount(item, inc * exchangeRateEU(), false);
                 ret = Math.round(i / exchangeRateEU());
 
@@ -260,27 +252,25 @@ public class TileChargerDevice extends TileChargerBase implements IEnergyHandler
     }
 
     @Override
-    public void updateEntity() {
-        if (!this.worldObj.isRemote && EUChannel != null) {
-            EUChannel.updateEntity2();
-        }
-        super.updateEntity();
+    public static void tick(Level level, BlockPos pos, BlockState state, TileChargerDevice be) {
+        // 1.20.1 tick (was updateEntity) - see doc/tile-entities/migration-guide.md
+        if (level.isClientSide) return;
+        be.setChanged();
+        level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
     }
 
     /* for RF */
 
-    @Optional.Method(modid = "CoFHAPI|energy")
-    @Override
-    public boolean canConnectEnergy(ForgeDirection dir) {
+        @Override
+    public boolean canConnectEnergy(Direction dir) {
         // 向きごとにコネクト可能か見ているっぽい
-        TileEntity tile = this.worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+        BlockEntity tile = level.getBlockEntity(pos.relative(dir));
         boolean flag = (tile instanceof IEnergyConnection);
         return flag;
     }
 
-    @Optional.Method(modid = "CoFHAPI|energy")
-    @Override
-    public int receiveEnergy(ForgeDirection dir, int in, boolean flag) {
+        @Override
+    public int receiveEnergy(Direction dir, int in, boolean flag) {
         // エネルギーの受け入れ
         int eng = this.getChargeAmount();
         int get = in;
@@ -296,49 +286,42 @@ public class TileChargerDevice extends TileChargerBase implements IEnergyHandler
         return ret;
     }
 
-    @Optional.Method(modid = "CoFHAPI|energy")
-    @Override
-    public int extractEnergy(ForgeDirection paramForgeDirection, int paramInt, boolean paramBoolean) {
+        @Override
+    public int extractEnergy(Direction paramForgeDirection, int paramInt, boolean paramBoolean) {
         // 出力はしない
         return 0;
     }
 
-    @Optional.Method(modid = "CoFHAPI|energy")
-    @Override
-    public int getEnergyStored(ForgeDirection paramForgeDirection) {
+        @Override
+    public int getEnergyStored(Direction paramForgeDirection) {
         // 10倍になる
         return this.getChargeAmount() * this.exchangeRateRF();
     }
 
-    @Optional.Method(modid = "CoFHAPI|energy")
-    @Override
-    public int getMaxEnergyStored(ForgeDirection paramForgeDirection) {
+        @Override
+    public int getMaxEnergyStored(Direction paramForgeDirection) {
         // 10倍
         return this.getMaxChargeAmount() * this.exchangeRateRF();
     }
 
-    @Optional.Method(modid = "CoFHAPI|tileentity")
-    @Override
+        @Override
     public int getInfoEnergyPerTick() {
         return 0;
     }
 
-    @Optional.Method(modid = "CoFHAPI|tileentity")
-    @Override
+        @Override
     public int getInfoMaxEnergyPerTick() {
         return 0;
     }
 
-    @Optional.Method(modid = "CoFHAPI|tileentity")
-    @Override
+        @Override
     public int getInfoEnergyStored() {
         int eng = this.getChargeAmount();
         int get = eng * this.exchangeRateRF();
         return get;
     }
 
-    @Optional.Method(modid = "CoFHAPI|tileentity")
-    @Override
+        @Override
     public int getInfoMaxEnergyStored() {
         int eng = this.getMaxChargeAmount();
         int get = eng * this.exchangeRateRF();
@@ -347,9 +330,8 @@ public class TileChargerDevice extends TileChargerBase implements IEnergyHandler
 
     /* for GF */
 
-    @Optional.Method(modid = "SextiarySector")
-    @Override
-    public int addEnergy(ForgeDirection from, int power, int speed, boolean simulate) {
+        @Override
+    public int addEnergy(Direction from, int power, int speed, boolean simulate) {
         // エネルギーの受け入れ
         int eng = this.getChargeAmount();
         int get = speed;
@@ -368,43 +350,37 @@ public class TileChargerDevice extends TileChargerBase implements IEnergyHandler
         return ret;
     }
 
-    @Optional.Method(modid = "SextiarySector")
-    @Override
-    public int drawEnergy(ForgeDirection from, int power, int speed, boolean simulate) {
+        @Override
+    public int drawEnergy(Direction from, int power, int speed, boolean simulate) {
         return 0;
     }
 
-    @Optional.Method(modid = "SextiarySector")
-    @Override
-    public boolean canInterface(ForgeDirection from) {
+        @Override
+    public boolean canInterface(Direction from) {
         return true;
     }
 
-    @Optional.Method(modid = "SextiarySector")
-    @Override
-    public int getSpeedStored(ForgeDirection from) {
+        @Override
+    public int getSpeedStored(Direction from) {
         int eng = this.getChargeAmount();
         int get = eng * this.exchangeRateGF();
         return get;
     }
 
-    @Optional.Method(modid = "SextiarySector")
-    @Override
-    public int getPowerStored(ForgeDirection from) {
+        @Override
+    public int getPowerStored(Direction from) {
         return 0;
     }
 
-    @Optional.Method(modid = "SextiarySector")
-    @Override
-    public int getMaxSpeedStored(ForgeDirection from) {
+        @Override
+    public int getMaxSpeedStored(Direction from) {
         int eng = this.getMaxChargeAmount();
         int get = eng * this.exchangeRateGF();
         return get;
     }
 
-    @Optional.Method(modid = "SextiarySector")
-    @Override
-    public int getMaxPowerStored(ForgeDirection from) {
+        @Override
+    public int getMaxPowerStored(Direction from) {
         return 3;
     }
 

@@ -1,69 +1,73 @@
 package mods.defeatedcrow.common.tile;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.Level;
 import mods.defeatedcrow.common.DCsAppleMilk;
 
 /*
  * 情報の保存と、作動時間のカウントだけ行う。
  */
-public class TileIncenseBase extends TileEntity {
+public class TileIncenseBase extends BlockEntity {
+    public TileIncenseBase(BlockPos pos, BlockState state) { super(null, pos, state); }
+
 
     private ItemStack[] holdItem = new ItemStack[2];
     private boolean isActive = false;
     private int remainTick = 0;
 
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
+    public void load(CompoundTag par1CompoundTag) {
+        super.load(par1CompoundTag);
 
-        if (par1NBTTagCompound.hasKey("HoldItem")) {
-            this.setItemstack(ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("HoldItem")));
+        if (par1CompoundTag.contains("HoldItem")) {
+            this.setItemstack(ItemStack.loadItemStackFromNBT(par1CompoundTag.getCompound("HoldItem")));
         }
 
-        if (par1NBTTagCompound.hasKey("Ash")) {
-            this.holdItem[1] = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("Ash"));
+        if (par1CompoundTag.contains("Ash")) {
+            this.holdItem[1] = ItemStack.loadItemStackFromNBT(par1CompoundTag.getCompound("Ash"));
         }
 
-        this.remainTick = par1NBTTagCompound.getShort("RemainTick");
-        this.isActive = par1NBTTagCompound.getBoolean("Active");
+        this.remainTick = par1CompoundTag.getShort("RemainTick");
+        this.isActive = par1CompoundTag.getBoolean("Active");
     }
 
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
+    public void saveAdditional(CompoundTag par1CompoundTag) {
+        super.saveAdditional(par1CompoundTag);
 
-        par1NBTTagCompound.setShort("RemainTick", (short) this.remainTick);
-        par1NBTTagCompound.setBoolean("Active", this.isActive);
+        par1CompoundTag.putShort("RemainTick", (short) this.remainTick);
+        par1CompoundTag.putBoolean("Active", this.isActive);
 
         if (this.getItemstack() != null) {
-            par1NBTTagCompound.setTag(
+            par1CompoundTag.put(
                 "HoldItem",
                 this.getItemstack()
-                    .writeToNBT(new NBTTagCompound()));
+                    .saveAdditional(new CompoundTag()));
         }
 
         if (this.getAsh() != null) {
-            par1NBTTagCompound.setTag(
+            par1CompoundTag.put(
                 "Ash",
                 this.getAsh()
-                    .writeToNBT(new NBTTagCompound()));
+                    .saveAdditional(new CompoundTag()));
         }
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        this.writeToNBT(nbtTagCompound);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTagCompound);
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        CompoundTag nbtTagCompound = new CompoundTag();
+        this.saveAdditional(nbtTagCompound);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        this.readFromNBT(pkt.func_148857_g());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        this.load(pkt.getTag());
     }
 
     public boolean hasItem() {
@@ -103,43 +107,21 @@ public class TileIncenseBase extends TileEntity {
         this.remainTick = 2400;// 2分間
     }
 
-    public void updateEntity() {
-        if (this.getActive()) {
-            if (this.hasItem()) {
-                if (this.getRemain() > 0)// 効果継続処理
-                {
-                    --this.remainTick;
-
-                    if (this.getRemain() == 0) {
-                        this.addAsh();
-
-                        if (this.holdItem[0].stackSize > 1) {// 2個以上ある場合は、効果を延長できる
-                            --this.holdItem[0].stackSize;
-                            this.setRemain(2400);
-                        } else {
-                            this.setItemstack(null);// なくなった場合の処理
-                        }
-                        this.markDirty();
-                    }
-
-                }
-            } else {
-                this.setRemain(0);
-                this.isActive = false;
-                this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, 3);
-            }
-        }
+    public static void tick(Level level, BlockPos pos, BlockState state, TileIncenseBase be) {
+        // 1.20.1 tick (was updateEntity) - see doc/tile-entities/migration-guide.md
+        if (level.isClientSide) return;
+        be.setChanged();
+        level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
     }
 
     private void addAsh() {
-        ItemStack ash = this.getAsh();
+        ItemStack ash = be.getAsh();
         if (ash == null) {
             ash = new ItemStack(DCsAppleMilk.dustWood, 1, 2);
         } else if (ash.stackSize < 64) {
             ++ash.stackSize;
         }
-        this.holdItem[1] = ash;
+        be.holdItem[1] = ash;
     }
 
 }

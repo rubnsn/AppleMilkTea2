@@ -10,15 +10,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.Level;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.common.AchievementRegister;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.DCsConfig;
@@ -37,17 +35,17 @@ public class EntityMelonBomb extends Entity {
     protected double boatZ;
     protected double boatYaw;
     protected double boatPitch;
-    @SideOnly(Side.CLIENT)
+    
     protected double velocityX;
-    @SideOnly(Side.CLIENT)
+    
     protected double velocityY;
-    @SideOnly(Side.CLIENT)
+    
     protected double velocityZ;
 
     public int readyTime;
 
-    public EntityMelonBomb(World par1World) {
-        super(par1World);
+    public EntityMelonBomb(EntityType<?> type, Level par1World) {
+        super(type, level);
         this.field_70279_a = true;
         this.speedMultiplier = 0.07D;
         this.preventEntitySpawning = true;
@@ -62,20 +60,20 @@ public class EntityMelonBomb extends Entity {
     }
 
     @Override
-    protected void entityInit() {
-        this.dataWatcher.addObject(17, new Integer(0));
-        this.dataWatcher.addObject(18, new Integer(1));
-        this.dataWatcher.addObject(19, new Float(0.0F));
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_ID_17, new Integer(0));
+        this.entityData.define(18, new Integer(1));
+        this.entityData.define(19, new Float(0.0F));
     }
 
     @Override
-    public AxisAlignedBB getCollisionBox(Entity par1Entity) {
-        return par1Entity.boundingBox;
+    public AABB getCollisionBox( par1Entity) {
+        return par1Entity.getBoundingBox();
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox() {
-        return this.boundingBox;
+    public AABB getBoundingBox() {
+        return this.getBoundingBox();
     }
 
     @Override
@@ -83,15 +81,15 @@ public class EntityMelonBomb extends Entity {
         return true;
     }
 
-    public EntityMelonBomb(World par1World, double par2, double par4, double par6) {
+    public EntityMelonBomb(EntityType<?> type, Level par1World, double par2, double par4, double par6) {
         this(par1World);
         this.setPosition(par2, par4 + (double) this.yOffset, par6);
         this.motionX = 0.0D;
         this.motionY = 0.0D;
         this.motionZ = 0.0D;
-        this.prevPosX = par2;
-        this.prevPosY = par4;
-        this.prevPosZ = par6;
+        this.xo = par2;
+        this.yo = par4;
+        this.zo = par6;
     }
 
     @Override
@@ -100,10 +98,10 @@ public class EntityMelonBomb extends Entity {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
+    public boolean hurt(DamageSource par1DamageSource, float par2) {
         if (this.isEntityInvulnerable()) {
             return false;
-        } else if (!this.worldObj.isRemote && !this.isDead) {
+        } else if (!this.level.isClientSide && !this.isRemoved()) {
             this.setForwardDirection(-this.getForwardDirection());
             // 短時間でのダメージの蓄積計算。連続で叩くと破壊される
             this.setTimeSinceHit(10);
@@ -120,18 +118,18 @@ public class EntityMelonBomb extends Entity {
             // 壊れるときの動作
             if ((flag || this.getDamageTaken() > 40.0F) && !explode) {
                 // 起爆条件を満たさずに40ダメージ与えれば平和的にアイテム化する
-                if (this.riddenByEntity != null) {
-                    this.riddenByEntity.mountEntity(this);
+                if (this.vehicle != null) {
+                    this.vehicle.startRiding(this);
                 }
 
                 if (!flag) {
-                    this.func_145778_a(this.dropItem(), 1, 0.0F);
+                    this.spawnAtLocation(this.dropItem(), 1, 0.0F);
                 }
 
-                this.setDead();
+                this.discard();
             } else if (explode) {
                 // 起爆条件を満たしたので爆発
-                this.setDead();
+                this.discard();
                 if (DCsConfig.canExplodeMelon) this.explode();
             }
 
@@ -144,7 +142,7 @@ public class EntityMelonBomb extends Entity {
     protected void explode() {
         float f = 3.0F;
         boolean b = !DCsConfig.melonBreakBlock;
-        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, false);
+        this.level.createExplosion(this, this.getX(), this.getY(), this.getZ(), f, false);
 
     }
 
@@ -152,7 +150,7 @@ public class EntityMelonBomb extends Entity {
         return Item.getItemFromBlock(DCsAppleMilk.melonBomb);
     }
 
-    @SideOnly(Side.CLIENT)
+    
     @Override
     public void performHurtAnimation() {
         this.setForwardDirection(-this.getForwardDirection());
@@ -162,18 +160,18 @@ public class EntityMelonBomb extends Entity {
 
     @Override
     public boolean canBeCollidedWith() {
-        return !this.isDead;
+        return !this.isRemoved();
     }
 
-    @SideOnly(Side.CLIENT)
+    
     @Override
     public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9) {
         if (this.field_70279_a) {
             this.boatPosRotationIncrements = par9 + 5;
         } else {
-            double d3 = par1 - this.posX;
-            double d4 = par3 - this.posY;
-            double d5 = par5 - this.posZ;
+            double d3 = par1 - this.getX();
+            double d4 = par3 - this.getY();
+            double d5 = par5 - this.getZ();
             double d6 = d3 * d3 + d4 * d4 + d5 * d5;
 
             if (d6 <= 1.0D) {
@@ -193,7 +191,7 @@ public class EntityMelonBomb extends Entity {
         this.motionZ = this.velocityZ;
     }
 
-    @SideOnly(Side.CLIENT)
+    
     @Override
     public void setVelocity(double par1, double par3, double par5) {
         this.velocityX = this.motionX = par1;
@@ -202,8 +200,8 @@ public class EntityMelonBomb extends Entity {
     }
 
     @Override
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
 
         // 被ダメ計算
         if (this.getTimeSinceHit() > 0) {
@@ -214,30 +212,30 @@ public class EntityMelonBomb extends Entity {
             this.setDamageTaken(this.getDamageTaken() - 1.0F);
         }
 
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
+        this.xo = this.getX();
+        this.yo = this.getY();
+        this.zo = this.getZ();
         byte b0 = 5;
         double d0 = 0.0D;
 
         // 当たり判定が水中にあるか？
         for (int i = 0; i < b0; ++i) {
-            double d1 = this.boundingBox.minY
-                + (this.boundingBox.maxY - this.boundingBox.minY) * (double) (i + 0) / (double) b0
+            double d1 = this.getBoundingBox().minY
+                + (this.getBoundingBox().maxY - this.getBoundingBox().minY) * (double) (i + 0) / (double) b0
                 - 0.125D;
-            double d2 = this.boundingBox.minY
-                + (this.boundingBox.maxY - this.boundingBox.minY) * (double) (i + 1) / (double) b0
+            double d2 = this.getBoundingBox().minY
+                + (this.getBoundingBox().maxY - this.getBoundingBox().minY) * (double) (i + 1) / (double) b0
                 - 0.125D;
-            AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(
-                this.boundingBox.minX,
+            AABB axisalignedbb = AABB.getBoundingBox(
+                this.getBoundingBox().minX,
                 d1,
-                this.boundingBox.minZ,
-                this.boundingBox.maxX,
+                this.getBoundingBox().minZ,
+                this.getBoundingBox().maxX,
                 d2,
-                this.boundingBox.maxZ);
+                this.getBoundingBox().maxZ);
 
             // 浮力
-            if (this.worldObj.isAABBInMaterial(axisalignedbb, Material.water)) {
+            if (this.level.isAABBInMaterial(axisalignedbb, Material.water)) {
                 d0 += 1.0D / (double) b0;
             }
         }
@@ -248,8 +246,8 @@ public class EntityMelonBomb extends Entity {
 
         // 水しぶき生成
         if (d3 > 0.26249999999999996D && this.inWater) {
-            d4 = Math.cos((double) this.rotationYaw * Math.PI / 180.0D);
-            d5 = Math.sin((double) this.rotationYaw * Math.PI / 180.0D);
+            d4 = Math.cos((double) this.yRot * Math.PI / 180.0D);
+            d5 = Math.sin((double) this.yRot * Math.PI / 180.0D);
 
             for (int j = 0; (double) j < 1.0D + d3 * 60.0D; ++j) {
                 double d6 = (double) (this.rand.nextFloat() * 2.0F - 1.0F);
@@ -258,15 +256,15 @@ public class EntityMelonBomb extends Entity {
                 double d9;
 
                 if (this.rand.nextBoolean()) {
-                    d8 = this.posX - d4 * d6 * 0.8D + d5 * d7;
-                    d9 = this.posZ - d5 * d6 * 0.8D - d4 * d7;
-                    this.worldObj
-                        .spawnParticle("splash", d8, this.posY - 0.125D, d9, this.motionX, this.motionY, this.motionZ);
+                    d8 = this.getX() - d4 * d6 * 0.8D + d5 * d7;
+                    d9 = this.getZ() - d5 * d6 * 0.8D - d4 * d7;
+                    this.level
+                        .spawnParticle("splash", d8, this.getY() - 0.125D, d9, this.motionX, this.motionY, this.motionZ);
                 } else {
-                    d8 = this.posX + d4 + d5 * d6 * 0.7D;
-                    d9 = this.posZ + d5 - d4 * d6 * 0.7D;
-                    this.worldObj
-                        .spawnParticle("splash", d8, this.posY - 0.125D, d9, this.motionX, this.motionY, this.motionZ);
+                    d8 = this.getX() + d4 + d5 * d6 * 0.7D;
+                    d9 = this.getZ() + d5 - d4 * d6 * 0.7D;
+                    this.level
+                        .spawnParticle("splash", d8, this.getY() - 0.125D, d9, this.motionX, this.motionY, this.motionZ);
                 }
             }
         }
@@ -275,22 +273,22 @@ public class EntityMelonBomb extends Entity {
         double d11;
 
         // 向きと加速度の変化？
-        if (this.worldObj.isRemote && this.field_70279_a) {
+        if (this.level.isClientSide && this.field_70279_a) {
             if (this.boatPosRotationIncrements > 0) {
-                d4 = this.posX + (this.boatX - this.posX) / (double) this.boatPosRotationIncrements;
-                d5 = this.posY + (this.boatY - this.posY) / (double) this.boatPosRotationIncrements;
-                d11 = this.posZ + (this.boatZ - this.posZ) / (double) this.boatPosRotationIncrements;
-                d10 = MathHelper.wrapAngleTo180_double(this.boatYaw - (double) this.rotationYaw);
-                this.rotationYaw = (float) ((double) this.rotationYaw + d10 / (double) this.boatPosRotationIncrements);
-                this.rotationPitch = (float) ((double) this.rotationPitch
-                    + (this.boatPitch - (double) this.rotationPitch) / (double) this.boatPosRotationIncrements);
+                d4 = this.getX() + (this.boatX - this.getX()) / (double) this.boatPosRotationIncrements;
+                d5 = this.getY() + (this.boatY - this.getY()) / (double) this.boatPosRotationIncrements;
+                d11 = this.getZ() + (this.boatZ - this.getZ()) / (double) this.boatPosRotationIncrements;
+                d10 = Mth.wrapAngleTo180_double(this.boatYaw - (double) this.yRot);
+                this.yRot = (float) ((double) this.yRot + d10 / (double) this.boatPosRotationIncrements);
+                this.xRot = (float) ((double) this.xRot
+                    + (this.boatPitch - (double) this.xRot) / (double) this.boatPosRotationIncrements);
                 --this.boatPosRotationIncrements;
                 this.setPosition(d4, d5, d11);
-                this.setRotation(this.rotationYaw, this.rotationPitch);
+                this.setRotation(this.yRot, this.xRot);
             } else {
-                d4 = this.posX + this.motionX;
-                d5 = this.posY + this.motionY;
-                d11 = this.posZ + this.motionZ;
+                d4 = this.getX() + this.motionX;
+                d5 = this.getY() + this.motionY;
+                d11 = this.getZ() + this.motionZ;
                 this.setPosition(d4, d5, d11);
 
                 if (this.onGround) {
@@ -317,12 +315,12 @@ public class EntityMelonBomb extends Entity {
             }
 
             // 乗っているEntityの前進速度
-            if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityLivingBase) {
-                d4 = (double) ((EntityLivingBase) this.riddenByEntity).moveForward;
+            if (this.vehicle != null && this.vehicle instanceof EntityLivingBase) {
+                d4 = (double) ((EntityLivingBase) this.vehicle).moveForward;
 
                 if (d4 > 0.0D) {
-                    d5 = -Math.sin((double) (this.riddenByEntity.rotationYaw * (float) Math.PI / 180.0F));
-                    d11 = Math.cos((double) (this.riddenByEntity.rotationYaw * (float) Math.PI / 180.0F));
+                    d5 = -Math.sin((double) (this.vehicle.yRot * (float) Math.PI / 180.0F));
+                    d11 = Math.cos((double) (this.vehicle.yRot * (float) Math.PI / 180.0F));
                     this.motionX += d5 * this.speedMultiplier * 0.05000000074505806D;
                     this.motionZ += d11 * this.speedMultiplier * 0.05000000074505806D;
                 }
@@ -332,8 +330,8 @@ public class EntityMelonBomb extends Entity {
             double speedLimit = 0.35D;
             int speedMag = 0;
 
-            if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityLivingBase) {
-                EntityLivingBase living = (EntityLivingBase) this.riddenByEntity;
+            if (this.vehicle != null && this.vehicle instanceof EntityLivingBase) {
+                EntityLivingBase living = (EntityLivingBase) this.vehicle;
                 if (living.isPotionActive(Potion.moveSpeed)) {
                     speedMag = living.getActivePotionEffect(Potion.moveSpeed)
                         .getAmplifier() + 1;
@@ -388,16 +386,16 @@ public class EntityMelonBomb extends Entity {
             }
 
             // また向きを調整している？
-            this.rotationPitch = 0.0F;
-            d5 = (double) this.rotationYaw;
-            d11 = this.prevPosX - this.posX;
-            d10 = this.prevPosZ - this.posZ;
+            this.xRot = 0.0F;
+            d5 = (double) this.yRot;
+            d11 = this.xo - this.getX();
+            d10 = this.zo - this.getZ();
 
             if (d11 * d11 + d10 * d10 > 0.001D) {
                 d5 = (double) ((float) (Math.atan2(d10, d11) * 180.0D / Math.PI));
             }
 
-            double d12 = MathHelper.wrapAngleTo180_double(d5 - (double) this.rotationYaw);
+            double d12 = Mth.wrapAngleTo180_double(d5 - (double) this.yRot);
 
             if (d12 > 20.0D) {
                 d12 = 20.0D;
@@ -407,21 +405,21 @@ public class EntityMelonBomb extends Entity {
                 d12 = -20.0D;
             }
 
-            this.rotationYaw = (float) ((double) this.rotationYaw + d12);
-            this.setRotation(this.rotationYaw, this.rotationPitch);
+            this.yRot = (float) ((double) this.yRot + d12);
+            this.setRotation(this.yRot, this.xRot);
 
             // 当たり判定が乗り物の分拡大されているぽい
-            if (!this.worldObj.isRemote) {
-                List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(
+            if (!this.level.isClientSide) {
+                List list = this.level.getEntitiesWithinAABBExcludingEntity(
                     this,
-                    this.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+                    this.getBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
                 int l;
 
                 if (list != null && !list.isEmpty()) {
                     for (l = 0; l < list.size(); ++l) {
                         Entity entity = (Entity) list.get(l);
 
-                        if (entity != this.riddenByEntity && entity.canBePushed()
+                        if (entity != this.vehicle && entity.canBePushed()
                             && entity instanceof EntityMelonBomb) {
                             entity.applyEntityCollision(this);
                         }
@@ -430,24 +428,24 @@ public class EntityMelonBomb extends Entity {
 
                 // 雪と睡蓮を破壊
                 for (l = 0; l < 4; ++l) {
-                    int i1 = MathHelper.floor_double(this.posX + ((double) (l % 2) - 0.5D) * 0.8D);
-                    int j1 = MathHelper.floor_double(this.posZ + ((double) (l / 2) - 0.5D) * 0.8D);
+                    int i1 = Mth.floor_double(this.getX() + ((double) (l % 2) - 0.5D) * 0.8D);
+                    int j1 = Mth.floor_double(this.getZ() + ((double) (l / 2) - 0.5D) * 0.8D);
 
                     for (int k1 = 0; k1 < 2; ++k1) {
-                        int l1 = MathHelper.floor_double(this.posY) + k1;
-                        Block i2 = this.worldObj.getBlock(i1, l1, j1);
+                        int l1 = Mth.floor_double(this.getY()) + k1;
+                        Block i2 = this.level.getBlock(i1, l1, j1);
 
                         if (i2 == Blocks.snow) {
-                            this.worldObj.setBlockToAir(i1, l1, j1);
+                            this.level.setBlockToAir(i1, l1, j1);
                         } else if (i2 == Blocks.waterlily) {
-                            this.worldObj.func_147480_a(i1, l1, j1, true);
+                            this.level.func_147480_a(i1, l1, j1, true);
                         }
                     }
                 }
 
                 // 乗っているEntityが死んだら騎乗を解除
-                if (this.riddenByEntity != null && this.riddenByEntity.isDead) {
-                    this.riddenByEntity = null;
+                if (this.vehicle != null && this.vehicle.isRemoved()) {
+                    this.vehicle = null;
                 }
             }
         }
@@ -456,23 +454,23 @@ public class EntityMelonBomb extends Entity {
     // 乗っているEntityの位置調整
     @Override
     public void updateRiderPosition() {
-        if (this.riddenByEntity != null) {
-            double d0 = Math.cos((double) this.rotationYaw * Math.PI / 180.0D) * 0.4D;
-            double d1 = Math.sin((double) this.rotationYaw * Math.PI / 180.0D) * 0.4D;
-            this.riddenByEntity.setPosition(
-                this.posX + d0,
-                this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(),
-                this.posZ + d1);
+        if (this.vehicle != null) {
+            double d0 = Math.cos((double) this.yRot * Math.PI / 180.0D) * 0.4D;
+            double d1 = Math.sin((double) this.yRot * Math.PI / 180.0D) * 0.4D;
+            this.vehicle.setPosition(
+                this.getX() + d0,
+                this.getY() + this.getMountedYOffset() + this.vehicle.getYOffset(),
+                this.getZ() + d1);
         }
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {}
+    protected void addAdditionalSaveData(CompoundTag par1CompoundTag) {}
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {}
+    protected void readAdditionalSaveData(CompoundTag par1CompoundTag) {}
 
-    @SideOnly(Side.CLIENT)
+    
     @Override
     public float getShadowSize() {
         return 0.0F;
@@ -483,65 +481,65 @@ public class EntityMelonBomb extends Entity {
         // 他人が乗っている場合は乗れない
         ItemStack item = par1EntityPlayer.inventory.getCurrentItem();
         if (item != null && item.getItem() == DCsAppleMilk.chopsticks) {
-            if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer
-                && this.riddenByEntity != par1EntityPlayer) {
+            if (this.vehicle != null && this.vehicle instanceof EntityPlayer
+                && this.vehicle != par1EntityPlayer) {
                 return true;
             } else {
-                if (!this.worldObj.isRemote) {
-                    par1EntityPlayer.mountEntity(this);
+                if (!this.level.isClientSide) {
+                    par1EntityPlayer.startRiding(this);
                 }
 
                 return true;
             }
         } else {
             if (!par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(this.dropItem(), 1))) {
-                if (!worldObj.isRemote) par1EntityPlayer.entityDropItem(new ItemStack(this.dropItem(), 1), 1.0F);
+                if (!level.isClientSide) par1EntityPlayer.entityDropItem(new ItemStack(this.dropItem(), 1), 1.0F);
             }
 
-            this.setDead();
-            this.worldObj.playSoundAtEntity(par1EntityPlayer, "random.pop", 0.4F, 1.8F);
+            this.discard();
+            this.level.playSoundAtEntity(par1EntityPlayer, "random.pop", 0.4F, 1.8F);
             return true;
         }
 
     }
 
     public void setDamageTaken(float par1) {
-        this.dataWatcher.updateObject(19, Float.valueOf(par1));
+        this.entityData.set(19, Float.valueOf(par1));
     }
 
     public float getDamageTaken() {
-        return this.dataWatcher.getWatchableObjectFloat(19);
+        return this.entityData.get(19);
     }
 
     public void setTimeSinceHit(int par1) {
-        this.dataWatcher.updateObject(17, Integer.valueOf(par1));
+        this.entityData.set(17, Integer.valueOf(par1));
     }
 
     public int getTimeSinceHit() {
-        return this.dataWatcher.getWatchableObjectInt(17);
+        return this.entityData.get(17);
     }
 
     public void setForwardDirection(int par1) {
-        this.dataWatcher.updateObject(18, Integer.valueOf(par1));
+        this.entityData.set(18, Integer.valueOf(par1));
     }
 
     public int getForwardDirection() {
-        return this.dataWatcher.getWatchableObjectInt(18);
+        return this.entityData.get(18);
     }
 
-    @SideOnly(Side.CLIENT)
+    
     public void func_70270_d(boolean par1) {
         this.field_70279_a = par1;
     }
 
     protected void onCrash() {
-        if (!this.worldObj.isRemote && !this.isDead) {
-            if (this.riddenByEntity instanceof EntityPlayer) {
-                EntityPlayer player = (EntityPlayer) this.riddenByEntity;
+        if (!this.level.isClientSide && !this.isRemoved()) {
+            if (this.vehicle instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) this.vehicle;
                 player.triggerAchievement(AchievementRegister.crashMelon);
             }
-            this.setDead();
-            this.func_145778_a(this.dropItem(), 1, 0.0F);
+            this.discard();
+            this.spawnAtLocation(this.dropItem(), 1, 0.0F);
         }
     }
 }

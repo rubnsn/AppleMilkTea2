@@ -17,7 +17,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.living.LivingEvent;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import mods.defeatedcrow.api.potion.PotionImmunityBase;
 import mods.defeatedcrow.api.potion.PotionLivingBase;
 import mods.defeatedcrow.common.AMTLogger;
@@ -72,7 +72,7 @@ public class DCsLivingEvent {
                     }
                 }
 
-                if (player.worldObj.isRemote && !keyDown) {
+                if (player.level.isClientSide && !keyDown) {
                     if (DCsAppleMilk.proxy.isWarpKeyDown()) {
                         keyDown = true;
                         ItemStack charm = null;
@@ -102,18 +102,18 @@ public class DCsLivingEvent {
                                     }
                                     if (mode == 1) {
                                         String name = nbt.getString("DCtargetName");
-                                        EntityPlayer target = player.worldObj.getPlayerEntityByName(name);
+                                        EntityPlayer target = player.level.getPlayerEntityByName(name);
                                         if (target != null) {
                                             int X = MathHelper.floor_double(target.posX);
                                             int Y = MathHelper.floor_double(target.posY) - 1;
                                             int Z = MathHelper.floor_double(target.posZ);
-                                            String DimName = target.worldObj.provider.getDimensionName();
+                                            String DimName = target.level.provider.getDimensionName();
 
                                             for (int ix = 0; ix < 3; ix++) {
                                                 for (int iz = 0; iz < 3; iz++) {
-                                                    if (player.worldObj.isAirBlock(X + ix - 1, Y + 1, Z + iz - 1)
-                                                        && player.worldObj.isAirBlock(X + ix - 1, Y + 2, Z + iz - 1)
-                                                        && player.worldObj.isSideSolid(
+                                                    if (player.level.isAirBlock(X + ix - 1, Y + 1, Z + iz - 1)
+                                                        && player.level.isAirBlock(X + ix - 1, Y + 2, Z + iz - 1)
+                                                        && player.level.isSideSolid(
                                                             X + ix - 1,
                                                             Y,
                                                             Z + iz - 1,
@@ -121,9 +121,9 @@ public class DCsLivingEvent {
                                                         x = X + ix - 1;
                                                         z = Z + iz - 1;
                                                         y = Y;
-                                                        warp = target.worldObj.provider.getDimensionName()
+                                                        warp = target.level.provider.getDimensionName()
                                                             .equalsIgnoreCase(
-                                                                player.worldObj.provider.getDimensionName());
+                                                                player.level.provider.getDimensionName());
                                                     }
                                                 }
                                             }
@@ -134,8 +134,8 @@ public class DCsLivingEvent {
                                         y = nbt.getInteger("DCposY");
                                         z = nbt.getInteger("DCposZ");
                                         dim = nbt.getInteger("DCdim");
-                                        if (player.worldObj.provider.dimensionId == dim
-                                            && player.worldObj.isSideSolid(x, y, z, ForgeDirection.UP)) {
+                                        if (player.level.provider.dimensionId == dim
+                                            && player.level.isSideSolid(x, y, z, ForgeDirection.UP)) {
                                             warp = true;
                                         }
                                     }
@@ -151,19 +151,19 @@ public class DCsLivingEvent {
                                         break;
                                     }
 
-                                    if (ItemPrincessClam.moonCanWarp(player.worldObj, X, Y + i, Z)
-                                        && player.worldObj.isAirBlock(X, Y + i + 2, Z)) {
-                                        if (player.worldObj.isAirBlock(X, Y + i + 1, Z)) {
+                                    if (ItemPrincessClam.moonCanWarp(player.level, X, Y + i, Z)
+                                        && player.level.isAirBlock(X, Y + i + 2, Z)) {
+                                        if (player.level.isAirBlock(X, Y + i + 1, Z)) {
                                             y = Y + i;
                                             warp = true;
                                             x = X;
                                             z = Z;
                                             break;
-                                        } else if (player.worldObj.getBlock(X, Y + i + 1, Z)
+                                        } else if (player.level.getBlock(X, Y + i + 1, Z)
                                             .getMaterial() == Material.water
-                                            || player.worldObj.getBlock(X, Y + i + 1, Z)
+                                            || player.level.getBlock(X, Y + i + 1, Z)
                                                 .getMaterial() == Material.plants
-                                            || player.worldObj.getBlock(X, Y + i + 1, Z)
+                                            || player.level.getBlock(X, Y + i + 1, Z)
                                                 .getMaterial() == Material.snow) {
                                                     y = Y + i;
                                                     warp = true;
@@ -197,7 +197,7 @@ public class DCsLivingEvent {
 
             ArrayList<PotionEffect> potions = new ArrayList<PotionEffect>();
 
-            if (living != null && !living.worldObj.isRemote) {
+            if (living != null && !living.level.isClientSide) {
 
                 boolean f = true;
                 if (living instanceof EntityLiving && ((EntityLiving) living).hasCustomNameTag()) {
@@ -218,7 +218,7 @@ public class DCsLivingEvent {
                     int z = MathHelper.floor_double(living.posZ);
                     int cX = x >> 4;
                     int cZ = z >> 4;
-                    Coord cood = new Coord(cX, cZ, living.worldObj.provider.dimensionId);
+                    Coord cood = new Coord(cX, cZ, living.level.provider.dimensionId);
                     if (CoordListRegister.isCoodIncluded(cood)) {
                         if (living.riddenByEntity != null) {
                             living.riddenByEntity.setDead();

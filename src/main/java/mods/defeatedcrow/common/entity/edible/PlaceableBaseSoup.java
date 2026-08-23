@@ -1,8 +1,8 @@
 package mods.defeatedcrow.common.entity.edible;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.util./*IconREMOVED migrated*/;
+import net.minecraft.world.Level;
 
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.base.FoodBaseEntity;
@@ -12,15 +12,15 @@ import mods.defeatedcrow.common.base.FoodModelType.Soup;
 
 public class PlaceableBaseSoup extends FoodBaseEntity {
 
-    public PlaceableBaseSoup(World world) {
+    public PlaceableBaseSoup(Level world) {
         super(world);
     }
 
-    public PlaceableBaseSoup(World world, ItemStack item) {
+    public PlaceableBaseSoup(Level world, ItemStack item) {
         super(world, item);
     }
 
-    public PlaceableBaseSoup(World world, ItemStack item, double x, double y, double z) {
+    public PlaceableBaseSoup(Level world, ItemStack item, double x, double y, double z) {
         super(world, item, x, y, z);
     }
 
@@ -40,7 +40,7 @@ public class PlaceableBaseSoup extends FoodBaseEntity {
     }
 
     @Override
-    public IIcon getSoupIcon(int meta) {
+    public /*IconREMOVED migrated*/ getSoupIcon(int meta) {
         return DCsAppleMilk.baseSoupBowl.getIconFromDamage(meta + 16);
     }
 

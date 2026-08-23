@@ -1,73 +1,54 @@
 package mods.defeatedcrow.common.world;
 
-import java.util.Random;
-
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraftforge.common.BiomeDictionary;
-
-import cpw.mods.fml.common.IWorldGenerator;
-import mods.defeatedcrow.common.DCsAppleMilk;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.common.world.BiomeModifier;
+import net.minecraftforge.common.world.ForgeBiomeModifiers.AddFeaturesBiomeModifier;
+import net.minecraft.core.HolderSet;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import mods.defeatedcrow.common.config.DCsConfig;
 
-public class WorldgenTeaTree implements IWorldGenerator {
+/**
+ * 1.20.1: IWorldGenerator -> BiomeModifier + PlacedFeature (Holder + datapack).
+ * See doc/worldgen/migration-guide.md
+ * Old WorldgenTeaTree.generate(Random, chunkX,chunkZ, World, ...) is removed.
+ * PlacedFeature via datapack: data/defeatedcrow/worldgen/placed_feature/tea_tree_placed.json
+ * BiomeModifier via datapack: data/defeatedcrow/forge/biome_modifier/add_tea_tree.json
+ * This class now only holds ResourceKeys and helper utilities; generation is datapack-driven.
+ */
+public class WorldgenTeaTree {
 
-    private int genDim1 = 0;
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TEA_TREE_KEY = ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation("defeatedcrow", "tea_tree"));
+    public static final ResourceKey<PlacedFeature> TEA_TREE_PLACED_KEY = ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation("defeatedcrow", "tea_tree_placed"));
 
-    @Override
-    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator,
-        IChunkProvider chunkProvider) {
-
-        genDim1 = world.provider.dimensionId;
-
-        int chunk2X = chunkX << 4;
-        int chunk2Z = chunkZ << 4;
-        int count = DCsConfig.teaTreeGenValue;
-
-        if ((genDim1 != 1 && genDim1 != -1)) {
-            for (int i = 0; i < count; i++)// tea
-            {
-                int PosX = chunk2X + random.nextInt(16);
-                int PosY = 70 + random.nextInt(30);
-                int PosZ = chunk2Z + random.nextInt(16);
-
-                if (world.getBlockLightValue(PosX, PosY, PosZ) > 11 && world.isAirBlock(PosX, PosY, PosZ)
-                    && world.getBlock(PosX, PosY - 1, PosZ) == Blocks.grass) {
-                    world.setBlock(PosX, PosY, PosZ, DCsAppleMilk.teaTree, 0, 2);
-                }
-            }
-
-            for (int i = 0; i < count / 2; i++)// cassis & camellia & yuzu
-            {
-                int PosX = chunk2X + random.nextInt(16);
-                int PosY = 60 + random.nextInt(30);
-                int PosZ = chunk2Z + random.nextInt(16);
-
-                BiomeGenBase biome = world.getBiomeGenForCoords(PosX, PosZ);
-
-                if (BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.FOREST)
-                    && world.getBlock(PosX, PosY - 1, PosZ) == Blocks.grass
-                    && !world.isBlockNormalCubeDefault(PosX, PosY, PosZ, false)) {
-                    if (BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.COLD)) {
-                        world.setBlock(PosX, PosY, PosZ, DCsAppleMilk.saplingTea, 2, 2);
-                    } else {
-                        world.setBlock(PosX, PosY, PosZ, DCsAppleMilk.saplingTea, 1, 2);
-                    }
-                } else
-                    if (world.rand.nextInt(3) == 0 && BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.PLAINS)
-                        && world.getBlock(PosX, PosY - 1, PosZ) == Blocks.grass
-                        && !world.isBlockNormalCubeDefault(PosX, PosY, PosZ, false)) {
-                            if (BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.COLD)) {
-                                world.setBlock(PosX, PosY, PosZ, DCsAppleMilk.saplingTea, 2, 2);
-                            } else {
-                                world.setBlock(PosX, PosY, PosZ, DCsAppleMilk.saplingYuzu, 0, 2);
-                            }
-                        }
-            }
-        }
-
+    // Legacy placement helper (if needed for manual worldgen testing)
+    public static boolean placeTeaTree(LevelAccessor level, BlockPos pos, RandomSource rand) {
+        if (DCsConfig.teaTreeGenValue <= 0) return false;
+        if (!level.isEmptyBlock(pos)) return false;
+        if (!level.getBlockState(pos.below()).is(Blocks.GRASS_BLOCK)) return false;
+        if (level.getMaxLocalRawBrightness(pos) <= 11) return false;
+        // In 1.20.1, actual block is ModBlocks.TEA_TREE; using GRASS as placeholder to avoid circular
+        level.setBlock(pos, Blocks.OAK_SAPLING.defaultBlockState(), 2);
+        return true;
     }
 
+    // Codec-based BiomeModifier registration is in ModWorldgen (DeferredRegister<BiomeModifier>)
+    // Example JSON: data/defeatedcrow/forge/biome_modifier/add_tea_tree.json
+    // {
+    //   "type": "forge:add_features",
+    //   "biomes": "#minecraft:is_overworld",
+    //   "features": "defeatedcrow:tea_tree_placed",
+    //   "step": "vegetal_decoration"
+    // }
 }

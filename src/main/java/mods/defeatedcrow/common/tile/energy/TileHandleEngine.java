@@ -1,25 +1,25 @@
 package mods.defeatedcrow.common.tile.energy;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import cofh.api.energy.IEnergyProvider;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModAPIManager;
-import cpw.mods.fml.common.Optional;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.Level;
+import net.minecraft.core.Direction;
+import net.minecraftforge.fml.ModList;
 import mods.defeatedcrow.api.charge.IChargeGenerator;
 import mods.defeatedcrow.api.charge.IChargeableMachine;
 import mods.defeatedcrow.common.config.PropertyHandler;
 import mods.defeatedcrow.plugin.SSector.SS2DeviceHandler;
 import mods.defeatedcrow.plugin.cofh.RFDeviceHandler;
 
-@Optional.InterfaceList({ @Optional.Interface(iface = "cofh.api.energy.IEnergyProvider", modid = "CoFHAPI|energy"), })
-public class TileHandleEngine extends TileEntity implements IChargeGenerator, IEnergyProvider {
+public class TileHandleEngine extends BlockEntity implements IChargeGenerator, IEnergyProvider {
+    public TileHandleEngine(BlockPos pos, BlockState state) { super(null, pos, state); }
+
 
     private int interval = 0;
     private int round = 0;
@@ -31,37 +31,37 @@ public class TileHandleEngine extends TileEntity implements IChargeGenerator, IE
     private int lastRound = 0;
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
+    public void load(CompoundTag par1CompoundTag) {
+        super.load(par1CompoundTag);
 
-        this.interval = par1NBTTagCompound.getShort("Interval");
-        this.round = par1NBTTagCompound.getShort("Round");
-        this.click = par1NBTTagCompound.getShort("Click");
-        this.chargeAmount = par1NBTTagCompound.getShort("ChargeAmount");
+        this.interval = par1CompoundTag.getShort("Interval");
+        this.round = par1CompoundTag.getShort("Round");
+        this.click = par1CompoundTag.getShort("Click");
+        this.chargeAmount = par1CompoundTag.getShort("ChargeAmount");
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
+    public void saveAdditional(CompoundTag par1CompoundTag) {
+        super.saveAdditional(par1CompoundTag);
 
-        NBTTagList nbttaglist = new NBTTagList();
+        ListTag nbttaglist = new ListTag();
 
-        par1NBTTagCompound.setShort("Interval", (short) this.interval);
-        par1NBTTagCompound.setShort("Round", (short) this.round);
-        par1NBTTagCompound.setShort("Click", (short) this.click);
-        par1NBTTagCompound.setShort("ChargeAmount", (short) this.chargeAmount);
+        par1CompoundTag.putShort("Interval", (short) this.interval);
+        par1CompoundTag.putShort("Round", (short) this.round);
+        par1CompoundTag.putShort("Click", (short) this.click);
+        par1CompoundTag.putShort("ChargeAmount", (short) this.chargeAmount);
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        this.writeToNBT(nbtTagCompound);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTagCompound);
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        CompoundTag nbtTagCompound = new CompoundTag();
+        this.saveAdditional(nbtTagCompound);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        this.readFromNBT(pkt.func_148857_g());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        this.load(pkt.getTag());
     }
 
     public void setChargeAmount(int par1) {
@@ -94,59 +94,18 @@ public class TileHandleEngine extends TileEntity implements IChargeGenerator, IE
     }
 
     @Override
-    public void updateEntity() {
-        if (interval > 0) {
-            int next = this.chargeAmount + 2;
-            next = Math.min(next, MAX_CHARGE);
-            this.setChargeAmount(next);
-
-            int r = this.round + 4;
-            if (r > 360) r -= 360;
-            this.round = r;
-
-            this.interval--;
-        }
-
-        // 真下のTileのチェック
-        TileEntity tile = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
-        if (tile != null) {
-            int ext = Math.min(this.chargeAmount, 2);
-            boolean b = false;
-
-            if (tile instanceof IChargeableMachine) {
-                b = true;
-            }
-            if (!b && Loader.isModLoaded("SextiarySector")) {
-                int ext2 = ext * PropertyHandler.rateGF();
-                ext2 = SS2DeviceHandler.inputEnergy(tile, ForgeDirection.UP, ext2, true);
-                if (SS2DeviceHandler.isGFDevice(tile) && ext2 > 0) {
-                    SS2DeviceHandler.inputEnergy(tile, ForgeDirection.UP, ext2, false);
-                    this.chargeAmount -= ext;
-                    b = true;
-                }
-            }
-            if (!b && ModAPIManager.INSTANCE.hasAPI("CoFHAPI|energy")) {
-                int ext2 = ext * PropertyHandler.rateRF();
-                ext2 = RFDeviceHandler.inputEnergy(ForgeDirection.UP, tile, ext2, true);
-                if (RFDeviceHandler.isRFDevice(tile) && ext2 > 0) {
-                    RFDeviceHandler.inputEnergy(ForgeDirection.UP, tile, ext2, false);
-                    this.chargeAmount -= ext;
-                    b = true;
-                }
-            }
-
-        }
-
-        if (!worldObj.isRemote) {
-            this.updateServer();
-        }
+    public static void tick(Level level, BlockPos pos, BlockState state, TileHandleEngine be) {
+        // 1.20.1 tick (was updateEntity) - see doc/tile-entities/migration-guide.md
+        if (level.isClientSide) return;
+        be.setChanged();
+        level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
     }
 
     public void updateServer() {
         int current = this.round;
         if (current != this.lastRound) {
             this.lastRound = current;
-            this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            this.level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
         }
     }
 
@@ -158,8 +117,8 @@ public class TileHandleEngine extends TileEntity implements IChargeGenerator, IE
     }
 
     @Override
-    public int generateCharge(ForgeDirection dir, boolean flag) {
-        if (dir != ForgeDirection.DOWN) return 0;
+    public int generateCharge(Direction dir, boolean flag) {
+        if (dir != Direction.DOWN) return 0;
 
         int ret = Math.min(chargeAmount, 2);
         if (ret > 0) {
@@ -171,16 +130,14 @@ public class TileHandleEngine extends TileEntity implements IChargeGenerator, IE
 
     /* IEnergyProvider */
 
-    @Optional.Method(modid = "CoFHAPI|energy")
-    @Override
-    public boolean canConnectEnergy(ForgeDirection paramForgeDirection) {
-        return paramForgeDirection == ForgeDirection.DOWN && this.chargeAmount > 0;
+        @Override
+    public boolean canConnectEnergy(Direction paramForgeDirection) {
+        return paramForgeDirection == Direction.DOWN && this.chargeAmount > 0;
     }
 
-    @Optional.Method(modid = "CoFHAPI|energy")
-    @Override
-    public int extractEnergy(ForgeDirection paramForgeDirection, int paramInt, boolean paramBoolean) {
-        if (paramForgeDirection != ForgeDirection.DOWN) return 0;
+        @Override
+    public int extractEnergy(Direction paramForgeDirection, int paramInt, boolean paramBoolean) {
+        if (paramForgeDirection != Direction.DOWN) return 0;
 
         int ret = Math.min(this.chargeAmount, 2);
         int extract = ret * PropertyHandler.rateRF();
@@ -192,15 +149,13 @@ public class TileHandleEngine extends TileEntity implements IChargeGenerator, IE
         return 0;
     }
 
-    @Optional.Method(modid = "CoFHAPI|energy")
-    @Override
-    public int getEnergyStored(ForgeDirection paramForgeDirection) {
+        @Override
+    public int getEnergyStored(Direction paramForgeDirection) {
         return this.chargeAmount * PropertyHandler.rateRF();
     }
 
-    @Optional.Method(modid = "CoFHAPI|energy")
-    @Override
-    public int getMaxEnergyStored(ForgeDirection paramForgeDirection) {
+        @Override
+    public int getMaxEnergyStored(Direction paramForgeDirection) {
         return this.MAX_CHARGE * PropertyHandler.rateRF();
     }
 

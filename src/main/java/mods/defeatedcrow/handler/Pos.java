@@ -1,49 +1,63 @@
 package mods.defeatedcrow.handler;
 
-import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
+/**
+ * 1.20.1: World,int x,y,z -> BlockPos
+ * Legacy Pos wrapper retained for compat, now delegates to BlockPos.
+ */
 public class Pos {
 
-    public final int x;
-    public final int y;
-    public final int z;
+    public final BlockPos pos;
 
     public Pos(int i, int j, int k) {
-        x = i;
-        y = j;
-        z = k;
+        this.pos = new BlockPos(i, j, k);
     }
 
-    public Block getBlock(IBlockAccess world) {
-        return world.getBlock(x, y, z);
+    public Pos(BlockPos p) {
+        this.pos = p;
     }
 
-    public TileEntity getTile(IBlockAccess world) {
-        return world.getTileEntity(x, y, z);
+    public int getX() { return pos.getX(); }
+    public int getY() { return pos.getY(); }
+    public int getZ() { return pos.getZ(); }
+
+    public Block getBlock(BlockGetter world) {
+        return world.getBlockState(pos).getBlock();
     }
 
-    public int getMeta(IBlockAccess world) {
-        return world.getBlockMetadata(x, y, z);
+    public BlockEntity getTile(BlockGetter world) {
+        return world.getBlockEntity(pos);
+    }
+
+    public int getMeta(BlockGetter world) {
+        return 0; // metadata removed in 1.20.1, property based
     }
 
     public boolean isSamePos(int i, int j, int k) {
-        return i == x && j == y && k == z;
+        return pos.getX() == i && pos.getY() == j && pos.getZ() == k;
+    }
+
+    public boolean isSamePos(BlockPos other) {
+        return pos.equals(other);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj != null && obj instanceof Pos) {
-            Pos p = (Pos) obj;
-            return p.x == x && p.y == y && p.z == z;
+        if (obj != null && obj instanceof Pos p) {
+            return p.pos.equals(pos);
+        }
+        if (obj instanceof BlockPos bp) {
+            return bp.equals(pos);
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        int i = x + z * 31 + y * 953;
-        return i;
+        return pos.hashCode();
     }
 }

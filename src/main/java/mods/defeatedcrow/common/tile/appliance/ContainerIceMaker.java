@@ -7,8 +7,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
 import mods.defeatedcrow.recipe.*;
 
@@ -72,7 +70,7 @@ public class ContainerIceMaker extends Container {
     }
 
     // 更新する
-    @SideOnly(Side.CLIENT)
+    
     public void updateProgressBar(int par1, int par2) {
         if (par1 == 0) {
             this.tileentity.cookTime = par2;

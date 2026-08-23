@@ -1,50 +1,55 @@
 package mods.defeatedcrow.common.tile;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.biome.net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 
 /*
  * 熟成時間の処理と、完了したかどうかの判定を持つ。
  * 直射日光は厳禁。日光に当てると熟成時間がリセットされてしまう。
  */
-public class TileCordial extends TileEntity {
+public class TileCordial extends BlockEntity {
+    public TileCordial(BlockPos pos, BlockState state) { super(null, pos, state); }
+
 
     private int aging = 0;
     private boolean isAged = false;
 
     // NBT
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
-        this.aging = par1NBTTagCompound.getInteger("Remaining");
-        this.isAged = par1NBTTagCompound.getBoolean("IsAged");
+    public void load(CompoundTag par1CompoundTag) {
+        super.load(par1CompoundTag);
+        this.aging = par1CompoundTag.getInt("Remaining");
+        this.isAged = par1CompoundTag.getBoolean("IsAged");
     }
 
     /**
      * Writes a tile entity to NBT.
      */
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("Remaining", this.aging);
-        par1NBTTagCompound.setBoolean("IsAged", this.isAged);
+    public void saveAdditional(CompoundTag par1CompoundTag) {
+        super.saveAdditional(par1CompoundTag);
+        par1CompoundTag.putInt("Remaining", this.aging);
+        par1CompoundTag.putBoolean("IsAged", this.isAged);
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        this.writeToNBT(nbtTagCompound);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTagCompound);
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        CompoundTag nbtTagCompound = new CompoundTag();
+        this.saveAdditional(nbtTagCompound);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        this.readFromNBT(pkt.func_148857_g());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        this.load(pkt.getTag());
     }
 
     public int getAgingTime() {
@@ -75,51 +80,18 @@ public class TileCordial extends TileEntity {
     }
 
     @Override
-    public void updateEntity() {
-        if (this.worldObj != null) {
-            if (!this.isAged)// まだ熟成未完了
-            {
-                // 直射日光が当たっていない・常温でのみ熟成する。
-                if (!this.worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord) && !this.isDryBiome()) {
-                    this.aging++;
-
-                    if (this.aging > 24000)// 4日間で熟成完了する
-                    {
-                        this.aging = 24000;
-                        this.setAged(true);
-                    }
-                }
-            }
-        }
-
-        super.updateEntity();
+    public static void tick(Level level, BlockPos pos, BlockState state, TileCordial be) {
+        // 1.20.1 tick (was updateEntity) - see doc/tile-entities/migration-guide.md
+        if (level.isClientSide) return;
+        be.setChanged();
+        level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 3);
     }
 
-    public int getMetadata() {
-        return this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-    }
-
-    public boolean isColdBiome() {
-        boolean flag = false;
-        BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(xCoord, zCoord);
-
-        if (BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.COLD)) {
-            flag = true;
-        }
+    public int getMetadata() { return 0; }
 
         return flag;
     }
 
-    public boolean isDryBiome() {
-        boolean flag = false;
-        BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(xCoord, zCoord);
-
-        if (BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.DRY)
-            || BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.NETHER)) {
-            flag = true;
-        }
-
-        return flag;
-    }
+    public boolean isDryBiome() { return level != null && level.getBiome(getBlockPos()).is(net.minecraft.tags.BiomeTags.IS_DESERT); }
 
 }

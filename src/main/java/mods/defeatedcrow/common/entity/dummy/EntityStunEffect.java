@@ -6,10 +6,9 @@ import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.Level;
 
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import mods.defeatedcrow.common.DCsAppleMilk;
 
 /*
@@ -23,14 +22,14 @@ public class EntityStunEffect extends Entity {
     private EntityAITasks entityTasks;
     private int remain;
 
-    public EntityStunEffect(World world) {
+    public EntityStunEffect(Level world) {
         super(world);
     }
 
-    public EntityStunEffect(World world, EntityLiving targetEntity, EntityPlayer playerEntity, int remainTime) {
+    public EntityStunEffect(Level world, EntityLiving targetEntity, EntityPlayer playerEntity, int remainTime) {
         super(world);
         if (targetEntity == null) {
-            this.setDead();
+            this.discard();
             this.target = null;
         } else {
             this.target = targetEntity;
@@ -38,8 +37,8 @@ public class EntityStunEffect extends Entity {
             this.remain = remainTime;
             this.setSize(2.0F, 2.0F);
             this.target.ridingEntity = null;
-            this.setPosition(this.target.posX, this.target.posY, this.target.posZ);
-            this.rotationYaw = this.target.rotationYaw;
+            this.setPosition(this.target.getX(), this.target.getY(), this.target.getZ());
+            this.yRot = this.target.yRot;
 
             if (this.target instanceof EntityMob) {
                 this.originalMethodForAI();
@@ -50,33 +49,33 @@ public class EntityStunEffect extends Entity {
     private void originalMethodForAI() {
         this.entityTasks = this.target.tasks;
         ObfuscationReflectionHelper
-            .setPrivateValue(EntityLiving.class, this.target, new EntityAITasks(this.worldObj.theProfiler), 7);
+            .setPrivateValue(EntityLiving.class, this.target, new EntityAITasks(this.level.theProfiler), 7);
     }
 
     @Override
-    protected void entityInit() {}
+    protected void defineSynchedData() {}
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt) {
+    protected void readAdditionalSaveData(CompoundTag nbt) {
         this.remain = nbt.getInteger("RemainTime");
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt) {
+    protected void addAdditionalSaveData(CompoundTag nbt) {
         nbt.setInteger("RemainTime", this.remain);
     }
 
     @Override
-    public void onUpdate() {
-        if (!this.worldObj.isRemote) {
+    public void tick() {
+        if (!this.level.isClientSide) {
             --this.remain;
 
             if (this.target == null) {
-                this.setDead();
+                this.discard();
             } else {
                 if (this.remain > 0 && this.target.isEntityAlive() && !(this.target instanceof EntityEnderman)) {
-                    this.target.setPosition(this.posX, this.target.posY, this.posZ);
-                    this.rotationYaw = this.target.rotationYaw;
+                    this.target.setPosition(this.getX(), this.target.getY(), this.getZ());
+                    this.yRot = this.target.yRot;
                     this.target.onGround = false;
                     if (this.target instanceof EntityMob) {
                         ((EntityMob) this.target).attackTime = 20;
@@ -88,27 +87,27 @@ public class EntityStunEffect extends Entity {
                         for (int var1 = 0; var1 < 2; ++var1) {
                             double var2 = this.rand.nextDouble() * (double) this.width * 2.0D;
                             double var4 = this.rand.nextDouble() * Math.PI * 1.0D;
-                            double var6 = this.posX + var2 * Math.sin(var4);
-                            double var8 = this.posY + (double) this.height * this.rand.nextDouble();
-                            double var10 = this.posZ + var2 * Math.cos(var4);
-                            this.worldObj.spawnParticle("explode", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+                            double var6 = this.getX() + var2 * Math.sin(var4);
+                            double var8 = this.getY() + (double) this.height * this.rand.nextDouble();
+                            double var10 = this.getZ() + var2 * Math.cos(var4);
+                            this.level.spawnParticle("explode", var6, var8, var10, 0.0D, 0.0D, 0.0D);
                         }
                     }
                 } else {
-                    this.setDead();
+                    this.discard();
                 }
             }
         }
     }
 
     @Override
-    public void setDead() {
+    public void discard() {
         if (this.entityTasks != null) {
             ObfuscationReflectionHelper.setPrivateValue(EntityLiving.class, this.target, this.entityTasks, 7);
             this.target.setAttackTarget(null);
             this.target.setLastAttacker(null);
         }
-        super.setDead();
+        super.discard();
     }
 
     @Override

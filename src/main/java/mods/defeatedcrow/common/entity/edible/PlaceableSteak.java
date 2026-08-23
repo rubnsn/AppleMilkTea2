@@ -1,21 +1,21 @@
 package mods.defeatedcrow.common.entity.edible;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.Level;
 
 import mods.defeatedcrow.common.DCsAppleMilk;
 
 public class PlaceableSteak extends PlaceableFoods {
 
-    public PlaceableSteak(World world) {
+    public PlaceableSteak(Level world) {
         super(world);
     }
 
-    public PlaceableSteak(World world, ItemStack item) {
+    public PlaceableSteak(Level world, ItemStack item) {
         super(world, true, item);
     }
 
-    public PlaceableSteak(World world, ItemStack item, double x, double y, double z) {
+    public PlaceableSteak(Level world, ItemStack item, double x, double y, double z) {
         super(world, true, item, x, y, z);
     }
 

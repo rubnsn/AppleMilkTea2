@@ -6,13 +6,10 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import mods.defeatedcrow.common.DCsAppleMilk;
 
 public class ShowOreNameEvent {
@@ -39,7 +36,7 @@ public class ShowOreNameEvent {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    
     private ArrayList<String> getOre(ItemStack item) {
         ArrayList<String> ore = new ArrayList<String>();
 
@@ -56,11 +53,11 @@ public class ShowOreNameEvent {
         return ore;
     }
 
-    @SideOnly(Side.CLIENT)
+    
     private ArrayList<String> getFluidName(ItemStack item) {
         ArrayList<String> fluid = new ArrayList<String>();
 
-        FluidStack f = FluidContainerRegistry.getFluidForFilledItem(item);
+        FluidStack f = /* FLUID_CONTAINER_REMOVED removed - use ForgeCapabilities.FLUID_HANDLER */.getFluidForFilledItem(item);
         if (f != null && f.getFluid() != null && f.amount > 0) {
             fluid.add("Fluid container : " + f.getLocalizedName() + " " + f.amount);
             fluid.add("Fluid unlocalized name : " + f.getUnlocalizedName());

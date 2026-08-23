@@ -1,19 +1,23 @@
 package mods.defeatedcrow.common.tile.appliance;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.Level;
 import mods.defeatedcrow.api.appliance.ITeaMaker;
 import mods.defeatedcrow.api.recipe.ITeaRecipe;
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.handler.Util;
 
-public class TileMakerNext extends TileEntity implements ITeaMaker {
+public class TileMakerNext extends BlockEntity implements ITeaMaker {
+    public TileMakerNext(BlockPos pos, BlockState state) { super(null, pos, state); }
+
 
     private byte remain = 1;
     private byte contentsID = 0;
@@ -26,50 +30,50 @@ public class TileMakerNext extends TileEntity implements ITeaMaker {
     private byte coolTime = 0;
 
     // NBT
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
+    public void load(CompoundTag par1CompoundTag) {
+        super.load(par1CompoundTag);
 
-        if (par1NBTTagCompound.hasKey("Input")) {
-            this.setItemStack(ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("Input")));
+        if (par1CompoundTag.contains("Input")) {
+            this.setItemStack(ItemStack.loadItemStackFromNBT(par1CompoundTag.getCompound("Input")));
         }
 
-        this.remain = par1NBTTagCompound.getByte("Remaining");
-        this.isMilk = par1NBTTagCompound.getBoolean("Milk");
-        this.tex = par1NBTTagCompound.getString("Tex");
-        this.tex_milk = par1NBTTagCompound.getString("Tex_Milk");
-        this.coolTime = par1NBTTagCompound.getByte("CoolTime");
+        this.remain = par1CompoundTag.getByte("Remaining");
+        this.isMilk = par1CompoundTag.getBoolean("Milk");
+        this.tex = par1CompoundTag.getString("Tex");
+        this.tex_milk = par1CompoundTag.getString("Tex_Milk");
+        this.coolTime = par1CompoundTag.getByte("CoolTime");
     }
 
     /**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
+    public void saveAdditional(CompoundTag par1CompoundTag) {
+        super.saveAdditional(par1CompoundTag);
 
-        par1NBTTagCompound.setByte("Remaining", this.remain);
-        par1NBTTagCompound.setBoolean("Milk", this.isMilk);
-        par1NBTTagCompound.setString("Tex", tex);
-        par1NBTTagCompound.setString("Tex_Milk", tex_milk);
-        par1NBTTagCompound.setByte("CoolTime", this.coolTime);
+        par1CompoundTag.putByte("Remaining", this.remain);
+        par1CompoundTag.putBoolean("Milk", this.isMilk);
+        par1CompoundTag.setString("Tex", tex);
+        par1CompoundTag.setString("Tex_Milk", tex_milk);
+        par1CompoundTag.putByte("CoolTime", this.coolTime);
 
         if (this.getItemStack() != null) {
-            par1NBTTagCompound.setTag(
+            par1CompoundTag.put(
                 "Input",
                 this.getItemStack()
-                    .writeToNBT(new NBTTagCompound()));
+                    .saveAdditional(new CompoundTag()));
         }
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        this.writeToNBT(nbtTagCompound);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTagCompound);
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        CompoundTag nbtTagCompound = new CompoundTag();
+        this.saveAdditional(nbtTagCompound);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        this.readFromNBT(pkt.func_148857_g());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        this.load(pkt.getTag());
     }
 
     /* 以下はITeaRecipeのメソッド */
@@ -88,7 +92,7 @@ public class TileMakerNext extends TileEntity implements ITeaMaker {
     public void setRecipe(ItemStack item) {
         this.input = item;
         this.setTexture(item);
-        this.setRemain((byte) (3 + this.worldObj.rand.nextInt(3)));
+        this.setRemain((byte) (3 + this.level.rand.nextInt(3)));
         this.updateTeaMaker();
     }
 
@@ -180,37 +184,5 @@ public class TileMakerNext extends TileEntity implements ITeaMaker {
         this.coolTime = t;
     }
 
-    public int getMetadata() {
-        return this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-    }
-
-    @Override
-    public void updateEntity() {
-        // インベントリのチェックをしている
-        if (this.input == null) {
-            this.clearTile();
-        }
-
-        if (this.coolTime == 0) {
-            this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            this.setCoolTime((byte) 20);
-        }
-
-        super.updateEntity();
-    }
-
-    public void clearTile() {
-        this.input = null;
-        this.setTexture(null);
-        this.isMilk = false;
-        this.remain = 0;
-        this.markDirty();
-    }
-
-    private void updateTeaMaker() {
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, DCsAppleMilk.teaMakerNext);
-        this.worldObj.func_147453_f(xCoord, yCoord, zCoord, DCsAppleMilk.teaMakerNext);
-        this.markDirty();
-    }
+    public int getMetadata() { return 0; }
 }

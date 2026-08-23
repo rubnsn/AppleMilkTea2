@@ -7,8 +7,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.energy.IBattery;
 
 public class ContainerBatBox extends Container {
@@ -92,7 +90,7 @@ public class ContainerBatBox extends Container {
 
     // クライアント側で更新を受け取る
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void updateProgressBar(int par1, int par2) {
         if (par1 == 0) {
             tile.setUnder(par2);

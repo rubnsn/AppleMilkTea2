@@ -2,16 +2,16 @@ package mods.defeatedcrow.common.entity.dummy;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.Level;
 
 public class EntityIllusionMobs extends Entity {
 
     private int livingTime = 0;
 
-    public EntityIllusionMobs(World world) {
+    public EntityIllusionMobs(Level world) {
         super(world);
         this.preventEntitySpawning = true;
         this.setSize(0.6F, 2.0F);
@@ -19,16 +19,16 @@ public class EntityIllusionMobs extends Entity {
         this.livingTime = 0;
     }
 
-    public EntityIllusionMobs(World par1World, double par2, double par4, double par6, float yaw) {
+    public EntityIllusionMobs(Level par1World, double par2, double par4, double par6, float yaw) {
         this(par1World);
         this.setPosition(par2, par4 + (double) this.yOffset, par6);
         this.motionX = 0.0D;
         this.motionY = 0.0D;
         this.motionZ = 0.0D;
-        this.prevPosX = par2;
-        this.prevPosY = par4;
-        this.prevPosZ = par6;
-        this.rotationYaw = yaw;
+        this.xo = par2;
+        this.yo = par4;
+        this.zo = par6;
+        this.yRot = yaw;
     }
 
     @Override
@@ -37,16 +37,16 @@ public class EntityIllusionMobs extends Entity {
     }
 
     @Override
-    protected void entityInit() {}
+    protected void defineSynchedData() {}
 
     @Override
-    public AxisAlignedBB getCollisionBox(Entity par1Entity) {
-        return par1Entity.boundingBox;
+    public AABB getCollisionBox( par1Entity) {
+        return par1Entity.getBoundingBox();
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox() {
-        return this.boundingBox;
+    public AABB getBoundingBox() {
+        return this.getBoundingBox();
     }
 
     @Override
@@ -55,23 +55,23 @@ public class EntityIllusionMobs extends Entity {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
+    public boolean hurt(DamageSource par1DamageSource, float par2) {
         // 攻撃されると消えてしまう
-        this.setDead();
+        this.discard();
         return true;
     }
 
     @Override
     public boolean canBeCollidedWith() {
-        return !this.isDead;
+        return !this.isRemoved();
     }
 
     @Override
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
 
         if (this.livingTime > 60) {
-            this.setDead();
+            this.discard();
         } else {
             this.livingTime++;
         }
@@ -80,22 +80,22 @@ public class EntityIllusionMobs extends Entity {
         double d0 = 0.0D;
 
         for (int i = 0; i < b0; ++i) {
-            double d1 = this.boundingBox.minY
-                + (this.boundingBox.maxY - this.boundingBox.minY) * (double) (i + 0) / (double) b0
+            double d1 = this.getBoundingBox().minY
+                + (this.getBoundingBox().maxY - this.getBoundingBox().minY) * (double) (i + 0) / (double) b0
                 - 0.125D;
-            double d2 = this.boundingBox.minY
-                + (this.boundingBox.maxY - this.boundingBox.minY) * (double) (i + 1) / (double) b0
+            double d2 = this.getBoundingBox().minY
+                + (this.getBoundingBox().maxY - this.getBoundingBox().minY) * (double) (i + 1) / (double) b0
                 - 0.125D;
-            AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(
-                this.boundingBox.minX,
+            AABB axisalignedbb = AABB.getBoundingBox(
+                this.getBoundingBox().minX,
                 d1,
-                this.boundingBox.minZ,
-                this.boundingBox.maxX,
+                this.getBoundingBox().minZ,
+                this.getBoundingBox().maxX,
                 d2,
-                this.boundingBox.maxZ);
+                this.getBoundingBox().maxZ);
 
             // 浮力
-            if (this.worldObj.isAABBInMaterial(axisalignedbb, Material.water)) {
+            if (this.level.isAABBInMaterial(axisalignedbb, Material.water)) {
                 d0 += 1.0D / (double) b0;
             }
         }
@@ -120,9 +120,9 @@ public class EntityIllusionMobs extends Entity {
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {}
+    protected void readAdditionalSaveData(CompoundTag p_70037_1_) {}
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {}
+    protected void addAdditionalSaveData(CompoundTag p_70014_1_) {}
 
 }

@@ -2,10 +2,7 @@ package mods.defeatedcrow.handler;
 
 import net.minecraft.client.Minecraft;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
 public class KeyConfigHelper {
 
     private KeyConfigHelper() {}

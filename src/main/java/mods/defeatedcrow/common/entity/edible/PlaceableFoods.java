@@ -8,20 +8,17 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tileentity.IHopper;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.tileentity.BlockEntity;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.util.Mth;
+import net.minecraft.world.Level;
 import net.minecraftforge.common.MinecraftForge;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mods.defeatedcrow.api.edibles.IEdibleItem;
 import mods.defeatedcrow.api.events.AMTFoodEntityRightClickEvent;
 import mods.defeatedcrow.client.particle.EntityBlinkFX;
@@ -43,14 +40,14 @@ public abstract class PlaceableFoods extends Entity {
     private double Z;
     private double yaw;
     private double pitch;
-    @SideOnly(Side.CLIENT)
+    
     private double velocityX;
-    @SideOnly(Side.CLIENT)
+    
     private double velocityY;
-    @SideOnly(Side.CLIENT)
+    
     private double velocityZ;
 
-    public PlaceableFoods(World world) {
+    public PlaceableFoods(Level world) {
         super(world);
         this.field_70279_a = true;
         this.speedMultiplier = 0.07D;
@@ -58,21 +55,21 @@ public abstract class PlaceableFoods extends Entity {
         this.yOffset = this.height;
     }
 
-    public PlaceableFoods(World world, boolean chops, ItemStack item) {
+    public PlaceableFoods(Level world, boolean chops, ItemStack item) {
         this(world);
         this.allowChops = chops;
         this.setContainerMeta(item.getItemDamage());
     }
 
-    public PlaceableFoods(World world, boolean chops, ItemStack item, double x, double y, double z) {
+    public PlaceableFoods(Level world, boolean chops, ItemStack item, double x, double y, double z) {
         this(world, chops, item);
         this.setPosition(x, y + this.yOffset, z);
         this.motionX = 0.0D;
         this.motionY = 0.0D;
         this.motionZ = 0.0D;
-        this.prevPosX = x;
-        this.prevPosY = y;
-        this.prevPosZ = z;
+        this.xo = x;
+        this.yo = y;
+        this.zo = z;
     }
 
     /*
@@ -85,38 +82,38 @@ public abstract class PlaceableFoods extends Entity {
      */
 
     @Override
-    protected void entityInit() {
-        this.dataWatcher.addObject(17, new Integer(0));
-        this.dataWatcher.addObject(18, new Integer(1));
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_ID_17, new Integer(0));
+        this.entityData.define(18, new Integer(1));
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt) {
+    protected void readAdditionalSaveData(CompoundTag nbt) {
 
         this.setContainerMeta(nbt.getShort("meta"));
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt) {
+    protected void addAdditionalSaveData(CompoundTag nbt) {
 
         nbt.setShort("meta", (short) this.getItemMetadata());
     }
 
     public int getItemMetadata() {
-        return this.dataWatcher.getWatchableObjectInt(17);
+        return this.entityData.get(17);
     }
 
     public void setContainerMeta(int m) {
         this.containerMeta = m;
-        this.dataWatcher.updateObject(17, Integer.valueOf(m));
+        this.entityData.set(17, Integer.valueOf(m));
     }
 
     public void setForwardDirection(int par1) {
-        this.dataWatcher.updateObject(18, Integer.valueOf(par1));
+        this.entityData.set(18, Integer.valueOf(par1));
     }
 
     public int getForwardDirection() {
-        return this.dataWatcher.getWatchableObjectInt(18);
+        return this.entityData.get(18);
     }
 
     @Override
@@ -126,17 +123,17 @@ public abstract class PlaceableFoods extends Entity {
 
     @Override
     public boolean canBeCollidedWith() {
-        return !this.isDead;
+        return !this.isRemoved();
     }
 
     @Override
-    public AxisAlignedBB getCollisionBox(Entity par1Entity) {
-        return par1Entity.boundingBox;
+    public AABB getCollisionBox( par1Entity) {
+        return par1Entity.getBoundingBox();
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox() {
-        return this.boundingBox;
+    public AABB getBoundingBox() {
+        return this.getBoundingBox();
     }
 
     @Override
@@ -150,10 +147,10 @@ public abstract class PlaceableFoods extends Entity {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
+    public boolean hurt(DamageSource par1DamageSource, float par2) {
         if (this.isEntityInvulnerable()) {
             return false;
-        } else if (!this.worldObj.isRemote && !this.isDead) {
+        } else if (!this.level.isClientSide && !this.isRemoved()) {
             this.setBeenAttacked();
             if (par1DamageSource instanceof EntityDamageSource) {
                 Entity by = ((EntityDamageSource) par1DamageSource).getEntity();
@@ -167,14 +164,14 @@ public abstract class PlaceableFoods extends Entity {
 
                     ItemStack drop = this.returnItem();
                     if (drop != null) {
-                        this.worldObj.playSoundAtEntity(this, "random.pop", 0.4F, 1.8F);
+                        this.level.playSoundAtEntity(this, "random.pop", 0.4F, 1.8F);
                         this.entityDropItem(drop, 0.2F);
 
-                        if (this.riddenByEntity != null) {
-                            this.riddenByEntity.mountEntity(this);
+                        if (this.vehicle != null) {
+                            this.vehicle.startRiding(this);
                         }
 
-                        this.setDead();
+                        this.discard();
                     }
 
                 }
@@ -187,14 +184,14 @@ public abstract class PlaceableFoods extends Entity {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9) {
         if (this.field_70279_a) {
             this.posRotationIncrements = par9 + 5;
         } else {
-            double d3 = par1 - this.posX;
-            double d4 = par3 - this.posY;
-            double d5 = par5 - this.posZ;
+            double d3 = par1 - this.getX();
+            double d4 = par3 - this.getY();
+            double d5 = par5 - this.getZ();
             double d6 = d3 * d3 + d4 * d4 + d5 * d5;
 
             if (d6 <= 1.0D) {
@@ -215,7 +212,7 @@ public abstract class PlaceableFoods extends Entity {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public void setVelocity(double par1, double par3, double par5) {
         this.velocityX = this.motionX = par1;
         this.velocityY = this.motionY = par3;
@@ -224,12 +221,12 @@ public abstract class PlaceableFoods extends Entity {
 
     // 基本的にはボートの流用。
     @Override
-    public void onUpdate() {
-        super.onUpdate();
+    public void tick() {
+        super.tick();
 
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
+        this.xo = this.getX();
+        this.yo = this.getY();
+        this.zo = this.getZ();
         byte b0 = 5;
         double d0 = 0.0D;
 
@@ -237,39 +234,39 @@ public abstract class PlaceableFoods extends Entity {
 
         // 当たり判定が水中にあるか？
         for (int i = 0; i < b0; ++i) {
-            double d1 = this.boundingBox.minY
-                + (this.boundingBox.maxY - this.boundingBox.minY) * (double) (i + 0) / (double) b0
+            double d1 = this.getBoundingBox().minY
+                + (this.getBoundingBox().maxY - this.getBoundingBox().minY) * (double) (i + 0) / (double) b0
                 - 0.125D;
-            double d2 = this.boundingBox.minY
-                + (this.boundingBox.maxY - this.boundingBox.minY) * (double) (i + 1) / (double) b0
+            double d2 = this.getBoundingBox().minY
+                + (this.getBoundingBox().maxY - this.getBoundingBox().minY) * (double) (i + 1) / (double) b0
                 - 0.125D;
-            AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(
-                this.boundingBox.minX,
+            AABB axisalignedbb = AABB.getBoundingBox(
+                this.getBoundingBox().minX,
                 d1,
-                this.boundingBox.minZ,
-                this.boundingBox.maxX,
+                this.getBoundingBox().minZ,
+                this.getBoundingBox().maxX,
                 d2,
-                this.boundingBox.maxZ);
+                this.getBoundingBox().maxZ);
 
             // 浮力
-            if (this.worldObj.isAABBInMaterial(axisalignedbb, Material.water)) {
+            if (this.level.isAABBInMaterial(axisalignedbb, Material.water)) {
                 d0 += 1.0D / (double) b0;
                 spl = true;
             }
         }
 
         // ホッパーの上に来るとドロップアイテム化する機能をつけた
-        if (!this.worldObj.isRemote) {
-            int i = MathHelper.floor_double(posX);
-            int j = MathHelper.floor_double(posY);
-            int k = MathHelper.floor_double(posZ);
+        if (!this.level.isClientSide) {
+            int i = Mth.floor_double(getX());
+            int j = Mth.floor_double(getY());
+            int k = Mth.floor_double(getZ());
 
-            if (!this.worldObj.isAirBlock(i, j - 1, k) && this.worldObj.getTileEntity(i, j - 1, k) != null) {
-                TileEntity tile = this.worldObj.getTileEntity(i, j - 1, k);
+            if (!this.level.isAirBlock(i, j - 1, k) && this.level.getTileEntity(i, j - 1, k) != null) {
+                BlockEntity tile = this.level.getTileEntity(i, j - 1, k);
                 if (tile instanceof IHopper) {
                     ItemStack drop = this.returnItem();
                     this.entityDropItem(drop, 0.1F);
-                    this.setDead();
+                    this.discard();
                 }
             }
         }
@@ -280,8 +277,8 @@ public abstract class PlaceableFoods extends Entity {
 
         // 水しぶき生成
         if (d3 > 0.26249999999999996D && spl) {
-            d4 = Math.cos((double) this.rotationYaw * Math.PI / 180.0D);
-            d5 = Math.sin((double) this.rotationYaw * Math.PI / 180.0D);
+            d4 = Math.cos((double) this.yRot * Math.PI / 180.0D);
+            d5 = Math.sin((double) this.yRot * Math.PI / 180.0D);
 
             for (int j = 0; (double) j < 1.0D + d3 * 60.0D; ++j) {
                 double d6 = (double) (this.rand.nextFloat() * 2.0F - 1.0F);
@@ -290,15 +287,15 @@ public abstract class PlaceableFoods extends Entity {
                 double d9;
 
                 if (this.rand.nextBoolean()) {
-                    d8 = this.posX - d4 * d6 * 0.8D + d5 * d7;
-                    d9 = this.posZ - d5 * d6 * 0.8D - d4 * d7;
-                    this.worldObj
-                        .spawnParticle("splash", d8, this.posY - 0.125D, d9, this.motionX, this.motionY, this.motionZ);
+                    d8 = this.getX() - d4 * d6 * 0.8D + d5 * d7;
+                    d9 = this.getZ() - d5 * d6 * 0.8D - d4 * d7;
+                    this.level
+                        .spawnParticle("splash", d8, this.getY() - 0.125D, d9, this.motionX, this.motionY, this.motionZ);
                 } else {
-                    d8 = this.posX + d4 + d5 * d6 * 0.7D;
-                    d9 = this.posZ + d5 - d4 * d6 * 0.7D;
-                    this.worldObj
-                        .spawnParticle("splash", d8, this.posY - 0.125D, d9, this.motionX, this.motionY, this.motionZ);
+                    d8 = this.getX() + d4 + d5 * d6 * 0.7D;
+                    d9 = this.getZ() + d5 - d4 * d6 * 0.7D;
+                    this.level
+                        .spawnParticle("splash", d8, this.getY() - 0.125D, d9, this.motionX, this.motionY, this.motionZ);
                 }
             }
         }
@@ -306,22 +303,22 @@ public abstract class PlaceableFoods extends Entity {
         double d10;
         double d11;
 
-        if (this.worldObj.isRemote && this.field_70279_a) {
+        if (this.level.isClientSide && this.field_70279_a) {
             if (this.posRotationIncrements > 0) {
-                d4 = this.posX + (this.X - this.posX) / (double) this.posRotationIncrements;
-                d5 = this.posY + (this.Y - this.posY) / (double) this.posRotationIncrements;
-                d11 = this.posZ + (this.Z - this.posZ) / (double) this.posRotationIncrements;
-                d10 = MathHelper.wrapAngleTo180_double(this.yaw - (double) this.rotationYaw);
-                this.rotationYaw = (float) ((double) this.rotationYaw + d10 / (double) this.posRotationIncrements);
-                this.rotationPitch = (float) ((double) this.rotationPitch
-                    + (this.pitch - (double) this.rotationPitch) / (double) this.posRotationIncrements);
+                d4 = this.getX() + (this.X - this.getX()) / (double) this.posRotationIncrements;
+                d5 = this.getY() + (this.Y - this.getY()) / (double) this.posRotationIncrements;
+                d11 = this.getZ() + (this.Z - this.getZ()) / (double) this.posRotationIncrements;
+                d10 = Mth.wrapAngleTo180_double(this.yaw - (double) this.yRot);
+                this.yRot = (float) ((double) this.yRot + d10 / (double) this.posRotationIncrements);
+                this.xRot = (float) ((double) this.xRot
+                    + (this.pitch - (double) this.xRot) / (double) this.posRotationIncrements);
                 --this.posRotationIncrements;
                 this.setPosition(d4, d5, d11);
-                this.setRotation(this.rotationYaw, this.rotationPitch);
+                this.setRotation(this.yRot, this.xRot);
             } else {
-                d4 = this.posX + this.motionX;
-                d5 = this.posY + this.motionY;
-                d11 = this.posZ + this.motionZ;
+                d4 = this.getX() + this.motionX;
+                d5 = this.getY() + this.motionY;
+                d11 = this.getZ() + this.motionZ;
                 this.setPosition(d4, d5, d11);
 
                 this.motionX *= 0.5D;
@@ -346,12 +343,12 @@ public abstract class PlaceableFoods extends Entity {
             }
 
             // 乗っているEntityの前進速度
-            if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityLivingBase) {
-                d4 = (double) ((EntityLivingBase) this.riddenByEntity).moveForward;
+            if (this.vehicle != null && this.vehicle instanceof EntityLivingBase) {
+                d4 = (double) ((EntityLivingBase) this.vehicle).moveForward;
 
                 if (d4 > 0.0D) {
-                    d5 = -Math.sin((double) (this.riddenByEntity.rotationYaw * (float) Math.PI / 180.0F));
-                    d11 = Math.cos((double) (this.riddenByEntity.rotationYaw * (float) Math.PI / 180.0F));
+                    d5 = -Math.sin((double) (this.vehicle.yRot * (float) Math.PI / 180.0F));
+                    d11 = Math.cos((double) (this.vehicle.yRot * (float) Math.PI / 180.0F));
                     this.motionX += d5 * this.speedMultiplier * 0.05000000074505806D;
                     this.motionZ += d11 * this.speedMultiplier * 0.05000000074505806D;
                 }
@@ -397,16 +394,16 @@ public abstract class PlaceableFoods extends Entity {
             this.motionZ *= 0.9900000095367432D;
 
             // また向きを調整している？
-            this.rotationPitch = 0.0F;
-            d5 = (double) this.rotationYaw;
-            d11 = this.prevPosX - this.posX;
-            d10 = this.prevPosZ - this.posZ;
+            this.xRot = 0.0F;
+            d5 = (double) this.yRot;
+            d11 = this.xo - this.getX();
+            d10 = this.zo - this.getZ();
 
             if (d11 * d11 + d10 * d10 > 0.001D) {
                 d5 = (double) ((float) (Math.atan2(d10, d11) * 180.0D / Math.PI));
             }
 
-            double d12 = MathHelper.wrapAngleTo180_double(d5 - (double) this.rotationYaw);
+            double d12 = Mth.wrapAngleTo180_double(d5 - (double) this.yRot);
 
             if (d12 > 20.0D) {
                 d12 = 20.0D;
@@ -416,34 +413,34 @@ public abstract class PlaceableFoods extends Entity {
                 d12 = -20.0D;
             }
 
-            this.rotationYaw = (float) ((double) this.rotationYaw + d12);
-            this.setRotation(this.rotationYaw, this.rotationPitch);
+            this.yRot = (float) ((double) this.yRot + d12);
+            this.setRotation(this.yRot, this.xRot);
 
             // 当たり判定が乗り物の分拡大されているぽい
-            if (!this.worldObj.isRemote) {
-                List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(
+            if (!this.level.isClientSide) {
+                List list = this.level.getEntitiesWithinAABBExcludingEntity(
                     this,
-                    this.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+                    this.getBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
                 int l;
 
                 if (list != null && !list.isEmpty()) {
                     for (l = 0; l < list.size(); ++l) {
                         Entity entity = (Entity) list.get(l);
 
-                        if (entity != this.riddenByEntity && entity.canBePushed()) {
+                        if (entity != this.vehicle && entity.canBePushed()) {
                             entity.applyEntityCollision(this);
                         }
                     }
                 }
 
                 // 乗っているEntityが死んだら騎乗を解除
-                if (this.riddenByEntity != null && this.riddenByEntity.isDead) {
-                    this.riddenByEntity = null;
+                if (this.vehicle != null && this.vehicle.isRemoved()) {
+                    this.vehicle = null;
                 }
             }
         }
 
-        if (this.worldObj.isRemote) {
+        if (this.level.isClientSide) {
             this.generateRandomParticles(this.particleNumber());
         }
     }
@@ -451,18 +448,18 @@ public abstract class PlaceableFoods extends Entity {
     // 乗っているEntityの位置調整
     @Override
     public void updateRiderPosition() {
-        if (this.riddenByEntity != null) {
-            double d0 = Math.cos((double) this.rotationYaw * Math.PI / 180.0D) * 0.4D;
-            double d1 = Math.sin((double) this.rotationYaw * Math.PI / 180.0D) * 0.4D;
-            this.riddenByEntity.setPosition(
-                this.posX + d0,
-                this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(),
-                this.posZ + d1);
+        if (this.vehicle != null) {
+            double d0 = Math.cos((double) this.yRot * Math.PI / 180.0D) * 0.4D;
+            double d1 = Math.sin((double) this.yRot * Math.PI / 180.0D) * 0.4D;
+            this.vehicle.setPosition(
+                this.getX() + d0,
+                this.getY() + this.getMountedYOffset() + this.vehicle.getYOffset(),
+                this.getZ() + d1);
         }
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    
     public float getShadowSize() {
         return 0.3F;
     }
@@ -471,7 +468,7 @@ public abstract class PlaceableFoods extends Entity {
     public boolean interactFirst(EntityPlayer par1EntityPlayer) {
         ItemStack item = par1EntityPlayer.inventory.getCurrentItem();
 
-        AMTFoodEntityRightClickEvent event = new AMTFoodEntityRightClickEvent(worldObj, par1EntityPlayer, item, this);
+        AMTFoodEntityRightClickEvent event = new AMTFoodEntityRightClickEvent(level, par1EntityPlayer, item, this);
         MinecraftForge.EVENT_BUS.post(event);
 
         if (event.isCanceled()) {
@@ -487,24 +484,24 @@ public abstract class PlaceableFoods extends Entity {
                 IEdibleItem edible = (IEdibleItem) has.getItem();
 
                 has.getItem()
-                    .onEaten(has.copy(), worldObj, par1EntityPlayer);
+                    .onEaten(has.copy(), level, par1EntityPlayer);
                 flag = true;
 
                 if (flag) {
-                    this.setDead();
-                    this.worldObj.playSoundAtEntity(par1EntityPlayer, "random.pop", 0.4F, 1.8F);
+                    this.discard();
+                    this.level.playSoundAtEntity(par1EntityPlayer, "random.pop", 0.4F, 1.8F);
                 }
                 return true;
             } else {
                 return false;
             }
         } else if (item != null && item.getItem() == Items.stick) {
-            if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer
-                && this.riddenByEntity != par1EntityPlayer) {
+            if (this.vehicle != null && this.vehicle instanceof EntityPlayer
+                && this.vehicle != par1EntityPlayer) {
                 return true;
             } else {
-                if (!this.worldObj.isRemote) {
-                    par1EntityPlayer.mountEntity(this);
+                if (!this.level.isClientSide) {
+                    par1EntityPlayer.startRiding(this);
                 }
 
                 return true;
@@ -513,11 +510,11 @@ public abstract class PlaceableFoods extends Entity {
             ItemStack has = this.returnItem();
 
             if (has != null && !par1EntityPlayer.inventory.addItemStackToInventory(has)) {
-                if (!worldObj.isRemote) par1EntityPlayer.entityDropItem(has, 1.0F);
+                if (!level.isClientSide) par1EntityPlayer.entityDropItem(has, 1.0F);
             }
 
-            this.setDead();
-            this.worldObj.playSoundAtEntity(par1EntityPlayer, "random.pop", 0.4F, 1.8F);
+            this.discard();
+            this.level.playSoundAtEntity(par1EntityPlayer, "random.pop", 0.4F, 1.8F);
             return true;
         }
 
@@ -526,7 +523,7 @@ public abstract class PlaceableFoods extends Entity {
     /* 必ずオーバーライドする。 */
     protected abstract ItemStack returnItem();
 
-    @SideOnly(Side.CLIENT)
+    
     public void func_70270_d(boolean par1) {
         this.field_70279_a = par1;
     }
@@ -543,30 +540,30 @@ public abstract class PlaceableFoods extends Entity {
         return 1.0F;
     }
 
-    @SideOnly(Side.CLIENT)
+    
     protected void generateRandomParticles(byte b) {
-        double d0 = (double) (this.posX + this.rand.nextFloat() - 0.5D);
-        double d1 = (double) (this.posY + 0.2F + this.rand.nextFloat() - 0.5D);
-        double d2 = (double) (this.posZ + this.rand.nextFloat() - 0.5D);
+        double d0 = (double) (this.getX() + this.rand.nextFloat() - 0.5D);
+        double d1 = (double) (this.getY() + 0.2F + this.rand.nextFloat() - 0.5D);
+        double d2 = (double) (this.getZ() + this.rand.nextFloat() - 0.5D);
         double d3 = 0.0099999988079071D;
         double d4 = 0.0099999988079071D;
         double d5 = 0.0099999988079071D;
 
         // とりあえずbyte型で分けてる
-        if (this.worldObj.isRemote && !DCsConfig.noRenderFoodsSteam && this.worldObj.rand.nextInt(6) == 0) {
+        if (this.level.isClientSide && !DCsConfig.noRenderFoodsSteam && this.level.rand.nextInt(6) == 0) {
             if (b == 1) {
-                EntityBlinkFX cloud = new EntityBlinkFX(this.worldObj, d0, d1, d2, 0.0D, d4, 0.0D);
+                EntityBlinkFX cloud = new EntityBlinkFX(this.level, d0, d1, d2, 0.0D, d4, 0.0D);
                 cloud.setParticleIcon(
                     ParticleTex.getInstance()
                         .getIcon("blink"));
-                FMLClientHandler.instance()
+                net.minecraftforge.fml.ModList.get()
                     .getClient().effectRenderer.addEffect(cloud);
             } else if (b == 2) {
-                EntityDCCloudFX cloud = new EntityDCCloudFX(this.worldObj, d0, d1, d2, 0.0D, d3, 0.0D);
+                EntityDCCloudFX cloud = new EntityDCCloudFX(this.level, d0, d1, d2, 0.0D, d3, 0.0D);
                 cloud.setParticleIcon(
                     ParticleTex.getInstance()
                         .getIcon("cloud"));
-                FMLClientHandler.instance()
+                net.minecraftforge.fml.ModList.get()
                     .getClient().effectRenderer.addEffect(cloud);
             }
         }

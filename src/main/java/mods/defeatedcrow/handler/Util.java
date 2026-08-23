@@ -11,11 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.Level;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.oredict.OreDictionary;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.DCsConfig;
@@ -158,7 +157,7 @@ public class Util {
 
     // 現在地のバイオームを確認。
     // 複数のクラスで利用するので、ここにまとめた。
-    public static BiomeGenBase checkCurrentBiome(World world, EntityPlayer player) {
+    public static BiomeGenBase checkCurrentBiome(Level world, EntityPlayer player) {
         BiomeGenBase biome = BiomeGenBase.plains;
 
         int x = MathHelper.floor_double(player.posX);
