@@ -36,10 +36,7 @@ public abstract class MachineBase extends BlockEntity implements net.minecraft.w
         super(type, pos, state);
     }
 
-    // legacy no-arg for RegistryObject builder (type injected via Builder.of)
-    public MachineBase(BlockPos pos, BlockState state) {
-        super(null, pos, state);
-    }
+
 
     private static int exchangeRateRF() { return mods.defeatedcrow.handler.PropertyHandler.rateRF(); }
     private static int exchangeRateEU() { return mods.defeatedcrow.handler.PropertyHandler.rateEU(); }

@@ -24,7 +24,7 @@ public class PlaceableCocktail extends PlaceableFoods {
 
     @Override
     protected ItemStack returnItem() {
-        return new ItemStack(DCsAppleMilk.cocktail, 1, this.getItemMetadata());
+        return new ItemStack(mods.defeatedcrow.common.registry.ModBlocks.COCKTAIL.get().asItem(), 1);
     }
 
     @Override

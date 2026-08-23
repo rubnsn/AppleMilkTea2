@@ -8,7 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
 public class TileHasRemain2 extends BlockEntity {
-    public TileHasRemain2(BlockPos pos, BlockState state) { super(null, pos, state); }
+    public TileHasRemain2(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_HAS_REMAIN2.get(), pos, state); }
 
 
     private short remain = 1;

@@ -154,7 +154,7 @@ public class ProcessorRecipeRegister implements IProcessorRecipeRegister {
                     if (cont != null && cont.getItem() != next.getItem()) {
                         break;
                     } else {
-                        // ‹Œ1.7.10‚Ì—¬‘ÌƒRƒ“ƒeƒi”roAPI‚Ì’uŠ· (Forge capabilityŒo—R)
+                        // æ—§1.7.10ã®æµä½“ã‚³ãƒ³ãƒ†ãƒŠæ’å‡ºAPIã®ç½®æ› (Forge capabilityçµŒç”±)
                         cont = drainFluidContainer(next);
                         if (cont != null) {
                             break;

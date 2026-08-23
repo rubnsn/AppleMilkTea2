@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
 // chargeの一時保管用
 public class TileGelBat extends BlockEntity {
-    public TileGelBat(BlockPos pos, BlockState state) { super(null, pos, state); }
+    public TileGelBat(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_GEL_BAT.get(), pos, state); }
 
 
     private int chargeAmount = 0;

@@ -22,7 +22,7 @@ import mods.defeatedcrow.handler.Util;
 
 /* AMT単体で動作させる場合は、このクラスだけで事足りる */
 public class TileChargerBase extends BlockEntity implements WorldlyContainer, IChargeableMachine {
-    public TileChargerBase(BlockPos pos, BlockState state) { super(null, pos, state); }
+    public TileChargerBase(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_CHARGER_BASE.get(), pos, state); }
 
 
     // 現在のチャージ量
@@ -174,7 +174,7 @@ public class TileChargerBase extends BlockEntity implements WorldlyContainer, IC
             flag2 = true;
         } else {
             ItemStack current = this.getItem(0);
-            flag2 = item.isItemEqual(current) && (current.stackSize + item.stackSize < current.getMaxStackSize());
+            flag2 = net.minecraft.world.item.ItemStack.isSameItemSameTags(item, current) && (current.getCount() + item.getCount() < current.getMaxStackSize());
         }
 
         return flag && flag2;
@@ -291,18 +291,15 @@ public class TileChargerBase extends BlockEntity implements WorldlyContainer, IC
      * 空容器返却
      */
     public ItemStack batteryContainerItem(ItemStack item) {
-        if (item != null && item.getItem() != null) {
-            if (item.getItem() instanceof IChargeItem) {
-                return ((IChargeItem) item.getItem()).returnItem();
-            } else if (/* MigratedFluidHandler removed - use ForgeCapabilities.FLUID_HANDLER */.isFilledContainer(item)) {
-                return /* MigratedFluidHandler removed - use ForgeCapabilities.FLUID_HANDLER */.drainFluidContainer(item);
+        if (item != null && !item.isEmpty()) {
+            if (item.getItem() instanceof IChargeItem charge) {
+                return charge.returnItem();
             } else {
-                return item.getItem()
-                    .getContainerItem(item);
+                ItemStack ret = item.getItem().getCraftingRemainingItem(item);
+                return ret == null ? ItemStack.EMPTY : ret;
             }
         }
-
-        return (ItemStack) null;
+        return ItemStack.EMPTY;
     }
 
     /* ========== 以下、ISidedInventoryのメソッド ========== */
@@ -343,14 +340,14 @@ public class TileChargerBase extends BlockEntity implements WorldlyContainer, IC
         if (this.itemstacks[par1] != null) {
             ItemStack itemstack;
 
-            if (this.itemstacks[par1].stackSize <= par2) {
+            if (this.itemstacks[par1].getCount() <= par2) {
                 itemstack = this.itemstacks[par1];
                 this.itemstacks[par1] = null;
                 return itemstack;
             } else {
-                itemstack = this.itemstacks[par1].splitStack(par2);
+                itemstack = this.itemstacks[par1].split(par2);
 
-                if (this.itemstacks[par1].stackSize == 0) {
+                if (this.itemstacks[par1].getCount() == 0) {
                     this.itemstacks[par1] = null;
                 }
 
@@ -380,8 +377,8 @@ public class TileChargerBase extends BlockEntity implements WorldlyContainer, IC
 
         this.itemstacks[par1] = par2ItemStack;
 
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getMaxStackSize()) {
-            par2ItemStack.stackSize = this.getMaxStackSize();
+        if (par2ItemStack != null && par2ItemStack.getCount() > this.getMaxStackSize()) {
+            par2ItemStack.setCount(this.getMaxStackSize());
         }
     }
 

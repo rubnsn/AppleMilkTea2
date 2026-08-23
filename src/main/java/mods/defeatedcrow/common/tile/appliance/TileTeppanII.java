@@ -23,7 +23,7 @@ import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.DCsConfig;
 
 public class TileTeppanII extends BlockEntity implements WorldlyContainer, IPipeConnection {
-    public TileTeppanII(BlockPos pos, BlockState state) { super(null, pos, state); }
+    public TileTeppanII(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_TEPPAN_II.get(), pos, state); }
 
 
     private int cookTime = 0;
@@ -288,14 +288,14 @@ public class TileTeppanII extends BlockEntity implements WorldlyContainer, IPipe
         if (this.plateItems[par1] != null) {
             ItemStack itemstack = null;
 
-            if (this.plateItems[par1].stackSize <= par2) {
+            if (this.plateItems[par1].getCount() <= par2) {
                 itemstack = this.plateItems[par1];
                 this.plateItems[par1] = null;
                 return itemstack;
             } else {
-                itemstack = this.plateItems[par1].splitStack(par2);
+                itemstack = this.plateItems[par1].split(par2);
 
-                if (this.plateItems[par1].stackSize == 0) {
+                if (this.plateItems[par1].getCount() == 0) {
                     this.plateItems[par1] = null;
                 }
 
@@ -326,8 +326,8 @@ public class TileTeppanII extends BlockEntity implements WorldlyContainer, IPipe
 
         this.plateItems[par1] = par2ItemStack;
 
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getMaxStackSize()) {
-            par2ItemStack.stackSize = this.getMaxStackSize();
+        if (par2ItemStack != null && par2ItemStack.getCount() > this.getMaxStackSize()) {
+            par2ItemStack.setCount(this.getMaxStackSize());
         }
     }
 

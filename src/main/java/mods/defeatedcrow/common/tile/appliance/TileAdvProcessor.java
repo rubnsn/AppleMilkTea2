@@ -17,6 +17,8 @@ import mods.defeatedcrow.common.DCsAppleMilk;
  * という点。岩石の処理や工業連携レシピ、ツールの還元レシピに特化している。原木の粉砕にも要求される。
  */
 public class TileAdvProcessor extends TileProcessor {
+    public TileAdvProcessor(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_ADV_PROCESSOR.get(), pos, state); }
+
 
     @Override
     public void load(CompoundTag par1CompoundTag) {
@@ -125,7 +127,7 @@ public class TileAdvProcessor extends TileProcessor {
                 return tier == 0;
             }
         }
-        return stack.getItem() != DCsAppleMilk.slotPanel;
+        return stack.getItem() != mods.defeatedcrow.common.registry.ModItems.SLOT_PANEL.get();
     }
 
     @Override

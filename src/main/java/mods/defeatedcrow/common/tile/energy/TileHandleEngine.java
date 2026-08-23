@@ -17,7 +17,7 @@ import mods.defeatedcrow.plugin.SSector.SS2DeviceHandler;
 import mods.defeatedcrow.plugin.cofh.RFDeviceHandler;
 
 public class TileHandleEngine extends BlockEntity implements IChargeGenerator, IEnergyProvider {
-    public TileHandleEngine(BlockPos pos, BlockState state) { super(null, pos, state); }
+    public TileHandleEngine(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_HANDLE_ENGINE.get(), pos, state); }
 
 
     private int interval = 0;

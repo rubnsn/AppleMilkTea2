@@ -1,236 +1,43 @@
 package mods.defeatedcrow.common.world.village;
 
-import java.util.Random;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.Level;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureVillagePieces;
-// ChestGenHooks removed in 1.19 - use GlobalLootModifier
+/**
+ * 1.20.1 stub for ComponentVillageCafe — legacy StructureVillagePieces.Village.
+ * 1.20.1 uses Jigsaw + TemplatePool + Structure (datapack). This stub keeps the class for registry compat
+ * and provides minimal StructurePiece implementation so the project compiles.
+ * Full Jigsaw migration is TODO (requires data/defeatedcrow/worldgen/structure/village_cafe.nbt + template_pool).
+ * See doc/worldgen/migration-guide.md:105
+ */
+public class ComponentVillageCafe extends StructurePiece {
 
+    public ComponentVillageCafe(StructurePieceType type, int genDepth, BoundingBox box) {
+        super(type, genDepth, box);
+    }
 
-import mods.defeatedcrow.common.DCsAppleMilk;
-import mods.defeatedcrow.common.config.DCsConfig;
-
-public class ComponentVillageCafe extends StructureVillagePieces.Village {
-
-    private boolean hasMadeChest;
-
-    public ComponentVillageCafe() {}
-
-    public ComponentVillageCafe(StructureVillagePieces.Start par1StartPiece, int par2, Random par3Random,
-        StructureBoundingBox par4Box, int par5) {
-        super(par1StartPiece, par2);
-        this.coordBaseMode = par5;
-        this.boundingBox = par4Box;
+    // Legacy constructor retained for VillageCreateHandle compat (not used in 1.20.1)
+    public ComponentVillageCafe(Object start, int type, RandomSource rand, BoundingBox box, int coordBaseMode) {
+        super(StructurePieceType.VILLAGE_HOUSE, 0, box);
     }
 
     @Override
-    public boolean addComponentParts(Level world, Random random, StructureBoundingBox structureboundingbox) {
+    protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tag) {}
 
-        if (this.field_143015_k < 0)// 地面の平均高さのチェックかな？
-        {
-            this.field_143015_k = this.getAverageGroundLevel(world, structureboundingbox);
-
-            if (this.field_143015_k < 0) {
-                return true;
-            }
-
-            this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 7 - 1, 0);
-        }
-
-        int widthX = 7;
-        int widthZ = 7;
-        int height = 7;
-
-        // air
-        this.fillWithBlocks(world, structureboundingbox, 0, 1, 0, 9, 8, 8, Blocks.air, Blocks.air, false);
-        // 床
-        // 丸石
-        this.fillWithBlocks(
-            world,
-            structureboundingbox,
-            0,
-            0,
-            1,
-            7,
-            1,
-            7,
-            Blocks.cobblestone,
-            Blocks.cobblestone,
-            false);
-        // 板張り
-        this.fillWithBlocks(world, structureboundingbox, 1, 1, 2, 6, 1, 6, Blocks.planks, Blocks.planks, false);
-
-        // 柱
-        for (int y = 0; y < 3; y++) {
-            this.placeBlockAtCurrentPosition(world, Blocks.log, 2, 0, 2 + y, 1, structureboundingbox);
-            this.placeBlockAtCurrentPosition(world, Blocks.log, 2, 0, 2 + y, 7, structureboundingbox);
-            this.placeBlockAtCurrentPosition(world, Blocks.log, 2, 7, 2 + y, 1, structureboundingbox);
-            this.placeBlockAtCurrentPosition(world, Blocks.log, 2, 7, 2 + y, 7, structureboundingbox);
-        }
-
-        // 壁
-        this.fillWithBlocks(world, structureboundingbox, 1, 2, 1, 6, 5, 1, Blocks.planks, Blocks.planks, false);
-        this.fillWithBlocks(world, structureboundingbox, 1, 2, 7, 6, 4, 7, Blocks.planks, Blocks.planks, false);
-        this.fillWithBlocks(world, structureboundingbox, 0, 2, 2, 0, 4, 6, Blocks.planks, Blocks.planks, false);
-        this.fillWithBlocks(world, structureboundingbox, 7, 2, 2, 7, 4, 6, Blocks.planks, Blocks.planks, false);
-
-        // 上階の壁
-        this.fillWithBlocks(world, structureboundingbox, 1, 5, 2, 6, 5, 2, Blocks.planks, Blocks.planks, false);
-        this.fillWithBlocks(world, structureboundingbox, 1, 5, 7, 6, 5, 7, Blocks.planks, Blocks.planks, false);
-        this.fillWithBlocks(world, structureboundingbox, 2, 6, 2, 5, 6, 2, Blocks.planks, Blocks.planks, false);
-        this.fillWithBlocks(world, structureboundingbox, 2, 6, 7, 5, 6, 7, Blocks.planks, Blocks.planks, false);
-        this.fillWithBlocks(world, structureboundingbox, 3, 7, 2, 4, 7, 2, Blocks.planks, Blocks.planks, false);
-        this.fillWithBlocks(world, structureboundingbox, 3, 7, 7, 4, 7, 7, Blocks.planks, Blocks.planks, false);
-
-        // 屋根
-        int r = this.getMetadataWithOffset(Blocks.oak_stairs, 0);
-        int l = this.getMetadataWithOffset(Blocks.oak_stairs, 1);
-        int f = this.getMetadataWithOffset(Blocks.oak_stairs, 2);
-        int b = this.getMetadataWithOffset(Blocks.oak_stairs, 3);
-        for (int z = 1; z < 8; z++) {
-            this.placeBlockAtCurrentPosition(world, Blocks.dark_oak_stairs, r, 0, 5, z, structureboundingbox);
-            this.placeBlockAtCurrentPosition(world, Blocks.dark_oak_stairs, r, 1, 6, z, structureboundingbox);
-            this.placeBlockAtCurrentPosition(world, Blocks.dark_oak_stairs, r, 2, 7, z, structureboundingbox);
-            this.placeBlockAtCurrentPosition(world, Blocks.dark_oak_stairs, r, 3, 8, z, structureboundingbox);
-            this.placeBlockAtCurrentPosition(world, Blocks.dark_oak_stairs, l, 7, 5, z, structureboundingbox);
-            this.placeBlockAtCurrentPosition(world, Blocks.dark_oak_stairs, l, 6, 6, z, structureboundingbox);
-            this.placeBlockAtCurrentPosition(world, Blocks.dark_oak_stairs, l, 5, 7, z, structureboundingbox);
-            this.placeBlockAtCurrentPosition(world, Blocks.dark_oak_stairs, l, 4, 8, z, structureboundingbox);
-        }
-
-        // ひさし
-        for (int x = 0; x < 4; x++) {
-            this.placeBlockAtCurrentPosition(world, Blocks.wool, 0, x * 2, 5, 0, structureboundingbox);
-            this.placeBlockAtCurrentPosition(world, Blocks.wool, 14, x * 2 + 1, 5, 0, structureboundingbox);
-        }
-
-        // ドア
-        this.placeDoorAtCurrentPosition(
-            world,
-            structureboundingbox,
-            random,
-            5,
-            2,
-            1,
-            this.getMetadataWithOffset(Blocks.wooden_door, 3));
-        this.placeBlockAtCurrentPosition(
-            world,
-            Blocks.oak_stairs,
-            this.getMetadataWithOffset(Blocks.oak_stairs, 3),
-            5,
-            1,
-            0,
-            structureboundingbox);
-
-        // まど
-        this.fillWithBlocks(world, structureboundingbox, 2, 3, 1, 3, 4, 1, Blocks.glass, Blocks.glass, false);
-        this.fillWithBlocks(world, structureboundingbox, 0, 3, 3, 0, 4, 4, Blocks.glass, Blocks.glass, false);
-        this.fillWithBlocks(world, structureboundingbox, 7, 3, 3, 7, 4, 4, Blocks.glass, Blocks.glass, false);
-        this.fillWithBlocks(world, structureboundingbox, 3, 6, 2, 4, 6, 2, Blocks.glass, Blocks.glass, false);
-        this.fillWithBlocks(world, structureboundingbox, 3, 6, 7, 4, 6, 7, Blocks.glass, Blocks.glass, false);
-
-        // 花壇
-        this.fillWithBlocks(
-            world,
-            structureboundingbox,
-            2,
-            1,
-            0,
-            3,
-            1,
-            0,
-            Blocks.brick_block,
-            Blocks.brick_block,
-            false);
-        this.fillWithBlocks(
-            world,
-            structureboundingbox,
-            8,
-            1,
-            3,
-            8,
-            1,
-            4,
-            Blocks.brick_block,
-            Blocks.brick_block,
-            false);
-        this.placeBlockAtCurrentPosition(world, DCsAppleMilk.teaTree, 1, 2, 2, 0, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, DCsAppleMilk.teaTree, 1, 3, 2, 0, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, DCsAppleMilk.teaTree, 1, 8, 2, 3, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, DCsAppleMilk.teaTree, 1, 8, 2, 4, structureboundingbox);
-
-        // 照明
-        this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 2, 6, 5, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 5, 6, 5, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, DCsAppleMilk.cLamp, 5, 2, 5, 5, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, DCsAppleMilk.cLamp, 5, 5, 5, 5, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 2, 6, 1, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 5, 6, 1, structureboundingbox);
-
-        // 内装
-        // 客席
-        this.placeBlockAtCurrentPosition(world, Blocks.oak_stairs, l, 2, 2, 2, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, Blocks.oak_stairs, r, 4, 2, 2, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, Blocks.oak_stairs, f, 6, 2, 3, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, Blocks.oak_stairs, b, 6, 2, 5, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 3, 2, 2, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 6, 2, 4, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, Blocks.carpet, 14, 3, 3, 2, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, Blocks.carpet, 14, 6, 3, 4, structureboundingbox);
-
-        // カウンター
-        this.placeBlockAtCurrentPosition(world, Blocks.oak_stairs, f, 2, 2, 4, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, Blocks.oak_stairs, b + 4, 1, 2, 5, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, Blocks.oak_stairs, b + 4, 2, 2, 5, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, Blocks.oak_stairs, b + 4, 3, 2, 5, structureboundingbox);
-
-        // 装飾
-        this.placeBlockAtCurrentPosition(world, Blocks.brick_block, 0, 6, 2, 6, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, DCsAppleMilk.teaTree, 1, 6, 3, 6, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, Blocks.bookshelf, 0, 5, 2, 6, structureboundingbox);
-
-        this.placeBlockAtCurrentPosition(world, DCsAppleMilk.rotaryDial, f, 5, 3, 6, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, DCsAppleMilk.teaMakerNext, f, 3, 3, 5, structureboundingbox);
-        this.placeBlockAtCurrentPosition(world, DCsAppleMilk.emptyCup, f, 2, 3, 5, structureboundingbox);
-
-        // 20%
-        if (random.nextInt(5) == 0) {
-            this.placeBlockAtCurrentPosition(world, DCsAppleMilk.crowDoll, f, 1, 3, 5, structureboundingbox);
-        }
-
-        // チェスト
-        this.placeBlockAtCurrentPosition(world, Blocks.air, 0, 1, 1, 6, structureboundingbox);
-        if (!this.hasMadeChest) {
-            this.hasMadeChest = true;
-            this.generateStructureChestContents(
-                world,
-                structureboundingbox,
-                random,
-                1,
-                1,
-                6,
-                /* ChestGenHooks removed */ null
-                    .getItems(random),
-                /* ChestGenHooks removed */ null
-                    .getCount(random));
-        }
-        this.placeBlockAtCurrentPosition(world, Blocks.trapdoor, r, 1, 2, 6, structureboundingbox);
-
-        for (int i = 1; i <= widthZ; ++i) {
-            for (int j = 0; j <= widthX; ++j) {
-                this.clearCurrentPositionBlocksUpwards(world, j, height + 2, i, structureboundingbox);
-                this.func_151554_b(world, Blocks.cobblestone, 0, j, -1, i, structureboundingbox); // fillCurrentPositionBlocksDownwards
-            }
-        }
-
-        this.spawnVillagers(world, structureboundingbox, 3, 2, 3, 1);
-        return true;
+    @Override
+    public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox box, ChunkPos chunkPos, BlockPos pos) {
+        // TODO: place structure via Jigsaw / Template
     }
 
     @Override
-    protected int getVillagerType(int par1) {
-        return DCsConfig.villagerRecipeID;
-    }
+    public void handleDataMarker(String name, BlockPos pos, WorldGenLevel level, RandomSource rand, BoundingBox box) {}
 }

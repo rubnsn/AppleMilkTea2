@@ -23,7 +23,7 @@ public class PlaceableBowl extends PlaceableFoods {
 
     @Override
     protected ItemStack returnItem() {
-        return new ItemStack(DCsAppleMilk.bowlBlock, 1, this.getItemMetadata());
+        return new ItemStack(mods.defeatedcrow.common.registry.ModBlocks.BOWL_BLOCK.get().asItem(), 1);
     }
 
     @Override

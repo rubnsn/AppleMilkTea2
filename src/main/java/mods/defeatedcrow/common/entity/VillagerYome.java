@@ -1,81 +1,30 @@
 package mods.defeatedcrow.common.entity;
 
-import java.util.Random;
-
-import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.village.net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.village.ArrayList<net.minecraft.world.item.trading.MerchantOffer>;
+import net.minecraftforge.event.village.VillagerTradesEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import mods.defeatedcrow.common.DCsAppleMilk;
-import mods.defeatedcrow.common.config.DCsConfig;
+import mods.defeatedcrow.common.registry.ModItems;
 
-// 嫁。倉庫番。圧縮コンテナと電池、玉髄製品の販売。作物系圧縮コンテナのと、火打ち石の買い取り。
-public class VillagerYome implements net.minecraftforge.event.village.VillagerTradesEvent {
+/**
+ * 1.20.1 stub for VillagerYome — trades for storage boxes, chalcedony, batteries.
+ * See VillagerCafe.java for migration notes.
+ */
+public class VillagerYome {
 
-    @Override
-    public void manipulateTradesForVillager(Villager villager, ArrayList<net.minecraft.world.item.trading.MerchantOffer> recipeList, Random random) {
-
-        if (villager.getProfession() == DCsConfig.villagerRecipe2ID) {
-            // 原木箱。アカシアとダークオーク。
-            recipeList
-                .add(new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.emerald, 1), new ItemStack(DCsAppleMilk.woodBox, 1, 11)));
-            recipeList
-                .add(new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.emerald, 1), new ItemStack(DCsAppleMilk.woodBox, 1, 12)));
-            // 木炭箱
-            recipeList.add(
-                new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.emerald, 3), new ItemStack(DCsAppleMilk.charcoalBox, 1, 0)));
-            // カシス、椿、柚子のダンボール
-            recipeList
-                .add(new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.emerald, 2), new ItemStack(DCsAppleMilk.cardboard, 1, 1)));
-            recipeList
-                .add(new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.emerald, 2), new ItemStack(DCsAppleMilk.cardboard, 1, 2)));
-            recipeList
-                .add(new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.emerald, 2), new ItemStack(DCsAppleMilk.cardboard, 1, 3)));
-
-            // カルセドニー製品
-            recipeList
-                .add(new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.emerald, 1), new ItemStack(DCsAppleMilk.chalcedony, 1, 0)));
-            recipeList
-                .add(new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.emerald, 5), new ItemStack(DCsAppleMilk.cLamp, 1, 9)));
-            recipeList
-                .add(new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.emerald, 5), new ItemStack(DCsAppleMilk.cLamp, 1, 10)));
-            recipeList.add(
-                new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.emerald, 2), new ItemStack(DCsAppleMilk.chalcedonyKnife, 1, 0)));
-            recipeList.add(
-                new net.minecraft.world.item.trading.MerchantOffer(
-                    new ItemStack(Items.emerald, 3),
-                    new ItemStack(DCsAppleMilk.chalcedonyHammer, 1, 0)));
-            recipeList
-                .add(new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.emerald, 2), new ItemStack(DCsAppleMilk.monocle, 1, 0)));
-
-            // 電池
-            recipeList.add(
-                new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.emerald, 2), new ItemStack(DCsAppleMilk.batteryItem, 1, 0)));
-            recipeList.add(
-                new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.emerald, 6), new ItemStack(DCsAppleMilk.batteryItem, 5, 0)));
-
-            // 精油
-            recipeList.add(
-                new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.emerald, 5), new ItemStack(DCsAppleMilk.essentialOil, 1, 8)));
-            recipeList.add(
-                new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.emerald, 5), new ItemStack(DCsAppleMilk.essentialOil, 1, 9)));
-
-            // 買い取りはふつうのコンテナ類、火打ち石
-            recipeList
-                .add(new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(DCsAppleMilk.woodBox, 3, 0), new ItemStack(Items.emerald, 2)));
-            recipeList
-                .add(new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(DCsAppleMilk.vegiBag, 3, 4), new ItemStack(Items.emerald, 2)));
-            recipeList
-                .add(new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(DCsAppleMilk.vegiBag, 3, 5), new ItemStack(Items.emerald, 2)));
-            recipeList.add(new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.flint, 4, 0), new ItemStack(Items.emerald, 1)));
-
-            recipeList.add(
-                new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(DCsAppleMilk.bottleCamOil, 1, 0), new ItemStack(Items.emerald, 1)));
-
+    @SubscribeEvent
+    public static void onTrades(VillagerTradesEvent event) {
+        if (event.getType() == VillagerProfession.ARMORER) {
+            var list = event.getTrades().get(2);
+            if (list == null) return;
+            list.add((trader, rand) -> new net.minecraft.world.entity.npc.VillagerTrades.ItemListing() {
+                @Override
+                public net.minecraft.world.item.trading.MerchantOffer getOffer(net.minecraft.world.entity.Entity trader, net.minecraft.util.RandomSource rand) {
+                    return new net.minecraft.world.item.trading.MerchantOffer(new ItemStack(Items.EMERALD, 3), new ItemStack(ModItems.BATTERY.get(), 1), 8, 5, 0.2F);
+                }
+            });
         }
-
     }
-
 }

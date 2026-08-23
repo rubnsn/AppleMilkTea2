@@ -19,7 +19,7 @@ import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.handler.TagHelper;
 
 public class TileProcessor extends MachineBase {
-    public TileProcessor(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) { super(pos, state); }
+    public TileProcessor(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_PROCESSOR.get(), pos, state); }
 
 
     @Override
@@ -62,7 +62,7 @@ public class TileProcessor extends MachineBase {
                 output = recipe.getOutput();
                 sec = recipe.getSecondary();
                 chance = recipe.getChance();
-                cont = recipe.getContainerItem(items);
+                cont = recipe.getCraftingRemainingItem(items);
                 break;
             }
         }
@@ -74,8 +74,8 @@ public class TileProcessor extends MachineBase {
             if (this.itemstacks[11] == null) {
                 flag1 = true;
             } else {
-                if (this.itemstacks[11].isItemEqual(output)) {
-                    int result = this.itemstacks[11].stackSize + output.stackSize;
+                if (this.net.minecraft.world.item.ItemStack.isSameItemSameTags(itemstacks[11], output)) {
+                    int result = this.itemstacks[11].getCount() + output.getCount();
                     flag1 = (result <= this.getMaxStackSize() && result <= output.getMaxStackSize());
                 }
             }
@@ -86,8 +86,8 @@ public class TileProcessor extends MachineBase {
                 if (this.itemstacks[12] == null) {
                     flag2 = true;
                 } else {
-                    if (this.itemstacks[12].isItemEqual(sec)) {
-                        int result = this.itemstacks[12].stackSize + sec.stackSize;
+                    if (this.net.minecraft.world.item.ItemStack.isSameItemSameTags(itemstacks[12], sec)) {
+                        int result = this.itemstacks[12].getCount() + sec.getCount();
                         flag2 = (result <= this.getMaxStackSize() && result <= sec.getMaxStackSize());
                     }
                 }
@@ -95,8 +95,8 @@ public class TileProcessor extends MachineBase {
                 if (this.itemstacks[12] == null) {
                     flag2 = true;
                 } else {
-                    if (this.itemstacks[12].isItemEqual(cont)) {
-                        int result = this.itemstacks[12].stackSize + cont.stackSize;
+                    if (this.net.minecraft.world.item.ItemStack.isSameItemSameTags(itemstacks[12], cont)) {
+                        int result = this.itemstacks[12].getCount() + cont.getCount();
                         flag2 = (result <= this.getMaxStackSize() && result <= cont.getMaxStackSize());
                     }
                 }
@@ -153,7 +153,7 @@ public class TileProcessor extends MachineBase {
             List<Object> required = new ArrayList<Object>(activeRecipe.getProcessedInput());
             ItemStack output = activeRecipe.getOutput();
             ItemStack sec = activeRecipe.getSecondary();
-            ItemStack cont = activeRecipe.getContainerItem(items);
+            ItemStack cont = activeRecipe.getCraftingRemainingItem(items);
             float chance = activeRecipe.getChance();
             boolean getSec = level.rand.nextFloat() <= chance;
 
@@ -215,22 +215,22 @@ public class TileProcessor extends MachineBase {
                 // 次に完成品を完成品スロットへ
                 if (this.itemstacks[11] == null) {
                     this.itemstacks[11] = output.copy();
-                } else if (this.itemstacks[11].isItemEqual(output)) {
-                    this.itemstacks[11].stackSize += output.stackSize;
+                } else if (this.net.minecraft.world.item.ItemStack.isSameItemSameTags(itemstacks[11], output)) {
+                    this.itemstacks[11].grow(output.getCount());
                 }
             }
 
             if (sec != null && getSec) {
                 if (this.itemstacks[12] == null) {
                     this.itemstacks[12] = sec.copy();
-                } else if (this.itemstacks[12].isItemEqual(sec)) {
-                    this.itemstacks[12].stackSize += sec.stackSize;
+                } else if (this.net.minecraft.world.item.ItemStack.isSameItemSameTags(itemstacks[12], sec)) {
+                    this.itemstacks[12].grow(sec.getCount());
                 }
             } else if (cont != null) {
                 if (this.itemstacks[12] == null) {
                     this.itemstacks[12] = cont.copy();
-                } else if (this.itemstacks[12].isItemEqual(cont)) {
-                    this.itemstacks[12].stackSize += cont.stackSize;
+                } else if (this.net.minecraft.world.item.ItemStack.isSameItemSameTags(itemstacks[12], cont)) {
+                    this.itemstacks[12].grow(cont.getCount());
                 }
             }
 

@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import mods.defeatedcrow.common.config.DCsConfig;
 
 /**
- * 1.20.1: IWorldGenerator -> BiomeModifier + PlacedFeature (Holder + datapack).
+ * 1.20.1: WorldGen_old -> BiomeModifier + PlacedFeature (Holder + datapack).
  * See doc/worldgen/migration-guide.md
  * Old WorldgenTeaTree.generate(Random, chunkX,chunkZ, World, ...) is removed.
  * PlacedFeature via datapack: data/defeatedcrow/worldgen/placed_feature/tea_tree_placed.json

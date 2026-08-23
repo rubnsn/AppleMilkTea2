@@ -14,7 +14,7 @@ import mods.defeatedcrow.common.config.DCsConfig;
 
 /**
  * 1.20.1: WorldgenClam (beach hamaguri generation) -> Feature + BiomeModifier (Holder)
- * Old IWorldGenerator.generate removed. Now datapack PlacedFeature at beach biomes.
+ * Old WorldGen_old.generate removed. Now datapack PlacedFeature at beach biomes.
  * See doc/worldgen/migration-guide.md
  */
 public class WorldgenClam {

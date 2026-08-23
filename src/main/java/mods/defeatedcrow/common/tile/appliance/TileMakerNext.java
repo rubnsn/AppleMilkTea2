@@ -15,7 +15,7 @@ import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.handler.Util;
 
 public class TileMakerNext extends BlockEntity implements ITeaMaker {
-    public TileMakerNext(BlockPos pos, BlockState state) { super(null, pos, state); }
+    public TileMakerNext(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_MAKER_NEXT.get(), pos, state); }
 
 
     private byte remain = 1;
@@ -51,8 +51,8 @@ public class TileMakerNext extends BlockEntity implements ITeaMaker {
 
         par1CompoundTag.putByte("Remaining", this.remain);
         par1CompoundTag.putBoolean("Milk", this.isMilk);
-        par1CompoundTag.setString("Tex", tex);
-        par1CompoundTag.setString("Tex_Milk", tex_milk);
+        par1CompoundTag.putString("Tex", tex);
+        par1CompoundTag.putString("Tex_Milk", tex_milk);
         par1CompoundTag.putByte("CoolTime", this.coolTime);
 
         if (this.getItemStack() != null) {

@@ -11,7 +11,7 @@ import mods.defeatedcrow.common.AMTLogger;
 import mods.defeatedcrow.handler.CoordListRegister;
 
 public class TileCrowDoll extends BlockEntity {
-    public TileCrowDoll(BlockPos pos, BlockState state) { super(null, pos, state); }
+    public TileCrowDoll(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_CROW_DOLL.get(), pos, state); }
 
 
     private boolean active = false;

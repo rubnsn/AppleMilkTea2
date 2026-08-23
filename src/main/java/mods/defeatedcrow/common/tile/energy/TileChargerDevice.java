@@ -20,12 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileChargerDevice extends TileChargerBase {
 
     public TileChargerDevice(BlockPos pos, BlockState state) {
-        super(pos, state);
-    }
-
-    // legacy no-arg for old RegistryObject (type injected via Builder.of)
-    public TileChargerDevice() {
-        super(null, null);
+        super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_CHARGER_DEVICE.get(), pos, state);
     }
 
     @Override

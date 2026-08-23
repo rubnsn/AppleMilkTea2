@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:simple_block",
+  "config": {
+    "to_place": { "type": "minecraft:simple_state_provider", "state": { "Name": "minecraft:sand" } },
+    "schedule_tick": false
+  }
+}

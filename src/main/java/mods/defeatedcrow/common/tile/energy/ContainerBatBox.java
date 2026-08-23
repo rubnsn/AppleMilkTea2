@@ -1,176 +1,85 @@
 package mods.defeatedcrow.common.tile.energy;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ContainerListener; // ContainerListener -> ContainerListener in 1.20.1
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
-// SlotFurnace removed in 1.20.1 - use Slot
 import net.minecraft.world.item.ItemStack;
-import mods.defeatedcrow.api.energy.IBattery;
 
-// 1.20.1: Container -> AbstractContainerMenu (see doc/tile-entities/migration-guide.md)
+import mods.defeatedcrow.api.energy.IBattery;
+import mods.defeatedcrow.common.registry.ModMenuTypes;
+
 public class ContainerBatBox extends AbstractContainerMenu {
 
-    private TileChargerBase tile;
-    private int lastGauge;
+    private final TileChargerBase tile;
+    private final ContainerData data;
 
-    private int upperGauge;
-    private int lowerGauge;
-
-    public ContainerBatBox(Player player, TileChargerBase par2TileEntity) {
-        this.tile = par2TileEntity;
-
-        /* スロットの生成 */
-        // 燃料
-        this.addSlot(new Slot(this.tile, 0, 9, 9));
-        // 完成品
-        this.addSlot(new SlotFurnace(player, this.tile, 1, 9, 55));
-        // 充電スロット
-        int j;
-        for (j = 0; j < 2; ++j) {
+    public ContainerBatBox(int id, Inventory inv, TileChargerBase tile) {
+        super(ModMenuTypes.BAT_BOX.get(), id);
+        this.tile = tile;
+        this.data = new SimpleContainerData(2);
+        this.addSlot(new Slot(tile, 0, 9, 9));
+        this.addSlot(new Slot(tile, 1, 9, 55));
+        for (int j = 0; j < 2; ++j) {
             for (int k = 0; k < 4; ++k) {
-                this.addSlot(new Slot(this.tile, 2 + k + j * 4, 53 + k * 18, 30 + j * 18));
+                this.addSlot(new Slot(tile, 2 + k + j * 4, 53 + k * 18, 30 + j * 18));
             }
         }
-
-        // プレイヤーのインベントリ
-        int i;
-        // 1 ～ 3段目のインベントリ
-        for (i = 0; i < 3; ++i) {
+        for (int i = 0; i < 3; ++i) {
             for (int h = 0; h < 9; ++h) {
-                this.addSlot(new Slot(player.inventory, h + i * 9 + 9, 8 + h * 18, 84 + i * 18));
+                this.addSlot(new Slot(inv, h + i * 9 + 9, 8 + h * 18, 84 + i * 18));
             }
         }
-
-        // 4段目のインベントリ
-        for (i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(player.inventory, i, 8 + i * 18, 142));
+        for (int i = 0; i < 9; ++i) {
+            this.addSlot(new Slot(inv, i, 8 + i * 18, 142));
         }
+        this.addDataSlots(data);
     }
 
-    // チャージゲージの更新に使用
-    @Override
-    public void addCraftingToCrafters(ContainerListener par1ContainerListener) {
-        super.addCraftingToCrafters(par1ContainerListener);
-        par1ContainerListener.sendProgressBarUpdate(this, 0, tile.getUnder());
-        par1ContainerListener.sendProgressBarUpdate(this, 1, tile.getUpper());
-    }
-
-    // 更新を送る
-    @Override
-    public void detectAndSendChanges() {
-        super.detectAndSendChanges();
-
-        for (int i = 0; i < this.crafters.size(); ++i) {
-            ContainerListener icrafting = (ContainerListener) this.crafters.get(i);
-
-            if (tile.getChargeAmount() > 0) {
-                if (this.lowerGauge != tile.getUnder()) {
-                    icrafting.sendProgressBarUpdate(this, 0, tile.getUnder());
-                }
-                if (this.upperGauge != tile.getUpper()) {
-                    icrafting.sendProgressBarUpdate(this, 1, tile.getUpper());
-                }
-                this.lowerGauge = tile.getUnder();
-                this.upperGauge = tile.getUpper();
-            } else {
-                if (this.lowerGauge != 0) {
-                    icrafting.sendProgressBarUpdate(this, 0, 0);
-                }
-                if (this.upperGauge != 0) {
-                    icrafting.sendProgressBarUpdate(this, 1, 0);
-                }
-                this.lowerGauge = 0;
-                this.upperGauge = 0;
-            }
-        }
-
-        this.lastGauge = this.tile.getChargeAmount();
-    }
-
-    // クライアント側で更新を受け取る
-    @Override
-    
-    public void updateProgressBar(int par1, int par2) {
-        if (par1 == 0) {
-            tile.setUnder(par2);
-        } else if (par1 == 1) {
-            tile.setUpper(par2);
-        }
+    public ContainerBatBox(int id, Inventory inv, BlockPos pos) {
+        this(id, inv, (TileChargerBase) inv.player.level().getBlockEntity(pos));
     }
 
     @Override
-    public boolean canInteractWith(Player player) {
-        return this.tile.stillValid(player);
+    public boolean stillValid(Player player) { return tile.stillValid(player); }
+
+    public void updateProgressBar(int id, int val) {
+        if (id == 0) tile.setUnder(val);
+        else if (id == 1) tile.setUpper(val);
     }
 
-    // Shiftクリックでの処理
     @Override
-    public ItemStack transferStackInSlot(Player par1EntityPlayer, int par2) {
-        ItemStack itemstack = null;
-        Slot slot = (Slot) this.inventorySlots.get(par2);
-
-        if (slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
-            itemstack = itemstack1.copy();
-
-            // カーソルを排出スロットにあわせているとき
-            if (par2 == 1) {
-                // アイテムの移動(スロット10～46へ)
-                if (!this.mergeItemStack(itemstack1, 10, 46, true)) {
-                    return null;
-                }
-
-                slot.onSlotChange(itemstack1, itemstack);
-            }
-            // カーソルをプレイヤーのインベントリにあわせている
-            else if (par2 > 9) {
-                // 燃料である
-                if (tile.isItemFuel(itemstack)) {
-                    // アイテムの移動(スロット0～1へ)
-                    if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
-                        // 燃料欄がいっぱいの時、かつアイテムがIBatteryのとき
-                        if (itemstack1.getItem() instanceof IBattery) {
-                            // アイテムの移動(スロット2～9へ)
-                            IBattery bat = (IBattery) itemstack1.getItem();
-                            if (!this.mergeItemStack(itemstack1, 2, 9, false)) {
-                                return null;
-                            }
+    public ItemStack quickMoveStack(Player player, int index) {
+        ItemStack copy = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
+        if (slot != null && slot.hasItem()) {
+            ItemStack stack = slot.getItem();
+            copy = stack.copy();
+            if (index == 1) {
+                if (!this.moveItemStackTo(stack, 10, 46, true)) return ItemStack.EMPTY;
+            } else if (index > 9) {
+                if (tile.isItemFuel(stack)) {
+                    if (!this.moveItemStackTo(stack, 0, 1, false)) {
+                        if (stack.getItem() instanceof IBattery) {
+                            if (!this.moveItemStackTo(stack, 2, 9, false)) return ItemStack.EMPTY;
                         }
                     }
-                } else if (itemstack1.getItem() instanceof IBattery)// バッテリーアイテム
-                {
-                    // アイテムの移動(スロット2～9へ)
-                    IBattery bat = (IBattery) itemstack1.getItem();
-                    if (!this.mergeItemStack(itemstack1, 2, 9, false)) {
-                        return null;
-                    }
-                } else// それ以外のアイテムは何もしない
-                {
-                    return null;
+                } else if (stack.getItem() instanceof IBattery) {
+                    if (!this.moveItemStackTo(stack, 2, 9, false)) return ItemStack.EMPTY;
+                } else {
+                    return ItemStack.EMPTY;
                 }
+            } else if (!this.moveItemStackTo(stack, 10, 46, false)) {
+                return ItemStack.EMPTY;
             }
-            // アイテムの移動(スロット10～46へ)
-            else if (!this.mergeItemStack(itemstack1, 10, 46, false)) {
-                return null;
-            }
-
-            if (itemstack1.stackSize == 0) {
-                slot.putStack((ItemStack) null);
-            } else {
-                slot.onSlotChanged();
-            }
-
-            if (itemstack1.stackSize == itemstack.stackSize) {
-                return null;
-            }
-
-            slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+            if (stack.isEmpty()) slot.set(ItemStack.EMPTY);
+            else slot.setChanged();
+            if (stack.getCount() == copy.getCount()) return ItemStack.EMPTY;
+            slot.onTake(player, stack);
         }
-
-        return itemstack;
+        return copy;
     }
-
 }
