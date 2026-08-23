@@ -26,7 +26,15 @@
       }
     },
     "wt-c": {
-      "description": "WT-C Client+Cross — Use ONLY when editing client/**, potion/**, recipe/**, network/**, plugin/**, assets/**",
+      "description": "WT-C Client+Cross — Use ONLY when editing client/**, potion/**, network/**, plugin/**, assets/** (recipe moved to wt-d)",
+      "mode": "subagent",
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      }
+    },
+    "wt-d": {
+      "description": "WT-D Recipe+Advancement — Use ONLY when editing recipe/**, AchievementRegister, DCsRecipeRegister, ReceivingIMCEvent, common/registry/ModRecipes.java, common/datagen/**, data/defeatedcrow/recipes/**, data/defeatedcrow/advancements/**",
       "mode": "subagent",
       "permission": {
         "edit": "allow",
