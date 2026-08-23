@@ -1,0 +1,37 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": ["plan.md", "doc/overview.md", "doc/build.md"],
+  "agent": {
+    "bootstrap": {
+      "description": "Bootstrap agent — owns HotSpot (DCsAppleMilk/MaterialRegister/CommonProxy/ClientProxy) and common/registry/Mod*.java skeletons. Use ONLY when editing registry/config/build.",
+      "mode": "subagent",
+      "permission": {
+        "edit": "allow"
+      }
+    },
+    "wt-a": {
+      "description": "WT-A Blocks+Items — Use ONLY when editing common/block/**, common/item/**, CreativeTab*.java, DCsRecipeRegister.java",
+      "mode": "subagent",
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      }
+    },
+    "wt-b": {
+      "description": "WT-B Tiles+Fluids+World — Use ONLY when editing common/tile/**, common/fluid/**, common/entity/**, common/world/**, event/**, handler/**",
+      "mode": "subagent",
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      }
+    },
+    "wt-c": {
+      "description": "WT-C Client+Cross — Use ONLY when editing client/**, potion/**, recipe/**, network/**, plugin/**, assets/**",
+      "mode": "subagent",
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      }
+    }
+  }
+}

@@ -1,3 +1,52 @@
+# CODEOWNERS — 3ワークツリー並列 + HotSpot排他（plan.md:3 参照）
+# HotSpot（Bootstrapのみが書込可）。他WTは読取専用。
+/src/main/java/mods/defeatedcrow/common/DCsAppleMilk.java @bootstrap
+/src/main/java/mods/defeatedcrow/common/MaterialRegister.java @bootstrap
+/src/main/java/mods/defeatedcrow/common/CommonProxy.java @bootstrap
+/src/main/java/mods/defeatedcrow/client/ClientProxy.java @bootstrap
+/src/main/java/mods/defeatedcrow/common/config/ @bootstrap
+/src/main/java/mods/defeatedcrow/asm/ @bootstrap
+/src/main/java/mods/defeatedcrow/common/registry/ @bootstrap
+/src/main/resources/META-INF/mods.toml @bootstrap
+/build.gradle @bootstrap
+/gradle.properties @bootstrap
+/dependencies.gradle @bootstrap
+/settings.gradle @bootstrap
+
+# WT-A: Blocks+Items （common/block + common/item + ItemBlock/CreativeTab）
+/src/main/java/mods/defeatedcrow/common/block/ @wt-a
+/src/main/java/mods/defeatedcrow/common/item/ @wt-a
+/src/main/java/mods/defeatedcrow/common/CreativeTab*.java @wt-a
+/src/main/java/mods/defeatedcrow/common/DCsRecipeRegister.java @wt-a
+/src/main/java/mods/defeatedcrow/common/AchievementRegister.java @wt-a
+
+# WT-B: Tiles+Fluids+World/Entity/Event/Handler
+/src/main/java/mods/defeatedcrow/common/tile/ @wt-b
+/src/main/java/mods/defeatedcrow/common/base/ @wt-b
+/src/main/java/mods/defeatedcrow/common/fluid/ @wt-b
+/src/main/java/mods/defeatedcrow/common/entity/ @wt-b
+/src/main/java/mods/defeatedcrow/common/world/ @wt-b
+/src/main/java/mods/defeatedcrow/event/ @wt-b
+/src/main/java/mods/defeatedcrow/handler/ @wt-b
+/src/main/java/mods/defeatedcrow/common/world/ @wt-b
+
+# WT-C: Client+Cross（client全 + potion/recipe/network/plugin）
+/src/main/java/mods/defeatedcrow/client/ @wt-c
+/src/main/java/mods/defeatedcrow/potion/ @wt-c
+/src/main/java/mods/defeatedcrow/recipe/ @wt-c
+/src/main/java/mods/defeatedcrow/network/ @wt-c
+/src/main/java/mods/defeatedcrow/plugin/ @wt-c
+# asset/model/texture は WT-C が所有だがブロック/アイテムのJSONは各WTが触るため例外
+/src/main/resources/assets/ @wt-c
+
+# api/* は全WTで凍結（変更はbootstrap経由のみ）
+/src/main/java/mods/defeatedcrow/api/ @bootstrap
+
+# DOC/plan/ビルドは誰でも読めるが変更はbootstrapレビュー必須
+/doc/ @bootstrap
+/plan.md @bootstrap
+/.opencode/ @bootstrap
+
 # Any Github changes require admin approval
 /.github/** @GTNewHorizons/admin
 
