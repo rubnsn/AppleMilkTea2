@@ -1,14 +1,13 @@
 package mods.defeatedcrow.common.tile.appliance;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Item;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.Fluid;
@@ -139,7 +138,7 @@ public class TileEvaporator extends MachineBase implements IFluidHandler, IPipeC
         } else {
             if (this.itemstacks[3].isItemEqual(output)) {
                 int result = this.itemstacks[3].stackSize + output.stackSize;
-                flag2 = (result <= this.getInventoryStackLimit() && result <= output.getMaxStackSize());
+                flag2 = (result <= this.getMaxStackSize() && result <= output.getMaxStackSize());
             }
         }
 
@@ -149,7 +148,7 @@ public class TileEvaporator extends MachineBase implements IFluidHandler, IPipeC
             } else {
                 if (this.itemstacks[5].isItemEqual(container)) {
                     int result = this.itemstacks[5].stackSize + container.stackSize;
-                    flag4 = (result <= this.getInventoryStackLimit() && result <= container.getMaxStackSize());
+                    flag4 = (result <= this.getMaxStackSize() && result <= container.getMaxStackSize());
                 }
             }
         } else {
@@ -272,7 +271,7 @@ public class TileEvaporator extends MachineBase implements IFluidHandler, IPipeC
      */
 
     @Override
-    public int getSizeInventory() {
+    public int getContainerSize() {
         return 6;
     }
 
@@ -292,7 +291,7 @@ public class TileEvaporator extends MachineBase implements IFluidHandler, IPipeC
     }
 
     @Override
-    public String getInventoryName() {
+    public String getContainerName() {
         return "Evaporator";
     }
 

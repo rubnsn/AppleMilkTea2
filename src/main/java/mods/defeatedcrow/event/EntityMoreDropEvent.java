@@ -2,15 +2,15 @@ package mods.defeatedcrow.event;
 
 import java.util.ArrayList;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.Level;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
@@ -22,9 +22,9 @@ public class EntityMoreDropEvent {
 
     @SubscribeEvent
     public void EntityDropEvent(LivingDropsEvent event) {
-        EntityLivingBase entity = event.entityLiving;
+        LivingEntity entity = event.entityLiving;
         DamageSource thisSource = event.source;
-        ArrayList<EntityItem> items = event.drops;
+        ArrayList<ItemEntity> items = event.drops;
         ItemStack hold = event.entityLiving.getHeldItem();
 
         // 以下、死んだモブの位置情報
@@ -33,7 +33,7 @@ public class EntityMoreDropEvent {
         double posY = entity.posY;
         double posZ = entity.posZ;
 
-        if (!(entity instanceof EntityPlayer) && thisSource instanceof EntityDamageSource) {
+        if (!(entity instanceof Player) && thisSource instanceof EntityDamageSource) {
             EntityDamageSource entityDamage = (EntityDamageSource) thisSource;
             Entity destroyer = entityDamage.getEntity();
 
@@ -41,9 +41,9 @@ public class EntityMoreDropEvent {
              * EntityPlayerによる攻撃の時に判定する。
              * 間接攻撃でも大丈夫だと思う
              */
-            if (destroyer instanceof EntityPlayer) {
+            if (destroyer instanceof Player) {
                 Item radenID = DCsAppleMilk.princessClam;
-                EntityPlayer player = (EntityPlayer) destroyer;
+                Player player = (Player) destroyer;
 
                 int flowerCount = 0;
                 int butterflyCount = 0;
@@ -60,7 +60,7 @@ public class EntityMoreDropEvent {
                 }
 
                 if (flowerCount > 0) {
-                    for (EntityItem get : items) {
+                    for (ItemEntity get : items) {
                         if (get == null || get.getEntityItem() == null) continue;
                         if (hold != null && hold.getItem() != null && hold.isItemEqual(get.getEntityItem())) continue;
 
@@ -87,7 +87,7 @@ public class EntityMoreDropEvent {
                     int count = 5 * butterflyCount;
                     int exp = 1 + world.rand.nextInt(count);
                     AMTLogger.debugInfo("raden (exp)" + exp);
-                    world.spawnEntityInWorld(new EntityXPOrb(world, posX, posY, posZ, exp));
+                    world.spawnEntityInWorld(new ExperienceOrb(world, posX, posY, posZ, exp));
                 }
             }
         }

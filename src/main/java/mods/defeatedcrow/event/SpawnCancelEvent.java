@@ -1,10 +1,10 @@
 package mods.defeatedcrow.event;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.util.MathHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Level;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 
@@ -20,30 +20,30 @@ public class SpawnCancelEvent {
         Entity entity = event.entity;
         Level world = event.world;
 
-        if (!world.isClientSide && entity != null && entity instanceof EntityLivingBase && entity instanceof IMob) {
-            int x = MathHelper.floor_double(entity.posX);
-            int y = MathHelper.floor_double(entity.posY);
-            int z = MathHelper.floor_double(entity.posZ);
-            if (entity instanceof EntityLiving && ((EntityLiving) entity).hasCustomNameTag()) {
+        if (!world.isClientSide && entity != null && entity instanceof LivingEntity && entity instanceof Enemy) {
+            int x = Mth.floor_double(entity.posX);
+            int y = Mth.floor_double(entity.posY);
+            int z = Mth.floor_double(entity.posZ);
+            if (entity instanceof LivingEntity && ((LivingEntity) entity).hasCustomNameTag()) {
                 return;
             }
 
             int cX = x >> 4;
             int cZ = z >> 4;
-            Coord cood = new Coord(cX, cZ, world.provider.dimensionId);
+            Coord cood = new Coord(cX, cZ, level.dimension().location().toString().hashCode());
             if (CoordListRegister.isCoodIncluded(cood)) {
                 if (entity.ridingEntity != null) {
                     Entity ride = entity.ridingEntity;
                     ride.riddenByEntity = null;
                     entity.ridingEntity = null;
-                    ride.setDead();
+                    ride.discard();
 
                 }
                 if (entity.riddenByEntity != null) {
                     Entity rider = entity.riddenByEntity;
                     rider.ridingEntity = null;
                     entity.riddenByEntity = null;
-                    rider.setDead();
+                    rider.discard();
                 }
                 event.setResult(Result.DENY);
             }

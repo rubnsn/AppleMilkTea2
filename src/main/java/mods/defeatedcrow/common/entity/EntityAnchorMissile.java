@@ -1,26 +1,29 @@
 package mods.defeatedcrow.common.entity;
 
+import net.minecraft.world.level.Level;
+
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.boss.EntityDragonPart;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.MapColor;
+// Material removed in 1.20.1 - use BlockState properties
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
+// net.minecraft.world.entity.boss.enderdragon.EnderDragonPart removed
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.play.server.S2BPacketChangeGameState;
+// S2BPacketChangeGameState removed - use ClientboundGameEventPacket
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.util.EntityDamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.util.Vec3;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.Level;
 
 import mods.defeatedcrow.common.AMTLogger;
@@ -41,7 +44,7 @@ import mods.defeatedcrow.handler.CustomExplosion;
 /*
  * 発射されるエンティティのクラス。
  */
-public class EntityAnchorMissile extends Entity implements IProjectile {
+public class EntityAnchorMissile extends Entity implements Projectile {
 
     /* 地中判定に使うもの */
     protected int xTile = -1;
@@ -52,10 +55,10 @@ public class EntityAnchorMissile extends Entity implements IProjectile {
     protected boolean inGround;
 
     /* この弾を撃ったエンティティ */
-    public EntityLivingBase shootingEntity;
+    public LivingEntity shootingEntity;
 
     /* ターゲットエンティティ */
-    public EntityLivingBase targetEntity;
+    public LivingEntity targetEntity;
 
     /* 地中・空中にいる時間 */
     protected int ticksInGround;
@@ -97,8 +100,8 @@ public class EntityAnchorMissile extends Entity implements IProjectile {
      * @param initialYaw
      *                             :弾の初期射出方向
      */
-    public EntityAnchorMissile(Level par1World, EntityLivingBase par2EntityLivingBase,
-        EntityLivingBase par3EntityLivingBase, float speed, float speed2, float initialYaw, float adjustX,
+    public EntityAnchorMissile(Level par1World, LivingEntity par2EntityLivingBase,
+        LivingEntity par3EntityLivingBase, float speed, float speed2, float initialYaw, float adjustX,
         float adjustY, float adjustZ) {
         super(type, level);
         this.renderDistanceWeight = 10.0D;
@@ -259,7 +262,7 @@ public class EntityAnchorMissile extends Entity implements IProjectile {
         boolean air = this.level.isAirBlock(xTile, yTile, zTile);
 
         // 空気じゃないブロックに当たった&ブロック貫通エンティティでない時
-        if (i != null && i.getMaterial() != Material.air) {
+        if (i != null && i.getMaterial() != /*Material*/ air) {
             i.setBlockBoundsBasedOnState(this.level, this.xTile, this.yTile, this.zTile);
             AABB axisalignedbb = i
                 .getCollisionBoundingBoxFromPool(this.level, this.xTile, this.yTile, this.zTile);
@@ -334,7 +337,7 @@ public class EntityAnchorMissile extends Entity implements IProjectile {
                 Entity entity = null;
 
                 // ターゲットの場合
-                if (entity1 instanceof EntityLivingBase || entity1 instanceof EntityDragonPart) {
+                if (entity1 instanceof LivingEntity || entity1 instanceof net.minecraft.world.entity.boss.enderdragon.EnderDragonPart) {
                     f1 = 0.3F;
                     AABB axisalignedbb1 = entity1.getBoundingBox().expand(f1, f1, f1);
                     BlockHitResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec3, vec31);
@@ -360,22 +363,22 @@ public class EntityAnchorMissile extends Entity implements IProjectile {
             if (entityTarget != null) {
                 Entity target = entityTarget.entityHit;
 
-                if (target instanceof EntityPlayer) {
+                if (target instanceof Player) {
                     // プレイヤーに当たった時
-                    EntityPlayer entityplayer = (EntityPlayer) target;
+                    Player entityplayer = (Player) target;
 
-                    if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer
-                        && !((EntityPlayer) this.shootingEntity).canAttackPlayer(entityplayer)) {
+                    if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof Player
+                        && !((Player) this.shootingEntity).canAttackPlayer(entityplayer)) {
                         // PvPが許可されていないと当たらない
                         canAttack = false;
                     } else if (entityplayer == this.shootingEntity) {
                         // 対象が撃った本人の場合も当たらない
                         canAttack = false;
-                    } else if (DCsConfig.PvPProhibitionMode && entityplayer instanceof EntityPlayer) {
+                    } else if (DCsConfig.PvPProhibitionMode && entityplayer instanceof Player) {
                         canAttack = false;
                     }
-                } else if (target instanceof EntityTameable || target instanceof EntityHorse) {
-                    // 事故防止の為、EntityTameable（犬や猫などのペット）、馬にも当たらないようにする
+                } else if (target instanceof TamableAnimal || target instanceof Horse) {
+                    // 事故防止の為、TamableAnimal（犬や猫などのペット）、馬にも当たらないようにする
                     canAttack = false;
                 } else {
                     canAttack = true;
@@ -400,19 +403,19 @@ public class EntityAnchorMissile extends Entity implements IProjectile {
                 damagesource = this.thisDamageSource(this.shootingEntity);
 
                 // バニラ矢と同様、このエンティティが燃えているなら対象に着火することも出来る
-                if (this.isBurning() && !(target instanceof EntityEnderman)) {
+                if (this.isBurning() && !(target instanceof EnderMan)) {
                     target.setFire(5);
                 }
 
-                else if (target instanceof IProjectile) {
+                else if (target instanceof Projectile) {
                     // 対象が矢などの飛翔Entityの場合、打ち消すことが出来る
                     target.discard();
                 } else {
                     // ダメージを与える処理を呼ぶ
                     if (target.attackEntityFrom(damagesource, i1)) {
                         // ダメージを与えることに成功したら以下の処理を行う
-                        if (target instanceof EntityLivingBase) {
-                            EntityLivingBase entitylivingbase = (EntityLivingBase) target;
+                        if (target instanceof LivingEntity) {
+                            LivingEntity entitylivingbase = (LivingEntity) target;
 
                             // ノックバック
                             if (this.knockbackStrength > 0) {
@@ -432,9 +435,9 @@ public class EntityAnchorMissile extends Entity implements IProjectile {
 
                             // マルチプレイ時に、両者がプレイヤーだった時のパケット送信処理
                             if (this.shootingEntity != null && target != this.shootingEntity
-                                && target instanceof EntityPlayer
-                                && this.shootingEntity instanceof EntityPlayerMP) {
-                                ((EntityPlayerMP) this.shootingEntity).playerNetServerHandler
+                                && target instanceof Player
+                                && this.shootingEntity instanceof ServerPlayer) {
+                                ((ServerPlayer) this.shootingEntity).playerNetServerHandler
                                     .sendPacket(new S2BPacketChangeGameState(6, 0.0F));
                             }
                         }
@@ -619,7 +622,7 @@ public class EntityAnchorMissile extends Entity implements IProjectile {
      * プレイヤーと衝突した時のメソッド。今回は何もしない
      */
     @Override
-    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
+    public void onCollideWithPlayer(Player par1EntityPlayer) {
 
     }
 
@@ -663,8 +666,8 @@ public class EntityAnchorMissile extends Entity implements IProjectile {
     /* ダメージソースのタイプ */
     public DamageSource thisDamageSource(Entity entity) {
         // 発射元のEntityがnullだった場合の対策を含む。
-        if (entity instanceof EntityPlayer) {
-            return EntityDamageSource.causePlayerDamage((EntityPlayer) entity);
+        if (entity instanceof Player) {
+            return EntityDamageSource.causePlayerDamage((Player) entity);
         }
         return entity != null ? EntityDamageSource.causeIndirectMagicDamage(this, entity) : DamageSource.magic;
     }

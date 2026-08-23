@@ -1,19 +1,25 @@
 package mods.defeatedcrow.common.fluid;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemBucket;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraftforge.fluids.ForgeFlowingFluid;
+import java.util.function.Supplier;
+import net.minecraft.world.level.material.Fluid;
+import mods.defeatedcrow.common.registry.ModFluids;
 
-public class ItemBucketVegiOil extends ItemBucket {
+/**
+ * 1.20.1: ItemBucket -> BucketItem(Supplier<Fluid>, Properties)
+ * See doc/fluids/migration-guide.md
+ */
+public class ItemBucketVegiOil extends BucketItem {
 
-    public ItemBucketVegiOil(Block block) {
-        super(block);
-        this.setContainerItem(Items.bucket);
+    public ItemBucketVegiOil(Supplier<? extends Fluid> fluid) {
+        super(fluid, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1));
     }
 
-    @Override
-        public void registerIcons(/*migrated*/Register par1IconRegister) {
-        this.itemIcon = par1IconRegister.registerIcon("defeatedcrow:bucket_vegiOil");
+    // Legacy constructor for compat (block param removed)
+    public ItemBucketVegiOil(net.minecraft.world.level.block.Block block) {
+        this(() -> (Fluid)ModFluids.VEGITABLE_OIL_SOURCE.get());
     }
-
 }

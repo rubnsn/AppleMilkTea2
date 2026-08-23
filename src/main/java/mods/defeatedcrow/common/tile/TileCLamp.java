@@ -6,7 +6,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 public class TileCLamp extends TileHasDirection {
     public TileCLamp(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) { super(pos, state); }
 

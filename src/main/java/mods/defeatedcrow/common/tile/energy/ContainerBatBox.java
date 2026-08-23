@@ -1,15 +1,17 @@
 package mods.defeatedcrow.common.tile.energy;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
-import net.minecraft.item.ItemStack;
-
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ContainerListener; // ContainerListener -> ContainerListener in 1.20.1
+import net.minecraft.world.inventory.Slot;
+// SlotFurnace removed in 1.20.1 - use Slot
+import net.minecraft.world.item.ItemStack;
 import mods.defeatedcrow.api.energy.IBattery;
 
-public class ContainerBatBox extends Container {
+// 1.20.1: Container -> AbstractContainerMenu (see doc/tile-entities/migration-guide.md)
+public class ContainerBatBox extends AbstractContainerMenu {
 
     private TileChargerBase tile;
     private int lastGauge;
@@ -17,19 +19,19 @@ public class ContainerBatBox extends Container {
     private int upperGauge;
     private int lowerGauge;
 
-    public ContainerBatBox(EntityPlayer player, TileChargerBase par2TileEntity) {
+    public ContainerBatBox(Player player, TileChargerBase par2TileEntity) {
         this.tile = par2TileEntity;
 
         /* スロットの生成 */
         // 燃料
-        this.addSlotToContainer(new Slot(this.tile, 0, 9, 9));
+        this.addSlot(new Slot(this.tile, 0, 9, 9));
         // 完成品
-        this.addSlotToContainer(new SlotFurnace(player, this.tile, 1, 9, 55));
+        this.addSlot(new SlotFurnace(player, this.tile, 1, 9, 55));
         // 充電スロット
         int j;
         for (j = 0; j < 2; ++j) {
             for (int k = 0; k < 4; ++k) {
-                this.addSlotToContainer(new Slot(this.tile, 2 + k + j * 4, 53 + k * 18, 30 + j * 18));
+                this.addSlot(new Slot(this.tile, 2 + k + j * 4, 53 + k * 18, 30 + j * 18));
             }
         }
 
@@ -38,22 +40,22 @@ public class ContainerBatBox extends Container {
         // 1 ～ 3段目のインベントリ
         for (i = 0; i < 3; ++i) {
             for (int h = 0; h < 9; ++h) {
-                this.addSlotToContainer(new Slot(player.inventory, h + i * 9 + 9, 8 + h * 18, 84 + i * 18));
+                this.addSlot(new Slot(player.inventory, h + i * 9 + 9, 8 + h * 18, 84 + i * 18));
             }
         }
 
         // 4段目のインベントリ
         for (i = 0; i < 9; ++i) {
-            this.addSlotToContainer(new Slot(player.inventory, i, 8 + i * 18, 142));
+            this.addSlot(new Slot(player.inventory, i, 8 + i * 18, 142));
         }
     }
 
     // チャージゲージの更新に使用
     @Override
-    public void addCraftingToCrafters(ICrafting par1ICrafting) {
-        super.addCraftingToCrafters(par1ICrafting);
-        par1ICrafting.sendProgressBarUpdate(this, 0, tile.getUnder());
-        par1ICrafting.sendProgressBarUpdate(this, 1, tile.getUpper());
+    public void addCraftingToCrafters(ContainerListener par1ContainerListener) {
+        super.addCraftingToCrafters(par1ContainerListener);
+        par1ContainerListener.sendProgressBarUpdate(this, 0, tile.getUnder());
+        par1ContainerListener.sendProgressBarUpdate(this, 1, tile.getUpper());
     }
 
     // 更新を送る
@@ -62,7 +64,7 @@ public class ContainerBatBox extends Container {
         super.detectAndSendChanges();
 
         for (int i = 0; i < this.crafters.size(); ++i) {
-            ICrafting icrafting = (ICrafting) this.crafters.get(i);
+            ContainerListener icrafting = (ContainerListener) this.crafters.get(i);
 
             if (tile.getChargeAmount() > 0) {
                 if (this.lowerGauge != tile.getUnder()) {
@@ -100,13 +102,13 @@ public class ContainerBatBox extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer player) {
-        return this.tile.isUseableByPlayer(player);
+    public boolean canInteractWith(Player player) {
+        return this.tile.stillValid(player);
     }
 
     // Shiftクリックでの処理
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+    public ItemStack transferStackInSlot(Player par1EntityPlayer, int par2) {
         ItemStack itemstack = null;
         Slot slot = (Slot) this.inventorySlots.get(par2);
 

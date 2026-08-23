@@ -4,12 +4,12 @@ import net.minecraft.core.BlockPos;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.MapColor;
+// Material removed in 1.20.1 - use BlockState properties
 import net.minecraft.world.Level;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraftforge.common.util.ForgeDirection;
-
+import net.minecraft.core.Direction;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.block.plants.BlockYuzuSapling;
 
@@ -76,7 +76,7 @@ public class WorldGenYuzuTrees extends WorldGenAbstractTree {
                     x,
                     y - 1,
                     z,
-                    ForgeDirection.UP,
+                    Direction.UP,
                     (BlockYuzuSapling) DCsAppleMilk.saplingYuzu);
                 if (isSoil && y < 256 - height - 1) {
                     block2.onPlantGrow(world, x, y - 1, z, x, y, z);
@@ -121,7 +121,7 @@ public class WorldGenYuzuTrees extends WorldGenAbstractTree {
                         block = world.getBlock(x, y + k1, z);
 
                         if (block.isAir(world, x, y + k1, z) || block.isLeaves(world, x, y + k1, z)
-                            || block.getMaterial() == Material.plants) {
+                            || block.getMaterial() == /*Material*/ plants) {
                             this.setBlockAndNotifyAdequately(world, x, y + k1, z, DCsAppleMilk.logYuzu, 0);
                         }
                     }

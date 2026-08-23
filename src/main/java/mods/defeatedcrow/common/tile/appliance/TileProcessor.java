@@ -76,7 +76,7 @@ public class TileProcessor extends MachineBase {
             } else {
                 if (this.itemstacks[11].isItemEqual(output)) {
                     int result = this.itemstacks[11].stackSize + output.stackSize;
-                    flag1 = (result <= this.getInventoryStackLimit() && result <= output.getMaxStackSize());
+                    flag1 = (result <= this.getMaxStackSize() && result <= output.getMaxStackSize());
                 }
             }
         }
@@ -88,7 +88,7 @@ public class TileProcessor extends MachineBase {
                 } else {
                     if (this.itemstacks[12].isItemEqual(sec)) {
                         int result = this.itemstacks[12].stackSize + sec.stackSize;
-                        flag2 = (result <= this.getInventoryStackLimit() && result <= sec.getMaxStackSize());
+                        flag2 = (result <= this.getMaxStackSize() && result <= sec.getMaxStackSize());
                     }
                 }
             } else if (cont != null) {
@@ -97,7 +97,7 @@ public class TileProcessor extends MachineBase {
                 } else {
                     if (this.itemstacks[12].isItemEqual(cont)) {
                         int result = this.itemstacks[12].stackSize + cont.stackSize;
-                        flag2 = (result <= this.getInventoryStackLimit() && result <= cont.getMaxStackSize());
+                        flag2 = (result <= this.getMaxStackSize() && result <= cont.getMaxStackSize());
                     }
                 }
             } else {
@@ -194,7 +194,7 @@ public class TileProcessor extends MachineBase {
                             required.remove(next);
                             if (slot.getItem() instanceof IProcessorRecipeTool) {
                                 ItemStack ret = ((IProcessorRecipeTool) slot.getItem()).returnItem(slot);
-                                this.setInventorySlotContents(i, ret);
+                                this.setItem(i, ret);
                             } else {
                                 this.decrStackSize(i, 1);
                             }
@@ -251,7 +251,7 @@ public class TileProcessor extends MachineBase {
      */
 
     @Override
-    public int getSizeInventory() {
+    public int getContainerSize() {
         return 13;
     }
 
@@ -271,7 +271,7 @@ public class TileProcessor extends MachineBase {
     }
 
     @Override
-    public String getInventoryName() {
+    public String getContainerName() {
         return "Food Processor";
     }
 

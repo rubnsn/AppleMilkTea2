@@ -1,9 +1,8 @@
 package mods.defeatedcrow.common.tile.appliance;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import mods.defeatedcrow.api.appliance.IJawPlate;
 import mods.defeatedcrow.api.recipe.IProcessorRecipe;
@@ -56,7 +55,7 @@ public class TileAdvProcessor extends TileProcessor {
      */
     @Override
     public boolean acceptFoodRecipe() {
-        ItemStack stack = this.getStackInSlot(13);
+        ItemStack stack = this.getItem(13);
         if (stack != null && stack.getItem() instanceof IJawPlate) {
             int tier = ((IJawPlate) stack.getItem()).getTier(stack);
             return tier == -1;
@@ -66,16 +65,16 @@ public class TileAdvProcessor extends TileProcessor {
 
     @Override
     public boolean ismatchTier(IProcessorRecipe recipe) {
-        ItemStack stack = this.getStackInSlot(13);
+        ItemStack stack = this.getItem(13);
         return recipe.matchTier(stack);
     }
 
     @Override
     public void onRecipeOutput() {
-        ItemStack stack = this.getStackInSlot(13);
+        ItemStack stack = this.getItem(13);
         if (stack != null && stack.getItem() instanceof IJawPlate) {
             ItemStack ret = ((IJawPlate) stack.getItem()).returnItem(stack);
-            this.setInventorySlotContents(13, ret);
+            this.setItem(13, ret);
         }
     }
 
@@ -83,7 +82,7 @@ public class TileAdvProcessor extends TileProcessor {
 
     // slot追加
     @Override
-    public int getSizeInventory() {
+    public int getContainerSize() {
         return 14;
     }
 
@@ -94,7 +93,7 @@ public class TileAdvProcessor extends TileProcessor {
      * 8,9,10 : 左
      */
     @Override
-    public int[] getAccessibleSlotsFromSide(int par1) {
+    public int[] getSlotsForFace(int par1) {
         if (par1 == 2 || par1 == 3) {
             return new int[] { 0, 2, 3, 4 };
         } else if (par1 == 4) {
@@ -102,7 +101,7 @@ public class TileAdvProcessor extends TileProcessor {
         } else if (par1 == 5) {
             return new int[] { 0, 8, 9, 10 };
         } else {
-            return super.getAccessibleSlotsFromSide(par1);
+            return super.getSlotsForFace(par1);
         }
     }
 
@@ -118,7 +117,7 @@ public class TileAdvProcessor extends TileProcessor {
 
     // slotPanelの排出を禁止
     @Override
-    public boolean canExtractItem(int slot, ItemStack stack, int side) {
+    public boolean canTakeItemThroughFace(int slot, ItemStack stack, int side) {
         if (stack == null) return false;
         if (slot == 13) {
             if (stack.getItem() instanceof IJawPlate) {
@@ -130,7 +129,7 @@ public class TileAdvProcessor extends TileProcessor {
     }
 
     @Override
-    public String getInventoryName() {
+    public String getContainerName() {
         return "Hyper Jaw Crusher";
     }
 

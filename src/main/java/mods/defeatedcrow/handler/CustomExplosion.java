@@ -6,18 +6,18 @@ import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.enchantment.EnchantmentProtection;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.boss.EntityDragonPart;
-import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
+// net.minecraft.world.entity.boss.enderdragon.EnderDragonPart removed
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.Level;
 
@@ -35,11 +35,11 @@ public class CustomExplosion extends Explosion {
 
     private final Random rand = new Random();
     private final Level level;
-    private final EntityLivingBase igniter;
+    private final LivingEntity igniter;
     private final Type type;
     private Map playerMap = new HashMap();
 
-    public CustomExplosion(Level world, Entity source, EntityLivingBase ign, double posX, double posY, double posZ,
+    public CustomExplosion(Level world, Entity source, LivingEntity ign, double posX, double posY, double posZ,
         float size, Type t, boolean smoke) {
         super(world, source, posX, posY, posZ, size);
         this.level = world;
@@ -60,14 +60,14 @@ public class CustomExplosion extends Explosion {
 
         // エンティティへのダメージ
         this.explosionSize *= 2.0F;
-        i = MathHelper.floor_double(this.explosionX - this.explosionSize - 1.0D);
-        int i2 = MathHelper.floor_double(this.explosionX + this.explosionSize + 1.0D);
-        j = MathHelper.floor_double(this.explosionY - this.explosionSize - 1.0D);
-        int j2 = MathHelper.floor_double(this.explosionY + this.explosionSize + 1.0D);
-        k = MathHelper.floor_double(this.explosionZ - this.explosionSize - 1.0D);
-        int k2 = MathHelper.floor_double(this.explosionZ + this.explosionSize + 1.0D);
+        i = Mth.floor_double(this.explosionX - this.explosionSize - 1.0D);
+        int i2 = Mth.floor_double(this.explosionX + this.explosionSize + 1.0D);
+        j = Mth.floor_double(this.explosionY - this.explosionSize - 1.0D);
+        int j2 = Mth.floor_double(this.explosionY + this.explosionSize + 1.0D);
+        k = Mth.floor_double(this.explosionZ - this.explosionSize - 1.0D);
+        int k2 = Mth.floor_double(this.explosionZ + this.explosionSize + 1.0D);
         List list = this.level
-            .getEntitiesWithinAABBExcludingEntity(this.exploder, AxisAlignedBB.getBoundingBox(i, j, k, i2, j2, k2));
+            .getEntitiesWithinAABBExcludingEntity(this.exploder, AABB.getBoundingBox(i, j, k, i2, j2, k2));
         Vec3 vec3 = Vec3.createVectorHelper(this.explosionX, this.explosionY, this.explosionZ);
 
         for (int i1 = 0; i1 < list.size(); ++i1) {
@@ -91,37 +91,37 @@ public class CustomExplosion extends Explosion {
                 damage = Math.max(damage, 3.0F);
 
                 if (this.type == Type.Melon) {
-                    if (entity instanceof EntityItem || entity instanceof IProjectile || entity == this.exploder) {
+                    if (entity instanceof ItemEntity || entity instanceof Projectile || entity == this.exploder) {
                         flag = false;
-                    } else if (entity instanceof EntityLivingBase) {
+                    } else if (entity instanceof LivingEntity) {
                         if (this.igniter != null) {
-                            EntityLivingBase living = (EntityLivingBase) entity;
+                            LivingEntity living = (LivingEntity) entity;
                             flag = !(living == this.igniter);
                         }
-                    } else if (entity instanceof EntityBoat || entity instanceof EntityMinecart) {
+                    } else if (entity instanceof Boat || entity instanceof AbstractMinecart) {
                         flag = false;
-                    } else if (DCsConfig.PvPProhibitionMode && entity instanceof EntityPlayer) {
+                    } else if (DCsConfig.PvPProhibitionMode && entity instanceof Player) {
                         flag = false;
                     }
                 } else if (this.type == Type.Anchor) {
-                    if (entity instanceof EntityLivingBase) {
+                    if (entity instanceof LivingEntity) {
                         if (this.igniter != null) {
-                            EntityLivingBase living = (EntityLivingBase) entity;
+                            LivingEntity living = (LivingEntity) entity;
                             flag = !(living == this.igniter);
                         }
-                    } else if (entity instanceof EntityBoat || entity instanceof EntityMinecart) {
+                    } else if (entity instanceof Boat || entity instanceof AbstractMinecart) {
                         flag = false;
-                    } else if (DCsConfig.PvPProhibitionMode && entity instanceof EntityPlayer) {
+                    } else if (DCsConfig.PvPProhibitionMode && entity instanceof Player) {
                         flag = false;
-                    } else if (entity instanceof EntityDragonPart) {
+                    } else if (entity instanceof net.minecraft.world.entity.boss.enderdragon.EnderDragonPart) {
                         damage *= 2.0F;
                     } else if (!entity.onGround) {
                         damage *= 10.0F;
                     }
                 } else {
-                    if (entity instanceof EntityLivingBase) {
+                    if (entity instanceof LivingEntity) {
                         if (this.igniter != null) {
-                            EntityLivingBase living = (EntityLivingBase) entity;
+                            LivingEntity living = (LivingEntity) entity;
                             flag = !(living == this.igniter);
                         }
                     }
@@ -130,12 +130,12 @@ public class CustomExplosion extends Explosion {
                 if (flag) {
                     AMTLogger.debugInfo("explosion type :" + this.type);
                     AMTLogger.debugInfo("explosion deal damage :" + damage);
-                    if (entity instanceof IProjectile) {
-                        entity.setDead();
+                    if (entity instanceof Projectile) {
+                        entity.discard();
                     } else {
-                        if (this.igniter instanceof EntityPlayer) {
+                        if (this.igniter instanceof Player) {
                             entity
-                                .attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) this.igniter), damage);
+                                .attackEntityFrom(DamageSource.causePlayerDamage((Player) this.igniter), damage);
                         } else if (this.igniter != null) {
                             entity.attackEntityFrom(DamageSource.setExplosionSource(this), damage);
                         } else {

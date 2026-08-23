@@ -2,11 +2,12 @@ package mods.defeatedcrow.common.world.village;
 
 import java.util.Random;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.Level;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
-import net.minecraftforge.common.ChestGenHooks;
+// ChestGenHooks removed in 1.19 - use GlobalLootModifier
+
 
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.DCsConfig;
@@ -210,9 +211,9 @@ public class ComponentVillageCafe extends StructureVillagePieces.Village {
                 1,
                 1,
                 6,
-                ChestGenHooks.getInfo("villageCafeDC")
+                /* ChestGenHooks removed */ null
                     .getItems(random),
-                ChestGenHooks.getInfo("villageCafeDC")
+                /* ChestGenHooks removed */ null
                     .getCount(random));
         }
         this.placeBlockAtCurrentPosition(world, Blocks.trapdoor, r, 1, 2, 6, structureboundingbox);

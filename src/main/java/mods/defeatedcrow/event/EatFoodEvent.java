@@ -1,7 +1,7 @@
 package mods.defeatedcrow.event;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -12,7 +12,7 @@ public class EatFoodEvent {
 
     @SubscribeEvent
     public void eatFinishEvent(PlayerUseItemEvent.Finish event) {
-        EntityPlayer player = event.entityPlayer;
+        Player player = event.entityPlayer;
         ItemStack food = event.item;
         ItemStack target = LoadModHandler.getItem("DCsBakedApple");
         AMTLogger.debugInfo("now twsting");

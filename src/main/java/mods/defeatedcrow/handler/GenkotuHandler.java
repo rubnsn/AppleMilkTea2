@@ -2,11 +2,10 @@ package mods.defeatedcrow.handler;
 
 import java.lang.reflect.Method;
 
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import mods.defeatedcrow.common.AMTLogger;
 
@@ -15,10 +14,10 @@ import mods.defeatedcrow.common.AMTLogger;
  */
 public class GenkotuHandler {
 
-    public static ItemStack getMobsDrop(EntityLivingBase entity) {
+    public static ItemStack getMobsDrop(LivingEntity entity) {
         ItemStack ret = null;
-        if (entity instanceof EntityLiving) {
-            EntityLiving living = (EntityLiving) entity;
+        if (entity instanceof LivingEntity) {
+            LivingEntity living = (LivingEntity) entity;
             String packageName = living.getClass()
                 .getName();
 

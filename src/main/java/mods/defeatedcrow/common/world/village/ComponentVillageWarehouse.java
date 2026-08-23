@@ -1,18 +1,20 @@
 package mods.defeatedcrow.common.world.village;
 
-import static net.minecraftforge.common.ChestGenHooks.VILLAGE_BLACKSMITH;
+// VILLAGE_BLACKSMITH removed
+
 
 import java.util.Random;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Item;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.Level;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
-import net.minecraftforge.common.ChestGenHooks;
+// ChestGenHooks removed in 1.19 - use GlobalLootModifier
+
 
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.config.DCsConfig;
@@ -50,13 +52,13 @@ public class ComponentVillageWarehouse extends StructureVillagePieces.Village {
     }
 
     @Override
-    protected void func_143012_a(NBTTagCompound tag) {
+    protected void func_143012_a(CompoundTag tag) {
         super.func_143012_a(tag);
         tag.setBoolean("Chest", this.hasMadeChest);
     }
 
     @Override
-    protected void func_143011_b(NBTTagCompound tag) {
+    protected void func_143011_b(CompoundTag tag) {
         super.func_143011_b(tag);
         this.hasMadeChest = tag.getBoolean("Chest");
     }
@@ -250,8 +252,8 @@ public class ComponentVillageWarehouse extends StructureVillagePieces.Village {
                     3,
                     2,
                     4,
-                    ChestGenHooks.getItems(VILLAGE_BLACKSMITH, random),
-                    ChestGenHooks.getCount(VILLAGE_BLACKSMITH, random));
+                    /* ChestGenHooks removed */ new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.EMERALD),
+                    1);
             }
         }
 

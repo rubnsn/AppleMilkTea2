@@ -3,18 +3,19 @@ package mods.defeatedcrow.event;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.world.level.material.MapColor;
+// Material removed in 1.20.1 - use BlockState properties
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.util.Mth;
+import net.minecraft.core.Direction;
 import net.minecraftforge.event.entity.living.LivingEvent;
 
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -37,8 +38,8 @@ public class DCsLivingEvent {
         Entity entity = event.entity;
 
         // やっつけ仕事なので、プレイヤーを常時監視して、抵抗力ポーションが働いているかを見張っている
-        if ((entity instanceof EntityPlayer)) {
-            EntityPlayer player = (EntityPlayer) event.entity;
+        if ((entity instanceof Player)) {
+            Player player = (Player) event.entity;
 
             ArrayList<PotionEffect> immunities = new ArrayList<PotionEffect>();
 
@@ -94,7 +95,7 @@ public class DCsLivingEvent {
 
                         if (charm != null) {
                             if (charm.getItemDamage() == 3) {
-                                NBTTagCompound nbt = charm.getTagCompound();
+                                CompoundTag nbt = charm.getTagCompound();
                                 if (nbt != null && nbt.hasKey("DCsCharm")) {
                                     byte mode = nbt.getByte("DCsCharm");
                                     if (nbt.hasKey("DClimit")) {
@@ -102,11 +103,11 @@ public class DCsLivingEvent {
                                     }
                                     if (mode == 1) {
                                         String name = nbt.getString("DCtargetName");
-                                        EntityPlayer target = player.level.getPlayerEntityByName(name);
+                                        Player target = player.level.getPlayerEntityByName(name);
                                         if (target != null) {
-                                            int X = MathHelper.floor_double(target.posX);
-                                            int Y = MathHelper.floor_double(target.posY) - 1;
-                                            int Z = MathHelper.floor_double(target.posZ);
+                                            int X = Mth.floor_double(target.posX);
+                                            int Y = Mth.floor_double(target.posY) - 1;
+                                            int Z = Mth.floor_double(target.posZ);
                                             String DimName = target.level.provider.getDimensionName();
 
                                             for (int ix = 0; ix < 3; ix++) {
@@ -117,7 +118,7 @@ public class DCsLivingEvent {
                                                             X + ix - 1,
                                                             Y,
                                                             Z + iz - 1,
-                                                            ForgeDirection.UP)) {
+                                                            Direction.UP)) {
                                                         x = X + ix - 1;
                                                         z = Z + iz - 1;
                                                         y = Y;
@@ -135,16 +136,16 @@ public class DCsLivingEvent {
                                         z = nbt.getInteger("DCposZ");
                                         dim = nbt.getInteger("DCdim");
                                         if (player.level.provider.dimensionId == dim
-                                            && player.level.isSideSolid(x, y, z, ForgeDirection.UP)) {
+                                            && player.level.isSideSolid(x, y, z, Direction.UP)) {
                                             warp = true;
                                         }
                                     }
                                 }
 
                             } else if (charm.getItemDamage() == 4) {
-                                int X = MathHelper.floor_double(player.posX);
-                                int Y = MathHelper.floor_double(player.posY);
-                                int Z = MathHelper.floor_double(player.posZ);
+                                int X = Mth.floor_double(player.posX);
+                                int Y = Mth.floor_double(player.posY);
+                                int Z = Mth.floor_double(player.posZ);
 
                                 for (int i = 1; i < 128; i++) {
                                     if (Y + i < 1 || Y + i > 255) {
@@ -160,11 +161,11 @@ public class DCsLivingEvent {
                                             z = Z;
                                             break;
                                         } else if (player.level.getBlock(X, Y + i + 1, Z)
-                                            .getMaterial() == Material.water
+                                            .getMaterial() == /*/*Material*/ water*/ net.minecraft.world.level.material.Fluids.WATER
                                             || player.level.getBlock(X, Y + i + 1, Z)
-                                                .getMaterial() == Material.plants
+                                                .getMaterial() == /*Material*/ plants
                                             || player.level.getBlock(X, Y + i + 1, Z)
-                                                .getMaterial() == Material.snow) {
+                                                .getMaterial() == /*Material*/ snow) {
                                                     y = Y + i;
                                                     warp = true;
                                                     x = X;
@@ -192,41 +193,41 @@ public class DCsLivingEvent {
         }
 
         // こちらはEntityLivingBaseの監視用
-        if ((entity instanceof EntityLivingBase)) {
-            EntityLivingBase living = (EntityLivingBase) event.entity;
+        if ((entity instanceof LivingEntity)) {
+            LivingEntity living = (LivingEntity) event.entity;
 
             ArrayList<PotionEffect> potions = new ArrayList<PotionEffect>();
 
             if (living != null && !living.level.isClientSide) {
 
                 boolean f = true;
-                if (living instanceof EntityLiving && ((EntityLiving) living).hasCustomNameTag()) {
+                if (living instanceof LivingEntity && ((LivingEntity) living).hasCustomNameTag()) {
 
                 } else {
-                    if (living instanceof IMob) {
+                    if (living instanceof Enemy) {
                         f = false;
-                    } else if (living.riddenByEntity != null && living.riddenByEntity instanceof IMob) {
+                    } else if (living.riddenByEntity != null && living.riddenByEntity instanceof Enemy) {
                         f = false;
-                    } else if (living.ridingEntity != null && living.ridingEntity instanceof IMob) {
+                    } else if (living.ridingEntity != null && living.ridingEntity instanceof Enemy) {
                         f = false;
                     }
                 }
 
                 if (!f) {
-                    int x = MathHelper.floor_double(living.posX);
-                    int y = MathHelper.floor_double(living.posY);
-                    int z = MathHelper.floor_double(living.posZ);
+                    int x = Mth.floor_double(living.posX);
+                    int y = Mth.floor_double(living.posY);
+                    int z = Mth.floor_double(living.posZ);
                     int cX = x >> 4;
                     int cZ = z >> 4;
                     Coord cood = new Coord(cX, cZ, living.level.provider.dimensionId);
                     if (CoordListRegister.isCoodIncluded(cood)) {
                         if (living.riddenByEntity != null) {
-                            living.riddenByEntity.setDead();
+                            living.riddenByEntity.discard();
                         }
                         if (living.ridingEntity != null) {
-                            living.ridingEntity.setDead();
+                            living.ridingEntity.discard();
                         }
-                        living.setDead();
+                        living.discard();
                     } else {
                         f = true;
                     }
@@ -251,8 +252,8 @@ public class DCsLivingEvent {
                             living.fallDistance = 0.0F;
                         }
 
-                        if (living.ridingEntity != null && living.ridingEntity instanceof EntityLivingBase) {
-                            EntityLivingBase riding = (EntityLivingBase) event.entity.ridingEntity;
+                        if (living.ridingEntity != null && living.ridingEntity instanceof LivingEntity) {
+                            LivingEntity riding = (LivingEntity) event.entity.ridingEntity;
                             if (potion != null) {
                                 riding.addPotionEffect(effect);
                             }

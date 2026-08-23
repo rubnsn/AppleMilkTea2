@@ -3,7 +3,7 @@ package mods.defeatedcrow.common.world.village;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.Mth;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
@@ -16,7 +16,7 @@ public class VillageCreateHandleCafe implements IVillageCreationHandler {
         return new StructureVillagePieces.PieceWeight(
             ComponentVillageCafe.class,
             20,
-            MathHelper.getRandomIntegerInRange(random, i, i + 1));
+            Mth.getRandomIntegerInRange(random, i, i + 1));
     }
 
     @Override

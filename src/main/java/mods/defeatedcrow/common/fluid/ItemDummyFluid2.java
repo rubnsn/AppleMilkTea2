@@ -1,34 +1,15 @@
 package mods.defeatedcrow.common.fluid;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.Level;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
-public class ItemDummyFluid2 extends ItemBlock {
-
+/**
+ * 1.20.1: Dummy fluid ItemBlock deprecated - replaced by LiquidBlock via ModFluids
+ * This stub remains for compat but is not registered via DeferredRegister.
+ */
+public class ItemDummyFluid2 extends BlockItem {
     public ItemDummyFluid2(Block block) {
-        super(block);
-        setMaxDamage(0);
-        setHasSubtypes(true);
+        super(block, new Item.Properties());
     }
-
-    @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
-        int m = (par1ItemStack.getItemDamage());
-        return super.getUnlocalizedName() + "_" + m;
-    }
-
-    @Override
-    public int getMetadata(int par1) {
-        return par1;
-    }
-
-    // 設置禁止
-    @Override
-    public ItemStack onItemRightClick(ItemStack p_77659_1_, Level p_77659_2_, EntityPlayer p_77659_3_) {
-        return p_77659_1_;
-    }
-
 }

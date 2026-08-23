@@ -1,9 +1,8 @@
 package mods.defeatedcrow.common.tile;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
@@ -26,11 +25,11 @@ public class TileIncenseBase extends BlockEntity {
         super.load(par1CompoundTag);
 
         if (par1CompoundTag.contains("HoldItem")) {
-            this.setItemstack(ItemStack.loadItemStackFromNBT(par1CompoundTag.getCompound("HoldItem")));
+            this.setItemstack(ItemStack.of(par1CompoundTag.getCompound("HoldItem")));
         }
 
         if (par1CompoundTag.contains("Ash")) {
-            this.holdItem[1] = ItemStack.loadItemStackFromNBT(par1CompoundTag.getCompound("Ash"));
+            this.holdItem[1] = ItemStack.of(par1CompoundTag.getCompound("Ash"));
         }
 
         this.remainTick = par1CompoundTag.getShort("RemainTick");
