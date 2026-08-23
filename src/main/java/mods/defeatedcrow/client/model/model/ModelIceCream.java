@@ -1,205 +1,130 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.src.*;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelIceCream extends ModelBase {
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-    // fields
-    ModelRenderer dish1;
-    ModelRenderer dish2;
-    ModelRenderer dish3;
-    ModelRenderer dish4;
-    ModelRenderer dish5;
-    ModelRenderer dish6;
-    ModelRenderer dish7;
-    ModelRenderer white;
-    ModelRenderer pink;
-    ModelRenderer orange;
-    ModelRenderer yellow;
-    ModelRenderer brown;
-    ModelRenderer cocoa;
-    ModelRenderer green;
-    ModelRenderer berry;
-    ModelRenderer lime;
-    ModelRenderer red;
-    ModelRenderer grape;
-    ModelRenderer mint;
-    ModelRenderer orange2;
-    ModelRenderer soda;
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELICECREAM) -> new ModelIceCream(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelIceCream {
 
-    public ModelIceCream() {
+    private final ModelPart root;
+    private final ModelPart dish1;
+    private final ModelPart dish2;
+    private final ModelPart dish3;
+    private final ModelPart dish4;
+    private final ModelPart dish5;
+    private final ModelPart dish6;
+    private final ModelPart dish7;
+    private final ModelPart white;
+    private final ModelPart pink;
+    private final ModelPart orange;
+    private final ModelPart yellow;
+    private final ModelPart brown;
+    private final ModelPart cocoa;
+    private final ModelPart green;
+    private final ModelPart berry;
+    private final ModelPart lime;
+    private final ModelPart red;
+    private final ModelPart grape;
+    private final ModelPart mint;
+    private final ModelPart orange2;
+    private final ModelPart soda;
 
-        dish1 = new ModelRenderer(this, 0, 0);
-        dish1.addBox(-2F, 0F, -2F, 4, 1, 4);
-        dish1.setRotationPoint(0F, 23F, 0F);
-        dish1.setTextureSize(64, 32);
-        dish1.mirror = true;
-        setRotation(dish1, 0F, 0F, 0F);
-        dish2 = new ModelRenderer(this, 0, 0);
-        dish2.addBox(-0.5F, 0F, -0.5F, 1, 3, 1);
-        dish2.setRotationPoint(0F, 20F, 0F);
-        dish2.setTextureSize(64, 32);
-        dish2.mirror = true;
-        setRotation(dish2, 0F, 0F, 0F);
-        dish3 = new ModelRenderer(this, 0, 0);
-        dish3.addBox(-2.5F, 0F, -2.5F, 5, 1, 5);
-        dish3.setRotationPoint(0F, 19F, 0F);
-        dish3.setTextureSize(64, 32);
-        dish3.mirror = true;
-        setRotation(dish3, 0F, 0F, 0F);
-        dish4 = new ModelRenderer(this, 0, 0);
-        dish4.addBox(-3F, -3F, -3F, 6, 3, 1);
-        dish4.setRotationPoint(0F, 19F, 0F);
-        dish4.setTextureSize(64, 32);
-        dish4.mirror = true;
-        setRotation(dish4, 0.5235988F, 0F, 0F);
-        dish5 = new ModelRenderer(this, 0, 0);
-        dish5.addBox(-3F, -3F, 2F, 6, 3, 1);
-        dish5.setRotationPoint(0F, 19F, 0F);
-        dish5.setTextureSize(64, 32);
-        dish5.mirror = true;
-        setRotation(dish5, -0.5235988F, 0F, 0F);
-        dish6 = new ModelRenderer(this, 0, 0);
-        dish6.addBox(-3F, -3F, -3F, 1, 3, 6);
-        dish6.setRotationPoint(0F, 19F, 0F);
-        dish6.setTextureSize(64, 32);
-        dish6.mirror = true;
-        setRotation(dish6, 0F, 0F, -0.5235988F);
-        dish7 = new ModelRenderer(this, 0, 0);
-        dish7.addBox(2F, -3F, -3F, 1, 3, 6);
-        dish7.setRotationPoint(0F, 19F, 0F);
-        dish7.setTextureSize(64, 32);
-        dish7.mirror = true;
-        setRotation(dish7, 0F, 0F, 0.5235988F);
-        white = new ModelRenderer(this, 0, 9);
-        white.addBox(-2F, 0F, -2F, 4, 3, 4);
-        white.setRotationPoint(0F, 16F, 0F);
-        white.setTextureSize(64, 32);
-        white.mirror = true;
-        setRotation(white, 0F, 0F, 0F);
-        pink = new ModelRenderer(this, 0, 16);
-        pink.addBox(-2F, 0F, -2F, 4, 3, 4);
-        pink.setRotationPoint(0F, 16F, 0F);
-        pink.setTextureSize(64, 32);
-        pink.mirror = true;
-        setRotation(pink, 0F, 0F, 0F);
-        orange = new ModelRenderer(this, 0, 23);
-        orange.addBox(-2F, 0F, -2F, 4, 3, 4);
-        orange.setRotationPoint(0F, 16F, 0F);
-        orange.setTextureSize(64, 32);
-        orange.mirror = true;
-        setRotation(orange, 0F, 0F, 0F);
-        yellow = new ModelRenderer(this, 16, 9);
-        yellow.addBox(-2F, 0F, -2F, 4, 3, 4);
-        yellow.setRotationPoint(0F, 16F, 0F);
-        yellow.setTextureSize(64, 32);
-        yellow.mirror = true;
-        setRotation(yellow, 0F, 0F, 0F);
-        brown = new ModelRenderer(this, 16, 16);
-        brown.addBox(-2F, 0F, -2F, 4, 3, 4);
-        brown.setRotationPoint(0F, 16F, 0F);
-        brown.setTextureSize(64, 32);
-        brown.mirror = true;
-        setRotation(brown, 0F, 0F, 0F);
-        cocoa = new ModelRenderer(this, 16, 23);
-        cocoa.addBox(-2F, 0F, -2F, 4, 3, 4);
-        cocoa.setRotationPoint(0F, 16F, 0F);
-        cocoa.setTextureSize(64, 32);
-        cocoa.mirror = true;
-        setRotation(cocoa, 0F, 0F, 0F);
-        green = new ModelRenderer(this, 32, 9);
-        green.addBox(-2F, 0F, -2F, 4, 3, 4);
-        green.setRotationPoint(0F, 16F, 0F);
-        green.setTextureSize(64, 32);
-        green.mirror = true;
-        setRotation(green, 0F, 0F, 0F);
-        berry = new ModelRenderer(this, 32, 16);
-        berry.addBox(-2F, 0F, -2F, 4, 3, 4);
-        berry.setRotationPoint(0F, 16F, 0F);
-        berry.setTextureSize(64, 32);
-        berry.mirror = true;
-        setRotation(berry, 0F, 0F, 0F);
-        lime = new ModelRenderer(this, 32, 23);
-        lime.addBox(-2F, 0F, -2F, 4, 3, 4);
-        lime.setRotationPoint(0F, 16F, 0F);
-        lime.setTextureSize(64, 32);
-        lime.mirror = true;
-        setRotation(lime, 0F, 0F, 0F);
-        red = new ModelRenderer(this, 48, 9);
-        red.addBox(-2F, 0F, -2F, 4, 3, 4);
-        red.setRotationPoint(0F, 16F, 0F);
-        red.setTextureSize(64, 32);
-        red.mirror = true;
-        setRotation(red, 0F, 0F, 0F);
-        grape = new ModelRenderer(this, 48, 16);
-        grape.addBox(-2F, 0F, -2F, 4, 3, 4);
-        grape.setRotationPoint(0F, 16F, 0F);
-        grape.setTextureSize(64, 32);
-        grape.mirror = true;
-        setRotation(grape, 0F, 0F, 0F);
-        mint = new ModelRenderer(this, 48, 23);
-        mint.addBox(-2F, 0F, -2F, 4, 3, 4);
-        mint.setRotationPoint(0F, 16F, 0F);
-        mint.setTextureSize(64, 32);
-        mint.mirror = true;
-        setRotation(mint, 0F, 0F, 0F);
-        orange2 = new ModelRenderer(this, 32, 2);
-        orange2.addBox(-2F, 0F, -2F, 4, 3, 4);
-        orange2.setRotationPoint(0F, 16F, 0F);
-        orange2.setTextureSize(64, 32);
-        orange2.mirror = true;
-        setRotation(orange2, 0F, 0F, 0F);
-        soda = new ModelRenderer(this, 48, 2);
-        soda.addBox(-2F, 0F, -2F, 4, 3, 4);
-        soda.setRotationPoint(0F, 16F, 0F);
-        soda.setTextureSize(64, 32);
-        soda.mirror = true;
-        setRotation(soda, 0F, 0F, 0F);
+    public ModelIceCream(ModelPart root) {
+        this.root = root;
+        this.dish1 = root.getChild("dish1");
+        this.dish2 = root.getChild("dish2");
+        this.dish3 = root.getChild("dish3");
+        this.dish4 = root.getChild("dish4");
+        this.dish5 = root.getChild("dish5");
+        this.dish6 = root.getChild("dish6");
+        this.dish7 = root.getChild("dish7");
+        this.white = root.getChild("white");
+        this.pink = root.getChild("pink");
+        this.orange = root.getChild("orange");
+        this.yellow = root.getChild("yellow");
+        this.brown = root.getChild("brown");
+        this.cocoa = root.getChild("cocoa");
+        this.green = root.getChild("green");
+        this.berry = root.getChild("berry");
+        this.lime = root.getChild("lime");
+        this.red = root.getChild("red");
+        this.grape = root.getChild("grape");
+        this.mint = root.getChild("mint");
+        this.orange2 = root.getChild("orange2");
+        this.soda = root.getChild("soda");
     }
 
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5, byte b0) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
 
-        if (b0 == 0) white.render(f5);
-        else if (b0 == 1) orange.render(f5);
-        else if (b0 == 2) green.render(f5);
-        else if (b0 == 3) cocoa.render(f5);
-        else if (b0 == 4) brown.render(f5);
-        else if (b0 == 5) pink.render(f5);
-        else if (b0 == 6) yellow.render(f5);
-        else if (b0 == 7) lime.render(f5);
-        else if (b0 == 8) red.render(f5);
-        else if (b0 == 9) berry.render(f5);
-        else if (b0 == 10) grape.render(f5);
-        else if (b0 == 11) mint.render(f5);
-        else if (b0 == 12) orange2.render(f5);
-        else if (b0 == 13) soda.render(f5);
+        PartDefinition dish1 = partdefinition.addOrReplaceChild("dish1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-2F, 0F, -2F, 4, 1, 4), PartPose.offset(0F, 23F, 0F));
+        PartDefinition dish2 = partdefinition.addOrReplaceChild("dish2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-0.5F, 0F, -0.5F, 1, 3, 1), PartPose.offset(0F, 20F, 0F));
+        PartDefinition dish3 = partdefinition.addOrReplaceChild("dish3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-2.5F, 0F, -2.5F, 5, 1, 5), PartPose.offset(0F, 19F, 0F));
+        PartDefinition dish4 = partdefinition.addOrReplaceChild("dish4", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3F, -3F, -3F, 6, 3, 1), PartPose.offsetAndRotation(0F, 19F, 0F, 0.5235988F, 0F, 0F));
+        PartDefinition dish5 = partdefinition.addOrReplaceChild("dish5", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3F, -3F, 2F, 6, 3, 1), PartPose.offsetAndRotation(0F, 19F, 0F, -0.5235988F, 0F, 0F));
+        PartDefinition dish6 = partdefinition.addOrReplaceChild("dish6", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3F, -3F, -3F, 1, 3, 6), PartPose.offsetAndRotation(0F, 19F, 0F, 0F, 0F, -0.5235988F));
+        PartDefinition dish7 = partdefinition.addOrReplaceChild("dish7", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(2F, -3F, -3F, 1, 3, 6), PartPose.offsetAndRotation(0F, 19F, 0F, 0F, 0F, 0.5235988F));
+        PartDefinition white = partdefinition.addOrReplaceChild("white", CubeListBuilder.create().texOffs(0, 9).mirror().addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition pink = partdefinition.addOrReplaceChild("pink", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition orange = partdefinition.addOrReplaceChild("orange", CubeListBuilder.create().texOffs(0, 23).mirror().addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition yellow = partdefinition.addOrReplaceChild("yellow", CubeListBuilder.create().texOffs(16, 9).mirror().addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition brown = partdefinition.addOrReplaceChild("brown", CubeListBuilder.create().texOffs(16, 16).mirror().addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition cocoa = partdefinition.addOrReplaceChild("cocoa", CubeListBuilder.create().texOffs(16, 23).mirror().addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition green = partdefinition.addOrReplaceChild("green", CubeListBuilder.create().texOffs(32, 9).mirror().addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition berry = partdefinition.addOrReplaceChild("berry", CubeListBuilder.create().texOffs(32, 16).mirror().addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition lime = partdefinition.addOrReplaceChild("lime", CubeListBuilder.create().texOffs(32, 23).mirror().addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition red = partdefinition.addOrReplaceChild("red", CubeListBuilder.create().texOffs(48, 9).mirror().addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition grape = partdefinition.addOrReplaceChild("grape", CubeListBuilder.create().texOffs(48, 16).mirror().addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition mint = partdefinition.addOrReplaceChild("mint", CubeListBuilder.create().texOffs(48, 23).mirror().addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition orange2 = partdefinition.addOrReplaceChild("orange2", CubeListBuilder.create().texOffs(32, 2).mirror().addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
+        PartDefinition soda = partdefinition.addOrReplaceChild("soda", CubeListBuilder.create().texOffs(48, 2).mirror().addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
     }
 
-    public void renderClear(Entity entity, float f, float f1, float f2, float f3, float f4, float f5, byte b0) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
 
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        dish1.render(f5);
-        dish2.render(f5);
-        dish3.render(f5);
-        dish4.render(f5);
-        dish5.render(f5);
-        dish6.render(f5);
-        dish7.render(f5);
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, byte b0) {
+        if (b0 == 0)             white.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        else if (b0 == 1)             orange.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        else if (b0 == 2)             green.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        else if (b0 == 3)             cocoa.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        else if (b0 == 4)             brown.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        else if (b0 == 5)             pink.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        else if (b0 == 6)             yellow.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        else if (b0 == 7)             lime.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        else if (b0 == 8)             red.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        else if (b0 == 9)             berry.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        else if (b0 == 10)             grape.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        else if (b0 == 11)             mint.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        else if (b0 == 12)             orange2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        else if (b0 == 13)             soda.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+    public void renderClear(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, byte b0) {
+            dish1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            dish2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            dish3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            dish4.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            dish5.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            dish6.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            dish7.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        }
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+        this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
-
 }

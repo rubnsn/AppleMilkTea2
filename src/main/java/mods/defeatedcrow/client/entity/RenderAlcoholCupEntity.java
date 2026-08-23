@@ -1,116 +1,87 @@
-package mods.defeatedcrow.client.entity;
+﻿package mods.defeatedcrow.client.entity;
 
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import mods.defeatedcrow.client.ModEntityRenderers;
 import mods.defeatedcrow.client.model.model.ModelAlcoholCup;
 import mods.defeatedcrow.common.block.edible.BlockAlcoholCup;
 import mods.defeatedcrow.common.entity.edible.PlaceableAlcoholCup;
 import mods.defeatedcrow.handler.Util;
 
-@SideOnly(Side.CLIENT)
-public class RenderAlcoholCupEntity extends Render {
+/**
+ * 1.20.1 migration: Render -> EntityRenderer + PoseStack/MultiBufferSource.
+ */
+public class RenderAlcoholCupEntity extends EntityRenderer<PlaceableAlcoholCup> {
 
-    private static final ResourceLocation cocktailTex = new ResourceLocation(
-        "defeatedcrow:textures/entity/cocktail.png");
-    private static final ResourceLocation atukanTex = new ResourceLocation("defeatedcrow:textures/entity/atukan.png");
-    private ModelAlcoholCup model = new ModelAlcoholCup();
+    private static final ResourceLocation COCKTAIL_TEX = new ResourceLocation("defeatedcrow", "textures/entity/cocktail.png");
+    private static final ResourceLocation ATUKAN_TEX = new ResourceLocation("defeatedcrow", "textures/entity/atukan.png");
 
-    public RenderAlcoholCupEntity() {
-        this.shadowSize = 0.3F * Util.getCupSize();
-        this.model = new ModelAlcoholCup();
+    private final ModelAlcoholCup model;
+
+    public RenderAlcoholCupEntity(EntityRendererProvider.Context ctx) {
+        super(ctx);
+        this.shadowRadius = 0.3F * Util.getCupSize();
+        this.model = new ModelAlcoholCup(ctx.bakeLayer(ModEntityRenderers.MODEL_ALCOHOL_CUP));
     }
 
-    /**
-     * The render method used in RenderBoat that renders the boat model.
-     */
-    public void render(PlaceableAlcoholCup entity, double posX, double posY, double posZ, float round, float yaw) {
-        ModelAlcoholCup model = this.model;
+    @Override
+    public void render(PlaceableAlcoholCup entity, float yaw, float partialTick, PoseStack poseStack,
+        MultiBufferSource buffer, int packedLight) {
         byte l = (byte) entity.getItemMetadata();
         byte type = 0;
         if (l == 2 || l == 12 || l == 13) {
             type = 1;
         }
         float size = Util.getCupScale();
-        float y = (float) posY + 1.55F * size - 0.10F * size;
 
         if (l == 0) {
-            this.bindTexture(atukanTex);
-
-            GL11.glPushMatrix();
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glTranslatef((float) posX, (float) posY + 1.5F * size - 0.1F, (float) posZ);
-            GL11.glScalef(size, size, size);
-            GL11.glScalef(1.0F, -1.0F, -1.0F);
-            GL11.glRotatef(round, 0.0F, 1.0F, 0.0F);
-            model.renderAtukan((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            GL11.glPopMatrix();
+            // atukan (solid)
+            poseStack.pushPose();
+            poseStack.translate(0.0F, 1.4F * size - 0.1F, 0.0F);
+            poseStack.scale(size, size, size);
+            poseStack.scale(1.0F, -1.0F, -1.0F);
+            poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
+            VertexConsumer vcAtukan = buffer.getBuffer(RenderType.entityCutout(ATUKAN_TEX));
+            this.model.renderAtukan(poseStack, vcAtukan, packedLight, OverlayTexture.NO_OVERLAY);
+            poseStack.popPose();
         } else {
+            // inner
+            ResourceLocation innerTex = new ResourceLocation("defeatedcrow",
+                "textures/blocks/contents" + BlockAlcoholCup.contents[l] + ".png");
+            poseStack.pushPose();
+            poseStack.translate(0.0F, 1.45F * size, 0.0F);
+            poseStack.scale(size, size, size);
+            poseStack.scale(1.0F, -1.0F, -1.0F);
+            poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
+            VertexConsumer vcInner = buffer.getBuffer(RenderType.entityTranslucent(innerTex));
+            this.model.renderInner(poseStack, vcInner, packedLight, OverlayTexture.NO_OVERLAY, type);
+            poseStack.popPose();
 
-            // 中身
-            String innerTexPass = "defeatedcrow:textures/blocks/contents" + BlockAlcoholCup.contents[l] + ".png";
-            ResourceLocation innerTex = new ResourceLocation(innerTexPass);
-            this.bindTexture(innerTex);
-
-            GL11.glPushMatrix();
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.8F);
-            GL11.glTranslatef((float) posX, (float) y, (float) posZ);
-            GL11.glScalef(size, size, size);
-            GL11.glScalef(1.0F, -1.0F, -1.0F);
-            GL11.glRotatef(round, 0.0F, 1.0F, 0.0F);
-            model.renderInner((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, type);
-
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
-
-            this.bindTexture(cocktailTex);
-
-            GL11.glPushMatrix();
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
-            GL11.glTranslatef((float) posX, (float) y, (float) posZ);
-            GL11.glScalef(size, size, size);
-            GL11.glScalef(1.0F, -1.0F, -1.0F);
-            GL11.glRotatef(round, 0.0F, 1.0F, 0.0F);
-            model.renderGlass((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, type);
-            model.renderIce((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, type);
-
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            // glass + ice (translucent)
+            poseStack.pushPose();
+            poseStack.translate(0.0F, 1.45F * size, 0.0F);
+            poseStack.scale(size, size, size);
+            poseStack.scale(1.0F, -1.0F, -1.0F);
+            poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
+            VertexConsumer vcGlass = buffer.getBuffer(RenderType.entityTranslucent(COCKTAIL_TEX));
+            this.model.renderGlass(poseStack, vcGlass, packedLight, OverlayTexture.NO_OVERLAY, type);
+            this.model.renderIce(poseStack, vcGlass, packedLight, OverlayTexture.NO_OVERLAY, type);
+            poseStack.popPose();
         }
-
-    }
-
-    protected ResourceLocation getMelonTextures(PlaceableAlcoholCup par1Entity) {
-        return cocktailTex;
+        super.render(entity, yaw, partialTick, poseStack, buffer, packedLight);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity) {
-        return this.getMelonTextures((PlaceableAlcoholCup) par1Entity);
-    }
-
-    @Override
-    public void doRender(Entity par1Entity, double x, double y, double z, float round, float yaw) {
-        this.render((PlaceableAlcoholCup) par1Entity, x, y, z, round, yaw);
+    public ResourceLocation getTextureLocation(PlaceableAlcoholCup entity) {
+        return COCKTAIL_TEX;
     }
 }

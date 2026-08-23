@@ -1,107 +1,79 @@
-package mods.defeatedcrow.client.entity.base;
+﻿package mods.defeatedcrow.client.entity.base;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelWhiteDishB extends ModelBase {
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-    // fields
-    ModelRenderer base;
-    ModelRenderer b;
-    ModelRenderer l;
-    ModelRenderer ff;
-    ModelRenderer r;
-    ModelRenderer bl;
-    ModelRenderer fl;
-    ModelRenderer fr;
-    ModelRenderer br;
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELWHITEDISHB) -> new ModelWhiteDishB(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelWhiteDishB {
 
-    public ModelWhiteDishB() {
-        textureWidth = 64;
-        textureHeight = 32;
+    private final ModelPart root;
+    private final ModelPart base;
+    private final ModelPart b;
+    private final ModelPart l;
+    private final ModelPart ff;
+    private final ModelPart r;
+    private final ModelPart bl;
+    private final ModelPart fl;
+    private final ModelPart fr;
+    private final ModelPart br;
+
+    public ModelWhiteDishB(ModelPart root) {
+        this.root = root;
+        this.base = root.getChild("base");
+        this.b = root.getChild("b");
+        this.l = root.getChild("l");
+        this.ff = root.getChild("ff");
+        this.r = root.getChild("r");
+        this.bl = root.getChild("bl");
+        this.fl = root.getChild("fl");
+        this.fr = root.getChild("fr");
+        this.br = root.getChild("br");
+    }
+
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
         float f = 3.141593F / 360.0F;
 
-        base = new ModelRenderer(this, 0, 0);
-        base.addBox(-3F, 1F, -3F, 6, 1, 6);
-        base.setRotationPoint(0F, 22F, 0F);
-        base.setTextureSize(64, 32);
-        base.mirror = true;
-        setRotation(base, 0F, 0F, 0F);
-        b = new ModelRenderer(this, 0, 8);
-        b.addBox(-3F, 1.3F, 2.5F, 6, 1, 4);
-        b.setRotationPoint(0F, 22F, 0F);
-        b.setTextureSize(64, 32);
-        b.mirror = true;
-        setRotation(b, 0.1396263F, 0F, 0F);
-        l = new ModelRenderer(this, 0, 8);
-        l.addBox(-3F, 1.2F, 2.5F, 6, 1, 4);
-        l.setRotationPoint(0F, 22F, 0F);
-        l.setTextureSize(64, 32);
-        l.mirror = true;
-        setRotation(l, 0.1396263F, 1.570796F, 0F);
-        ff = new ModelRenderer(this, 0, 8);
-        ff.addBox(-3F, 1.2F, 2.5F, 6, 1, 4);
-        ff.setRotationPoint(0F, 22F, 0F);
-        ff.setTextureSize(64, 32);
-        ff.mirror = true;
-        setRotation(ff, 0.1396263F, 3.141593F, 0F);
-        r = new ModelRenderer(this, 0, 8);
-        r.addBox(-3F, 1.3F, 2.5F, 6, 1, 4);
-        r.setRotationPoint(0F, 22F, 0F);
-        r.setTextureSize(64, 32);
-        r.mirror = true;
-        setRotation(r, 0.1396263F, 4.712389F, 0F);
-        bl = new ModelRenderer(this, 0, 14);
-        bl.addBox(2.5F, 1.5F, 2.5F, 4, 1, 4);
-        bl.setRotationPoint(0F, 22F, 0F);
-        bl.setTextureSize(64, 32);
-        bl.mirror = true;
-        setRotation(bl, 0.1396263F, 0F, -0.1396263F);
-        fl = new ModelRenderer(this, 0, 14);
-        fl.addBox(2.5F, 0.4F, 2.5F, 4, 1, 4);
-        fl.setRotationPoint(0F, 22F, -9F);
-        fl.setTextureSize(64, 32);
-        fl.mirror = true;
-        setRotation(fl, -12.0F * f, f, -12.0F * f);
-        fr = new ModelRenderer(this, 0, 14);
-        fr.addBox(2.5F, 1.5F, 2.5F, 4, 1, 4);
-        fr.setRotationPoint(0F, 22F, 0F);
-        fr.setTextureSize(64, 32);
-        fr.mirror = true;
-        setRotation(fr, 0.1396263F, 3.141593F, 0.1396263F);
-        br = new ModelRenderer(this, 0, 14);
-        br.addBox(2.5F, 0.4F, 2.5F, 4, 1, 4);
-        br.setRotationPoint(-9F, 22F, 0F);
-        br.setTextureSize(64, 32);
-        br.mirror = true;
-        setRotation(br, 12.0F * f, f, 12.0F * f);
+        PartDefinition base = partdefinition.addOrReplaceChild("base", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3F, 1F, -3F, 6, 1, 6), PartPose.offset(0F, 22F, 0F));
+        PartDefinition b = partdefinition.addOrReplaceChild("b", CubeListBuilder.create().texOffs(0, 8).mirror().addBox(-3F, 1.3F, 2.5F, 6, 1, 4), PartPose.offsetAndRotation(0F, 22F, 0F, 0.1396263F, 0F, 0F));
+        PartDefinition l = partdefinition.addOrReplaceChild("l", CubeListBuilder.create().texOffs(0, 8).mirror().addBox(-3F, 1.2F, 2.5F, 6, 1, 4), PartPose.offsetAndRotation(0F, 22F, 0F, 0.1396263F, 1.570796F, 0F));
+        PartDefinition ff = partdefinition.addOrReplaceChild("ff", CubeListBuilder.create().texOffs(0, 8).mirror().addBox(-3F, 1.2F, 2.5F, 6, 1, 4), PartPose.offsetAndRotation(0F, 22F, 0F, 0.1396263F, 3.141593F, 0F));
+        PartDefinition r = partdefinition.addOrReplaceChild("r", CubeListBuilder.create().texOffs(0, 8).mirror().addBox(-3F, 1.3F, 2.5F, 6, 1, 4), PartPose.offsetAndRotation(0F, 22F, 0F, 0.1396263F, 4.712389F, 0F));
+        PartDefinition bl = partdefinition.addOrReplaceChild("bl", CubeListBuilder.create().texOffs(0, 14).mirror().addBox(2.5F, 1.5F, 2.5F, 4, 1, 4), PartPose.offsetAndRotation(0F, 22F, 0F, 0.1396263F, 0F, -0.1396263F));
+        PartDefinition fl = partdefinition.addOrReplaceChild("fl", CubeListBuilder.create().texOffs(0, 14).mirror().addBox(2.5F, 0.4F, 2.5F, 4, 1, 4), PartPose.offsetAndRotation(0F, 22F, -9F, -12.0F * f, f, -12.0F * f));
+        PartDefinition fr = partdefinition.addOrReplaceChild("fr", CubeListBuilder.create().texOffs(0, 14).mirror().addBox(2.5F, 1.5F, 2.5F, 4, 1, 4), PartPose.offsetAndRotation(0F, 22F, 0F, 0.1396263F, 3.141593F, 0.1396263F));
+        PartDefinition br = partdefinition.addOrReplaceChild("br", CubeListBuilder.create().texOffs(0, 14).mirror().addBox(2.5F, 0.4F, 2.5F, 4, 1, 4), PartPose.offsetAndRotation(-9F, 22F, 0F, 12.0F * f, f, 12.0F * f));
+        return LayerDefinition.create(meshdefinition, 64, 32);
+    }
+
+
+    @Override
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            base.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            b.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            l.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            ff.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            r.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            bl.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            fl.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            fr.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            br.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        base.render(f5);
-        b.render(f5);
-        l.render(f5);
-        ff.render(f5);
-        r.render(f5);
-        bl.render(f5);
-        fl.render(f5);
-        fr.render(f5);
-        br.render(f5);
-    }
-
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
-    }
-
-    @Override
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    }
-
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        }
 }

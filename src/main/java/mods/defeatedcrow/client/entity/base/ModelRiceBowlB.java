@@ -1,79 +1,64 @@
-package mods.defeatedcrow.client.entity.base;
+﻿package mods.defeatedcrow.client.entity.base;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelRiceBowlB extends ModelBase {
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-    // fields
-    ModelRenderer bottom1;
-    ModelRenderer bottom2;
-    ModelRenderer sideL2;
-    ModelRenderer sideR2;
-    ModelRenderer sideF2;
-    ModelRenderer sideB2;
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELRICEBOWLB) -> new ModelRiceBowlB(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelRiceBowlB {
 
-    public ModelRiceBowlB() {
-        textureWidth = 64;
-        textureHeight = 32;
+    private final ModelPart root;
+    private final ModelPart bottom1;
+    private final ModelPart bottom2;
+    private final ModelPart sideL2;
+    private final ModelPart sideR2;
+    private final ModelPart sideF2;
+    private final ModelPart sideB2;
 
-        bottom1 = new ModelRenderer(this, 32, 0);
-        bottom1.addBox(0F, 0F, 0F, 4, 1, 4);
-        bottom1.setRotationPoint(-2F, 23F, -2F);
-        bottom1.setTextureSize(64, 32);
-        bottom1.mirror = true;
-        setRotation(bottom1, 0F, 0F, 0F);
-        bottom2 = new ModelRenderer(this, 0, 0);
-        bottom2.addBox(0F, 0F, 0F, 8, 1, 8);
-        bottom2.setRotationPoint(-4F, 22F, -4F);
-        bottom2.setTextureSize(64, 32);
-        bottom2.mirror = true;
-        setRotation(bottom2, 0F, 0F, 0F);
-        sideL2 = new ModelRenderer(this, 0, 10);
-        sideL2.addBox(0F, 0F, 0F, 1, 3, 6);
-        sideL2.setRotationPoint(3F, 19F, -3F);
-        sideL2.setTextureSize(64, 32);
-        sideL2.mirror = true;
-        setRotation(sideL2, 0F, 0F, 0F);
-        sideR2 = new ModelRenderer(this, 14, 10);
-        sideR2.addBox(0F, 0F, 0F, 1, 3, 6);
-        sideR2.setRotationPoint(-4F, 19F, -3F);
-        sideR2.setTextureSize(64, 32);
-        sideR2.mirror = true;
-        setRotation(sideR2, 0F, 0F, 0F);
-        sideF2 = new ModelRenderer(this, 0, 19);
-        sideF2.addBox(0F, 0F, 0F, 8, 3, 1);
-        sideF2.setRotationPoint(-4F, 19F, -4F);
-        sideF2.setTextureSize(64, 32);
-        sideF2.mirror = true;
-        setRotation(sideF2, 0F, 0F, 0F);
-        sideB2 = new ModelRenderer(this, 0, 23);
-        sideB2.addBox(0F, 0F, 0F, 8, 3, 1);
-        sideB2.setRotationPoint(-4F, 19F, 3F);
-        sideB2.setTextureSize(64, 32);
-        sideB2.mirror = true;
-        setRotation(sideB2, 0F, 0F, 0F);
+    public ModelRiceBowlB(ModelPart root) {
+        this.root = root;
+        this.bottom1 = root.getChild("bottom1");
+        this.bottom2 = root.getChild("bottom2");
+        this.sideL2 = root.getChild("sideL2");
+        this.sideR2 = root.getChild("sideR2");
+        this.sideF2 = root.getChild("sideF2");
+        this.sideB2 = root.getChild("sideB2");
     }
 
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        bottom1.render(f5);
-        bottom2.render(f5);
-        sideL2.render(f5);
-        sideR2.render(f5);
-        sideF2.render(f5);
-        sideB2.render(f5);
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition bottom1 = partdefinition.addOrReplaceChild("bottom1", CubeListBuilder.create().texOffs(32, 0).mirror().addBox(0F, 0F, 0F, 4, 1, 4), PartPose.offset(-2F, 23F, -2F));
+        PartDefinition bottom2 = partdefinition.addOrReplaceChild("bottom2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 8, 1, 8), PartPose.offset(-4F, 22F, -4F));
+        PartDefinition sideL2 = partdefinition.addOrReplaceChild("sideL2", CubeListBuilder.create().texOffs(0, 10).mirror().addBox(0F, 0F, 0F, 1, 3, 6), PartPose.offset(3F, 19F, -3F));
+        PartDefinition sideR2 = partdefinition.addOrReplaceChild("sideR2", CubeListBuilder.create().texOffs(14, 10).mirror().addBox(0F, 0F, 0F, 1, 3, 6), PartPose.offset(-4F, 19F, -3F));
+        PartDefinition sideF2 = partdefinition.addOrReplaceChild("sideF2", CubeListBuilder.create().texOffs(0, 19).mirror().addBox(0F, 0F, 0F, 8, 3, 1), PartPose.offset(-4F, 19F, -4F));
+        PartDefinition sideB2 = partdefinition.addOrReplaceChild("sideB2", CubeListBuilder.create().texOffs(0, 23).mirror().addBox(0F, 0F, 0F, 8, 3, 1), PartPose.offset(-4F, 19F, 3F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            bottom1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            bottom2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            sideL2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            sideR2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            sideF2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            sideB2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    }
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        }
 }

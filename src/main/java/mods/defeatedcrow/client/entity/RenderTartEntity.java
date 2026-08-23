@@ -1,116 +1,80 @@
-package mods.defeatedcrow.client.entity;
+﻿package mods.defeatedcrow.client.entity;
 
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import mods.defeatedcrow.client.ModEntityRenderers;
 import mods.defeatedcrow.client.model.model.ModelTart;
 import mods.defeatedcrow.common.entity.edible.PlaceableTart;
 
-@SideOnly(Side.CLIENT)
-public class RenderTartEntity extends Render {
+/**
+ * 1.20.1 migration: Render -> EntityRenderer + PoseStack/MultiBufferSource.
+ */
+public class RenderTartEntity extends EntityRenderer<PlaceableTart> {
 
-    private static final ResourceLocation tartTex = new ResourceLocation("defeatedcrow:textures/entity/tart.png");
-    private static final ResourceLocation plateTex = new ResourceLocation("defeatedcrow:textures/entity/tartbase.png");
-    private static final ResourceLocation mousseTex = new ResourceLocation(
-        "defeatedcrow:textures/entity/moussecake.png");
+    private static final ResourceLocation TART_TEX = new ResourceLocation("defeatedcrow", "textures/entity/tart.png");
+    private static final ResourceLocation PLATE_TEX = new ResourceLocation("defeatedcrow", "textures/entity/tartbase.png");
+    private static final ResourceLocation MOUSSE_TEX = new ResourceLocation("defeatedcrow", "textures/entity/moussecake.png");
+    private static final ResourceLocation MOUSSE_TEX1 = new ResourceLocation("defeatedcrow", "textures/blocks/contents_cocoa_milk.png");
+    private static final ResourceLocation MOUSSE_TEX2 = new ResourceLocation("defeatedcrow", "textures/blocks/contents_milk.png");
+    private static final ResourceLocation MOUSSE_TEX3_LEMON = new ResourceLocation("defeatedcrow", "textures/blocks/contents_lemon.png");
+    private static final ResourceLocation MOUSSE_TEX3_JUICE = new ResourceLocation("defeatedcrow", "textures/blocks/contents_juice.png");
 
-    /** instance of ModelBoat for rendering */
-    protected ModelTart model;
+    private final ModelTart model;
 
-    public RenderTartEntity() {
-        this.shadowSize = 0.5F;
-        this.model = new ModelTart();
+    public RenderTartEntity(EntityRendererProvider.Context ctx) {
+        super(ctx);
+        this.shadowRadius = 0.5F;
+        this.model = new ModelTart(ctx.bakeLayer(ModEntityRenderers.MODEL_TART));
     }
 
-    /**
-     * The render method used in RenderBoat that renders the boat model.
-     */
-    public void render(PlaceableTart entity, double posX, double posY, double posZ, float round, float yaw) {
-        ModelTart model = this.model;
+    @Override
+    public void render(PlaceableTart entity, float yaw, float partialTick, PoseStack poseStack,
+        MultiBufferSource buffer, int packedLight) {
         byte l = (byte) entity.getItemMetadata();
 
+        poseStack.pushPose();
+        poseStack.translate(0.0F, 1.25F, 0.0F);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
+
         if (l < 2) {
-            this.bindTexture(tartTex);
-
-            GL11.glPushMatrix();
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glColor4f(2.0F, 2.0F, 2.0F, 1.0F);
-            GL11.glTranslatef((float) posX, (float) posY + 1.25F, (float) posZ);
-            GL11.glScalef(1.0F, -1.0F, -1.0F);
-            GL11.glRotatef(round, 0.0F, 1.0F, 0.0F);
-            model.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, l);
+            VertexConsumer vc = buffer.getBuffer(RenderType.entityCutout(TART_TEX));
+            this.model.render(poseStack, vc, packedLight, OverlayTexture.NO_OVERLAY, l);
             if (l == 1) {
-                model.renderCrops((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, l);
+                this.model.renderCrops(poseStack, vc, packedLight, OverlayTexture.NO_OVERLAY, l);
             }
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            GL11.glPopMatrix();
         } else {
-            String mousse1 = "defeatedcrow:textures/blocks/contents_cocoa_milk.png";
-            ResourceLocation mousseTex1 = new ResourceLocation(mousse1);
-            String mousse2 = "defeatedcrow:textures/blocks/contents_milk.png";
-            ResourceLocation mousseTex2 = new ResourceLocation(mousse2);
+            ResourceLocation mousseTex3 = (l == 3) ? MOUSSE_TEX3_JUICE : MOUSSE_TEX3_LEMON;
 
-            String mousse3 = "defeatedcrow:textures/blocks/contents_lemon.png";
-            if (l == 3) {
-                mousse3 = "defeatedcrow:textures/blocks/contents_juice.png";
-            }
-            ResourceLocation mousseTex3 = new ResourceLocation(mousse3);
-
-            this.bindTexture(mousseTex);
-
-            GL11.glPushMatrix();
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glColor4f(2.0F, 2.0F, 2.0F, 1.0F);
-            GL11.glTranslatef((float) posX, (float) posY + 1.25F, (float) posZ);
-            GL11.glScalef(1.0F, -1.0F, -1.0F);
-            GL11.glRotatef(round, 0.0F, 1.0F, 0.0F);
-            model.renderMousseBase((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, l);
-
-            this.bindTexture(mousseTex1);
-            model.renderMousse1((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, l);
-
-            this.bindTexture(mousseTex2);
-            model.renderMousse2((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, l);
-
-            this.bindTexture(mousseTex3);
-            model.renderMousse3((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, l);
-
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            GL11.glPopMatrix();
+            this.model.renderMousseBase(poseStack, buffer.getBuffer(RenderType.entityCutout(MOUSSE_TEX)),
+                packedLight, OverlayTexture.NO_OVERLAY, l);
+            this.model.renderMousse1(poseStack, buffer.getBuffer(RenderType.entityCutout(MOUSSE_TEX1)),
+                packedLight, OverlayTexture.NO_OVERLAY, l);
+            this.model.renderMousse2(poseStack, buffer.getBuffer(RenderType.entityCutout(MOUSSE_TEX2)),
+                packedLight, OverlayTexture.NO_OVERLAY, l);
+            this.model.renderMousse3(poseStack, buffer.getBuffer(RenderType.entityCutout(mousseTex3)),
+                packedLight, OverlayTexture.NO_OVERLAY, l);
         }
 
-        // 以下、プレートの部分
-        this.bindTexture(plateTex);
+        // plate
+        this.model.renderPlate(poseStack, buffer.getBuffer(RenderType.entityCutout(PLATE_TEX)),
+            packedLight, OverlayTexture.NO_OVERLAY, l);
 
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glColor4f(2.0F, 2.0F, 2.0F, 1.0F);
-        GL11.glTranslatef((float) posX, (float) posY + 1.25F, (float) posZ);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef(round, 0.0F, 1.0F, 0.0F);
-        this.model.renderPlate((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, l);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
-
-    }
-
-    protected ResourceLocation getMelonTextures(PlaceableTart par1Entity) {
-        return tartTex;
+        poseStack.popPose();
+        super.render(entity, yaw, partialTick, poseStack, buffer, packedLight);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity) {
-        return this.getMelonTextures((PlaceableTart) par1Entity);
-    }
-
-    @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-        this.render((PlaceableTart) par1Entity, par2, par4, par6, par8, par9);
+    public ResourceLocation getTextureLocation(PlaceableTart entity) {
+        return TART_TEX;
     }
 }

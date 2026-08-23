@@ -1,40 +1,44 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelYuzuBullet extends ModelBase {
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-    // fields
-    ModelRenderer Shape1;
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELYUZUBULLET) -> new ModelYuzuBullet(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelYuzuBullet {
 
-    public ModelYuzuBullet() {
-        textureWidth = 32;
-        textureHeight = 32;
+    private final ModelPart root;
+    private final ModelPart Shape1;
 
-        Shape1 = new ModelRenderer(this, 0, 0);
-        Shape1.addBox(-1.5F, -1F, -1.5F, 3, 3, 3);
-        Shape1.setRotationPoint(0F, 16F, 0F);
-        Shape1.setTextureSize(32, 32);
-        Shape1.mirror = true;
-        setRotation(Shape1, 0F, 0F, 0F);
+    public ModelYuzuBullet(ModelPart root) {
+        this.root = root;
+        this.Shape1 = root.getChild("Shape1");
     }
 
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        Shape1.render(f5);
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition Shape1 = partdefinition.addOrReplaceChild("Shape1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1.5F, -1F, -1.5F, 3, 3, 3), PartPose.offset(0F, 16F, 0F));
+        return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            Shape1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, null);
-    }
-
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        }
 }

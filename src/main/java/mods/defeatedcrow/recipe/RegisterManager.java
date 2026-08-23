@@ -1,7 +1,6 @@
 package mods.defeatedcrow.recipe;
 
 import mods.defeatedcrow.api.charge.ChargeItemManager;
-import mods.defeatedcrow.api.potion.AMTPotionManager;
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
 import mods.defeatedcrow.potion.PotionGetter;
 
@@ -20,7 +19,8 @@ public class RegisterManager {
         ChargeItemManager.chargeItem = new ChargeItemRegister();
         RecipeRegisterManager.slagLoot = new SlagResultLoot();
 
-        AMTPotionManager.manager = new PotionGetter();
+        // 1.20.1: AMTPotionManager(api凍結) 廃止、PotionGetter への直接移行
+        PotionGetter.initialize();
     }
 
     private RegisterManager() {}

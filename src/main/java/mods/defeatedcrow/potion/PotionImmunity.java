@@ -3,66 +3,59 @@ package mods.defeatedcrow.potion;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.potion.Potion;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 
-import mods.defeatedcrow.api.potion.PotionLivingBase;
-import mods.defeatedcrow.common.DCsAppleMilk;
-import mods.defeatedcrow.common.config.DCsConfig;
+import mods.defeatedcrow.common.registry.ModMobEffects;
 
 /**
- * Immunityポーションのクラス。
- * Tick毎に呼び出される。
+ * Immunityポーションのクラス。Amplifierごとに除去可能な効果をチェックして除去する。
+ * 1.20.1: PotionLivingBase(api凍結) → MobEffect 直接継承、tick処理は applyEffectTick へ。
  */
-public class PotionImmunity extends PotionLivingBase {
+public class PotionImmunity extends MobEffect {
 
-    public PotionImmunity(int par1, boolean par2, int par3, int x, int y) {
-        super(par1, par2, par3, x, y);
+    public PotionImmunity(MobEffectCategory category, int color) {
+        super(category, color);
     }
 
-    /**
-     * PlayerのonUpdateEventで呼ばれるメソッド。
-     * Amplifierごとに除去可能なポーション効果をチェックしている。
-     * 改良が必要。
-     */
     @Override
-    public boolean formPotionEffect(int amp, int id, EntityLivingBase entity) {
-        List<Integer> check = new ArrayList<Integer>();
-        boolean flag = false;
+    public void applyEffectTick(LivingEntity entity, int amplifier) {
+        if (entity.level().isClientSide()) return;
 
-        if (id == DCsConfig.potionIDImmunity && !entity.worldObj.isRemote) {
-            if (amp == 0) {
-                check.add(Potion.hunger.id);
-            }
+        List<net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect>> check = new ArrayList<>();
 
-            if (amp > 0) {
-                check.add(Potion.poison.id);
-                check.add(Potion.wither.id);
-            }
-
-            if (amp > 1) {
-                check.add(Potion.confusion.id);
-                check.add(Potion.blindness.id);
-                if (DCsAppleMilk.suffocation != null) {
-                    check.add(DCsAppleMilk.suffocation.id);
-                }
-            }
-
-            if (amp > 2) {
-                check.add(Potion.digSlowdown.id);
-                check.add(Potion.moveSlowdown.id);
-                check.add(Potion.weakness.id);
-            }
-
-            for (int i = 0; i < check.size(); i++) {
-                if (entity.isPotionActive(check.get(i))) {
-                    entity.removePotionEffect(check.get(i));
-                    flag = true;
-                }
-            }
+        if (amplifier == 0) {
+            check.add(MobEffects.HUNGER);
         }
 
-        return flag;
+        if (amplifier > 0) {
+            check.add(MobEffects.POISON);
+            check.add(MobEffects.WITHER);
+        }
+
+        if (amplifier > 1) {
+            check.add(MobEffects.CONFUSION);
+            check.add(MobEffects.BLINDNESS);
+            check.add(ModMobEffects.SUFFOCATION.getHolder());
+        }
+
+        if (amplifier > 2) {
+            check.add(MobEffects.DIG_SLOWDOWN);
+            check.add(MobEffects.MOVEMENT_SLOWDOWN);
+            check.add(MobEffects.WEAKNESS);
+        }
+
+        for (net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect> effect : check) {
+            if (entity.hasEffect(effect)) {
+                entity.removeEffect(effect);
+            }
+        }
     }
 
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+        return duration % 20 == 0;
+    }
 }

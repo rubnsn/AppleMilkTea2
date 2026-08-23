@@ -1,131 +1,95 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelCharger extends ModelBase {
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-    // fields
-    ModelRenderer bottom;
-    ModelRenderer top;
-    ModelRenderer back;
-    ModelRenderer side1;
-    ModelRenderer side2;
-    ModelRenderer inner;
-    ModelRenderer button1;
-    ModelRenderer button2;
-    ModelRenderer dial;
-    ModelRenderer panel1;
-    ModelRenderer panel2;
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELCHARGER) -> new ModelCharger(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelCharger {
 
-    public ModelCharger() {
-        textureWidth = 128;
-        textureHeight = 64;
+    private final ModelPart root;
+    private final ModelPart bottom;
+    private final ModelPart top;
+    private final ModelPart back;
+    private final ModelPart side1;
+    private final ModelPart side2;
+    private final ModelPart inner;
+    private final ModelPart button1;
+    private final ModelPart button2;
+    private final ModelPart dial;
+    private final ModelPart panel1;
+    private final ModelPart panel2;
 
-        bottom = new ModelRenderer(this, 0, 0);
-        bottom.addBox(-8F, 7F, -8F, 16, 1, 16);
-        bottom.setRotationPoint(0F, 16F, 0F);
-        bottom.setTextureSize(64, 32);
-        bottom.mirror = true;
-        setRotation(bottom, 0F, 0F, 0F);
-        top = new ModelRenderer(this, 0, 0);
-        top.addBox(-8F, -8F, -8F, 16, 1, 16);
-        top.setRotationPoint(0F, 16F, 0F);
-        top.setTextureSize(64, 32);
-        top.mirror = true;
-        setRotation(top, 0F, 0F, 0F);
-        back = new ModelRenderer(this, 64, 0);
-        back.addBox(-8F, -7F, 7F, 16, 14, 1);
-        back.setRotationPoint(0F, 16F, 0F);
-        back.setTextureSize(64, 32);
-        back.mirror = true;
-        setRotation(back, 0F, 0F, 0F);
-        side1 = new ModelRenderer(this, 64, 1);
-        side1.addBox(-8F, -7F, -8F, 1, 14, 16);
-        side1.setRotationPoint(0F, 16F, 0F);
-        side1.setTextureSize(64, 32);
-        side1.mirror = true;
-        setRotation(side1, 0F, 0F, 0F);
-        side2 = new ModelRenderer(this, 64, 1);
-        side2.addBox(7F, -7F, -8F, 1, 14, 16);
-        side2.setRotationPoint(0F, 16F, 0F);
-        side2.setTextureSize(64, 32);
-        side2.mirror = true;
-        setRotation(side2, 0F, 0F, 0F);
-        inner = new ModelRenderer(this, 0, 18);
-        inner.addBox(-7F, -7F, -6F, 14, 14, 13);
-        inner.setRotationPoint(0F, 16F, 0F);
-        inner.setTextureSize(64, 32);
-        inner.mirror = true;
-        setRotation(inner, 0F, 0F, 0F);
-        button1 = new ModelRenderer(this, 0, 48);
-        button1.addBox(-5F, 1F, -7F, 1, 1, 1);
-        button1.setRotationPoint(0F, 16F, 0F);
-        button1.setTextureSize(64, 32);
-        button1.mirror = true;
-        setRotation(button1, 0F, 0F, 0F);
-        button2 = new ModelRenderer(this, 4, 48);
-        button2.addBox(-3F, 1F, -7F, 1, 1, 1);
-        button2.setRotationPoint(0F, 16F, 0F);
-        button2.setTextureSize(64, 32);
-        button2.mirror = true;
-        setRotation(button2, 0F, 0F, 0F);
-        dial = new ModelRenderer(this, 8, 48);
-        dial.addBox(3F, 0F, -7F, 2, 2, 1);
-        dial.setRotationPoint(0F, 16F, 0F);
-        dial.setTextureSize(64, 32);
-        dial.mirror = true;
-        setRotation(dial, 0F, 0F, 0F);
-        panel1 = new ModelRenderer(this, 0, 51);
-        panel1.addBox(-3F, -5F, -6.5F, 8, 4, 1);
-        panel1.setRotationPoint(0F, 16F, 0F);
-        panel1.setTextureSize(64, 32);
-        panel1.mirror = true;
-        setRotation(panel1, 0F, 0F, 0F);
-        panel2 = new ModelRenderer(this, 0, 56);
-        panel2.addBox(-6F, 4F, -7F, 12, 2, 1);
-        panel2.setRotationPoint(0F, 16F, 0F);
-        panel2.setTextureSize(64, 32);
-        panel2.mirror = true;
-        setRotation(panel2, 0F, 0F, 0F);
+    public ModelCharger(ModelPart root) {
+        this.root = root;
+        this.bottom = root.getChild("bottom");
+        this.top = root.getChild("top");
+        this.back = root.getChild("back");
+        this.side1 = root.getChild("side1");
+        this.side2 = root.getChild("side2");
+        this.inner = root.getChild("inner");
+        this.button1 = root.getChild("button1");
+        this.button2 = root.getChild("button2");
+        this.dial = root.getChild("dial");
+        this.panel1 = root.getChild("panel1");
+        this.panel2 = root.getChild("panel2");
     }
 
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        bottom.render(f5);
-        top.render(f5);
-        back.render(f5);
-        side1.render(f5);
-        side2.render(f5);
-        inner.render(f5);
-        button1.render(f5);
-        button2.render(f5);
-        dial.render(f5);
-        panel1.render(f5);
-        panel2.render(f5);
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition bottom = partdefinition.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-8F, 7F, -8F, 16, 1, 16), PartPose.offset(0F, 16F, 0F));
+        PartDefinition top = partdefinition.addOrReplaceChild("top", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-8F, -8F, -8F, 16, 1, 16), PartPose.offset(0F, 16F, 0F));
+        PartDefinition back = partdefinition.addOrReplaceChild("back", CubeListBuilder.create().texOffs(64, 0).mirror().addBox(-8F, -7F, 7F, 16, 14, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition side1 = partdefinition.addOrReplaceChild("side1", CubeListBuilder.create().texOffs(64, 1).mirror().addBox(-8F, -7F, -8F, 1, 14, 16), PartPose.offset(0F, 16F, 0F));
+        PartDefinition side2 = partdefinition.addOrReplaceChild("side2", CubeListBuilder.create().texOffs(64, 1).mirror().addBox(7F, -7F, -8F, 1, 14, 16), PartPose.offset(0F, 16F, 0F));
+        PartDefinition inner = partdefinition.addOrReplaceChild("inner", CubeListBuilder.create().texOffs(0, 18).mirror().addBox(-7F, -7F, -6F, 14, 14, 13), PartPose.offset(0F, 16F, 0F));
+        PartDefinition button1 = partdefinition.addOrReplaceChild("button1", CubeListBuilder.create().texOffs(0, 48).mirror().addBox(-5F, 1F, -7F, 1, 1, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition button2 = partdefinition.addOrReplaceChild("button2", CubeListBuilder.create().texOffs(4, 48).mirror().addBox(-3F, 1F, -7F, 1, 1, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition dial = partdefinition.addOrReplaceChild("dial", CubeListBuilder.create().texOffs(8, 48).mirror().addBox(3F, 0F, -7F, 2, 2, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition panel1 = partdefinition.addOrReplaceChild("panel1", CubeListBuilder.create().texOffs(0, 51).mirror().addBox(-3F, -5F, -6.5F, 8, 4, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition panel2 = partdefinition.addOrReplaceChild("panel2", CubeListBuilder.create().texOffs(0, 56).mirror().addBox(-6F, 4F, -7F, 12, 2, 1), PartPose.offset(0F, 16F, 0F));
+        return LayerDefinition.create(meshdefinition, 128, 64);
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            bottom.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            top.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            back.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            side1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            side2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            inner.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            button1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            button2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            dial.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            panel1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            panel2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        this.bottom.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.top.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.back.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.side1.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.side2.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.inner.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.button1.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.button2.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.dial.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.panel1.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.panel2.rotateAngleY = f3 / (180F / (float) Math.PI);
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        this.bottom.yRot = f3 / (180F / (float) Math.PI);
+        this.top.yRot = f3 / (180F / (float) Math.PI);
+        this.back.yRot = f3 / (180F / (float) Math.PI);
+        this.side1.yRot = f3 / (180F / (float) Math.PI);
+        this.side2.yRot = f3 / (180F / (float) Math.PI);
+        this.inner.yRot = f3 / (180F / (float) Math.PI);
+        this.button1.yRot = f3 / (180F / (float) Math.PI);
+        this.button2.yRot = f3 / (180F / (float) Math.PI);
+        this.dial.yRot = f3 / (180F / (float) Math.PI);
+        this.panel1.yRot = f3 / (180F / (float) Math.PI);
+        this.panel2.yRot = f3 / (180F / (float) Math.PI);
     }
-
 }

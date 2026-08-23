@@ -9,12 +9,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import mods.defeatedcrow.common.DCsAppleMilk;
 
 /**
- * 1.20.1 client registration — replaces ClientProxy ISBRH/TESR/EntityRenderer.
+ * 1.20.1 client registration  Ereplaces ClientProxy ISBRH/TESR/EntityRenderer.
  * Bootstrap-owned skeleton, WT-C fills each section.
  *
- * - BlockEntityRenderers.register: 38 bindTileEntitySpecialRenderer → BlockEntityRendererProvider
- * - ISBRH 44 → blockstate JSON + ItemBlockRenderTypes.setRenderLayer in FMLClientSetupEvent + BlockEntityRenderer for TESR-like
- * - EntityRenderers.register: 23 registerEntityRenderingHandler → EntityRendererProvider
+ * - BlockEntityRenderers.register: 38 bindTESR (��1.7.10) ↁEBlockEntityRendererProvider
+ * - ISBRH 44 ↁEblockstate JSON + ItemBlockRenderTypes.setRenderLayer in FMLClientSetupEvent + BlockEntityRenderer for TESR-like
+ * - EntityRenderers.register: 23 registerEntityRenderingHandler ↁEEntityRendererProvider
  * See doc/blocks/migration-guide.md:174 / doc/entities/migration-guide.md
  */
 @Mod.EventBusSubscriber(modid = DCsAppleMilk.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -22,7 +22,7 @@ public class ModClientEvents {
 
     @SubscribeEvent
     public static void onRegisterBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        // --- WT-C: BER 38 (ClientProxy.bindTileEntitySpecialRenderer) ---
+        // --- WT-C: BER 38 (ClientProxy.bindTESR (��1.7.10)) ---
         // event.registerBlockEntityRenderer(ModBlockEntities.TEA_MAKER_NEXT.get(), RenderTeaMakerNext::new);
         // event.registerBlockEntityRenderer(ModBlockEntities.TILE_CUP_HANDLE.get(), TileEntityCupHandleRenderer::new);
         // ... 38 entries: TileCupHandle, TileBread, TileJPBowl, TileChopsticksBox, TileEggs, TileSteak,

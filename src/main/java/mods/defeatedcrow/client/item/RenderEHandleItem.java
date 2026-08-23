@@ -1,112 +1,33 @@
 package mods.defeatedcrow.client.item;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
+import net.minecraft.resources.ResourceLocation;
 
-import org.lwjgl.opengl.GL11;
+import mods.defeatedcrow.common.DCsAppleMilk;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import mods.defeatedcrow.client.model.model.ModelHandleEngine;
+/**
+ * 1.20.1 stub for the 1.7.10 {@code IItemRenderer} of the Handle Engine block-item.
+ *
+ * <p>
+ * The legacy renderer drew {@code ModelHandleEngine} (ModelBase, client/model/model/, owned by the
+ * model-migration agent) in inventory/equipped/entity views with
+ * {@code defeatedcrow:textures/entity/handle_engine.png}. ModelBase does not exist on 1.20.1, so the
+ * render path is intentionally reduced to a JSON-model placeholder:
+ *
+ * <ul>
+ * <li>Short term: WT-A resources provides {@code assets/dcsapplemilk/models/block/handle_engine.json}
+ * and the BlockItem inherits it — no code needed for this class.</li>
+ * <li>Long term (if a dynamic Java model is still wanted): implement Forge's
+ * {@code IClientItemExtensions} returning a {@code BlockEntityWithoutLevelRenderer}
+ * ({@code net.minecraftforge.client.rendering.BlockEntityWithoutLevelRenderer}) that delegates to the
+ * ported model, hooked via {@code Item#initializeClient(...)} in the WT-A item class. The TESR-side
+ * counterpart is registered by ModBlockEntityRenderers (other agent).</li>
+ * </ul>
+ */
+@net.minecraftforge.api.distmarker.OnlyIn(net.minecraftforge.api.distmarker.Dist.CLIENT)
+public final class RenderEHandleItem {
 
-public class RenderEHandleItem implements IItemRenderer {
+    /** Kept for the future BEWLR port; same texture as 1.7.10. */
+    public static final ResourceLocation TEXTURE = new ResourceLocation("defeatedcrow", "textures/entity/handle_engine.png");
 
-    private static final ResourceLocation resource = new ResourceLocation(
-        "defeatedcrow:textures/entity/handle_engine.png");
-    private ModelHandleEngine model = new ModelHandleEngine();
-
-    @Override
-    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return canRendering(item, type);
-    }
-
-    private boolean canRendering(ItemStack item, ItemRenderType type) {
-        switch (type) {
-            case ENTITY:
-            case EQUIPPED:
-            case EQUIPPED_FIRST_PERSON:
-            case INVENTORY:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        switch (helper) {
-            case INVENTORY_BLOCK:
-            case ENTITY_BOBBING:
-            case ENTITY_ROTATION:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        if (canRendering(item, type)) {
-
-            GL11.glPushMatrix();
-            /*
-             * 描画する種類によって回転, 平行移動を行う.
-             */
-            switch (type) {
-                case INVENTORY:
-                    glMatrixForRenderInInventory();
-                    break;
-                case EQUIPPED:
-                case EQUIPPED_FIRST_PERSON:
-                    glMatrixForRenderInEquipped();
-                    break;
-                case ENTITY:
-                    glMatrixForRenderInEntity();
-                default:
-                    break;
-            }
-            /*
-             * リソースをTextureMangerにbindし, modelのrenderを呼んで描画する.
-             */
-
-            FMLClientHandler.instance()
-                .getClient()
-                .getTextureManager()
-                .bindTexture(resource);
-
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            model.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-            model.renderBase((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-            GL11.glPopMatrix();
-        }
-    }
-
-    /*
-     * インベントリ内での描画位置の調整.
-     */
-    private void glMatrixForRenderInInventory() {
-        GL11.glRotatef(-180F, 1.0F, 0.0F, 0.0F);
-        GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-    }
-
-    /*
-     * 装備状態での描画位置の調整.
-     */
-    private void glMatrixForRenderInEquipped() {
-        GL11.glRotatef(-210F, 1.0F, 0.0F, 0.0F);
-        GL11.glRotatef(0F, 0.0F, 0.0F, 1.0F);
-        GL11.glRotatef(-0F, 0.0F, 1.0F, 0.0F);
-        GL11.glScalef(1.2F, 1.2F, 1.2F);
-        GL11.glTranslatef(0.4F, -1.5F, 0.0F);
-    }
-
-    /*
-     * ドロップ状態での描画位置の調整.
-     */
-    private void glMatrixForRenderInEntity() {
-        GL11.glRotatef(-180F, 1.0F, 0.0F, 0.0F);
-        GL11.glTranslatef(0.0F, -1.5F, 0.0F);
-    }
-
+    private RenderEHandleItem() {}
 }

@@ -2,84 +2,67 @@ package mods.defeatedcrow.potion;
 
 import java.util.Random;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import mods.defeatedcrow.api.potion.PotionImmunityBase;
-import mods.defeatedcrow.common.config.DCsConfig;
-import mods.defeatedcrow.common.entity.dummy.EntityIllusionMobs;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.player.Player;
 
 /**
- * 幻覚ポーション。
- * Tick毎に呼び出される。
+ * 幻覚ポーション。Tick毎に呼び出される。Amplifierごとに効果が悪化する。
+ * 1.20.1: PotionImmunityBase(api凍結) → MobEffect 直接継承、旧文字列サウンドは SoundEvents 相当へ置換。
  */
-public class PotionHallucination extends PotionImmunityBase {
+public class PotionHallucination extends MobEffect {
 
-    private final String[] overworldMobs = new String[] { "mob.zombie.say", "mob.creeper.say", "mob.endermen.stare",
-        "creeper.primed", "mob.skeleton.say", "mob.spider.say", "mob.endermen.idle" };
-    private final String[] netherMobs = new String[] { "mob.blaze.breathe", "mob.ghast.moan" };
+    private final SoundEvent[] overworldMobs = new SoundEvent[] { SoundEvents.ZOMBIE_AMBIENT, SoundEvents.CREEPER_PRIMED,
+        SoundEvents.ENDERMAN_STARE, SoundEvents.CREEPER_PRIMED, SoundEvents.SKELETON_AMBIENT, SoundEvents.SPIDER_AMBIENT,
+        SoundEvents.ENDERMAN_AMBIENT };
+    private final SoundEvent[] netherMobs = new SoundEvent[] { SoundEvents.BLAZE_AMBIENT, SoundEvents.GHAST_AMBIENT };
 
-    public PotionHallucination(int par1, boolean par2, int par3, int x, int y) {
-        super(par1, par2, par3, x, y);
+    public PotionHallucination(MobEffectCategory category, int color) {
+        super(category, color);
     }
 
-    /**
-     * PlayerのonUpdateEventで呼ばれるメソッド。
-     * Amplifierごとに効果が悪化する予定。今はレベル1の効果しか作っていない。
-     */
     @Override
-    public boolean preventPotion(int amp, int id, EntityPlayer player) {
-        boolean flag = false;
-        Random rand = player.worldObj.rand;
+    public void applyEffectTick(LivingEntity living, int amplifier) {
+        if (!(living instanceof Player player) || player.level().isClientSide()) return;
 
-        if (id == DCsConfig.potionIDHallucinations && !player.worldObj.isRemote) {
-            double x = player.posX + rand.nextInt(7) - 3.0D;
-            double y = player.posY;
-            double z = player.posZ + rand.nextInt(7) - 3.0D;
-            int chance = rand.nextInt(200);
-            float f = rand.nextFloat();
-            float yaw = player.rotationYaw + 180.0F;
-            if (yaw > 180.0F) yaw -= 360.0F;
+        Random rand = player.level().random;
+        double x = player.getX() + rand.nextInt(7) - 3.0D;
+        double y = player.getY();
+        double z = player.getZ() + rand.nextInt(7) - 3.0D;
+        int chance = rand.nextInt(200);
+        float f = rand.nextFloat();
 
-            int dim = player.worldObj.provider.dimensionId;
-            String voice = "mob.zombie.say";
-            if (dim == -1) {
-                int i = player.worldObj.rand.nextInt(netherMobs.length);
-                voice = netherMobs[i];
-            } else {
-                int i = player.worldObj.rand.nextInt(overworldMobs.length);
-                voice = overworldMobs[i];
-            }
+        SoundEvent[] voices = player.level().dimension() == net.minecraft.world.level.Level.NETHER ? netherMobs
+            : overworldMobs;
+        SoundEvent voice = voices[rand.nextInt(voices.length)];
 
-            if (amp >= 0) {
-                if (chance <= amp) {
-                    player.worldObj.playSoundEffect(x, y, z, voice, 1.0F, 0.8F + f);
-                    flag = true;
-                }
-            }
-
-            if (amp > 0) {
-                if (chance < amp) {
-                    int ix = MathHelper.floor_double(x);
-                    int iy = MathHelper.floor_double(y);
-                    int iz = MathHelper.floor_double(z);
-                    boolean a = player.worldObj.isSideSolid(ix, iy - 1, iz, ForgeDirection.UP);
-                    boolean b = player.worldObj.isAirBlock(ix, iy, iz);
-                    boolean c = player.worldObj.isAirBlock(ix, iy + 1, iz);
-
-                    if (a && b && c) {
-                        EntityIllusionMobs illusion = new EntityIllusionMobs(player.worldObj, x, y, z, yaw);
-                        player.worldObj.spawnEntityInWorld(illusion);
-                        player.worldObj.playSoundEffect(x, y, z, "mob.creeper.say", 1.0F, 0.8F + f);
-                        flag = true;
-                    }
-
-                }
-            }
+        if (chance <= amplifier) {
+            player.level().playSound(null, x, y, z, voice, SoundSource.HOSTILE, 1.0F, 0.8F + f);
         }
 
-        return flag;
+        if (amplifier > 0 && chance < amplifier) {
+            BlockPos pos = BlockPos.containing(x, y, z);
+            boolean a = player.level().getBlockState(pos.below()).isSolidRender(player.level(), pos.below());
+            boolean b = player.level().getBlockState(pos).isAir();
+            boolean c = player.level().getBlockState(pos.above()).isAir();
+
+            if (a && b && c) {
+                mods.defeatedcrow.common.entity.dummy.EntityIllusionMobs illusion = new mods.defeatedcrow.common.entity.dummy.EntityIllusionMobs(
+                    player.level(), x, y, z, player.getYRot());
+                illusion.moveTo(x, y, z, player.getYRot(), 0.0F);
+                player.level().addFreshEntity(illusion);
+                player.level().playSound(null, x, y, z, SoundEvents.CREEPER_PRIMED, SoundSource.HOSTILE, 1.0F,
+                    0.8F + f);
+            }
+        }
     }
 
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+        return duration % 40 == 0;
+    }
 }

@@ -1,122 +1,90 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelFlowerPot extends ModelBase {
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-    // fields
-    ModelRenderer bagF;
-    ModelRenderer bagB;
-    ModelRenderer bagL;
-    ModelRenderer bagR;
-    ModelRenderer dirt;
-    ModelRenderer chain;
-    ModelRenderer flower1;
-    ModelRenderer flower2;
-    ModelRenderer flower3;
-    ModelRenderer base;
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELFLOWERPOT) -> new ModelFlowerPot(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelFlowerPot {
 
-    public ModelFlowerPot() {
-        textureWidth = 64;
-        textureHeight = 32;
+    private final ModelPart root;
+    private final ModelPart bagF;
+    private final ModelPart bagB;
+    private final ModelPart bagL;
+    private final ModelPart bagR;
+    private final ModelPart dirt;
+    private final ModelPart chain;
+    private final ModelPart flower1;
+    private final ModelPart flower2;
+    private final ModelPart flower3;
+    private final ModelPart base;
 
-        bagF = new ModelRenderer(this, 0, 0);
-        bagF.addBox(-6F, 2F, 0F, 12, 6, 1);
-        bagF.setRotationPoint(0F, 16F, 0F);
-        bagF.setTextureSize(64, 32);
-        bagF.mirror = true;
-        setRotation(bagF, 0.2617994F, 0F, 0F);
-        bagB = new ModelRenderer(this, 0, 0);
-        bagB.addBox(-6F, 2F, 5F, 12, 6, 1);
-        bagB.setRotationPoint(0F, 16F, 0F);
-        bagB.setTextureSize(64, 32);
-        bagB.mirror = true;
-        setRotation(bagB, 0.2617994F, 0F, 0F);
-        bagL = new ModelRenderer(this, 0, 7);
-        bagL.addBox(5F, 2F, 1F, 1, 6, 4);
-        bagL.setRotationPoint(0F, 16F, 0F);
-        bagL.setTextureSize(64, 32);
-        bagL.mirror = true;
-        setRotation(bagL, 0.2617994F, 0F, 0F);
-        bagR = new ModelRenderer(this, 0, 7);
-        bagR.addBox(-6F, 2F, 1F, 1, 6, 4);
-        bagR.setRotationPoint(0F, 16F, 0F);
-        bagR.setTextureSize(64, 32);
-        bagR.mirror = true;
-        setRotation(bagR, 0.2617994F, 0F, 0F);
-        dirt = new ModelRenderer(this, 7, 13);
-        dirt.addBox(-5F, 3F, 1F, 10, 4, 4);
-        dirt.setRotationPoint(0F, 16F, 0F);
-        dirt.setTextureSize(64, 32);
-        dirt.mirror = true;
-        setRotation(dirt, 0.2617994F, 0F, 0F);
-        chain = new ModelRenderer(this, 0, 22);
-        chain.addBox(-6.5F, 3F, -0.5F, 13, 1, 8);
-        chain.setRotationPoint(0F, 16F, 0F);
-        chain.setTextureSize(64, 32);
-        chain.mirror = true;
-        setRotation(chain, 0.2617994F, 0F, 0F);
-        flower1 = new ModelRenderer(this, 36, 16);
-        flower1.addBox(-7F, -8F, 3F, 14, 10, 0);
-        flower1.setRotationPoint(0F, 16F, 0F);
-        flower1.setTextureSize(64, 32);
-        flower1.mirror = true;
-        setRotation(flower1, -0.2617994F, 0F, 0F);
-        flower2 = new ModelRenderer(this, 36, 16);
-        flower2.addBox(-4F, -6F, 1F, 14, 10, 0);
-        flower2.setRotationPoint(0F, 16F, 0F);
-        flower2.setTextureSize(64, 32);
-        flower2.mirror = true;
-        setRotation(flower2, 0.3490659F, -0.3490659F, 0F);
-        flower3 = new ModelRenderer(this, 36, 16);
-        flower3.addBox(-10F, -6F, 1F, 14, 10, 0);
-        flower3.setRotationPoint(0F, 16F, 0F);
-        flower3.setTextureSize(64, 32);
-        flower3.mirror = true;
-        setRotation(flower3, 0.3490659F, 0.3490659F, 0F);
-        base = new ModelRenderer(this, 32, 0);
-        base.addBox(-8F, -8F, 7.9F, 16, 16, 0);
-        base.setRotationPoint(0F, 16F, 0F);
-        base.setTextureSize(64, 32);
-        base.mirror = true;
-        setRotation(base, 0F, 0F, 0F);
+    public ModelFlowerPot(ModelPart root) {
+        this.root = root;
+        this.bagF = root.getChild("bagF");
+        this.bagB = root.getChild("bagB");
+        this.bagL = root.getChild("bagL");
+        this.bagR = root.getChild("bagR");
+        this.dirt = root.getChild("dirt");
+        this.chain = root.getChild("chain");
+        this.flower1 = root.getChild("flower1");
+        this.flower2 = root.getChild("flower2");
+        this.flower3 = root.getChild("flower3");
+        this.base = root.getChild("base");
     }
 
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        bagF.render(f5);
-        bagB.render(f5);
-        bagL.render(f5);
-        bagR.render(f5);
-        dirt.render(f5);
-        chain.render(f5);
-        flower1.render(f5);
-        flower2.render(f5);
-        flower3.render(f5);
-        base.render(f5);
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition bagF = partdefinition.addOrReplaceChild("bagF", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 2F, 0F, 12, 6, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2617994F, 0F, 0F));
+        PartDefinition bagB = partdefinition.addOrReplaceChild("bagB", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 2F, 5F, 12, 6, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2617994F, 0F, 0F));
+        PartDefinition bagL = partdefinition.addOrReplaceChild("bagL", CubeListBuilder.create().texOffs(0, 7).mirror().addBox(5F, 2F, 1F, 1, 6, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2617994F, 0F, 0F));
+        PartDefinition bagR = partdefinition.addOrReplaceChild("bagR", CubeListBuilder.create().texOffs(0, 7).mirror().addBox(-6F, 2F, 1F, 1, 6, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2617994F, 0F, 0F));
+        PartDefinition dirt = partdefinition.addOrReplaceChild("dirt", CubeListBuilder.create().texOffs(7, 13).mirror().addBox(-5F, 3F, 1F, 10, 4, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2617994F, 0F, 0F));
+        PartDefinition chain = partdefinition.addOrReplaceChild("chain", CubeListBuilder.create().texOffs(0, 22).mirror().addBox(-6.5F, 3F, -0.5F, 13, 1, 8), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2617994F, 0F, 0F));
+        PartDefinition flower1 = partdefinition.addOrReplaceChild("flower1", CubeListBuilder.create().texOffs(36, 16).mirror().addBox(-7F, -8F, 3F, 14, 10, 0), PartPose.offsetAndRotation(0F, 16F, 0F, -0.2617994F, 0F, 0F));
+        PartDefinition flower2 = partdefinition.addOrReplaceChild("flower2", CubeListBuilder.create().texOffs(36, 16).mirror().addBox(-4F, -6F, 1F, 14, 10, 0), PartPose.offsetAndRotation(0F, 16F, 0F, 0.3490659F, -0.3490659F, 0F));
+        PartDefinition flower3 = partdefinition.addOrReplaceChild("flower3", CubeListBuilder.create().texOffs(36, 16).mirror().addBox(-10F, -6F, 1F, 14, 10, 0), PartPose.offsetAndRotation(0F, 16F, 0F, 0.3490659F, 0.3490659F, 0F));
+        PartDefinition base = partdefinition.addOrReplaceChild("base", CubeListBuilder.create().texOffs(32, 0).mirror().addBox(-8F, -8F, 7.9F, 16, 16, 0), PartPose.offset(0F, 16F, 0F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            bagF.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            bagB.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            bagL.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            bagR.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            dirt.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            chain.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            flower1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            flower2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            flower3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            base.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        bagF.rotateAngleY = f3 / (180F / (float) Math.PI);
-        bagB.rotateAngleY = f3 / (180F / (float) Math.PI);
-        bagL.rotateAngleY = f3 / (180F / (float) Math.PI);
-        bagR.rotateAngleY = f3 / (180F / (float) Math.PI);
-        dirt.rotateAngleY = f3 / (180F / (float) Math.PI);
-        chain.rotateAngleY = f3 / (180F / (float) Math.PI);
-        flower1.rotateAngleY = f3 / (180F / (float) Math.PI);
-        flower2.rotateAngleY = -0.3490659F + f3 / (180F / (float) Math.PI);
-        flower3.rotateAngleY = 0.3490659F + f3 / (180F / (float) Math.PI);
-        base.rotateAngleY = f3 / (180F / (float) Math.PI);
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        bagF.yRot = f3 / (180F / (float) Math.PI);
+        bagB.yRot = f3 / (180F / (float) Math.PI);
+        bagL.yRot = f3 / (180F / (float) Math.PI);
+        bagR.yRot = f3 / (180F / (float) Math.PI);
+        dirt.yRot = f3 / (180F / (float) Math.PI);
+        chain.yRot = f3 / (180F / (float) Math.PI);
+        flower1.yRot = f3 / (180F / (float) Math.PI);
+        flower2.yRot = -0.3490659F + f3 / (180F / (float) Math.PI);
+        flower3.yRot = 0.3490659F + f3 / (180F / (float) Math.PI);
+        base.yRot = f3 / (180F / (float) Math.PI);
     }
-
 }

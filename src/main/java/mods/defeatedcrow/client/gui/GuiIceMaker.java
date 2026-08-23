@@ -1,75 +1,73 @@
 package mods.defeatedcrow.client.gui;
 
-import java.util.ArrayList;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
-import mods.defeatedcrow.common.tile.*;
 import mods.defeatedcrow.common.tile.appliance.ContainerIceMaker;
 import mods.defeatedcrow.common.tile.appliance.TileIceMaker;
 
-public class GuiIceMaker extends GuiContainer {
+/**
+ * 1.20.1 screen for the Ice Maker (was {@code GuiContainer}).
+ *
+ * <p>
+ * Migration assumptions (owner: WT-B / common-tile):
+ * <ul>
+ * <li>{@code ContainerIceMaker} extends {@code AbstractContainerMenu} with a network constructor
+ * {@code (int id, Inventory inv, FriendlyByteBuf buf)} reading the backing {@code BlockPos}.</li>
+ * <li>{@code ContainerIceMaker#getTile()} exposes the backing {@code TileIceMaker}.</li>
+ * <li>Screen registration (bootstrap / ModMenuTypes territory, NOT done here):
+ * {@code MenuScreens.register(ModMenuTypes.ICE_MAKER.get(), GuiIceMaker::new);} inside
+ * {@code FMLClientSetupEvent#enqueueWork}.</li>
+ * </ul>
+ */
+public class GuiIceMaker extends AbstractContainerScreen<ContainerIceMaker> {
 
-    private TileIceMaker tileentity;
-    private TileIceMaker inventory;
+    private static final ResourceLocation TEXTURE = new ResourceLocation("defeatedcrow", "textures/gui/icemakergui.png");
 
-    public GuiIceMaker(EntityPlayer player, TileIceMaker par2TileEntity) {
-        super(new ContainerIceMaker(player, par2TileEntity));
-        this.tileentity = par2TileEntity;
-        this.inventory = par2TileEntity;
+    private final TileIceMaker tileentity;
+
+    public GuiIceMaker(ContainerIceMaker menu, Inventory playerInv, Component title) {
+        super(menu, playerInv, title);
+        this.tileentity = menu.getTile();
+        this.imageWidth = 176;
+        this.imageHeight = 166;
+        this.titleLabelY = 6;
+        this.inventoryLabelY = this.imageHeight - 94;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int x, int y) {
-        // インベントリ名の描画
-        String s = this.inventory.hasCustomInventoryName() ? this.inventory.getInventoryName()
-            : I18n.format(this.inventory.getInventoryName(), new Object[0]);
-        this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
-        this.fontRendererObj
-            .drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
-    }
-
-    @Override
-    public void drawScreen(int x, int y, float par3) {
-        super.drawScreen(x, y, par3);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        this.renderBackground(graphics);
+        super.render(graphics, mouseX, mouseY, partialTick);
 
         // チャージゲージのマウスオーバー
-        boolean b1 = this.func_146978_c(11, 26, 12, 27, x, y);
+        boolean b1 = this.isHovering(11, 26, 12, 27, mouseX, mouseY);
         if (b1) {
             int charge = this.tileentity.getChargeAmount();
-            ArrayList<String> list1 = new ArrayList<String>();
-            list1.add("Ice Charge Amount : " + charge);
-            this.drawHoveringText(list1, x, y, fontRendererObj);
+            graphics.renderTooltip(this.font, Component.literal("Ice Charge Amount : " + charge), mouseX, mouseY);
         }
+        this.renderTooltip(graphics, mouseX, mouseY);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float par1, int x, int y) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
-        // テクスチャの指定
-        // ResourceLocationの第一引数を付け足してドメインを指定することもできる
-        // 例:new ResourceLocation("sample", "textures/gui/container/furnace.png")
-        this.mc.getTextureManager()
-            .bindTexture(new ResourceLocation("defeatedcrow", "textures/gui/icemakergui.png"));
-
+    protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
         // かまど描画処理
-        int k = (this.width - this.xSize) / 2;
-        int l = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-        int i1;
-        int i2;
+        int k = this.leftPos;
+        int l = this.topPos;
+        graphics.blit(TEXTURE, k, l, 0, 0, this.imageWidth, this.imageHeight);
 
-        i1 = this.tileentity.getBurnTimeRemainingScaled(16);
-        this.drawTexturedModalRect(k + 57, l + 36 + 16 - i1, 176, 16 - i1, 14, i1);
+        int i1 = this.tileentity.getBurnTimeRemainingScaled(16);
+        if (i1 > 0) {
+            graphics.blit(TEXTURE, k + 57, l + 36 + 16 - i1, 176, 16 - i1, 14, i1);
+        }
 
-        i2 = this.tileentity.getCookProgressScaled(24);
-        this.drawTexturedModalRect(k + 79, l + 34, 176, 14, i2 + 1, 16);
+        int i2 = this.tileentity.getCookProgressScaled(24);
+        if (i2 > 0) {
+            graphics.blit(TEXTURE, k + 79, l + 34, 176, 14, i2 + 1, 16);
+        }
     }
 
 }

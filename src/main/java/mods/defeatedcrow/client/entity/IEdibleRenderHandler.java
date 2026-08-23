@@ -1,10 +1,7 @@
 package mods.defeatedcrow.client.entity;
 
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelPart;
 import net.minecraft.item.ItemStack;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * EdibleEntityのレンダ―モデルやテクスチャパスを返すインターフェイス。
@@ -15,8 +12,7 @@ public interface IEdibleRenderHandler {
 
     ItemStack getItem();
 
-    @SideOnly(Side.CLIENT)
-    Class<? extends ModelBase> getModel();
+    Class<? extends ModelPart> getModel();
 
     String getEntityTex(int meta);
 

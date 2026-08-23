@@ -1,42 +1,27 @@
 package mods.defeatedcrow.plugin;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
-import cpw.mods.fml.common.Loader;
-import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
-import mods.defeatedcrow.common.DCsAppleMilk;
+import net.minecraftforge.fml.ModList;
 
 // defeatedcrow製add-onとの調整が必要な部分をここに置く
 public class AddonIntegration {
 
-    private static boolean isJPLoaded;
-    private static boolean isMagicLoaded;
-    private static boolean isSweetLoaded;
-
     private AddonIntegration() {}
 
     public static void load() {
-        isJPLoaded = Loader.isModLoaded("AMTAddonJP");
-        isMagicLoaded = Loader.isModLoaded("AMTAddonMagic");
-        isSweetLoaded = Loader.isModLoaded("AMTAddonSweet");
+        // 1.20.1: ModList.get().isLoaded はいつでも参照可能なため、
+        // 事前キャッシュは不要。互換のためメソッド自体は維持する。
     }
 
     public static boolean loadedJP() {
-        return isJPLoaded;
+        return ModList.get().isLoaded("AMTAddonJP");
     }
 
     public static boolean loadedMagic() {
-        return isMagicLoaded;
+        return ModList.get().isLoaded("AMTAddonMagic");
     }
 
-    public static void addRecipe() {
-        if (!isJPLoaded) {
-            RecipeRegisterManager.evaporatorRecipe.addRecipe(
-                null,
-                new FluidStack(DCsAppleMilk.shothu_young, 100),
-                new ItemStack(DCsAppleMilk.moromi, 1, 0),
-                true);
-        }
+    public static boolean loadedSweet() {
+        return ModList.get().isLoaded("AMTAddonSweet");
     }
+
 }

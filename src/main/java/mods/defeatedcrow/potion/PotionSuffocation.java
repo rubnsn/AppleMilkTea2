@@ -1,28 +1,30 @@
 package mods.defeatedcrow.potion;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.LivingEntity;
 
-import mods.defeatedcrow.api.potion.PotionBaseAMT;
+/**
+ * 窒息ポーション。1.20.1 MobEffect化 (旧 PotionBaseAMT は api 凍結のため直接継承に切替)。
+ * See doc/potions/migration-guide.md
+ */
+public class PotionSuffocation extends MobEffect {
 
-public class PotionSuffocation extends PotionBaseAMT {
-
-    public PotionSuffocation(int par1, boolean par2, int par3, int x, int y) {
-        super(par1, par2, par3, x, y);
+    public PotionSuffocation(MobEffectCategory category, int color) {
+        super(category, color);
     }
 
     @Override
-    public void performEffect(EntityLivingBase par1EntityLivingBase, int par2) {
-        if (par2 > 0 && par1EntityLivingBase.getHealth() > 1.0F) {
-            float damage = par2;
-            par1EntityLivingBase.attackEntityFrom(DamageSource.inWall, damage);
+    public void applyEffectTick(LivingEntity living, int amplifier) {
+        if (amplifier > 0 && living.getHealth() > 1.0F) {
+            float damage = amplifier;
+            living.hurt(living.damageSources().inWall(), damage);
         }
     }
 
     @Override
-    public boolean isReady(int par1, int par2) {
-        int k = 25 >> par2;
-        return k > 0 ? par1 % k == 0 : true;
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+        int k = 25 >> amplifier;
+        return k > 0 ? duration % k == 0 : true;
     }
-
 }

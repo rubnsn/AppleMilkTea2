@@ -1,145 +1,96 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelBarrelBase extends ModelBase {
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-    // fields
-    ModelRenderer base1;
-    ModelRenderer base2;
-    ModelRenderer base3;
-    ModelRenderer base4;
-    ModelRenderer base5;
-    ModelRenderer base6;
-    ModelRenderer base7;
-    ModelRenderer base8;
-    ModelRenderer base9;
-    ModelRenderer base10;
-    ModelRenderer base11;
-    ModelRenderer base12;
-    ModelRenderer base13;
-    ModelRenderer base14;
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELBARRELBASE) -> new ModelBarrelBase(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelBarrelBase {
 
-    public ModelBarrelBase() {
-        textureWidth = 64;
-        textureHeight = 32;
+    private final ModelPart root;
+    private final ModelPart base1;
+    private final ModelPart base2;
+    private final ModelPart base3;
+    private final ModelPart base4;
+    private final ModelPart base5;
+    private final ModelPart base6;
+    private final ModelPart base7;
+    private final ModelPart base8;
+    private final ModelPart base9;
+    private final ModelPart base10;
+    private final ModelPart base11;
+    private final ModelPart base12;
+    private final ModelPart base13;
+    private final ModelPart base14;
 
-        base1 = new ModelRenderer(this, 0, 0);
-        base1.addBox(-6F, 8.1F, 6F, 12, 1, 1);
-        base1.setRotationPoint(0F, 16F, 0F);
-        base1.setTextureSize(64, 32);
-        base1.mirror = true;
-        setRotation(base1, 0F, 1.570796F, 0F);
-        base2 = new ModelRenderer(this, 0, 0);
-        base2.addBox(-6F, 8.1F, -7F, 12, 1, 1);
-        base2.setRotationPoint(0F, 16F, 0F);
-        base2.setTextureSize(64, 32);
-        base2.mirror = true;
-        setRotation(base2, 0F, 1.570796F, 0F);
-        base3 = new ModelRenderer(this, 0, 0);
-        base3.addBox(-6F, 6F, 6F, 12, 1, 1);
-        base3.setRotationPoint(0F, 16F, 0F);
-        base3.setTextureSize(64, 32);
-        base3.mirror = true;
-        setRotation(base3, 0F, 1.570796F, 0F);
-        base4 = new ModelRenderer(this, 0, 0);
-        base4.addBox(-6F, 6F, -7F, 12, 1, 1);
-        base4.setRotationPoint(0F, 16F, 0F);
-        base4.setTextureSize(64, 32);
-        base4.mirror = true;
-        setRotation(base4, 0F, 1.570796F, 0F);
-        base5 = new ModelRenderer(this, 0, 4);
-        base5.addBox(-8F, 8.1F, -7F, 16, 1, 1);
-        base5.setRotationPoint(0F, 16F, 0F);
-        base5.setTextureSize(64, 32);
-        base5.mirror = true;
-        setRotation(base5, 0F, 0F, 0F);
-        base6 = new ModelRenderer(this, 0, 4);
-        base6.addBox(-8F, 8.1F, 6F, 16, 1, 1);
-        base6.setRotationPoint(0F, 16F, 0F);
-        base6.setTextureSize(64, 32);
-        base6.mirror = true;
-        setRotation(base6, 0F, 0F, 0F);
-        base7 = new ModelRenderer(this, 0, 4);
-        base7.addBox(-8F, 6F, -7F, 16, 1, 1);
-        base7.setRotationPoint(0F, 16F, 0F);
-        base7.setTextureSize(64, 32);
-        base7.mirror = true;
-        setRotation(base7, 0F, 0F, 0F);
-        base8 = new ModelRenderer(this, 0, 4);
-        base8.addBox(-8F, 6F, 6F, 16, 1, 1);
-        base8.setRotationPoint(0F, 16F, 0F);
-        base8.setTextureSize(64, 32);
-        base8.mirror = true;
-        setRotation(base8, 0F, 0F, 0F);
-        base9 = new ModelRenderer(this, 36, 0);
-        base9.addBox(6F, 7F, -7F, 1, 1, 1);
-        base9.setRotationPoint(0F, 16F, 0F);
-        base9.setTextureSize(64, 32);
-        base9.mirror = true;
-        setRotation(base9, 0F, 0F, 0F);
-        base10 = new ModelRenderer(this, 36, 0);
-        base10.addBox(-7F, 7F, -7F, 1, 1, 1);
-        base10.setRotationPoint(0F, 16F, 0F);
-        base10.setTextureSize(64, 32);
-        base10.mirror = true;
-        setRotation(base10, 0F, 0F, 0F);
-        base11 = new ModelRenderer(this, 36, 0);
-        base11.addBox(6F, 7F, 6F, 1, 1, 1);
-        base11.setRotationPoint(0F, 16F, 0F);
-        base11.setTextureSize(64, 32);
-        base11.mirror = true;
-        setRotation(base11, 0F, 0F, 0F);
-        base12 = new ModelRenderer(this, 36, 0);
-        base12.addBox(-7F, 7F, 6F, 1, 1, 1);
-        base12.setRotationPoint(0F, 16F, 0F);
-        base12.setTextureSize(64, 32);
-        base12.mirror = true;
-        setRotation(base12, 0F, 0F, 0F);
-        base13 = new ModelRenderer(this, 0, 8);
-        base13.addBox(-7F, 5F, 4.5F, 14, 1, 1);
-        base13.setRotationPoint(0F, 16F, 0F);
-        base13.setTextureSize(64, 32);
-        base13.mirror = true;
-        setRotation(base13, 0F, 1.570796F, 0F);
-        base14 = new ModelRenderer(this, 0, 8);
-        base14.addBox(-7F, 5F, -5.5F, 14, 1, 1);
-        base14.setRotationPoint(0F, 16F, 0F);
-        base14.setTextureSize(64, 32);
-        base14.mirror = true;
-        setRotation(base14, 0F, 1.570796F, 0F);
+    public ModelBarrelBase(ModelPart root) {
+        this.root = root;
+        this.base1 = root.getChild("base1");
+        this.base2 = root.getChild("base2");
+        this.base3 = root.getChild("base3");
+        this.base4 = root.getChild("base4");
+        this.base5 = root.getChild("base5");
+        this.base6 = root.getChild("base6");
+        this.base7 = root.getChild("base7");
+        this.base8 = root.getChild("base8");
+        this.base9 = root.getChild("base9");
+        this.base10 = root.getChild("base10");
+        this.base11 = root.getChild("base11");
+        this.base12 = root.getChild("base12");
+        this.base13 = root.getChild("base13");
+        this.base14 = root.getChild("base14");
     }
 
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        base1.render(f5);
-        base2.render(f5);
-        base3.render(f5);
-        base4.render(f5);
-        base5.render(f5);
-        base6.render(f5);
-        base7.render(f5);
-        base8.render(f5);
-        base9.render(f5);
-        base10.render(f5);
-        base11.render(f5);
-        base12.render(f5);
-        base13.render(f5);
-        base14.render(f5);
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition base1 = partdefinition.addOrReplaceChild("base1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 8.1F, 6F, 12, 1, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 1.570796F, 0F));
+        PartDefinition base2 = partdefinition.addOrReplaceChild("base2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 8.1F, -7F, 12, 1, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 1.570796F, 0F));
+        PartDefinition base3 = partdefinition.addOrReplaceChild("base3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 6F, 6F, 12, 1, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 1.570796F, 0F));
+        PartDefinition base4 = partdefinition.addOrReplaceChild("base4", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 6F, -7F, 12, 1, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 1.570796F, 0F));
+        PartDefinition base5 = partdefinition.addOrReplaceChild("base5", CubeListBuilder.create().texOffs(0, 4).mirror().addBox(-8F, 8.1F, -7F, 16, 1, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition base6 = partdefinition.addOrReplaceChild("base6", CubeListBuilder.create().texOffs(0, 4).mirror().addBox(-8F, 8.1F, 6F, 16, 1, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition base7 = partdefinition.addOrReplaceChild("base7", CubeListBuilder.create().texOffs(0, 4).mirror().addBox(-8F, 6F, -7F, 16, 1, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition base8 = partdefinition.addOrReplaceChild("base8", CubeListBuilder.create().texOffs(0, 4).mirror().addBox(-8F, 6F, 6F, 16, 1, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition base9 = partdefinition.addOrReplaceChild("base9", CubeListBuilder.create().texOffs(36, 0).mirror().addBox(6F, 7F, -7F, 1, 1, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition base10 = partdefinition.addOrReplaceChild("base10", CubeListBuilder.create().texOffs(36, 0).mirror().addBox(-7F, 7F, -7F, 1, 1, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition base11 = partdefinition.addOrReplaceChild("base11", CubeListBuilder.create().texOffs(36, 0).mirror().addBox(6F, 7F, 6F, 1, 1, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition base12 = partdefinition.addOrReplaceChild("base12", CubeListBuilder.create().texOffs(36, 0).mirror().addBox(-7F, 7F, 6F, 1, 1, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition base13 = partdefinition.addOrReplaceChild("base13", CubeListBuilder.create().texOffs(0, 8).mirror().addBox(-7F, 5F, 4.5F, 14, 1, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 1.570796F, 0F));
+        PartDefinition base14 = partdefinition.addOrReplaceChild("base14", CubeListBuilder.create().texOffs(0, 8).mirror().addBox(-7F, 5F, -5.5F, 14, 1, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 1.570796F, 0F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            base1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            base2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            base3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            base4.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            base5.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            base6.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            base7.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            base8.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            base9.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            base10.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            base11.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            base12.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            base13.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            base14.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, null);
-
-    }
-
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        }
 }

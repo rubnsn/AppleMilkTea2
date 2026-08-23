@@ -1,115 +1,90 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-@SideOnly(Side.CLIENT)
-public class ModelRotaryDial extends ModelBase {
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELROTARYDIAL) -> new ModelRotaryDial(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelRotaryDial {
 
-    // fields
-    ModelRenderer bottom;
-    ModelRenderer middle;
-    ModelRenderer back;
-    ModelRenderer leg1;
-    ModelRenderer leg2;
-    ModelRenderer handle;
-    ModelRenderer handle2;
-    ModelRenderer handle3;
-    ModelRenderer plate;
+    private final ModelPart root;
+    private final ModelPart bottom;
+    private final ModelPart middle;
+    private final ModelPart back;
+    private final ModelPart leg1;
+    private final ModelPart leg2;
+    private final ModelPart handle;
+    private final ModelPart handle2;
+    private final ModelPart handle3;
+    private final ModelPart plate;
 
-    public ModelRotaryDial() {
-        bottom = new ModelRenderer(this, 0, 0);
-        bottom.addBox(-4.5F, 0F, -5F, 9, 4, 10);
-        bottom.setRotationPoint(0F, 20F, 0F);
-        bottom.setTextureSize(64, 32);
-        bottom.mirror = true;
-        setRotation(bottom, 0F, 0F, 0F);
-        middle = new ModelRenderer(this, 0, 0);
-        middle.addBox(-4.5F, 0F, -5F, 9, 4, 9);
-        middle.setRotationPoint(0F, 18F, 0F);
-        middle.setTextureSize(64, 32);
-        middle.mirror = true;
-        setRotation(middle, 0.418879F, 0F, 0F);
-        back = new ModelRenderer(this, 0, 0);
-        back.addBox(-4.5F, 0F, 3F, 9, 7, 4);
-        back.setRotationPoint(0F, 17F, 0F);
-        back.setTextureSize(64, 32);
-        back.mirror = true;
-        setRotation(back, 0F, 0F, 0F);
-        leg1 = new ModelRenderer(this, 0, 0);
-        leg1.addBox(2F, 0F, 4F, 1, 1, 2);
-        leg1.setRotationPoint(0F, 16F, 0F);
-        leg1.setTextureSize(64, 32);
-        leg1.mirror = true;
-        setRotation(leg1, 0F, 0F, 0F);
-        leg2 = new ModelRenderer(this, 0, 0);
-        leg2.addBox(-3F, 0F, 4F, 1, 1, 2);
-        leg2.setRotationPoint(0F, 16F, 0F);
-        leg2.setTextureSize(64, 32);
-        leg2.mirror = true;
-        setRotation(leg2, 0F, 0F, 0F);
-        handle = new ModelRenderer(this, 0, 15);
-        handle.addBox(-5F, 0F, 4F, 10, 1, 2);
-        handle.setRotationPoint(0F, 15F, 0F);
-        handle.setTextureSize(64, 32);
-        handle.mirror = true;
-        setRotation(handle, 0F, 0F, 0F);
-        handle2 = new ModelRenderer(this, 0, 0);
-        handle2.addBox(5F, 0F, 3F, 3, 4, 4);
-        handle2.setRotationPoint(0F, 15F, 0F);
-        handle2.setTextureSize(64, 32);
-        handle2.mirror = true;
-        setRotation(handle2, 0F, 0F, 0F);
-        handle3 = new ModelRenderer(this, 0, 0);
-        handle3.addBox(-8F, 0F, 3F, 3, 4, 4);
-        handle3.setRotationPoint(0F, 15F, 0F);
-        handle3.setTextureSize(64, 32);
-        handle3.mirror = true;
-        setRotation(handle3, 0F, 0F, 0F);
-        plate = new ModelRenderer(this, 0, 19);
-        plate.addBox(-4F, 0.5F, -5F, 8, 0, 8);
-        plate.setRotationPoint(0F, 17F, 0F);
-        plate.setTextureSize(64, 32);
-        plate.mirror = true;
-        setRotation(plate, 0.418879F, 0F, 0F);
+    public ModelRotaryDial(ModelPart root) {
+        this.root = root;
+        this.bottom = root.getChild("bottom");
+        this.middle = root.getChild("middle");
+        this.back = root.getChild("back");
+        this.leg1 = root.getChild("leg1");
+        this.leg2 = root.getChild("leg2");
+        this.handle = root.getChild("handle");
+        this.handle2 = root.getChild("handle2");
+        this.handle3 = root.getChild("handle3");
+        this.plate = root.getChild("plate");
     }
 
-    public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7,
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition bottom = partdefinition.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4.5F, 0F, -5F, 9, 4, 10), PartPose.offset(0F, 20F, 0F));
+        PartDefinition middle = partdefinition.addOrReplaceChild("middle", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4.5F, 0F, -5F, 9, 4, 9), PartPose.offsetAndRotation(0F, 18F, 0F, 0.418879F, 0F, 0F));
+        PartDefinition back = partdefinition.addOrReplaceChild("back", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4.5F, 0F, 3F, 9, 7, 4), PartPose.offset(0F, 17F, 0F));
+        PartDefinition leg1 = partdefinition.addOrReplaceChild("leg1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(2F, 0F, 4F, 1, 1, 2), PartPose.offset(0F, 16F, 0F));
+        PartDefinition leg2 = partdefinition.addOrReplaceChild("leg2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3F, 0F, 4F, 1, 1, 2), PartPose.offset(0F, 16F, 0F));
+        PartDefinition handle = partdefinition.addOrReplaceChild("handle", CubeListBuilder.create().texOffs(0, 15).mirror().addBox(-5F, 0F, 4F, 10, 1, 2), PartPose.offset(0F, 15F, 0F));
+        PartDefinition handle2 = partdefinition.addOrReplaceChild("handle2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(5F, 0F, 3F, 3, 4, 4), PartPose.offset(0F, 15F, 0F));
+        PartDefinition handle3 = partdefinition.addOrReplaceChild("handle3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-8F, 0F, 3F, 3, 4, 4), PartPose.offset(0F, 15F, 0F));
+        PartDefinition plate = partdefinition.addOrReplaceChild("plate", CubeListBuilder.create().texOffs(0, 19).mirror().addBox(-4F, 0.5F, -5F, 8, 0, 8), PartPose.offsetAndRotation(0F, 17F, 0F, 0.418879F, 0F, 0F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
+    }
+
+
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay,
         byte par8) {
-        super.render(par1Entity, par2, par3, par4, par5, par6, par7);
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
-        this.bottom.render(par7);
-        this.middle.render(par7);
-        this.back.render(par7);
-        this.handle.render(par7);
-        this.handle2.render(par7);
-        this.handle3.render(par7);
-        this.leg1.render(par7);
-        this.leg2.render(par7);
-        this.plate.render(par7);
+            bottom.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            middle.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            back.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            handle.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            handle2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            handle3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            leg1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            leg2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            plate.render(poseStack, vertexConsumer, packedLight, packedOverlay);
 
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        this.bottom.yRot = f3 / (180F / (float) Math.PI);
+        this.middle.yRot = f3 / (180F / (float) Math.PI);
+        this.back.yRot = f3 / (180F / (float) Math.PI);
+        this.leg1.yRot = f3 / (180F / (float) Math.PI);
+        this.leg2.yRot = f3 / (180F / (float) Math.PI);
+        this.handle.yRot = f3 / (180F / (float) Math.PI);
+        this.handle2.yRot = f3 / (180F / (float) Math.PI);
+        this.handle3.yRot = f3 / (180F / (float) Math.PI);
+        this.plate.yRot = f3 / (180F / (float) Math.PI);
     }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        this.bottom.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.middle.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.back.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.leg1.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.leg2.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.handle.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.handle2.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.handle3.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.plate.rotateAngleY = f3 / (180F / (float) Math.PI);
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+        this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 }

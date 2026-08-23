@@ -1,72 +1,60 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelBasketT extends ModelBase {
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-    // fields
-    ModelRenderer base;
-    ModelRenderer sideF;
-    ModelRenderer sideB;
-    ModelRenderer sideR;
-    ModelRenderer sideL;
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELBASKETT) -> new ModelBasketT(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelBasketT {
 
-    public ModelBasketT() {
-        textureWidth = 64;
-        textureHeight = 64;
+    private final ModelPart root;
+    private final ModelPart base;
+    private final ModelPart sideF;
+    private final ModelPart sideB;
+    private final ModelPart sideR;
+    private final ModelPart sideL;
 
-        base = new ModelRenderer(this, 0, 36);
-        base.addBox(-5F, 7F, -5F, 10, 1, 10);
-        base.setRotationPoint(0F, 16F, 0F);
-        base.setTextureSize(64, 64);
-        base.mirror = true;
-        setRotation(base, 0F, 0F, 0F);
-        sideF = new ModelRenderer(this, 0, 48);
-        sideF.addBox(-5F, -1F, -5F, 10, 8, 1);
-        sideF.setRotationPoint(0F, 16F, 0F);
-        sideF.setTextureSize(64, 64);
-        sideF.mirror = true;
-        setRotation(sideF, 0F, 0F, 0F);
-        sideB = new ModelRenderer(this, 0, 48);
-        sideB.addBox(-5F, -1F, 4F, 10, 8, 1);
-        sideB.setRotationPoint(0F, 16F, 0F);
-        sideB.setTextureSize(64, 64);
-        sideB.mirror = true;
-        setRotation(sideB, 0F, 0F, 0F);
-        sideR = new ModelRenderer(this, 32, 48);
-        sideR.addBox(-4F, -1F, -5F, 8, 8, 1);
-        sideR.setRotationPoint(0F, 16F, 0F);
-        sideR.setTextureSize(64, 64);
-        sideR.mirror = true;
-        setRotation(sideR, 0F, 1.570796F, 0F);
-        sideL = new ModelRenderer(this, 32, 48);
-        sideL.addBox(-4F, -1F, 4F, 8, 8, 1);
-        sideL.setRotationPoint(0F, 16F, 0F);
-        sideL.setTextureSize(64, 64);
-        sideL.mirror = true;
-        setRotation(sideL, 0F, 1.570796F, 0F);
+    public ModelBasketT(ModelPart root) {
+        this.root = root;
+        this.base = root.getChild("base");
+        this.sideF = root.getChild("sideF");
+        this.sideB = root.getChild("sideB");
+        this.sideR = root.getChild("sideR");
+        this.sideL = root.getChild("sideL");
     }
 
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5);
-        base.render(f5);
-        sideF.render(f5);
-        sideB.render(f5);
-        sideR.render(f5);
-        sideL.render(f5);
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition base = partdefinition.addOrReplaceChild("base", CubeListBuilder.create().texOffs(0, 36).mirror().addBox(-5F, 7F, -5F, 10, 1, 10), PartPose.offset(0F, 16F, 0F));
+        PartDefinition sideF = partdefinition.addOrReplaceChild("sideF", CubeListBuilder.create().texOffs(0, 48).mirror().addBox(-5F, -1F, -5F, 10, 8, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition sideB = partdefinition.addOrReplaceChild("sideB", CubeListBuilder.create().texOffs(0, 48).mirror().addBox(-5F, -1F, 4F, 10, 8, 1), PartPose.offset(0F, 16F, 0F));
+        PartDefinition sideR = partdefinition.addOrReplaceChild("sideR", CubeListBuilder.create().texOffs(32, 48).mirror().addBox(-4F, -1F, -5F, 8, 8, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 1.570796F, 0F));
+        PartDefinition sideL = partdefinition.addOrReplaceChild("sideL", CubeListBuilder.create().texOffs(32, 48).mirror().addBox(-4F, -1F, 4F, 8, 8, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 1.570796F, 0F));
+        return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            base.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            sideF.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            sideB.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            sideR.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            sideL.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, null);
-    }
-
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        }
 }

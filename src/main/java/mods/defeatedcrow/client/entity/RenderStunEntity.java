@@ -1,31 +1,34 @@
 package mods.defeatedcrow.client.entity;
 
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
+
 import mods.defeatedcrow.common.entity.dummy.EntityStunEffect;
 
-@SideOnly(Side.CLIENT)
-public class RenderStunEntity extends Render {
+/**
+ * 1.20.1 migration: Render -> EntityRenderer. Renders nothing (as in 1.7.10).
+ */
+public class RenderStunEntity extends EntityRenderer<EntityStunEffect> {
 
-    // 仮
-    private static final ResourceLocation tex = new ResourceLocation("defeatedcrow:textures/entity/kinoko_red.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("defeatedcrow", "textures/entity/kinoko_red.png");
+
+    public RenderStunEntity(EntityRendererProvider.Context ctx) {
+        super(ctx);
+    }
 
     @Override
-    public void doRender(Entity par1Entity, double posX, double posY, double posZ, float round, float yaw) {
+    public void render(EntityStunEffect entity, float yaw, float partialTick, PoseStack poseStack,
+        MultiBufferSource buffer, int packedLight) {
         // なにもしない
-    }
-
-    protected ResourceLocation getStunTextures(EntityStunEffect par1Entity) {
-        return tex;
+        super.render(entity, yaw, partialTick, poseStack, buffer, packedLight);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
-        return this.getStunTextures((EntityStunEffect) entity);
+    public ResourceLocation getTextureLocation(EntityStunEffect entity) {
+        return TEXTURE;
     }
-
 }

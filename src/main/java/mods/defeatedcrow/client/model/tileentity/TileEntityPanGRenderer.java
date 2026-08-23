@@ -1,121 +1,48 @@
 package mods.defeatedcrow.client.model.tileentity;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import mods.defeatedcrow.client.model.model.ModelPanHandle;
 import mods.defeatedcrow.common.tile.appliance.TilePanG;
 
-@SideOnly(Side.CLIENT)
-public class TileEntityPanGRenderer extends TileEntitySpecialRenderer {
+/**
+ * 1.20.1 port of the 1.7.10 TESR (was: extends the legacy 1.7.10 TESR + ModelBase + Tessellator quads).
+ *
+ * <p>Original rendered ModelPanHandle for the pan body plus up to three stacked contents quads
+ * (rice layers at y 0.3 / 0.2 / 0.1) textured from a runtime texPass texture
+ * ({@code contents_rice} base).</p>
+ */
+public class TileEntityPanGRenderer implements BlockEntityRenderer<TilePanG> {
 
-    private static final ResourceLocation PanGTex = new ResourceLocation("textures/blocks/hardened_clay.png");
-    private static ResourceLocation contentsTex = new ResourceLocation(
-        "defeatedcrow:textures/blocks/contents_rice.png");
     public static TileEntityPanGRenderer panRenderer;
-    private ModelPanHandle PanGModel = new ModelPanHandle();
 
-    public void renderTileEntityPanAt(TilePanG par1TilePanG, double par2, double par4, double par6, float par8) {
-        this.setRotation((float) par2, (float) par4, (float) par6, par1TilePanG);
-    }
+    private final BlockEntityRendererProvider.Context context;
 
-    /**
-     * Associate a TileEntityRenderer with this TileEntitySpecialRenderer
-     */
-    public void setTileEntityRenderer(TileEntityRendererDispatcher par1TileEntityRenderer) {
-        super.func_147497_a(par1TileEntityRenderer);
+    public TileEntityPanGRenderer(BlockEntityRendererProvider.Context context) {
+        this.context = context;
         panRenderer = this;
     }
 
-    public void setRotation(float par1, float par2, float par3, TilePanG tile) {
-        ModelPanHandle model = this.PanGModel;
-        String tex = tile.getCurrentTexture();
-        boolean dir = tile.getDirection();
-        byte rem = tile.getRemainByte();
-        boolean hasRecipe = (tile.getRecipe() != null);
-
-        byte d = (byte) (dir ? 1 : 0);
-
-        this.bindTexture(PanGTex);
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glTranslatef((float) par1, (float) par2 + 1.0F, (float) par3 + 1.0F);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        short short1 = 0;
-
-        GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-        GL11.glRotatef((float) short1, 0.0F, -1.0F, 0.0F);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        model.render((Entity) null, 0.0F, 0.0F, 0.0F, d, 0.0F, 0.0625F);
-        GL11.glPopMatrix();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
-        // 中身
-        if (hasRecipe) {
-            Tessellator tessellator = Tessellator.instance;
-            contentsTex = new ResourceLocation(tex);
-
-            GL11.glPushMatrix();
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glColor4f(2.0F, 2.0F, 2.0F, 1.0F);
-            GL11.glTranslatef((float) par1, (float) par2 + 0.5F, (float) par3);
-            GL11.glScalef(1.0F, -1.0F, -1.0F);
-            GL11.glRotatef(0.0F, 0.0F, 0.0F, 0.0F);
-
-            GL11.glPolygonOffset(-1, -1);
-            GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
-
-            float f14 = 0F;
-            float f15 = 1F;
-            float f4 = 0F;
-            float f5 = 1F;
-            this.bindTexture(contentsTex);
-
-            if (rem == 1) {
-                tessellator.startDrawingQuads();
-                tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                tessellator.addVertexWithUV(0.21D, 0.3D, -0.79D, (double) f14, (double) f4);
-                tessellator.addVertexWithUV(0.79D, 0.3D, -0.79D, (double) f14, (double) f5);
-                tessellator.addVertexWithUV(0.79D, 0.3D, -0.21D, (double) f15, (double) f5);
-                tessellator.addVertexWithUV(0.21D, 0.3D, -0.21D, (double) f15, (double) f4);
-                tessellator.draw();
-            } else if (rem == 2) {
-                tessellator.startDrawingQuads();
-                tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                tessellator.addVertexWithUV(0.21D, 0.2D, -0.79D, (double) f14, (double) f4);
-                tessellator.addVertexWithUV(0.79D, 0.2D, -0.79D, (double) f14, (double) f5);
-                tessellator.addVertexWithUV(0.79D, 0.2D, -0.21D, (double) f15, (double) f5);
-                tessellator.addVertexWithUV(0.21D, 0.2D, -0.21D, (double) f15, (double) f4);
-                tessellator.draw();
-            } else {
-                tessellator.startDrawingQuads();
-                tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                tessellator.addVertexWithUV(0.21D, 0.1D, -0.79D, (double) f14, (double) f4);
-                tessellator.addVertexWithUV(0.79D, 0.1D, -0.79D, (double) f14, (double) f5);
-                tessellator.addVertexWithUV(0.79D, 0.1D, -0.21D, (double) f15, (double) f5);
-                tessellator.addVertexWithUV(0.21D, 0.1D, -0.21D, (double) f15, (double) f4);
-                tessellator.draw();
-            }
-
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
-            GL11.glPopMatrix();
-        }
-    }
-
     @Override
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
-        this.renderTileEntityPanAt((TilePanG) par1TileEntity, par2, par4, par6, par8);
+    public void render(TilePanG tile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+            int packedLight, int packedOverlay) {
+        poseStack.pushPose();
+        poseStack.translate(0.5D, 1.0D, 0.5D);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+
+        // TODO(WT-B): get the fill amount/type from the migrated BlockEntity to pick layer count
+        // (old code stacked quads at y 0.3D / 0.2D / 0.1D) and rebuild contentsTex (texPass).
+        // TODO(WT-A): fetch the contents sprite from the block atlas:
+        //   TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+        //       .apply(new ResourceLocation("defeatedcrow:block/contents_rice")).get();
+        //   VertexConsumer vc = bufferSource.getBuffer(Sheets.cutoutBlockSheet());
+        // then emit the 0.21..0.79 square top-face quads via vc.vertex(...).
+        // Pan body geometry: see client/model/model.ModelPanHandle (unconverted).
+
+        poseStack.popPose();
     }
 }

@@ -1,34 +1,44 @@
-package mods.defeatedcrow.client.model.model;
+﻿package mods.defeatedcrow.client.model.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.src.*;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelWipeBox2 extends ModelBase {
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-    // fields
-    ModelRenderer paperbox = new ModelRenderer(this, 0, 0).setTextureSize(64, 32);
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELWIPEBOX2) -> new ModelWipeBox2(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelWipeBox2 {
 
-    public ModelWipeBox2() {
-        paperbox.addBox(-6F, 0F, -7.5F, 12, 9, 15);
-        paperbox.setRotationPoint(0F, 15F, 0F);
-        paperbox.mirror = true;
+    private final ModelPart root;
+    private final ModelPart paperbox;
+
+    public ModelWipeBox2(ModelPart root) {
+        this.root = root;
+        this.paperbox = root.getChild("paperbox");
     }
 
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        paperbox.render(f5);
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition paperbox = partdefinition.addOrReplaceChild("paperbox", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 0F, -7.5F, 12, 9, 15), PartPose.offset(0F, 15F, 0F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            paperbox.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    }
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        }
 }

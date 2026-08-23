@@ -1,62 +1,52 @@
-package mods.defeatedcrow.client.entity;
+﻿package mods.defeatedcrow.client.entity;
 
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import mods.defeatedcrow.client.ModEntityRenderers;
 import mods.defeatedcrow.client.model.model.ModelSandwich;
 import mods.defeatedcrow.common.entity.edible.PlaceableSandwich;
 
-@SideOnly(Side.CLIENT)
-public class RenderSandwichEntity extends Render {
+/**
+ * 1.20.1 migration: Render -> EntityRenderer + PoseStack/MultiBufferSource.
+ */
+public class RenderSandwichEntity extends EntityRenderer<PlaceableSandwich> {
 
-    private static final ResourceLocation thisTex = new ResourceLocation("defeatedcrow:textures/entity/sandwich.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("defeatedcrow", "textures/entity/sandwich.png");
 
-    /** instance of ModelBoat for rendering */
-    protected ModelSandwich model;
+    private final ModelSandwich model;
 
-    public RenderSandwichEntity() {
-        this.shadowSize = 0.5F;
-        this.model = new ModelSandwich();
+    public RenderSandwichEntity(EntityRendererProvider.Context ctx) {
+        super(ctx);
+        this.shadowRadius = 0.5F;
+        this.model = new ModelSandwich(ctx.bakeLayer(ModEntityRenderers.MODEL_SANDWICH));
     }
 
-    /**
-     * The render method used in RenderBoat that renders the boat model.
-     */
-    public void render(PlaceableSandwich entity, double posX, double posY, double posZ, float round, float yaw) {
-        ModelSandwich model = this.model;
+    @Override
+    public void render(PlaceableSandwich entity, float yaw, float partialTick, PoseStack poseStack,
+        MultiBufferSource buffer, int packedLight) {
         byte l = (byte) entity.getItemMetadata();
 
-        this.bindTexture(thisTex);
-
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glColor4f(2.0F, 2.0F, 2.0F, 1.0F);
-        GL11.glTranslatef((float) posX, (float) posY + 1.2F, (float) posZ);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef(round, 0.0F, 1.0F, 0.0F);
-        model.render((Entity) null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, l);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
-
-    }
-
-    protected ResourceLocation getMelonTextures(PlaceableSandwich par1Entity) {
-        return thisTex;
+        poseStack.pushPose();
+        poseStack.translate(0.0F, 1.2F, 0.0F);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
+        VertexConsumer vc = buffer.getBuffer(RenderType.entityCutout(getTextureLocation(entity)));
+        this.model.render(poseStack, vc, packedLight, OverlayTexture.NO_OVERLAY, l);
+        poseStack.popPose();
+        super.render(entity, yaw, partialTick, poseStack, buffer, packedLight);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity) {
-        return this.getMelonTextures((PlaceableSandwich) par1Entity);
-    }
-
-    @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-        this.render((PlaceableSandwich) par1Entity, par2, par4, par6, par8, par9);
+    public ResourceLocation getTextureLocation(PlaceableSandwich entity) {
+        return TEXTURE;
     }
 }

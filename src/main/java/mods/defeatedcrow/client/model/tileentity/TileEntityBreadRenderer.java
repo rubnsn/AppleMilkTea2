@@ -1,104 +1,62 @@
 package mods.defeatedcrow.client.model.tileentity;
 
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import mods.defeatedcrow.client.model.model.ModelBasketL;
-import mods.defeatedcrow.client.model.model.ModelBasketT;
-import mods.defeatedcrow.client.model.model.ModelBreadAlt;
-import mods.defeatedcrow.client.model.model.ModelBreads;
 import mods.defeatedcrow.common.tile.TileBread;
-import mods.defeatedcrow.handler.Util;
 
-@SideOnly(Side.CLIENT)
-public class TileEntityBreadRenderer extends TileEntitySpecialRenderer {
+/**
+ * 1.20.1 port of the 1.7.10 TESR (was: extends the legacy 1.7.10 TESR + GL11 immediate mode).
+ *
+ * <p>Original geometry: {@link mods.defeatedcrow.client.model.model.ModelBasketL}
+ * (ModelBase-based, owned by client/model/model - not yet converted to LayerDefinition/ModelPart).</p>
+ */
+public class TileEntityBreadRenderer implements BlockEntityRenderer<TileBread> {
 
-    private static final ResourceLocation BreadTex = new ResourceLocation(
-        Util.getEntityTexturePassNoAlt() + "breads.png");
-    private static final ResourceLocation BreadTex2 = new ResourceLocation(
-        Util.getEntityTexturePassNoAlt() + "breads2.png");
-    private static final ResourceLocation BreadTex3 = new ResourceLocation(
-        Util.getEntityTexturePassNoAlt() + "breads3.png");
-    private static final ResourceLocation BreadAltTex = new ResourceLocation(
-        Util.getEntityTexturePassNoAlt() + "breadalt.png");
-    private static final ResourceLocation BreadAltTex2 = new ResourceLocation(
-        Util.getEntityTexturePassNoAlt() + "breadalt2.png");
-    private static final ResourceLocation BreadAltTex3 = new ResourceLocation(
-        Util.getEntityTexturePassNoAlt() + "breadalt3.png");
-    private static final ResourceLocation BasketTex = new ResourceLocation(
-        Util.getEntityTexturePassNoAlt() + "baskets.png");
-    private static final ResourceLocation BottleTex = new ResourceLocation(
-        Util.getEntityTexturePassNoAlt() + "bottlebasket.png");
-    public static TileEntityBreadRenderer BreadRenderer;
-    private ModelBreads breadModel = new ModelBreads();
-    private ModelBreadAlt altModel = new ModelBreadAlt();
-    private ModelBasketL basketL = new ModelBasketL();
-    private ModelBasketT basketT = new ModelBasketT();
+    private static final ResourceLocation BREAD_TEX = new ResourceLocation(
+        "defeatedcrow:textures/entity/breads.png");
+    private static final ResourceLocation BREAD_TEX_2 = new ResourceLocation(
+        "defeatedcrow:textures/entity/breads2.png");
+    private static final ResourceLocation BREAD_TEX_3 = new ResourceLocation(
+        "defeatedcrow:textures/entity/breads3.png");
+    private static final ResourceLocation BREAD_ALT_TEX = new ResourceLocation(
+        "defeatedcrow:textures/entity/breadalt.png");
+    private static final ResourceLocation BREAD_ALT_TEX_2 = new ResourceLocation(
+        "defeatedcrow:textures/entity/breadalt2.png");
+    private static final ResourceLocation BREAD_ALT_TEX_3 = new ResourceLocation(
+        "defeatedcrow:textures/entity/breadalt3.png");
+    private static final ResourceLocation BASKET_TEX = new ResourceLocation(
+        "defeatedcrow:textures/entity/baskets.png");
+    private static final ResourceLocation BOTTLE_BASKET_TEX = new ResourceLocation(
+        "defeatedcrow:textures/entity/bottlebasket.png");
 
-    public void renderTileEntityBreadAt(TileBread par1TileBread, double par2, double par4, double par6, float par8) {
-        this.setRotation((float) par2, (float) par4, (float) par6, par1TileBread.getDirectionByte(), par1TileBread);
-    }
 
-    /**
-     * Associate a TileEntityRenderer with this TileEntitySpecialRenderer
-     */
-    public void setTileEntityRenderer(TileEntityRendererDispatcher par1TileEntityRenderer) {
-        super.func_147497_a(par1TileEntityRenderer);
-        BreadRenderer = this;
-    }
+    private final BlockEntityRendererProvider.Context context;
 
-    public void setRotation(float par1, float par2, float par3, byte par4, TileBread tile) {
-        ModelBreads modelBread = this.breadModel;
-        byte l = (byte) tile.getBlockMetadata();
-        byte b = tile.getType();
-        boolean t = tile.getTall();
-        float j = 0;
-        if (par4 == 0) j = 180.0F;
-        if (par4 == 1) j = -90.0F;
-        if (par4 == 2) j = 0.0F;
-        if (par4 == 4) j = 90.0F;
-
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glTranslatef((float) par1 + 0.5F, (float) par2 + 1.5F, (float) par3 + 0.5F);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glRotatef(j, 0.0F, 1.0F, 0.0F);
-
-        if (l < 6) {
-            if (t) {
-                if (b == 0) this.bindTexture(BreadAltTex);
-                else if (b == 1) this.bindTexture(BreadAltTex2);
-                else this.bindTexture(BreadAltTex3);
-                this.altModel.render((Entity) null, 0.0F, 0.0F, 0.0F, l, 0.0F, 0.0625F);
-                this.bindTexture(BasketTex);
-                this.basketT.render((Entity) null, 0.0F, 0.0F, 0.0F, l, 0.0F, 0.0625F);
-            } else {
-                if (b == 0) this.bindTexture(BreadTex);
-                else if (b == 1) this.bindTexture(BreadTex2);
-                else this.bindTexture(BreadTex3);
-                this.breadModel.render((Entity) null, 0.0F, 0.0F, 0.0F, l, 0.0F, 0.0625F);
-                this.bindTexture(BasketTex);
-                this.basketL.render((Entity) null, 0.0F, 0.0F, 0.0F, l, 0.0F, 0.0625F);
-            }
-        } else {
-            this.bindTexture(BottleTex);
-            this.breadModel.renderBottle((Entity) null, 0.0F, 0.0F, 0.0F, l, 0.0F, 0.0625F);
-        }
-
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
+    public TileEntityBreadRenderer(BlockEntityRendererProvider.Context context) {
+        this.context = context;
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
-        this.renderTileEntityBreadAt((TileBread) par1TileEntity, par2, par4, par6, par8);
+    public void render(TileBread tile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+            int packedLight, int packedOverlay) {
+        // Original selected among breads/breadalt/baskets/bottlebasket textures by metadata,
+        // all under the Util.getEntityTexturePassNoAlt() prefix.
+        // Old GL11 chain: translate(x + 0.5, y + 1.5, z + 0.5); scale(1, -1, -1);
+        // rotate(yaw from direction byte/metadata around Y); bindTexture(...);
+        // model.render(null, 0, 0, 0, yaw, 0, 0.0625F);
+        poseStack.pushPose();
+        poseStack.translate(0.5D, 1.5D, 0.5D);
+        poseStack.scale(1.0F, -1.0F, -1.0F);
+
+        // TODO: restore ModelBasketL rendering via
+        // VertexConsumer vc = bufferSource.getBuffer(Sheets.cutoutBlockSheet());
+        // (blended/translucent parts: Sheets.translucentCullBlockSheet()).
+        poseStack.popPose();
     }
 }

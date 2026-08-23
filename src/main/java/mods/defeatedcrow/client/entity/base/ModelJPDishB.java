@@ -1,58 +1,54 @@
-package mods.defeatedcrow.client.entity.base;
+﻿package mods.defeatedcrow.client.entity.base;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelJPDishB extends ModelBase {
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-    // fields
-    ModelRenderer dishJP1;
-    ModelRenderer dishJP2;
-    ModelRenderer dishJP3;
+/**
+ * 1.20.1 migration: former ModelBase/ModelRenderer model, now LayerDefinition + ModelPart.
+ * Geometry was mechanically preserved from the 1.7.10 original.
+ * Usage: bakeLayer(ModEntityRenderers.MODEL_MODELJPDISHB) -> new ModelJPDishB(modelPart).
+ * If this model has a setupAnim(...) method, call it before render() to apply part rotations.
+ */
+public class ModelJPDishB {
 
-    public ModelJPDishB() {
-        textureWidth = 64;
-        textureHeight = 32;
+    private final ModelPart root;
+    private final ModelPart dishJP1;
+    private final ModelPart dishJP2;
+    private final ModelPart dishJP3;
 
-        dishJP1 = new ModelRenderer(this, 0, 0);
-        dishJP1.addBox(-6F, 0F, -6F, 12, 1, 12);
-        dishJP1.setRotationPoint(0F, 23F, 0F);
-        dishJP1.setTextureSize(64, 32);
-        dishJP1.mirror = true;
-        setRotation(dishJP1, 0F, 0F, 0F);
-        dishJP2 = new ModelRenderer(this, 0, 13);
-        dishJP2.addBox(-6F, 0F, -7F, 12, 2, 1);
-        dishJP2.setRotationPoint(0F, 22F, 0F);
-        dishJP2.setTextureSize(64, 32);
-        dishJP2.mirror = true;
-        setRotation(dishJP2, 0F, -1.570796F, 0F);
-        dishJP3 = new ModelRenderer(this, 0, 13);
-        dishJP3.addBox(-6F, 0F, -7F, 12, 2, 1);
-        dishJP3.setRotationPoint(0F, 22F, 0F);
-        dishJP3.setTextureSize(64, 32);
-        dishJP3.mirror = true;
-        setRotation(dishJP3, 0F, 1.570796F, 0F);
+    public ModelJPDishB(ModelPart root) {
+        this.root = root;
+        this.dishJP1 = root.getChild("dishJP1");
+        this.dishJP2 = root.getChild("dishJP2");
+        this.dishJP3 = root.getChild("dishJP3");
+    }
+
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition dishJP1 = partdefinition.addOrReplaceChild("dishJP1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 0F, -6F, 12, 1, 12), PartPose.offset(0F, 23F, 0F));
+        PartDefinition dishJP2 = partdefinition.addOrReplaceChild("dishJP2", CubeListBuilder.create().texOffs(0, 13).mirror().addBox(-6F, 0F, -7F, 12, 2, 1), PartPose.offsetAndRotation(0F, 22F, 0F, 0F, -1.570796F, 0F));
+        PartDefinition dishJP3 = partdefinition.addOrReplaceChild("dishJP3", CubeListBuilder.create().texOffs(0, 13).mirror().addBox(-6F, 0F, -7F, 12, 2, 1), PartPose.offsetAndRotation(0F, 22F, 0F, 0F, 1.570796F, 0F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
+    }
+
+
+    @Override
+    public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+            dishJP1.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            dishJP2.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+            dishJP3.render(poseStack, vertexConsumer, packedLight, packedOverlay);
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        dishJP1.render(f5);
-        dishJP2.render(f5);
-        dishJP3.render(f5);
-    }
-
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
-    }
-
-    @Override
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    }
-
+    public void setupAnim(float f, float f1, float f2, float f3, float f4, float f5) {
+        }
 }

@@ -1,55 +1,75 @@
 package mods.defeatedcrow.client.particle;
 
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.world.World;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.core.particles.SimpleParticleType;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-@SideOnly(Side.CLIENT)
-public class EntityOrbFX extends EntityFX {
+/**
+ * 1.20.1 port of the 1.7.10 "orb" particle (was {@code EntityFX}, FX layer 2).
+ *
+ * <p>
+ * Half-transparent orb that rises straight up, shrinks, and dies once it has climbed more than 1 block
+ * from its origin (old {@code orginalPosY} logic). Spawned by BlockChalcedonyLamp (WT-B).
+ */
+public class EntityOrbFX extends TextureSheetParticle {
 
     // 発生地点のY座標。消滅条件に利用する
-    double orginalPosY;
+    private final double originalPosY;
 
-    public EntityOrbFX(World par1World, double par2, double par4, double par6, double par8, double par10,
-        double par12) {
-        super(par1World, par2, par4, par6);
-        this.orginalPosY = par4;
-        this.motionX = 0.0D;
-        this.motionY = par10;
-        this.motionZ = 0.0D;
-        this.noClip = false;
+    protected EntityOrbFX(ClientLevel level, double x, double y, double z, double vx, double vy, double vz,
+        SpriteSet sprites) {
+        super(level, x, y, z, vx, vy, vz);
+        this.originalPosY = y;
+        this.xd = 0.0D;
+        this.yd = vy;
+        this.zd = 0.0D;
+        this.alpha = 0.5F;
+        this.quadSize = 0.2F;
+        this.lifetime = 20 + this.random.nextInt(12);
+        this.setSprite(sprites.get(this.random));
     }
 
     @Override
-    public void setAlphaF(float par1) {
-        this.particleAlpha = 0.5F;
-    }
+    public void tick() {
+        this.xo = this.x;
+        this.yo = this.y;
+        this.zo = this.z;
 
-    @Override
-    public void onUpdate() {
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
-
-        // 小さくする
-        if (this.particleScale > 0.05F) {
-            this.particleScale = this.particleScale - 0.05F;
-        } else {
-            this.setDead();
+        if (this.age++ >= this.lifetime) {
+            this.remove();
+            return;
         }
 
-        // 発生地点から1m以上上昇したら消滅する
-        if (this.posY > orginalPosY + 1.0D && this.particleAge++ >= this.particleMaxAge) {
-            this.setDead();
+        // 発生地点から1m以上上昇したら消滅
+        if (this.y > this.originalPosY + 1.0D) {
+            this.remove();
+            return;
         }
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+
+        this.move(this.xd, this.yd, this.zd);
     }
 
     @Override
-    public int getFXLayer() {
-        return 2;
+    public float getQuadSize(float partialTick) {
+        // 小さくすめる
+        float f = ((float) this.lifetime - (float) this.age - partialTick) / (float) this.lifetime;
+        return this.quadSize * Math.max(f, 0.0F);
     }
 
+    public static class Provider implements ParticleProvider<SimpleParticleType> {
+
+        private final SpriteSet sprites;
+
+        public Provider(SpriteSet sprites) {
+            this.sprites = sprites;
+        }
+
+        @Override
+        public EntityOrbFX createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z,
+            double vx, double vy, double vz) {
+            return new EntityOrbFX(level, x, y, z, vx, vy, vz, this.sprites);
+        }
+    }
 }
