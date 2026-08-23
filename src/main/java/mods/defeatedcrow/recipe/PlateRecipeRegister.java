@@ -1,4 +1,4 @@
-﻿package mods.defeatedcrow.recipe;
+package mods.defeatedcrow.recipe;
 
 import java.util.ArrayList;
 import java.util.List;

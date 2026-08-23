@@ -1,4 +1,4 @@
-﻿package mods.defeatedcrow.recipe;
+package mods.defeatedcrow.recipe;
 
 import java.util.ArrayList;
 
@@ -323,7 +323,8 @@ public class RegisterMakerRecipe {
     }
 
     public void registerProcessor() {
-        // 繝励Ο繧ｻ繝・し繝ｼ逕ｨ縺ｮ譁ｰ隕上Ξ繧ｷ繝・        RecipeRegisterManager.processorRecipe
+        // 繝励Ο繧ｻ繝・し繝ｼ逕ｨ縺ｮ譁ｰ隕上Ξ繧ｷ繝・
+        RecipeRegisterManager.processorRecipe
             .addRecipe(new ItemStack(DCsAppleMilk.foodTea, 2, 0), true, null, new Object[] { DCsAppleMilk.leafTea });
 
         RecipeRegisterManager.processorRecipe
@@ -335,7 +336,8 @@ public class RegisterMakerRecipe {
             null,
             new Object[] { "cropApple", Items.sugar, DCsAppleMilk.bowlBlock });
 
-        // 縺翫ｍ縺鈴≡繝ｬ繧ｷ繝斐・遘ｻ讀・        // 闌ｶ闡・        RecipeRegisterManager.processorRecipe
+        // 縺翫ｍ縺鈴≡繝ｬ繧ｷ繝斐・遘ｻ讀・        // 闌ｶ闡・
+        RecipeRegisterManager.processorRecipe
             .addRecipe(new ItemStack(DCsAppleMilk.gratedApple, 1, 0), true, null, new Object[] { "cropApple" });
 
         RecipeRegisterManager.processorRecipe
@@ -410,7 +412,8 @@ public class RegisterMakerRecipe {
             null,
             new Object[] { "cropApple", new ItemStack(DCsAppleMilk.foodTea, 1, 1) });
 
-        // 骰区攝譁・        RecipeRegisterManager.processorRecipe.addRecipe(
+        // 骰区攝譁・
+        RecipeRegisterManager.processorRecipe.addRecipe(
             new ItemStack(DCsAppleMilk.mincedFoods, 1, 0),
             true,
             null,
@@ -506,7 +509,8 @@ public class RegisterMakerRecipe {
             null,
             new Object[] { new ItemStack(DCsAppleMilk.mincedFoods, 1, 8), "bucketMilk" });
 
-        // 遐慕浹讖・        RecipeRegisterManager.processorRecipe.addRecipe(
+        // 遐慕浹讖・
+        RecipeRegisterManager.processorRecipe.addRecipe(
             new ItemStack(Items.flint),
             false,
             0,
@@ -683,7 +687,8 @@ public class RegisterMakerRecipe {
             null,
             new ItemStack(DCsAppleMilk.icyCrystal, 1, 0));
 
-        // 驟・        RecipeRegisterManager.evaporatorRecipe.addRecipe(
+        // 驟・
+        RecipeRegisterManager.evaporatorRecipe.addRecipe(
             null,
             new FluidStack(DCsAppleMilk.whiskey_young, 100),
             new ItemStack(DCsAppleMilk.moromi, 1, 1),
@@ -876,7 +881,6 @@ public class RegisterMakerRecipe {
 
     public static void testRecipe() {
         // TagHelper.registerOre (datapack)("logYuzuWood", new ItemStack(DCsAppleMilk.logYuzu, 1, 0));
-
         RecipeRegisterManager.processorRecipe
             .addRecipe(new ItemStack(DCsAppleMilk.dustWood, 1, 0), false, 0, null, new Object[] { "logYuzuWood" });
     }

@@ -1,4 +1,4 @@
-﻿package mods.defeatedcrow.recipe;
+package mods.defeatedcrow.recipe;
 
 import java.util.HashMap;
 import java.util.List;

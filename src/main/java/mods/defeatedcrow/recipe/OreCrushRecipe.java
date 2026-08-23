@@ -1,4 +1,4 @@
-﻿package mods.defeatedcrow.recipe;
+package mods.defeatedcrow.recipe;
 
 import java.util.ArrayList;
 
@@ -202,12 +202,13 @@ public class OreCrushRecipe {
         tier5.add(new ItemStack(Items.spawn_egg, 1, 120));
         tier5.add(new ItemStack(DCsAppleMilk.fossilScale));
 
-        // 繝懊ち螻ｱ險ｭ螳壻ｻ･螟悶・dust蜿門ｾ・        // ingot縺悟ｭ伜惠縺励↑縺・→辟ｼ縺上Ξ繧ｷ繝斐ｂ蟄伜惠縺励↑縺・        // 1.20.1: 譌ｧGameRegistry.addSmelting縺ｯ蟒・ｭ｢縲り｣ｽ骭ｬ繝ｬ繧ｷ繝斐・ data/dcsapplemilk/recipes/smelting/*.json 縺ｸ遘ｻ陦後☆繧九・        // TODO(datapack): oreDust meta i 竊・ingotX 縺ｮ陬ｽ骭ｬ繝ｬ繧ｷ繝寧SON繧堤函謌舌☆繧具ｼ育┌縺代ｌ縺ｰ驩・う繝ｳ繧ｴ繝・ヨ縺ｸ・峨・        String[] ores4 = new String[] { "Iron", "Tin", "Copper", "Silver", "Lead", "Gold", "Nickel", "Platinum" };
+        // 繝懊ち螻ｱ險ｭ螳壻ｻ･螟悶・dust蜿門ｾ・        // ingot縺悟ｭ伜惠縺励↑縺・→辟ｼ縺上Ξ繧ｷ繝斐ｂ蟄伜惠縺励↑縺・        // 1.20.1: 譌ｧGameRegistry.addSmelting縺ｯ蟒・ｭ｢縲り｣ｽ骭ｬ繝ｬ繧ｷ繝斐・ data/dcsapplemilk/recipes/smelting/*.json 縺ｸ遘ｻ陦後☆繧九・        // TODO(datapack): oreDust meta i 竊・ingotX 縺ｮ陬ｽ骭ｬ繝ｬ繧ｷ繝寧SON繧堤函謌舌☆繧具ｼ育┌縺代ｌ縺ｰ驩・う繝ｳ繧ｴ繝・ヨ縺ｸ・峨・
+        String[] ores4 = new String[] { "Iron", "Tin", "Copper", "Silver", "Lead", "Gold", "Nickel", "Platinum" };
         for (int i = 0; i < ores4.length; i++) {
             if (TagHelper.getTagItems("ingot" + ores4[i]) != null && !TagHelper.getTagItems("ingot" + ores4[i])
                 .isEmpty()) {
                 AMTLogger.debugInfo("smelting recipe (datapack pending): oreDust:" + i + " -> ingot" + ores4[i]);
-            } else// 縺ｪ縺九▲縺溘ｉ驩・↓縺ｪ繧・            {
+            } else {
                 AMTLogger.debugInfo("smelting recipe (datapack pending): oreDust:" + i + " -> iron_ingot");
             }
         }
