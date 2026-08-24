@@ -8,10 +8,10 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-import mods.defeatedcrow.common.tile.energy.TileChargerDevice;
+import mods.defeatedcrow.common.tile.energy.TileChargerBase;
 import mods.defeatedcrow.client.model.model.ModelCharger;
 
-public class TileEntityChargerRenderer implements BlockEntityRenderer<TileChargerDevice> {
+public class TileEntityChargerRenderer implements BlockEntityRenderer<TileChargerBase> {
     private final ModelCharger model;
     private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/charger.png");
 
@@ -21,7 +21,7 @@ public class TileEntityChargerRenderer implements BlockEntityRenderer<TileCharge
     }
 
     @Override
-    public void render(TileChargerDevice be, float partialTicks, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+    public void render(TileChargerBase be, float partialTicks, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
         pose.pushPose();
         pose.translate(0.5, 1.5, 0.5);
         pose.scale(1.0F, -1.0F, -1.0F);

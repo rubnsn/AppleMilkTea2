@@ -39,9 +39,7 @@ public class ModBlockEntities {
     public static final RegistryObject<BlockEntityType<mods.defeatedcrow.common.tile.TilePanHandle>> TILE_PAN_HANDLE = BLOCK_ENTITIES.register("tile_pan_handle",
         () -> BlockEntityType.Builder.of(mods.defeatedcrow.common.tile.TilePanHandle::new, ModBlocks.EMPTY_PAN_G.get()).build(null));
 
-    // --- WT-B: ENERGY (TileChargerBase, TileChargerDevice, TileGelBat, TileHandleEngine) ---
-    public static final RegistryObject<BlockEntityType<mods.defeatedcrow.common.tile.energy.TileChargerBase>> TILE_CHARGER_BASE = BLOCK_ENTITIES.register("tile_charger_base",
-        () -> BlockEntityType.Builder.of(mods.defeatedcrow.common.tile.energy.TileChargerBase::new, ModBlocks.BAT_BOX.get()).build(null));
+    // --- WT-B: ENERGY (TileChargerDevice extends TileChargerBase, unified to single type for bat_box; tile_charger_base removed) ---
     public static final RegistryObject<BlockEntityType<mods.defeatedcrow.common.tile.energy.TileChargerDevice>> TILE_CHARGER_DEVICE = BLOCK_ENTITIES.register("tile_charger_device",
         () -> BlockEntityType.Builder.of(mods.defeatedcrow.common.tile.energy.TileChargerDevice::new, ModBlocks.BAT_BOX.get()).build(null));
     public static final RegistryObject<BlockEntityType<mods.defeatedcrow.common.tile.energy.TileGelBat>> TILE_GEL_BAT = BLOCK_ENTITIES.register("tile_gel_bat",
