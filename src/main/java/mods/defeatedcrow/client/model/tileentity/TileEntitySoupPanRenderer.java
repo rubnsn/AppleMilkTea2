@@ -12,22 +12,15 @@ import mods.defeatedcrow.common.tile.appliance.TileFilledSoupPan;
 import mods.defeatedcrow.client.model.model.ModelPanHandle;
 
 public class TileEntitySoupPanRenderer implements BlockEntityRenderer<TileFilledSoupPan> {
+    // WT0 fix: soup pan now via JSON (filled_soup_pan.json - terracotta + contents_soup). BER disabled to avoid partial ModelPanHandle duplicate.
     private final ModelPanHandle model;
-    private static final ResourceLocation TEX = new ResourceLocation("minecraft", "textures/block/terracotta.png");
 
     public TileEntitySoupPanRenderer(BlockEntityRendererProvider.Context ctx) {
-        // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)
         this.model = new ModelPanHandle(ModelPanHandle.createBodyLayer().bakeRoot());
     }
 
     @Override
     public void render(TileFilledSoupPan be, float partialTicks, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
-        pose.pushPose();
-        pose.translate(0.5, 1.5, 0.5);
-        pose.scale(1.0F, -1.0F, -1.0F);
-        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(TEX));
-        // Fallback to entityCutout if texture missing, will show missing but compile
-        this.model.renderToBuffer(pose, vc, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
-        pose.popPose();
+        // No-op: JSON handles full pan + contents. Dynamic soup level via blockstate if needed in future.
     }
 }

@@ -199,9 +199,9 @@ public class ModItems {
     public static final RegistryObject<Item> EMPTY_CUP_ITEM = ITEMS.register("empty_cup",
         () -> new BlockItem(ModBlocks.EMPTY_CUP.get(), new Item.Properties()));
     public static final RegistryObject<Item> EMPTY_PAN_G_ITEM = ITEMS.register("empty_pan_g",
-        () -> new TESRBlockItem(ModBlocks.EMPTY_PAN_G.get(), new Item.Properties()));
+        () -> new BlockItem(ModBlocks.EMPTY_PAN_G.get(), new Item.Properties()));
     public static final RegistryObject<Item> FILLED_SOUP_PAN_ITEM = ITEMS.register("filled_soup_pan",
-        () -> new TESRBlockItem(ModBlocks.FILLED_SOUP_PAN.get(), new Item.Properties()));
+        () -> new BlockItem(ModBlocks.FILLED_SOUP_PAN.get(), new Item.Properties()));
     public static final RegistryObject<Item> ICE_MAKER_ITEM = ITEMS.register("ice_maker",
         () -> new TESRBlockItem(ModBlocks.ICE_MAKER.get(), new Item.Properties()));
     public static final RegistryObject<Item> TEPPAN_II_ITEM = ITEMS.register("teppan_ii",
