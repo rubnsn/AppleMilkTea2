@@ -13,7 +13,7 @@ import mods.defeatedcrow.client.model.model.ModelMakerHandle;
 
 public class TileEntityMakerRenderer implements BlockEntityRenderer<TileMakerHandle> {
     private final ModelMakerHandle model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/makerhandle.png");
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/automaker.png");
 
     public TileEntityMakerRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)

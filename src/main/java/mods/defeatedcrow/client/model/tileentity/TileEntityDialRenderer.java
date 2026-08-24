@@ -13,7 +13,7 @@ import mods.defeatedcrow.client.model.model.ModelRotaryDial;
 
 public class TileEntityDialRenderer implements BlockEntityRenderer<TileRotaryDial> {
     private final ModelRotaryDial model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/dial.png");
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/rotarydial.png");
 
     public TileEntityDialRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)

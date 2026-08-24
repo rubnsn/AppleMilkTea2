@@ -13,7 +13,7 @@ import mods.defeatedcrow.client.model.model.ModelBreads;
 
 public class TileEntityTeppanIIRenderer implements BlockEntityRenderer<TileTeppanII> {
     private final ModelBreads model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/teppan.png");
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/processor.png");
 
     public TileEntityTeppanIIRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)

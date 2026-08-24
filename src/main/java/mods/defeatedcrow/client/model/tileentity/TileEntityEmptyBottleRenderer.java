@@ -13,7 +13,7 @@ import mods.defeatedcrow.client.model.model.ModelLargeBottle;
 
 public class TileEntityEmptyBottleRenderer implements BlockEntityRenderer<TileEmptyBottle> {
     private final ModelLargeBottle model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/emptybottle.png");
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/largebottle.png");
 
     public TileEntityEmptyBottleRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)

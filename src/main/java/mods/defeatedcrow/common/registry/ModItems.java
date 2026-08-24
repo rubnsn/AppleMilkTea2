@@ -226,7 +226,7 @@ public class ModItems {
     public static final RegistryObject<Item> GUNPOWDER_CONTAINER_ITEM = ITEMS.register("gunpowder_container",
         () -> new BlockItem(ModBlocks.GUNPOWDER_CONTAINER.get(), new Item.Properties()));
     public static final RegistryObject<Item> EGG_BASKET_ITEM = ITEMS.register("egg_basket",
-        () -> new BlockItem(ModBlocks.EGG_BASKET.get(), new Item.Properties()));
+        () -> new TESRBlockItem(ModBlocks.EGG_BASKET.get(), new Item.Properties()));
     public static final RegistryObject<Item> MUSH_BOX_ITEM = ITEMS.register("mushroom_box",
         () -> new BlockItem(ModBlocks.MUSH_BOX.get(), new Item.Properties()));
     public static final RegistryObject<Item> MELON_BOMB_ITEM = ITEMS.register("melon_bomb",
@@ -322,17 +322,17 @@ public class ModItems {
     public static final RegistryObject<Item> YUZU_BAT_ITEM = ITEMS.register("yuzu_bat",
         () -> new BlockItem(ModBlocks.YUZU_BAT.get(), new Item.Properties()));
     public static final RegistryObject<Item> GEL_BAT_ITEM = ITEMS.register("gel_bat",
-        () -> new BlockItem(ModBlocks.GEL_BAT.get(), new Item.Properties()));
+        () -> new TESRBlockItem(ModBlocks.GEL_BAT.get(), new Item.Properties()));
     public static final RegistryObject<Item> HANDLE_ENGINE_ITEM = ITEMS.register("handle_engine",
         () -> new TESRBlockItem(ModBlocks.HANDLE_ENGINE.get(), new Item.Properties()));
 
     // --- WT-A: BREWING ITEMS (itemLargeBottle, itemCordial, etc.) ---
     public static final RegistryObject<Item> LARGE_BOTTLE = ITEMS.register("large_bottle",
-        () -> new ItemLargeBottle(ModBlocks.LARGE_BOTTLE.get(), new Item.Properties().stacksTo(1)));
+        () -> new TESRBlockItem(ModBlocks.LARGE_BOTTLE.get(), new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> CORDIAL = ITEMS.register("cordial",
-        () -> new ItemCordial(ModBlocks.CORDIAL.get(), new Item.Properties().stacksTo(1)));
+        () -> new TESRBlockItem(ModBlocks.CORDIAL.get(), new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> EMPTY_BOTTLE_ITEM = ITEMS.register("empty_bottle",
-        () -> new ItemEmptyBottle(ModBlocks.EMPTY_BOTTLE.get(), new Item.Properties().stacksTo(16)));
+        () -> new TESRBlockItem(ModBlocks.EMPTY_BOTTLE.get(), new Item.Properties().stacksTo(16)));
 
     // --- WT-C: INCENSE (incenseApple..incenseVanilla 11種) - may stay in ModItems or move to WT-C section ---
     public static final RegistryObject<Item> INCENSE_APPLE = ITEMS.register("incense_apple",

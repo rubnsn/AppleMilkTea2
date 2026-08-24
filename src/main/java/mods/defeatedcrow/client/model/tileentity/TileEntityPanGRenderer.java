@@ -13,7 +13,7 @@ import mods.defeatedcrow.client.model.model.ModelBreads;
 
 public class TileEntityPanGRenderer implements BlockEntityRenderer<TilePanG> {
     private final ModelBreads model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/pang.png");
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/breads.png");
 
     public TileEntityPanGRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)

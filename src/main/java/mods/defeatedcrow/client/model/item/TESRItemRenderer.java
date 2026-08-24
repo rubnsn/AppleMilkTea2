@@ -14,13 +14,11 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 import mods.defeatedcrow.client.model.model.*;
-import mods.defeatedcrow.common.registry.ModBlocks;
 import mods.defeatedcrow.common.registry.ModItems;
 
 /**
  * BEWLR for TESR BlockItems - renders the same Model as BER in inventory/hand.
- * Uses Model.createBodyLayer().bakeRoot() directly (no ModModelLayers) for minimal.
- * Textures are defeatedcrow:textures/entity/<name>.png (fallback to block texture).
+ * Textures mapped to existing files in textures/entity (see fix for bread/clamp etc).
  */
 public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
 
@@ -86,86 +84,207 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
     public void renderByItem(ItemStack stack, ItemDisplayContext context, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
         Item item = stack.getItem();
         pose.pushPose();
-        // Center and scale for item view (similar to BER but smaller for GUI)
-        pose.translate(0.5, 1.0, 0.5);
-        pose.scale(0.8F, -0.8F, -0.8F);
-
-        // Select model and texture based on item
-        if (item == ModItems.BARREL_ITEM.get()) {
-            renderModel(barrelModel, "barrel", pose, buffers, light, overlay);
-        } else if (item == ModItems.PROCESSOR_ITEM.get()) {
-            renderModel(processorModel, "processor", pose, buffers, light, overlay);
-        } else if (item == ModItems.EVAPORATOR_ITEM.get()) {
-            renderModel(evaporatorModel, "evaporator", pose, buffers, light, overlay);
-        } else if (item == ModItems.ICE_MAKER_ITEM.get()) {
-            renderModel(iceMakerModel, "icemaker", pose, buffers, light, overlay);
-        } else if (item == ModItems.TEA_MAKER_NEXT_ITEM.get() || item == ModItems.TEA_MAKER_BLACK_ITEM.get()) {
-            renderModel(makerNextModel, "makernext", pose, buffers, light, overlay);
-        } else if (item == ModItems.WIPE_BOX_ITEM.get()) {
-            renderModel(wipeBoxModel, "wipebox", pose, buffers, light, overlay);
-        } else if (item == ModItems.WIPE_BOX2_ITEM.get()) {
-            renderModel(wipeBox2Model, "wipebox2", pose, buffers, light, overlay);
-        } else if (item == ModItems.FILLED_CUP_ITEM.get() || item == ModItems.FILLED_CUP2_ITEM.get()) {
-            renderModel(cupHandleModel, "cuphandle", pose, buffers, light, overlay);
-        } else if (item == ModItems.COCKTAIL_ITEM.get() || item == ModItems.COCKTAIL2_ITEM.get() || item == ModItems.COCKTAIL_SP_ITEM.get()) {
-            renderModel(cocktailModel, "cocktail", pose, buffers, light, overlay);
-        } else if (item == ModItems.CHALCEDONY_LAMP_ITEM.get()) {
-            renderModel(cLampModel, "clamp", pose, buffers, light, overlay);
-        } else if (item == ModItems.CORDIAL.get()) {
-            renderModel(cordialModel, "cordial", pose, buffers, light, overlay);
-        } else if (item == ModItems.ALCOHOL_CUP_ITEM.get()) {
-            renderModel(alcoholCupModel, "alcoholcup", pose, buffers, light, overlay);
-        } else if (item == ModItems.BOWL_JP_ITEM.get()) {
-            renderModel(bowlJPModel, "bowljp", pose, buffers, light, overlay);
-        } else if (item == ModItems.CHOPSTICKS_BOX_ITEM.get()) {
-            renderModel(chopsticksModel, "chopsticks", pose, buffers, light, overlay);
-        } else if (item == ModItems.EGG_BASKET_ITEM.get()) {
-            renderModel(eggsModel, "eggs", pose, buffers, light, overlay);
-        } else if (item == ModItems.FOOD_PLATE_ITEM.get()) {
-            renderModel(steakModel, "steak", pose, buffers, light, overlay);
-        } else if (item == ModItems.BASKET_ITEM.get() || item == ModItems.VEGI_BAG_ITEM.get() || item == ModItems.BOWL_RACK_ITEM.get()) {
-            renderModel(breadsModel, "breads", pose, buffers, light, overlay);
-        } else if (item == ModItems.CHOCO_BLOCK_ITEM.get()) {
-            renderModel(tartModel, "tart", pose, buffers, light, overlay);
-        } else if (item == ModItems.INCENSE_BASE_ITEM.get()) {
-            renderModel(incenseModel, "incensebase", pose, buffers, light, overlay);
-        } else if (item == ModItems.FLOWER_POT_ITEM.get()) {
-            renderModel(flowerPotModel, "flowerpot", pose, buffers, light, overlay);
-        } else if (item == ModItems.BAT_BOX_ITEM.get() || item == ModItems.GEL_BAT_ITEM.get()) {
-            renderModel(chargerModel, "charger", pose, buffers, light, overlay);
-        } else if (item == ModItems.HANDLE_ENGINE_ITEM.get()) {
-            renderModel(handleEngineModel, "handleengine", pose, buffers, light, overlay);
-        } else if (item == ModItems.ADV_PROCESSOR_ITEM.get()) {
-            renderModel(jawCrusherModel, "jawcrusher", pose, buffers, light, overlay);
-        } else if (item == ModItems.LARGE_BOTTLE.get() || item == ModItems.EMPTY_BOTTLE_ITEM.get()) {
-            renderModel(largeBottleModel, "largebottle", pose, buffers, light, overlay);
-        } else if (item == ModItems.CROW_DOLL_ITEM.get()) {
-            renderModel(crowDollModel, "crowdoll", pose, buffers, light, overlay);
-        } else if (item == ModItems.FILLED_SOUP_PAN_ITEM.get() || item == ModItems.EMPTY_PAN_G_ITEM.get() || item == ModItems.TEPPAN_II_ITEM.get()) {
-            // Fallback for pan-related: use breads as placeholder
-            renderModel(breadsModel, "breads", pose, buffers, light, overlay);
-        } else if (item == ModItems.CARDBOARD_ITEM.get() || item == ModItems.CONTAINER_WATER_BOTTLE_ITEM.get() || item == ModItems.FLOWER_VASE_ITEM.get() || item == ModItems.HEDGE_ITEM.get() || item == ModItems.ROTARY_DIAL_ITEM.get() || item == ModItems.CHALCEDONY_PANEL_ITEM.get() || item == ModItems.WOOD_PANEL_ITEM.get() || item == ModItems.YUZU_FENCE_ITEM.get()) {
-            // For remaining decorative TESR, use incense or breads as generic
-            renderModel(incenseModel, "incensebase", pose, buffers, light, overlay);
+        // Align similarly to BER (BER uses 0.5,1.5,0.5 with -1 scale). For item, center in GUI/hand.
+        // Different contexts need different scale/translate. Use common that works for GUI (centered).
+        // For GUI (inventory) the stack is at 0,0,0 with 16x16, for 3D we need to center.
+        if (context == ItemDisplayContext.GUI || context == ItemDisplayContext.FIXED) {
+            pose.translate(0.5, 0.85, 0.5);
+            pose.scale(0.65F, -0.65F, -0.65F);
         } else {
-            // Fallback: render nothing, let vanilla handle
-            pose.popPose();
-            return;
+            // FIRST_PERSON, THIRD_PERSON, GROUND etc
+            pose.translate(0.5, 1.0, 0.5);
+            pose.scale(0.8F, -0.8F, -0.8F);
+        }
+
+        boolean rendered = false;
+        if (item == ModItems.BARREL_ITEM.get()) {
+            renderBarrel(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.PROCESSOR_ITEM.get()) {
+            renderProcessor(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.EVAPORATOR_ITEM.get()) {
+            renderEvaporator(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.ICE_MAKER_ITEM.get()) {
+            renderIceMaker(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.TEA_MAKER_NEXT_ITEM.get() || item == ModItems.TEA_MAKER_BLACK_ITEM.get()) {
+            renderMakerNext(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.WIPE_BOX_ITEM.get()) {
+            renderWipeBox(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.WIPE_BOX2_ITEM.get()) {
+            renderWipeBox2(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.FILLED_CUP_ITEM.get() || item == ModItems.FILLED_CUP2_ITEM.get()) {
+            renderCupHandle(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.COCKTAIL_ITEM.get() || item == ModItems.COCKTAIL2_ITEM.get() || item == ModItems.COCKTAIL_SP_ITEM.get()) {
+            renderCocktail(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.CHALCEDONY_LAMP_ITEM.get()) {
+            renderCLamp(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.CORDIAL.get()) {
+            renderCordial(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.ALCOHOL_CUP_ITEM.get()) {
+            renderAlcoholCup(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.BOWL_JP_ITEM.get()) {
+            renderBowlJP(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.CHOPSTICKS_BOX_ITEM.get()) {
+            renderChopsticks(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.EGG_BASKET_ITEM.get()) {
+            renderEggs(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.FOOD_PLATE_ITEM.get()) {
+            renderSteak(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.BASKET_ITEM.get() || item == ModItems.VEGI_BAG_ITEM.get() || item == ModItems.BOWL_RACK_ITEM.get()) {
+            renderBreads(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.CHOCO_BLOCK_ITEM.get()) {
+            renderTart(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.INCENSE_BASE_ITEM.get()) {
+            renderIncense(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.FLOWER_POT_ITEM.get()) {
+            renderFlowerPot(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.BAT_BOX_ITEM.get() || item == ModItems.GEL_BAT_ITEM.get()) {
+            renderCharger(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.HANDLE_ENGINE_ITEM.get()) {
+            renderHandleEngine(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.ADV_PROCESSOR_ITEM.get()) {
+            renderJawCrusher(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.LARGE_BOTTLE.get() || item == ModItems.EMPTY_BOTTLE_ITEM.get()) {
+            renderLargeBottle(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.CROW_DOLL_ITEM.get()) {
+            renderCrowDoll(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.FILLED_SOUP_PAN_ITEM.get() || item == ModItems.EMPTY_PAN_G_ITEM.get() || item == ModItems.TEPPAN_II_ITEM.get()) {
+            renderBreads(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.CARDBOARD_ITEM.get() || item == ModItems.CONTAINER_WATER_BOTTLE_ITEM.get() || item == ModItems.FLOWER_VASE_ITEM.get() || item == ModItems.HEDGE_ITEM.get() || item == ModItems.ROTARY_DIAL_ITEM.get() || item == ModItems.CHALCEDONY_PANEL_ITEM.get() || item == ModItems.WOOD_PANEL_ITEM.get() || item == ModItems.YUZU_FENCE_ITEM.get()) {
+            renderIncense(pose, buffers, light, overlay);
+            rendered = true;
         }
         pose.popPose();
+        if (!rendered) {
+            // Fallback: vanilla will not render because we set block model to empty, so log for debug
+            // System.out.println("[TESRItemRenderer] no model for " + item);
+        }
     }
 
-    private void renderModel(Object model, String texName, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
-        // Resolve texture: try entity/<tex>.png, fallback to block/<tex>.png, then to missing
-        ResourceLocation tex = new ResourceLocation("defeatedcrow", "textures/entity/" + texName + ".png");
-        // Use entityCutout; if texture missing, Minecraft will show missing texture but not crash
-        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(tex));
-        // Call renderToBuffer via reflection or direct
-        try {
-            model.getClass().getMethod("renderToBuffer", PoseStack.class, VertexConsumer.class, int.class, int.class, float.class, float.class, float.class, float.class)
-                .invoke(model, pose, vc, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
-        } catch (Exception e) {
-            // Fallback: try without reflection if model has method
-        }
+    // --- Direct render helpers with correct existing textures ---
+    private void renderBarrel(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/barrel.png")));
+        barrelModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderProcessor(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/processor.png")));
+        processorModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderEvaporator(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/evaporator.png")));
+        evaporatorModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderIceMaker(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/icemaker.png")));
+        iceMakerModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderMakerNext(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/automaker.png")));
+        makerNextModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderWipeBox(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/wipebox.png")));
+        wipeBoxModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderWipeBox2(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/wipebox2.png")));
+        wipeBox2Model.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderCupHandle(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/jpcup.png")));
+        cupHandleModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderCocktail(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/cocktail.png")));
+        cocktailModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderCLamp(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/charger.png")));
+        cLampModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderCordial(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/largebottle.png")));
+        cordialModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderAlcoholCup(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/cocktail.png")));
+        alcoholCupModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderBowlJP(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/bowljp_whiteporcelain.png")));
+        bowlJPModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderChopsticks(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/chopsticks.png")));
+        chopsticksModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderEggs(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/breads.png")));
+        eggsModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderSteak(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/steak.png")));
+        steakModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderBreads(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/breads.png")));
+        breadsModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderTart(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/tart.png")));
+        tartModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderIncense(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/incensebase.png")));
+        incenseModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderFlowerPot(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/flowerpot_red.png")));
+        flowerPotModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderCharger(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/charger.png")));
+        chargerModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderHandleEngine(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/handle_engine.png")));
+        handleEngineModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderJawCrusher(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/jawcrusher.png")));
+        jawCrusherModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderLargeBottle(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/largebottle.png")));
+        largeBottleModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+    private void renderCrowDoll(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/crowdoll.png")));
+        crowDollModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
     }
 }

@@ -13,7 +13,7 @@ import mods.defeatedcrow.client.model.model.ModelHandleEngine;
 
 public class TileEntityEHandleRenderer implements BlockEntityRenderer<TileHandleEngine> {
     private final ModelHandleEngine model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/handleengine.png");
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/handle_engine.png");
 
     public TileEntityEHandleRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)

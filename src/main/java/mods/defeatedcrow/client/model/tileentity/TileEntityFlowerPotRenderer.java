@@ -13,7 +13,7 @@ import mods.defeatedcrow.client.model.model.ModelFlowerPot;
 
 public class TileEntityFlowerPotRenderer implements BlockEntityRenderer<TileFlowerPot> {
     private final ModelFlowerPot model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/flowerpot.png");
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/flowerpot_red.png");
 
     public TileEntityFlowerPotRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)

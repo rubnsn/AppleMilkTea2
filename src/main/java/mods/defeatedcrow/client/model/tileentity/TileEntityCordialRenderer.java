@@ -13,7 +13,7 @@ import mods.defeatedcrow.client.model.model.ModelCordial;
 
 public class TileEntityCordialRenderer implements BlockEntityRenderer<TileCordial> {
     private final ModelCordial model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/cordial.png");
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/largebottle.png");
 
     public TileEntityCordialRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)

@@ -13,7 +13,7 @@ import mods.defeatedcrow.client.model.model.ModelCLamp;
 
 public class TileEntityCLampRenderer implements BlockEntityRenderer<TileCLamp> {
     private final ModelCLamp model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/clamp.png");
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/charger.png");
 
     public TileEntityCLampRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)

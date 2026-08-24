@@ -13,7 +13,7 @@ import mods.defeatedcrow.client.model.model.ModelBowlJP;
 
 public class TileEntityBowlJPRenderer implements BlockEntityRenderer<TileJPBowl> {
     private final ModelBowlJP model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/bowljp.png");
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/bowljp_whiteporcelain.png");
 
     public TileEntityBowlJPRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)

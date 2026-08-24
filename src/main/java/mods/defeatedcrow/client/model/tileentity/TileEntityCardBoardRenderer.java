@@ -13,7 +13,7 @@ import mods.defeatedcrow.client.model.model.ModelAltCatoraryBox;
 
 public class TileEntityCardBoardRenderer implements BlockEntityRenderer<TileCardBoard> {
     private final ModelAltCatoraryBox model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/cardboard.png");
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/baskets.png");
 
     public TileEntityCardBoardRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)

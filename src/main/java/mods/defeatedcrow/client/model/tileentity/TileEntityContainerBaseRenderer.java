@@ -13,7 +13,7 @@ import mods.defeatedcrow.client.model.model.ModelBreads;
 
 public class TileEntityContainerBaseRenderer implements BlockEntityRenderer<TileContainerBase> {
     private final ModelBreads model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/containerbase.png");
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/woodbowl.png");
 
     public TileEntityContainerBaseRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)

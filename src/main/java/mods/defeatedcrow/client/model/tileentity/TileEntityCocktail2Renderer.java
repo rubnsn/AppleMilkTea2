@@ -13,7 +13,7 @@ import mods.defeatedcrow.client.model.model.ModelCocktail;
 
 public class TileEntityCocktail2Renderer implements BlockEntityRenderer<TileCocktail2> {
     private final ModelCocktail model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/cocktail2.png");
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/cocktail.png");
 
     public TileEntityCocktail2Renderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)

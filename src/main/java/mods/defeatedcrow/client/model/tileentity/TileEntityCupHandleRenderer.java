@@ -13,7 +13,7 @@ import mods.defeatedcrow.client.model.model.ModelCupHandle;
 
 public class TileEntityCupHandleRenderer implements BlockEntityRenderer<TileCupHandle> {
     private final ModelCupHandle model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/cuphandle.png");
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/jpcup.png");
 
     public TileEntityCupHandleRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)
