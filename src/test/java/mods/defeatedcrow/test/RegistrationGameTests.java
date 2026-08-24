@@ -11,6 +11,7 @@ import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import mods.defeatedcrow.common.registry.ModRecipes;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 /**
  * 登録存在性テスト（自動）。
@@ -19,10 +20,11 @@ import mods.defeatedcrow.common.registry.ModRecipes;
  *
  * 実行: gradlew runGameTestServer
  */
+@PrefixGameTestTemplate(false)
 @GameTestHolder("dcsapplemilk")
 public class RegistrationGameTests {
 
-    private static final String EMPTY = "forge:empty3x3x3";
+    private static final String EMPTY = "empty";
 
     private static ResourceLocation rl(String path) {
         return new ResourceLocation("defeatedcrow", path);
@@ -96,6 +98,25 @@ public class RegistrationGameTests {
             helper.assertTrue(ForgeRegistries.RECIPE_TYPES.containsKey(rl(p.name())),
                     "[recipe-type] missing from ForgeRegistries: " + p.name());
         }
+        helper.succeed();
+    }
+
+    // --- カスタムRecipe 11種の JSON がロードされていること (P1 完了条件: 各Type最低1件) ---
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @GameTest(template = EMPTY)
+    public void customRecipesLoaded(GameTestHelper helper) {
+        var mgr = helper.getLevel().getRecipeManager();
+        helper.assertTrue(!mgr.getAllRecipesFor((net.minecraft.world.item.crafting.RecipeType) ModRecipes.TEA_TYPE.get()).isEmpty(), "tea recipes empty");
+        helper.assertTrue(!mgr.getAllRecipesFor((net.minecraft.world.item.crafting.RecipeType) ModRecipes.ICE_TYPE.get()).isEmpty(), "ice recipes empty");
+        helper.assertTrue(!mgr.getAllRecipesFor((net.minecraft.world.item.crafting.RecipeType) ModRecipes.PAN_TYPE.get()).isEmpty(), "pan recipes empty");
+        helper.assertTrue(!mgr.getAllRecipesFor((net.minecraft.world.item.crafting.RecipeType) ModRecipes.PLATE_TYPE.get()).isEmpty(), "plate recipes empty");
+        helper.assertTrue(!mgr.getAllRecipesFor((net.minecraft.world.item.crafting.RecipeType) ModRecipes.PROCESSOR_TYPE.get()).isEmpty(), "processor recipes empty");
+        helper.assertTrue(!mgr.getAllRecipesFor((net.minecraft.world.item.crafting.RecipeType) ModRecipes.ADV_PROCESSOR_TYPE.get()).isEmpty(), "adv_processor recipes empty");
+        helper.assertTrue(!mgr.getAllRecipesFor((net.minecraft.world.item.crafting.RecipeType) ModRecipes.EVAPORATOR_TYPE.get()).isEmpty(), "evaporator recipes empty");
+        helper.assertTrue(!mgr.getAllRecipesFor((net.minecraft.world.item.crafting.RecipeType) ModRecipes.BREWING_TYPE.get()).isEmpty(), "brewing recipes empty");
+        helper.assertTrue(!mgr.getAllRecipesFor((net.minecraft.world.item.crafting.RecipeType) ModRecipes.FONDUE_TYPE.get()).isEmpty(), "fondue recipes empty");
+        helper.assertTrue(!mgr.getAllRecipesFor((net.minecraft.world.item.crafting.RecipeType) ModRecipes.CHOCOLATE_TYPE.get()).isEmpty(), "chocolate recipes empty");
+        helper.assertTrue(!mgr.getAllRecipesFor((net.minecraft.world.item.crafting.RecipeType) ModRecipes.CHARGE_TYPE.get()).isEmpty(), "charge recipes empty");
         helper.succeed();
     }
 
