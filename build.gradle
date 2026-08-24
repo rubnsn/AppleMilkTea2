@@ -37,9 +37,11 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            // include src/test for GameTests (see test/TEST_PLAN.md)
             mods {
                 dcsapplemilk {
                     source sourceSets.main
+                    source sourceSets.test
                 }
             }
         }
@@ -88,6 +90,18 @@ repositories {
 
 // Apply dependencies defined in dependencies.gradle
 apply from: 'dependencies.gradle'
+
+// --- Test sourceset (GameTests, see test/TEST_PLAN.md) ---
+sourceSets {
+    test {
+        java.srcDirs = ["src/test/java"]
+        compileClasspath += sourceSets.main.output
+    }
+}
+configurations {
+    testImplementation.extendsFrom implementation
+    testRuntimeOnly.extendsFrom runtimeOnly
+}
 
 base {
     archivesName = 'AppleMilkTea2'
