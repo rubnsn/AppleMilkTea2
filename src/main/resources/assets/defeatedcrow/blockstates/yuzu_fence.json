@@ -1,7 +1,9 @@
 {
-  "variants": {
-    "": {
-      "model": "defeatedcrow:block/yuzu_fence"
-    }
-  }
+  "multipart": [
+    { "when": { "north": "true" }, "apply": { "model": "defeatedcrow:block/yuzu_fence_side", "uvlock": true } },
+    { "when": { "east": "true" }, "apply": { "model": "defeatedcrow:block/yuzu_fence_side", "y": 90, "uvlock": true } },
+    { "when": { "south": "true" }, "apply": { "model": "defeatedcrow:block/yuzu_fence_side", "y": 180, "uvlock": true } },
+    { "when": { "west": "true" }, "apply": { "model": "defeatedcrow:block/yuzu_fence_side", "y": 270, "uvlock": true } },
+    { "apply": { "model": "defeatedcrow:block/yuzu_fence_post" } }
+  ]
 }

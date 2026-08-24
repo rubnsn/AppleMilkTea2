@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
-      "model": "defeatedcrow:block/chalcedony_panel"
-    }
+    "powered=false,type=0": { "model": "defeatedcrow:block/chalcedony_panel" },
+    "powered=false,type=1": { "model": "defeatedcrow:block/chalcedony_panel_wind" },
+    "powered=false,type=2": { "model": "defeatedcrow:block/chalcedony_panel_moon" },
+    "powered=true,type=0": { "model": "defeatedcrow:block/chalcedony_panel_down" },
+    "powered=true,type=1": { "model": "defeatedcrow:block/chalcedony_panel_wind_down" },
+    "powered=true,type=2": { "model": "defeatedcrow:block/chalcedony_panel_moon_down" }
   }
 }

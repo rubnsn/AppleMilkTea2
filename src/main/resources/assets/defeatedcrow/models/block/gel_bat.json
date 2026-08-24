@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "defeatedcrow:block/gel_bat"
+    "particle": "defeatedcrow:block/redgel"
   }
 }
