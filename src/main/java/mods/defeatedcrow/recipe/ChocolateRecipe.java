@@ -1,97 +1,49 @@
 package mods.defeatedcrow.recipe;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.gson.JsonObject;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import mods.defeatedcrow.handler.TagHelper;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import mods.defeatedcrow.common.registry.ModRecipes;
+import mods.defeatedcrow.recipe.base.AMTRecipeBase;
 
-import mods.defeatedcrow.api.appliance.SoupType;
-import mods.defeatedcrow.api.recipe.IChocoFruitsRecipe;
-import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
-
-public class ChocolateRecipe implements IChocoFruitsRecipe {
-
-    private final HashMap<Object, ItemStack> recipes;
-
-    public ChocolateRecipe() {
-        this.recipes = new HashMap<Object, ItemStack>();
-    }
-
-    /**
-     * Now it's empty. Please use IFondueRecipe.
-     */
-    public IChocoFruitsRecipe instance() {
-        return RecipeRegisterManager.chocoRecipe;
-    }
-
-    @Override
-    public Map<Object, ItemStack> getRecipeList() {
-        return this.recipes;
-    }
-
-    @Override
-    public ItemStack getOutput(ItemStack input) {
-        if (input == null || input.getItem() == null) return null;
-
-        ItemStack ret = null;
-
-        for (Object key : recipes.keySet()) {
-            if (key instanceof String) {
-                String s = (String) key;
-                List<ItemStack> items = TagHelper.getTagItems(s);
-                for (int i = 0; i < items.size(); i++) {
-                    if (matchItem(input, items.get(i))) {
-                        ret = recipes.get(key);
-                        break;
-                    }
-                }
-            } else if (key instanceof ItemStack) {
-                ItemStack item = (ItemStack) key;
-
-                if (matchItem(input, (ItemStack) key)) {
-                    ret = recipes.get(key);
-                    break;
-                }
-            }
-
+/**
+ * Chocolate: ingredient -> result (grated apple -> choco fruits etc.)
+ * JSON: { "type":"defeatedcrow:chocolate", "ingredient":{...}, "result":{...} }
+ */
+public class ChocolateRecipe extends AMTRecipeBase {
+    private final Ingredient ingredient;
+    private final ItemStack result;
+    public ChocolateRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result) { super(id); this.ingredient=ingredient; this.result=result; }
+    public Ingredient getIngredient(){return ingredient;}
+    public ItemStack getResult(){return result;}
+    @Override public boolean matches(Container c, Level l){ for(int i=0;i<c.getContainerSize();i++) if(ingredient.test(c.getItem(i))) return true; return false; }
+    @Override public ItemStack assemble(Container c, RegistryAccess a){ return result.copy(); }
+    @Override public ItemStack getResultItem(RegistryAccess a){ return result.copy(); }
+    @Override public NonNullList<Ingredient> getIngredients(){ NonNullList<Ingredient> ll=NonNullList.create(); ll.add(ingredient); return ll; }
+    @Override public RecipeSerializer<?> getSerializer(){ return ModRecipes.CHOCOLATE_SERIALIZER.get(); }
+    @Override public RecipeType<?> getType(){ return ModRecipes.CHOCOLATE_TYPE.get(); }
+    public static class Serializer implements RecipeSerializer<ChocolateRecipe>{
+        @Override public ChocolateRecipe fromJson(ResourceLocation id, JsonObject json){
+            Ingredient ing=AMTRecipeBase.ingredientFromJson(json, "ingredient");
+            ItemStack res=AMTRecipeBase.resultFromJson(json);
+            return new ChocolateRecipe(id, ing, res);
         }
-
-        return ret == null ? null : ret.copy();
-    }
-
-    protected static boolean matchItem(ItemStack input, ItemStack key) {
-        if (input == null || key == null) return false;
-        if (input.getItem() == null || key.getItem() == null) return false;
-        else {
-            return (input.getItem() == key.getItem() && (input.getDamageValue() == key.getDamageValue()
-                || key.getDamageValue() == 32767));
+        @Override public ChocolateRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf){
+            Ingredient ing=AMTRecipeBase.readIngredient(buf);
+            ItemStack res=AMTRecipeBase.readItemStack(buf);
+            return new ChocolateRecipe(id, ing, res);
+        }
+        @Override public void toNetwork(FriendlyByteBuf buf, ChocolateRecipe r){
+            AMTRecipeBase.writeIngredient(buf, r.ingredient);
+            AMTRecipeBase.writeItemStack(buf, r.result);
         }
     }
-
-    @Override
-    public void register(ItemStack input, ItemStack output) {
-        if (input == null || output == null) return;
-        if (input.getItem() == null || output.getItem() == null) return;
-        // for (Object key : recipes.keySet()) {
-        // if (key instanceof ItemStack) {
-        // if (matchItem(input, (ItemStack) key)) {
-        // return;
-        // }
-        // }
-        // }
-        // recipes.put(input, output);
-        RecipeRegisterManager.fondueRecipe.register(input, output, SoupType.CHOCO);
-    }
-
-    @Override
-    public void register(String input, ItemStack output) {
-        if (input == null || output == null) return;
-        if (output.getItem() == null) return;
-        // recipes.put(input, output);
-        RecipeRegisterManager.fondueRecipe.registerByOre(input, output, SoupType.CHOCO);
-    }
-
 }
-

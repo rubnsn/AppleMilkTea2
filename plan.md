@@ -291,3 +291,34 @@ Test-Path src/main/resources/data/defeatedcrow/forge/biome_modifier/add_tea_tree
 * P8（WT-A）は `ModCreativeTabs` の各 `displayItems` に全アイテム/ブロックの `out.accept` 列挙 — **`6fc9bb1`で133件、解消済**。
 * P7 `RegisterOreHandler.java:29` はno-op stub化、tagsは `data/**`で代替 — **解消済**。
 * 検証は `dev:a99cc2c`で `lint all PASS` `compileJava UP-TO-DATE` 達成。次は `runData` + `build` オンライン。
+
+---
+
+## 11. WT-E StubImpl + Fluid — 2026-08-25 `feature/stub-impl` 追補（A-D統合後）
+
+> 所有: `test/IMPLEMENTATION_PLAN_WT-E.md` を正本とする。`dev:a99cc2c` で全WT統合+lint PASS後の残存スタブ（P0-P6はWT-E内で完遂、P7は本追補で完結）を `feature/stub-impl` として集約。メイン `E:/AppleMilkTea2[dev]` が BER描画を継続する間、WT-Eはスタブ解消を並行し、メイン空き時に合流。
+> **決定**: ワーカー競合なし（ユーザー合意 2026-08-25）。WT-EはA-D統合後のため全ファイル編集可（`CODEOWNERS` に `wt-e` 併記）。液体も実施、JDKは17で統一（25誤記修正）。
+
+### 11.1 範囲 — WT-Eが `dev..feature/stub-impl` で触れるファイル（約173 files）
+
+| 区分 | 代表ファイル | 件数 |
+|---|---|---|
+| Block `use` 復元 | `common/block/container/*`19 + `edible/*`11 + `appliance/*`8 + `energy/*`3 + `plants/*`等 | 41 |
+| Item BEWLR配線 | `common/item/appliance/ItemYuzuGatling.java:151` + `magic/ItemFossilCannon:2`/`ItemDebugArm:2` → `client/item/BEWLR_*.java:36` 3件 | 3+3 |
+| Fluid | `common/registry/ModFluidTypes.java:41` に `IClientFluidTypeExtensions` 18種 + `ModFluids.java:85` bucket参照 + `textures/block/fluid/sake_still.png` 新設 + `models/item/bucket_*.json` 3件 | 7 |
+| Entity/Placeable | `common/entity/edible/PlaceableFoods.java:147` base+13 + `VillagerCafe/Yome` | 19 |
+| Recipe/Tile | `recipe/*`11 + `common/tile/*`13 NBT/tick 済 | 24 |
+| Event/Handler | `event/*`7 + `handler/*`8 port済 | 15 |
+| World | `world/village/*`4 | 4 |
+
+### 11.2 P7 残タスク（本コミットで完結）
+
+* **P7-BEWLR配線**: `ItemYuzuGatling/FossilCannon/DebugArm` に `initializeClient(Consumer<IClientItemExtensions>)` で `BEWLR_YuzuGatling/FossilCannon/EightEyesArm` を返す。`TESRBlockItem.java:18` と同一パターン（`Minecraft.getInstance().getEntityModels()`）。
+* **Fluid**: `ModFluidTypes.java` の18 `FluidType` 全てに `initializeClient` で `IClientFluidTypeExtensions#getStillTexture/getFlowingTexture` を `defeatedcrow:block/fluid/<name>_still` に配線。不足 `sake_still.png(.mcmeta)` を `vodka_still` から複製。`ModFluids.java` の油bucketを `Items.BUCKET` → `ForgeRegistries.ITEMS["defeatedcrow:bucket_vegioil/camoil"]` に差替、`ModItems.java:331` に `BUCKET_VEGIOIL/CAMOIL/YOUNGALCOHOL` 3件登録。
+* **検証**: `scripts/lint-migration.ps1 -Check all` PASS / `./gradlew build` + `runGameTestServer` 16 GREEN維持 / `dev ae7a1bd` からの `feed3a0/ae7a1bd` 2件は次rebaseで取込。
+
+### 11.3 所有と検証
+
+* `opencode.json:44` に `wt-e` agent追加、`CODEOWNERS:62` に `wt-e` 併記（`ModFluidTypes/ModFluids/ModItems` 等）。
+* JDKは `gradle.properties:5` の `17.0.20` に統一（`test/IMPLEMENTATION_PLAN_WT-E.md:152,215` の JDK25記述は誤記修正）。
+* 次は `feature/stub-impl` → `dev` へ `fast-forward` 前に `git fetch && git rebase dev` と `lint all` 再走。

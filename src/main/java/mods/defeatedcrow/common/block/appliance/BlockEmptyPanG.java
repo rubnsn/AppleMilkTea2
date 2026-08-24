@@ -20,6 +20,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import mods.defeatedcrow.common.tile.appliance.TilePanG;
+import mods.defeatedcrow.common.registry.ModBlockEntities;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockEmptyPanG.
@@ -150,4 +154,12 @@ public class BlockEmptyPanG extends Block implements EntityBlock {
      *                 tag.setTag("input", input.writeToNBT(new CompoundTag()));
      * ... (full original retained in git history: git show HEAD:"src/main/java/mods/defeatedcrow/common/block/appliance/BlockEmptyPanG.java")
      */
+
+        @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        if (type == ModBlockEntities.TILE_PAN_G.get()) {
+            return (lvl, pos, st, be) -> TilePanG.tick(lvl, pos, st, (TilePanG)be);
+        }
+        return null;
+    }
 }

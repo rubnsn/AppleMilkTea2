@@ -1,5 +1,6 @@
 package mods.defeatedcrow.common.item.magic;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -9,6 +10,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import java.util.function.Consumer;
 
 /**
  * WT-A 1.20.1 mojmap migration for ItemDebugArm.
@@ -22,19 +25,31 @@ public class ItemDebugArm extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Level level, java.util.List<Component> tooltip, TooltipFlag flag) {
-        // TODO: restore addInformation logic
         super.appendHoverText(stack, level, tooltip, flag);
     }
 
     @Override
     public net.minecraft.world.InteractionResult useOn(net.minecraft.world.item.context.UseOnContext ctx) {
-        // TODO: restore onItemUse logic with BlockPos/Level/Player
         return super.useOn(ctx);
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         return super.use(level, player, hand);
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            private mods.defeatedcrow.client.item.BEWLR_EightEyesArm renderer;
+            @Override
+            public net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                if (renderer == null) {
+                    renderer = new mods.defeatedcrow.client.item.BEWLR_EightEyesArm(Minecraft.getInstance(), Minecraft.getInstance().getEntityModels());
+                }
+                return renderer;
+            }
+        });
     }
 
     /*

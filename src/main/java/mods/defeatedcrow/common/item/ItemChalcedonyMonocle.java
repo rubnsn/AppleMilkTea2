@@ -1,5 +1,6 @@
 package mods.defeatedcrow.common.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -21,8 +22,7 @@ public class ItemChalcedonyMonocle extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Level level, java.util.List<Component> tooltip, TooltipFlag flag) {
-        // TODO: restore addInformation logic
-        super.appendHoverText(stack, level, tooltip, flag);
+        tooltip.add(Component.literal("While you are wearing this item, ore dictionary names is displayed in it's tooltip.").withStyle(ChatFormatting.GRAY));
     }
 
     /*

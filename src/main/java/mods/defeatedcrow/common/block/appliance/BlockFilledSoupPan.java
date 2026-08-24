@@ -20,6 +20,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import mods.defeatedcrow.common.tile.appliance.TileFilledSoupPan;
+import mods.defeatedcrow.common.registry.ModBlockEntities;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockFilledSoupPan.
@@ -150,4 +154,12 @@ public class BlockFilledSoupPan extends Block implements EntityBlock {
      *                     new ChatComponentText(StatCollector.translateToLocal("dc.panMessage.noFondueRecipe")));
      * ... (full original retained in git history: git show HEAD:"src/main/java/mods/defeatedcrow/common/block/appliance/BlockFilledSoupPan.java")
      */
+
+        @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        if (type == ModBlockEntities.TILE_FILLED_SOUP_PAN.get()) {
+            return (lvl, pos, st, be) -> TileFilledSoupPan.tick(lvl, pos, st, (TileFilledSoupPan)be);
+        }
+        return null;
+    }
 }

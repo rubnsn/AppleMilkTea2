@@ -22,13 +22,11 @@ public class ItemPrincessClam extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Level level, java.util.List<Component> tooltip, TooltipFlag flag) {
-        // TODO: restore addInformation logic
         super.appendHoverText(stack, level, tooltip, flag);
     }
 
     @Override
     public net.minecraft.world.InteractionResult useOn(net.minecraft.world.item.context.UseOnContext ctx) {
-        // TODO: restore onItemUse logic with BlockPos/Level/Player
         return super.useOn(ctx);
     }
 

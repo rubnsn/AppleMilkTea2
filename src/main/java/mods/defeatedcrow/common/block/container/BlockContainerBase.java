@@ -46,11 +46,13 @@ public class BlockContainerBase extends Block implements EntityBlock {
     }
 
     // 1.7.10 onBlockActivated -> 1.20.1 use (BlockPos + BlockHitResult)
-    @Override
+        @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        // TODO: restore original onBlockActivated logic
-        // Original used: world.getBlockMetadata(x,y,z), player.inventory, MinecraftForge.EVENT_BUS.post(AMTBlockRightClickEvent)
-        // Migration: use state, level.getBlockEntity(pos), player.getItemInHand(hand), Component
+        if (level.isClientSide) return InteractionResult.SUCCESS;
+        var be = level.getBlockEntity(pos);
+        if (be != null) {
+            return InteractionResult.SUCCESS;
+        }
         return InteractionResult.PASS;
     }
 

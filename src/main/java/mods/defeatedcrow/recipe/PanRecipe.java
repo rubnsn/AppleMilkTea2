@@ -1,0 +1,66 @@
+package mods.defeatedcrow.recipe;
+
+import com.google.gson.JsonObject;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import mods.defeatedcrow.common.registry.ModRecipes;
+import mods.defeatedcrow.recipe.base.AMTRecipeBase;
+
+/**
+ * EmptyPanGaiden heating: ingredient -> result
+ * JSON: { "type":"defeatedcrow:pan", "ingredient":{...}, "result":{...}, "cookingTime":200 }
+ */
+public class PanRecipe extends AMTRecipeBase {
+    private final Ingredient ingredient;
+    private final ItemStack result;
+    private final int cookingTime;
+
+    public PanRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result, int cookingTime) {
+        super(id);
+        this.ingredient = ingredient;
+        this.result = result;
+        this.cookingTime = cookingTime;
+    }
+    public Ingredient getIngredient() { return ingredient; }
+    public ItemStack getResult() { return result; }
+    public int getCookingTime() { return cookingTime; }
+
+    @Override public boolean matches(Container c, Level l) {
+        for (int i = 0; i < c.getContainerSize(); i++) if (ingredient.test(c.getItem(i))) return true;
+        return false;
+    }
+    @Override public ItemStack assemble(Container c, RegistryAccess a) { return result.copy(); }
+    @Override public ItemStack getResultItem(RegistryAccess a) { return result.copy(); }
+    @Override public NonNullList<Ingredient> getIngredients() { NonNullList<Ingredient> ll = NonNullList.create(); ll.add(ingredient); return ll; }
+    @Override public RecipeSerializer<?> getSerializer() { return ModRecipes.PAN_SERIALIZER.get(); }
+    @Override public RecipeType<?> getType() { return ModRecipes.PAN_TYPE.get(); }
+
+    public static class Serializer implements RecipeSerializer<PanRecipe> {
+        @Override public PanRecipe fromJson(ResourceLocation id, JsonObject json) {
+            Ingredient ing = AMTRecipeBase.ingredientFromJson(json, "ingredient");
+            ItemStack res = AMTRecipeBase.resultFromJson(json);
+            int t = AMTRecipeBase.intFromJson(json, "cookingTime", 200);
+            if (json.has("time")) t = AMTRecipeBase.intFromJson(json, "time", t);
+            return new PanRecipe(id, ing, res, t);
+        }
+        @Override public PanRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+            Ingredient ing = AMTRecipeBase.readIngredient(buf);
+            ItemStack res = AMTRecipeBase.readItemStack(buf);
+            int t = buf.readVarInt();
+            return new PanRecipe(id, ing, res, t);
+        }
+        @Override public void toNetwork(FriendlyByteBuf buf, PanRecipe r) {
+            AMTRecipeBase.writeIngredient(buf, r.ingredient);
+            AMTRecipeBase.writeItemStack(buf, r.result);
+            buf.writeVarInt(r.cookingTime);
+        }
+    }
+}

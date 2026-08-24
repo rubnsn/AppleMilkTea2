@@ -21,13 +21,17 @@ public class ModFluids {
         return new ForgeFlowingFluid.Properties(ModFluidTypes.VEGITABLE_OIL,
             () -> (Fluid) ForgeRegistries.FLUIDS.getValue(new ResourceLocation("defeatedcrow", "vegitable_oil")),
             () -> (Fluid) ForgeRegistries.FLUIDS.getValue(new ResourceLocation("defeatedcrow", "vegitable_oil_flowing")))
-            .block(() -> (LiquidBlock) ModBlocks.BLOCK_VEGI_OIL.get()).bucket(() -> net.minecraft.world.item.Items.BUCKET).slopeFindDistance(2).levelDecreasePerBlock(1);
+            .block(() -> (LiquidBlock) ModBlocks.BLOCK_VEGI_OIL.get())
+            .bucket(() -> (net.minecraft.world.item.Item) ForgeRegistries.ITEMS.getValue(new ResourceLocation("defeatedcrow", "bucket_vegioil")))
+            .slopeFindDistance(2).levelDecreasePerBlock(1);
     }
     private static ForgeFlowingFluid.Properties camOilProps() {
         return new ForgeFlowingFluid.Properties(ModFluidTypes.CAMELLIA_OIL,
             () -> (Fluid) ForgeRegistries.FLUIDS.getValue(new ResourceLocation("defeatedcrow", "camellia_oil")),
             () -> (Fluid) ForgeRegistries.FLUIDS.getValue(new ResourceLocation("defeatedcrow", "camellia_oil_flowing")))
-            .block(() -> (LiquidBlock) ModBlocks.BLOCK_CAMELLIA_OIL.get()).bucket(() -> net.minecraft.world.item.Items.BUCKET).slopeFindDistance(2).levelDecreasePerBlock(1);
+            .block(() -> (LiquidBlock) ModBlocks.BLOCK_CAMELLIA_OIL.get())
+            .bucket(() -> (net.minecraft.world.item.Item) ForgeRegistries.ITEMS.getValue(new ResourceLocation("defeatedcrow", "bucket_camoil")))
+            .slopeFindDistance(2).levelDecreasePerBlock(1);
     }
 
     // --- WT-B: OILS (vegitable_oil, camellia_oil) ---

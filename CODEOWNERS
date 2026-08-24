@@ -48,6 +48,21 @@
 /src/main/resources/data/defeatedcrow/recipes/ @wt-d
 /src/main/resources/data/defeatedcrow/advancements/ @wt-d
 
+# WT-E: StubImpl+Fluid post-integration (after A-D merged to dev:a99cc2c, may edit all files)
+# Owned after 2026-08-25. Provide BEWLR wiring + IClientFluidTypeExtensions + remaining stubs.
+# Listed as additional owner alongside wt-a/b/c/d so feature/stub-impl PR can be approved by wt-e.
+# Primary files touched by WT-E (broad). See test/IMPLEMENTATION_PLAN_WT-E.md
+/src/main/java/mods/defeatedcrow/common/item/appliance/ItemYuzuGatling.java @wt-e
+/src/main/java/mods/defeatedcrow/common/item/magic/ItemFossilCannon.java @wt-e
+/src/main/java/mods/defeatedcrow/common/item/magic/ItemDebugArm.java @wt-e
+/src/main/java/mods/defeatedcrow/client/item/BEWLR_*.java @wt-e
+/src/main/java/mods/defeatedcrow/common/registry/ModFluidTypes.java @wt-e @wt-b
+/src/main/java/mods/defeatedcrow/common/registry/ModFluids.java @wt-e @wt-b
+/src/main/java/mods/defeatedcrow/common/registry/ModItems.java @wt-e @wt-a
+/src/main/resources/assets/defeatedcrow/textures/block/fluid/ @wt-e
+/src/main/resources/assets/defeatedcrow/models/item/bucket_*.json @wt-e
+/test/IMPLEMENTATION_PLAN_WT-E.md @wt-e
+
 # api/* は全WTで凍結（変更はbootstrap経由のみ）
 /src/main/java/mods/defeatedcrow/api/ @bootstrap
 

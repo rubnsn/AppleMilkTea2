@@ -1,5 +1,6 @@
 package mods.defeatedcrow.common.item;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -21,8 +22,16 @@ public class ItemDummyForTooltip extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Level level, java.util.List<Component> tooltip, TooltipFlag flag) {
-        // TODO: restore addInformation logic
-        super.appendHoverText(stack, level, tooltip, flag);
+        CompoundTag nbt = stack.getTag();
+        String name = "Empty";
+        short s = 0;
+        if (nbt != null && nbt.contains("fluid")) {
+            name = nbt.getString("fluid");
+        }
+        if (nbt != null && nbt.contains("amount")) {
+            s = nbt.getShort("amount");
+        }
+        tooltip.add(Component.literal(name + " " + s + "mB"));
     }
 
     /*

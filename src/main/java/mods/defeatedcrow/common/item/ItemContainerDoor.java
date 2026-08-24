@@ -22,13 +22,13 @@ public class ItemContainerDoor extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Level level, java.util.List<Component> tooltip, TooltipFlag flag) {
-        // TODO: restore addInformation logic
-        super.appendHoverText(stack, level, tooltip, flag);
+        int l = stack.getDamageValue();
+        int rem = (l & 7) + 1;
+        tooltip.add(Component.literal("Number: " + rem));
     }
 
     @Override
     public net.minecraft.world.InteractionResult useOn(net.minecraft.world.item.context.UseOnContext ctx) {
-        // TODO: restore onItemUse logic with BlockPos/Level/Player
         return super.useOn(ctx);
     }
 
