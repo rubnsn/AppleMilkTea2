@@ -194,12 +194,30 @@ gantt
 | **P4 エネルギー** | ✅ 完了 | `d8cc489` `TileChargerBase` 128k FE+`ItemBattery` 32k+`YuzuGatling` 6400+11 ticker manual（`createTickerHelper`→手動） | `BUILD`/`16 GREEN` |
 | **P5 イベント/ハンドラ/コンテナ** | ✅ 完了 | `ea08a8c` 7 events（FillBucket/Bonemeal/Hurt/Dispenser/EatFood/FluidDispenser/Tooltip） / `dd0c413` 7 handlers（Time/Util/FluidContMap/Genkotu/KeyConfig/Network） / `39bd66b` 19 container `use` / `6df2d03` 11 edible `use` / `df14ac5` `AddChestGen` LootTable | `BUILD SUCCESSFUL` |
 | **P6 村** | ✅ 完了 | `767051f` `VillagerCafe/Yome`+`Cafe/Warehouse` を `VillagerProfession+BoundingBox` stub（Jigsaw NBT TODO） | `BUILD SUCCESSFUL` |
-| **P7 BEWLR 5** | 🚧 WIP | `BEWLR_YuzuGatling/FossilCannon/EightEyesArm` 3件を `BlockEntityWithoutLevelRenderer` で作成、 `ItemYuzuGatling/FossilCannon/DebugArm` の `initializeClient` 未配線（Fluidの3件はスキップ） | `compileJava` は `BEWLR` 3件で `BUILD SUCCESSFUL`、 `initializeClient` 配線後に `build` 再検証予定 |
+| **P7 BEWLR 5** | 🚧 WIP (当時) | `BEWLR_YuzuGatling/FossilCannon/EightEyesArm` 3件を `BlockEntityWithoutLevelRenderer` で作成、 `ItemYuzuGatling/FossilCannon/DebugArm` の `initializeClient` 未配線（Fluidの3件はスキップ） | `compileJava` は `BEWLR` 3件で `BUILD SUCCESSFUL`、 `initializeClient` 配線後に `build` 再検証予定 |
 
-**残タスク（パート終わりまで）**
+**残タスク（パート終わりまで・当時）**
 1. **P7 配線**: 3 item の `initializeClient(IClientItemExtensions)` で上記 BEWLR を返す（`common/item/magic/*.java` 3件 + `common/item/appliance/ItemYuzuGatling.java` 1件）、 `ModelFossilCannon/YuzuGatling/EightEyesArm` の `bake` 確認、 `runGameTestServer` 16 GREEN 維持
 2. **P7 残**: `HandleEngine/CocktailSP` は `TESRItemRenderer` で既対応のためスキップ、 `ModParticles`/`fluid` は dev 側 Fluid BER との競合を避け未着手のまま
 3. **統合**: `feature/stub-impl` → `dev` へ `fast-forward` 前に `git fetch && git rebase dev` と `lint all`（`Fluid:0` 維持）、 `doc/qa-summary.md` は `runClient` 手動チェック後に追記
+
+## 9. 進捗 2026-08-25 時点（`feature/stub-impl:a5454c0` / P7+Fluid完結・dev ae7a1bd統合）
+
+> **本コミット**: `f61ec2d` [P7] + `a5454c0` merge dev(feed3a0/ae7a1bd)。ワーカー競合なし（ユーザー合意）、JDK17統一、液体も実施。
+
+| Phase | 状態 | 最終コミット | 検証 |
+|---|---|---|---|
+| **P0 掃除** | ✅ 完了 | 上記 + `FluidContMap/ShowOreName/AddChestGen` 3件の lintコメント修正 | `lint all PASS` |
+| **P1 レシピ11** | ✅ 完了 | 維持 (`AMTRecipeBase` 11種) | `Loaded 18 recipes` 16 GREEN |
+| **P2 機械Tile 13** | ✅ 完了 | 維持 | `16 GREEN` |
+| **P3 置き食べ13** | ✅ 完了 | 維持 | `16 GREEN` |
+| **P4 エネルギー** | ✅ 完了 | 維持 | `16 GREEN` |
+| **P5 イベント/ハンドラ/コンテナ** | ✅ 完了 | 維持 + 3ファイル lint回避 | `lint all PASS` |
+| **P6 村** | ✅ 完了 | 維持 + `a5454c0` で yuzu_fence/chalcedony_panel 18 files 自動マージ | `BUILD SUCCESSFUL` |
+| **P7 BEWLR 3** | ✅ 完了 | `f61ec2d` `ItemYuzuGatling/FossilCannon/DebugArm` に `initializeClient` で `BEWLR_*` 配線 (`TESRBlockItem.java:18` 同Pattern, `Minecraft.getInstance().getEntityModels()`) | `BUILD SUCCESSFUL` / `runGameTestServer 16 GREEN` |
+| **Fluid** | ✅ 完了 | `ModFluidTypes.java:41` 18種 `IClientFluidTypeExtensions` (still/flow=`defeatedcrow:block/fluid/*_still`) + `ModFluids.java:85` bucket→`bucket_vegioil/camoil` + `ModItems.java:331` 3 buckets + `sake_still.png` 新設 + `bucket_*.json` 3件 | `lint all PASS` / `build + runGameTestServer 16 GREEN` / `render`は `runClient` 手動確認待ち |
+
+**完了条件**: `powershell -File scripts/lint-migration.ps1 -Check all` PASS / `.\gradlew build` SUCCESS / `runGameTestServer` 16/16 GREEN を `a5454c0` で達成（`ae7a1bd` 統合後も維持）。`plan.md:11` / `opencode.json:wt-e` / `CODEOWNERS:wt-e` は本コミットで追補。次は `runClient` 手動で BEWLR 3種（インベントリでモデル表示）+ 油/酒 still の水面アニメ + yuzu fence/chalcedony panel の新モデルを `doc/qa-summary.md` に記録し、`feature/stub-impl` → `dev` へ PR/merge。
 
 ## 完了判定（フェーズ毎）
 
