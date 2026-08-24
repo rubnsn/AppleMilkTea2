@@ -1,6 +1,6 @@
 package mods.defeatedcrow.common.registry;
 
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraft.world.level.material.Fluid;
@@ -18,11 +18,15 @@ public class ModFluids {
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, "defeatedcrow");
 
     private static ForgeFlowingFluid.Properties vegOilProps() {
-        return new ForgeFlowingFluid.Properties(ModFluidTypes.VEGITABLE_OIL, () -> net.minecraft.world.level.material.Fluids.WATER, () -> net.minecraft.world.level.material.Fluids.WATER)
+        return new ForgeFlowingFluid.Properties(ModFluidTypes.VEGITABLE_OIL,
+            () -> (Fluid) ForgeRegistries.FLUIDS.getValue(new ResourceLocation("defeatedcrow", "vegitable_oil")),
+            () -> (Fluid) ForgeRegistries.FLUIDS.getValue(new ResourceLocation("defeatedcrow", "vegitable_oil_flowing")))
             .block(() -> (LiquidBlock) ModBlocks.BLOCK_VEGI_OIL.get()).bucket(() -> net.minecraft.world.item.Items.BUCKET).slopeFindDistance(2).levelDecreasePerBlock(1);
     }
     private static ForgeFlowingFluid.Properties camOilProps() {
-        return new ForgeFlowingFluid.Properties(ModFluidTypes.CAMELLIA_OIL, () -> net.minecraft.world.level.material.Fluids.WATER, () -> net.minecraft.world.level.material.Fluids.WATER)
+        return new ForgeFlowingFluid.Properties(ModFluidTypes.CAMELLIA_OIL,
+            () -> (Fluid) ForgeRegistries.FLUIDS.getValue(new ResourceLocation("defeatedcrow", "camellia_oil")),
+            () -> (Fluid) ForgeRegistries.FLUIDS.getValue(new ResourceLocation("defeatedcrow", "camellia_oil_flowing")))
             .block(() -> (LiquidBlock) ModBlocks.BLOCK_CAMELLIA_OIL.get()).bucket(() -> net.minecraft.world.item.Items.BUCKET).slopeFindDistance(2).levelDecreasePerBlock(1);
     }
 
@@ -36,10 +40,13 @@ public class ModFluids {
     public static final RegistryObject<ForgeFlowingFluid> CAMELLIA_OIL_FLOWING = FLUIDS.register("camellia_oil_flowing",
         () -> new ForgeFlowingFluid.Flowing(camOilProps()));
 
-    // --- WT-B: BREWING 16 (use dummy block/bucket + WATER placeholder to avoid self-reference compile error) ---
+    // --- WT-B: BREWING 16 (barrel tank-only, no world block; RL lookup avoids self-reference) ---
     private static ForgeFlowingFluid.Properties brewingProps(RegistryObject<net.minecraftforge.fluids.FluidType> type) {
-        return new ForgeFlowingFluid.Properties(type, () -> net.minecraft.world.level.material.Fluids.WATER, () -> net.minecraft.world.level.material.Fluids.WATER)
-            .block(() -> (LiquidBlock) Blocks.AIR).bucket(() -> net.minecraft.world.item.Items.AIR).slopeFindDistance(2).levelDecreasePerBlock(1);
+        String name = type.getId().getPath();
+        return new ForgeFlowingFluid.Properties(type,
+            () -> (Fluid) ForgeRegistries.FLUIDS.getValue(new ResourceLocation("defeatedcrow", name)),
+            () -> (Fluid) ForgeRegistries.FLUIDS.getValue(new ResourceLocation("defeatedcrow", name + "_flowing")))
+            .bucket(() -> net.minecraft.world.item.Items.AIR).slopeFindDistance(2).levelDecreasePerBlock(1);
     }
     public static final RegistryObject<ForgeFlowingFluid> SAKE_YOUNG_SOURCE = FLUIDS.register("sake_young", () -> new ForgeFlowingFluid.Source(brewingProps(ModFluidTypes.SAKE_YOUNG)));
     public static final RegistryObject<ForgeFlowingFluid> SAKE_YOUNG_FLOWING = FLUIDS.register("sake_young_flowing", () -> new ForgeFlowingFluid.Flowing(brewingProps(ModFluidTypes.SAKE_YOUNG)));

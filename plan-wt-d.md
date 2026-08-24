@@ -158,3 +158,13 @@ DOC: doc/recipes/migration-guide.md の1.20.1追補 (RecipeType/MapCodec/TagKey/
 * **検証**: `E:/AMT2-WT-D` で `lint wtd` PASS（`OreDictionary:0`/`net.minecraft.init:0`/`NBTTagCompound:0`/`Achievement:0`）。`dev:7569016` でも `wtd` PASS。`wta/wtc/bootstrap` PASS。`wtb` は `6b31c34` 由来の13件残存で `dev` では `wtd` には影響なし。
 * **不具合対応**: `df8734f` 由来の `BOM (EF BB BF)` 13件 / `// ...        RecipeRegisterManager` 連結5件 / `OreCrushRecipe.java:211` `} else` / `AMTRecipeProvider.java:21` Javadoc `**/*.json` 内 `*/` / `—` (windows-31j不正) 92件を `b99feb3`/`7569016` で修正。`plan.md:8` にWT-D完了を反映。
 * **残**: `lint all` では `WT-C` 未移行が支配的で `cpw:13`/`OreDictionary:5`/`NBTTagCompound:96` 等残存、`compileJava` は `WT-C` 180ファイル起因で `3311` エラー。WT-D単独では `runData`/`build` の完全成功は次フェーズ（WT-C統合後）。
+
+---
+
+## 10. 完了記録 — 2026-08-24 WT-D クリーンアップ（worktree/ブランチ廃止）
+
+> A~D 全worktreeの役目終了に伴い、`dev` へ全マージ済みを確認して削除。
+
+* **事前確認**: 全featureブランチ (`feature/blocks-items` / `tiles-fluids-world` / `client-cross` / `recipe-advancement`) は `dev:5d94deb` (= `origin/dev`) と同一コミットで `--merged dev` 確認済み。WT-Dの未追跡 `src/generated/` (58ファイル) はdatagen生成物でメインリポジトリに同一物ありのため削除。
+* **削除**: worktree `E:/AMT2-WT-A/B/C/D` 4件 (`git worktree remove`, WT-Dのみ `--force`) / ローカルブランチ4本 (`git branch -d`) / リモート `origin/feature/blocks-items` (`git push origin --delete`)。
+* **現状**: worktreeは `E:/AppleMilkTea2` のみ、ブランチは `dev` + `master` のみ。以後の作業は `dev` 直行。

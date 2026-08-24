@@ -15,12 +15,13 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileEvaporator extends BlockEntity implements WorldlyContainer {
     public TileEvaporator(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_EVAPORATOR.get(), pos, state); }
     public ItemStack[] items = new ItemStack[3];
+    { java.util.Arrays.fill(items, ItemStack.EMPTY); }
     @Override public void load(CompoundTag t) { super.load(t); }
     @Override public void saveAdditional(CompoundTag t) { super.saveAdditional(t); }
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket() { return ClientboundBlockEntityDataPacket.create(this); }
     public static void tick(Level level, BlockPos pos, BlockState state, TileEvaporator be) { if(level.isClientSide) return; be.setChanged(); }
     @Override public int getContainerSize() { return items.length; }
-    @Override public boolean isEmpty() { return true; }
+    @Override public boolean isEmpty(){ for(ItemStack s:items) if(!s.isEmpty()) return false; return true; }
     @Override public ItemStack getItem(int i) { return items[i]; }
     @Override public ItemStack removeItem(int i,int j){ return ItemStack.EMPTY; }
     @Override public ItemStack removeItemNoUpdate(int i){ ItemStack s=items[i]; items[i]=ItemStack.EMPTY; return s; }

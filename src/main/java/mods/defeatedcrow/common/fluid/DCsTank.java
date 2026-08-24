@@ -32,11 +32,11 @@ public class DCsTank extends FluidTank {
     }
 
     public net.minecraft.world.level.material.Fluid getFluidType() {
-        return getFluid().isEmpty() ? null : getFluid().getFluid();
+        return getFluid().isEmpty() ? net.minecraft.world.level.material.Fluids.EMPTY : getFluid().getFluid();
     }
 
     public String getFluidName() {
-        return "Empty";
+        return getFluid().isEmpty() ? "Empty" : net.minecraftforge.registries.ForgeRegistries.FLUIDS.getKey(getFluid().getFluid()).toString();
     }
 
     public void setAmount(int par1) {

@@ -57,8 +57,7 @@ public class BlockEggBasket extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        // TODO: return new Tile* (pos, state) - requires WT-B BlockEntityType registration
-        return null;
+        return new mods.defeatedcrow.common.tile.TileEggs(pos, state);
     }
 
     @Override

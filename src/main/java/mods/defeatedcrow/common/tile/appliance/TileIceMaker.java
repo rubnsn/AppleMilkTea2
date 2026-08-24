@@ -16,6 +16,7 @@ public class TileIceMaker extends BlockEntity implements WorldlyContainer {
     public TileIceMaker(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_ICE_MAKER.get(), pos, state); }
     public int chargeAmount; public int currentItemCharge; public int cookTime; private int coolTime=8;
     public ItemStack[] iceItemStacks = new ItemStack[4];
+    { java.util.Arrays.fill(iceItemStacks, ItemStack.EMPTY); }
     @Override public void load(CompoundTag t){ super.load(t); }
     @Override public void saveAdditional(CompoundTag t){ super.saveAdditional(t); }
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){ return ClientboundBlockEntityDataPacket.create(this); }
@@ -26,10 +27,10 @@ public class TileIceMaker extends BlockEntity implements WorldlyContainer {
     public boolean isCharged(){ return chargeAmount>0; }
     public static void tick(Level level, BlockPos pos, BlockState state, TileIceMaker be){ if(level.isClientSide) return; be.setChanged(); }
     @Override public int getContainerSize(){ return iceItemStacks.length; }
-    @Override public boolean isEmpty(){ return true; }
-    @Override public ItemStack getItem(int i){ return iceItemStacks[i]==null?ItemStack.EMPTY:iceItemStacks[i]; }
+    @Override public boolean isEmpty(){ for(ItemStack s:iceItemStacks) if(!s.isEmpty()) return false; return true; }
+    @Override public ItemStack getItem(int i){ return iceItemStacks[i]; }
     @Override public ItemStack removeItem(int i,int j){ return ItemStack.EMPTY; }
-    @Override public ItemStack removeItemNoUpdate(int i){ ItemStack s=iceItemStacks[i]; iceItemStacks[i]=ItemStack.EMPTY; return s==null?ItemStack.EMPTY:s; }
+    @Override public ItemStack removeItemNoUpdate(int i){ ItemStack s=iceItemStacks[i]; iceItemStacks[i]=ItemStack.EMPTY; return s; }
     @Override public void setItem(int i, ItemStack s){ iceItemStacks[i]=s; }
     @Override public boolean stillValid(Player p){ return true; }
     @Override public void clearContent(){ for(int i=0;i<iceItemStacks.length;i++) iceItemStacks[i]=ItemStack.EMPTY; }

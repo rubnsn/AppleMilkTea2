@@ -65,6 +65,7 @@ public class ModRenderLayers {
             cutout(ModBlocks.WOOD_PANEL);
             cutout(ModBlocks.CHALCEDONY_LAMP_OP);
             cutout(ModBlocks.FILLED_SOUP_PAN);
+            cutout(ModBlocks.WIPE_BOX2);
             cutout(ModBlocks.CONTAINER_WATER_BOTTLE);
             cutout(ModBlocks.FLOWER_VASE);
             cutout(ModBlocks.HEDGE);
