@@ -1,7 +1,8 @@
 {
-  "variants": {
-    "": {
-      "model": "defeatedcrow:block/leaves_yuzu"
-    }
-  }
+  "multipart": [
+    { "when": { "yuzu_age": "0" }, "apply": { "model": "defeatedcrow:block/leaves_yuzu_0" } },
+    { "when": { "yuzu_age": "1" }, "apply": { "model": "defeatedcrow:block/leaves_yuzu_0" } },
+    { "when": { "yuzu_age": "2" }, "apply": { "model": "defeatedcrow:block/leaves_yuzu_1" } },
+    { "when": { "yuzu_age": "3" }, "apply": { "model": "defeatedcrow:block/leaves_yuzu_2" } }
+  ]
 }

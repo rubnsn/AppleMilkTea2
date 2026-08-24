@@ -22,11 +22,17 @@ public class TileEntitySteakRenderer implements BlockEntityRenderer<TileSteak> {
 
     @Override
     public void render(TileSteak be, float partialTicks, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        byte dir = be.getDirectionByte();
+        float j = 0;
+        if (dir == 0) j = 180.0F;
+        else if (dir == 1) j = -90.0F;
+        else if (dir == 2) j = 0.0F;
+        else if (dir == 4) j = 90.0F;
         pose.pushPose();
         pose.translate(0.5, 1.5, 0.5);
+        pose.mulPose(com.mojang.math.Axis.YP.rotationDegrees(j));
         pose.scale(1.0F, -1.0F, -1.0F);
         VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(TEX));
-        // Fallback to entityCutout if texture missing, will show missing but compile
         this.model.renderToBuffer(pose, vc, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
         pose.popPose();
     }

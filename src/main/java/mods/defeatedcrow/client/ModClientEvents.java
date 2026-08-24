@@ -1,5 +1,7 @@
 package mods.defeatedcrow.client;
 
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -7,6 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import mods.defeatedcrow.common.DCsAppleMilk;
+import mods.defeatedcrow.common.registry.ModBlocks;
 
 /**
  * 1.20.1 client registration  Ereplaces ClientProxy ISBRH/TESR/EntityRenderer.
@@ -49,6 +52,12 @@ public class ModClientEvents {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            // WT-A 1.20.1 fix: sapling cross models must use cutout (vanilla oak_sapling parity)
+            // Prevents black quad background & ensures correct transparency for tea/yuzu saplings
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.SAPLING_TEA.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.SAPLING_YUZU.get(), RenderType.cutout());
+            // WT-A Yuzu log/leaves - vanilla parity
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.LEAVES_YUZU.get(), RenderType.cutoutMipped());
             // --- WT-C: RenderType cutout for 44 ISBRH blocks ---
             // ItemBlockRenderTypes.setRenderLayer(ModBlocks.TEA_MAKER_NEXT.get(), RenderType.cutout());
             // ... 44 blocks: teaMakerNext, emptyCup, teaTree, filledCup, bowl, bowlRack, cLamp, basket,

@@ -9,25 +9,13 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 import mods.defeatedcrow.common.tile.TileVegiBag;
-import mods.defeatedcrow.client.model.model.ModelBreads;
 
 public class TileEntityVegiBagRenderer implements BlockEntityRenderer<TileVegiBag> {
-    private final ModelBreads model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/baskets.png");
-
-    public TileEntityVegiBagRenderer(BlockEntityRendererProvider.Context ctx) {
-        // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)
-        this.model = new ModelBreads(ModelBreads.createBodyLayer().bakeRoot());
-    }
+    // 1.7.10 used Tessellator flat quad with block icon (vegiBag 16x16) and sneaking offset, not a 3D model
+    public TileEntityVegiBagRenderer(BlockEntityRendererProvider.Context ctx) {}
 
     @Override
     public void render(TileVegiBag be, float partialTicks, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
-        pose.pushPose();
-        pose.translate(0.5, 1.5, 0.5);
-        pose.scale(1.0F, -1.0F, -1.0F);
-        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(TEX));
-        // Fallback to entityCutout if texture missing, will show missing but compile
-        this.model.renderToBuffer(pose, vc, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
-        pose.popPose();
+        // TODO: restore flat icon rendering – avoid ModelBreads/baskets placeholder
     }
 }
