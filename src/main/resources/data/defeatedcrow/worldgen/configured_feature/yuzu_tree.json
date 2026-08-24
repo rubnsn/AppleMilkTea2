@@ -8,15 +8,15 @@
       "entries": [
         {
           "weight": 1,
-          "data": { "Name": "defeatedcrow:leaves_yuzu", "Properties": { "yuzu_age": "1", "persistent": "false", "distance": "7", "waterlogged": "false" } }
+          "data": { "Name": "defeatedcrow:leaves_yuzu", "Properties": { "yuzu_age": "1" } }
         },
         {
           "weight": 1,
-          "data": { "Name": "defeatedcrow:leaves_yuzu", "Properties": { "yuzu_age": "2", "persistent": "false", "distance": "7", "waterlogged": "false" } }
+          "data": { "Name": "defeatedcrow:leaves_yuzu", "Properties": { "yuzu_age": "2" } }
         },
         {
           "weight": 1,
-          "data": { "Name": "defeatedcrow:leaves_yuzu", "Properties": { "yuzu_age": "3", "persistent": "false", "distance": "7", "waterlogged": "false" } }
+          "data": { "Name": "defeatedcrow:leaves_yuzu", "Properties": { "yuzu_age": "3" } }
         }
       ]
     },

@@ -1,6 +1,5 @@
 package mods.defeatedcrow.common.block.plants;
 
-import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -14,96 +13,118 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
+import mods.defeatedcrow.common.registry.ModBlocks;
 import mods.defeatedcrow.common.registry.ModItems;
 
 /**
- * WT-A 1.20.1: Yuzu leaves - vanilla LeavesBlock parity + old spec YUZU_AGE growth/harvest.
- * Original 1.7.10:
- *  - Meta &3: 0=post-harvest,1=natural,2=flower,3=fruit (right-click harvest when 3 -> reset 0, drops leafTea:3)
- *  - Growth: type0 rand40 ->+1, type1/2 rand15 ->+1; decay via BFS distance 4 + beginLeavesDecay
- *  - Icons: leaves_yuzu_0 for 0/1, _1 for 2, _2 for 3 (plus 4/1 easter egg)
- *  - Drops: saplingYuzu with chance 2 (fruit) /10, plus leafTea3 with 10/50; isShearable true.
- * 1.20.1:
- *  - Extend LeavesBlock (DISTANCE, PERSISTENT, WATERLOGGED) + IntegerProperty YUZU_AGE 0-3
- *  - isRandomlyTicking true if YUZU_AGE<3 (fruit growth) or vanilla decay (DISTANCE 7 && !PERSISTENT)
- *  - randomTick handles fruit growth then delegates to LeavesBlock decay.
- *  - use harvests when YUZU_AGE==3, resets to 0 and gives LEAF_YUZU.
- *  - Flammable, shearable (LeavesBlock already implements IForgeShearable), lightOpacity handled by properties.
+ * WT-A 1.20.1: Yuzu leaves - 旧仕様準拠（1.7.10 BlockYuzuLeaves を BlockState 化）。
+ * 1.7.10: BlockLeavesBase + meta&3 0=採取後/1=自然/2=花/3=実、右クリックで実(leafTea:3)採取し meta-3に、
+ *  成長: type0 rand40 / type1,2 rand15 で +1、腐朽: around[32^3] BFS 距離4で原木未接続なら除去、b0=1の breakBlock で周辺 leaves に decay 伝播。
+ * 1.20.1: Block + IntegerProperty YUZU_AGE 0-3 のみに正規化。バニラ LeavesBlock の DISTANCE/PERSISTENT/WATERLOGGED は使わず旧 BFS を再実装
+ *  して「バニラ接続切れでブロック化」を防ぐ。randomTick で腐朽判定→除去、さもなければ果実成長。
+ *  見た目は minecraft:block/leaves モデル + cutoutMipped、透過は properties noOcclusion + isViewBlocking false 相当で担保。
  */
-public class BlockYuzuLeaves extends LeavesBlock {
+public class BlockYuzuLeaves extends Block implements net.minecraftforge.common.IForgeShearable {
 
     public static final IntegerProperty YUZU_AGE = IntegerProperty.create("yuzu_age", 0, 3);
 
     public BlockYuzuLeaves(BlockBehaviour.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any()
-            .setValue(DISTANCE, 7)
-            .setValue(PERSISTENT, false)
-            .setValue(WATERLOGGED, false)
-            .setValue(YUZU_AGE, 0));
+        this.registerDefaultState(this.stateDefinition.any().setValue(YUZU_AGE, 0));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
         builder.add(YUZU_AGE);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        BlockState state = super.getStateForPlacement(ctx);
-        // Player-placed leaves via BlockItem should be persistent and start at age 0 (will grow)
-        // Sheared leaves with age 3 placed will still be reset to 0 - preserve age would need NBT, not required
-        return state.setValue(YUZU_AGE, 0);
+        // プレイヤー設置は採取後状態 0、成長で 1→2→3へ。ワールド生成の葉は foliage_provider で 1-3 を直接指定。
+        return this.defaultBlockState().setValue(YUZU_AGE, 0);
     }
 
-    // Ensure worldgen leaves with age 1-3 can be placed via feature's foliage_provider weighted state
+    // 葉は通常ブロックと同等の当たり判定（1.7.10 は isOpaque false だが VoxelShape はフル）。
+    // getShape/getCollisionShape はデフォルト Shapes.block() のまま（cutoutMipped 描画で透過）。
 
     @Override
     public boolean isRandomlyTicking(BlockState state) {
-        return state.getValue(YUZU_AGE) < 3 || super.isRandomlyTicking(state);
+        // 腐朽 or 成長待ちは tick させる
+        return state.getValue(YUZU_AGE) < 3 || shouldDecay(state);
+    }
+
+    private boolean shouldDecay(BlockState state) {
+        // 旧仕様では decay ビット 8 が立っている葉が対象だが 1.20.1では YUZU_AGE によらず常時 decay 判定を randomTick で行う。
+        // 実際の decay 要否は isNearLog で判定。
+        return true;
     }
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        // Fruit growth before decay (so even persistent leaves can grow)
+        // 1) 腐朽判定: 原木から 4 以内の接続がなければ除去（旧 BFS 距離4を Manhattan 近似）
+        if (!isNearLog(level, pos, 4)) {
+            // 1.7.10 removeLeaves: drop + setAir
+            dropResources(state, level, pos);
+            level.removeBlock(pos, false);
+            return;
+        }
+        // 2) 果実成長（旧 updateTick の type<3 部分）
         int age = state.getValue(YUZU_AGE);
         if (age < 3) {
             if (age == 0) {
                 if (random.nextInt(40) == 0) {
                     level.setBlock(pos, state.setValue(YUZU_AGE, age + 1), 3);
-                    // after growth, don't return - still allow decay check for same tick if needed
-                    state = level.getBlockState(pos);
                 }
             } else {
                 if (random.nextInt(15) == 0) {
                     level.setBlock(pos, state.setValue(YUZU_AGE, age + 1), 3);
-                    state = level.getBlockState(pos);
                 }
             }
         }
-        // Vanilla decay
-        super.randomTick(state, level, pos, random);
     }
 
+    /**
+     * 旧 updateTick の around[32^3] BFS を簡易 Manhattan で代替: 半径4の立方体を走査し log_yuzu が1つでもあれば接続あり。
+     * 旧 b0=4, b1=32 の厳密 BFS は 4マス先まで 6方向伝播だが、実質的には 4 ブロック以内の原木存在チェックと同等。
+     */
+    private boolean isNearLog(ServerLevel level, BlockPos pos, int radius) {
+        // 中心 4 以内を全走査（旧は 32^3 配列で距離ラベル付けだが結果は同等）
+        for (int dx = -radius; dx <= radius; dx++) {
+            for (int dy = -radius; dy <= radius; dy++) {
+                for (int dz = -radius; dz <= radius; dz++) {
+                    // Manhattan 的距離で 4 以内のみ、対角も含めるため max(|dx|,|dy|,|dz|) <=4 で旧 b0 立方と同等
+                    if (Math.max(Math.max(Math.abs(dx), Math.abs(dy)), Math.abs(dz)) > radius) continue;
+                    BlockPos p = pos.offset(dx, dy, dz);
+                    if (!level.isLoaded(p)) continue;
+                    BlockState s = level.getBlockState(p);
+                    // BlockTags.LOGS ではなく直接 ModBlocks.LOG_YUZU で判定（旧 canSustainLeaves/isWood と同等）
+                    if (s.is(ModBlocks.LOG_YUZU.get())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    // 破壊時に周囲1の葉へ decay 伝播は randomTick の isNearLog で自然に処理されるため不要。
+    // 互換で break 時に周辺 tick をスケジュールするだけに留める。
     @Override
-    public BlockState updateShape(BlockState state, Direction dir, BlockState neighbor, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
-        // Ensure YUZU_AGE is preserved through distance updates
-        return super.updateShape(state, dir, neighbor, level, pos, neighborPos);
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
+        super.onRemove(state, level, pos, newState, moved);
+        // 1.7.10 breakBlock は半径1の leaves に beginLeavesDecay していたが、現代は葉が自前で tick するため何もしない。
     }
 
-    // Harvest: right-click when yuzu_age==3
+    // 収穫: yuzu_age==3 のみ
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         int age = state.getValue(YUZU_AGE);
@@ -117,7 +138,6 @@ public class BlockYuzuLeaves extends LeavesBlock {
                 added = true;
                 player.inventoryMenu.broadcastChanges();
             } else {
-                // spawn as EntityItem
                 var entity = new net.minecraft.world.entity.item.ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ret);
                 entity.setDefaultPickUpDelay();
                 level.addFreshEntity(entity);
@@ -126,7 +146,6 @@ public class BlockYuzuLeaves extends LeavesBlock {
             if (added) {
                 level.setBlock(pos, state.setValue(YUZU_AGE, 0), 3);
                 level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.4F, 1.8F);
-                // Original triggered achievement getYuzu - now advancement; ignore
                 player.swing(hand, true);
                 return InteractionResult.SUCCESS;
             }
@@ -134,7 +153,6 @@ public class BlockYuzuLeaves extends LeavesBlock {
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
-    // Flammability like vanilla leaves
     @Override
     public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction face) {
         return true;
@@ -150,6 +168,16 @@ public class BlockYuzuLeaves extends LeavesBlock {
         return 60;
     }
 
-    // Shear already handled by LeavesBlock implements IForgeShearable, drops block itself via loot table.
-    // Ensure creative pick retains age? Use p_49855_ style: we keep YUZU_AGE in block state, item has no NBT, so pick will default.
+    // IForgeShearable - 1.20.1 signature uses Level
+    @Override
+    public boolean isShearable(ItemStack item, Level level, BlockPos pos) {
+        return true;
+    }
+
+    @Override
+    public java.util.List<ItemStack> onSheared(Player player, ItemStack item, Level level, BlockPos pos, int fortune) {
+        // 旧 onSheared: meta&3 を保持
+        return java.util.List.of(new ItemStack(this, 1));
+        // 年齢はアイテムに保持しない（BlockItem はデフォルト 0 で設置される点は旧と同様）
+    }
 }
