@@ -9,15 +9,15 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 import mods.defeatedcrow.common.tile.appliance.TileFilledSoupPan;
-import mods.defeatedcrow.client.model.model.ModelBreads;
+import mods.defeatedcrow.client.model.model.ModelPanHandle;
 
 public class TileEntitySoupPanRenderer implements BlockEntityRenderer<TileFilledSoupPan> {
-    private final ModelBreads model;
+    private final ModelPanHandle model;
     private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/breads.png");
 
     public TileEntitySoupPanRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)
-        this.model = new ModelBreads(ModelBreads.createBodyLayer().bakeRoot());
+        this.model = new ModelPanHandle(ModelPanHandle.createBodyLayer().bakeRoot());
     }
 
     @Override

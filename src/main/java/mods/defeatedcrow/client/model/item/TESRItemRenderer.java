@@ -51,6 +51,7 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
     private final ModelLargeBottle largeBottleModel;
     private final ModelCrowDoll crowDollModel;
     private final ModelAltBowl altBowlModel;
+    private final ModelPanHandle panHandleModel;
 
     public TESRItemRenderer(Minecraft mc, EntityModelSet modelSet) {
         super(mc.getBlockEntityRenderDispatcher(), modelSet);
@@ -80,6 +81,7 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
         this.largeBottleModel = new ModelLargeBottle(ModelLargeBottle.createBodyLayer().bakeRoot());
         this.crowDollModel = new ModelCrowDoll(ModelCrowDoll.createBodyLayer().bakeRoot());
         this.altBowlModel = new ModelAltBowl(ModelAltBowl.createBodyLayer().bakeRoot());
+        this.panHandleModel = new ModelPanHandle(ModelPanHandle.createBodyLayer().bakeRoot());
     }
 
     @Override
@@ -176,7 +178,7 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
             renderCrowDoll(pose, buffers, light, overlay);
             rendered = true;
         } else if (item == ModItems.FILLED_SOUP_PAN_ITEM.get() || item == ModItems.EMPTY_PAN_G_ITEM.get() || item == ModItems.TEPPAN_II_ITEM.get()) {
-            renderBreads(pose, buffers, light, overlay);
+            renderPanHandle(pose, buffers, light, overlay);
             rendered = true;
         } else if (item == ModItems.CARDBOARD_ITEM.get() || item == ModItems.CONTAINER_WATER_BOTTLE_ITEM.get() || item == ModItems.FLOWER_VASE_ITEM.get() || item == ModItems.HEDGE_ITEM.get() || item == ModItems.ROTARY_DIAL_ITEM.get() || item == ModItems.CHALCEDONY_PANEL_ITEM.get() || item == ModItems.WOOD_PANEL_ITEM.get() || item == ModItems.YUZU_FENCE_ITEM.get()) {
             renderIncense(pose, buffers, light, overlay);
@@ -294,5 +296,10 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
     private void renderAltBowl(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
         VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/x32alt/bowlrack_alt.png")));
         altBowlModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+
+    private void renderPanHandle(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/breads.png")));
+        panHandleModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
     }
 }
