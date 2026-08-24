@@ -46,12 +46,12 @@ public class BlockCocktail extends Block implements EntityBlock {
     }
 
     // 1.7.10 onBlockActivated -> 1.20.1 use (BlockPos + BlockHitResult)
-    @Override
+        @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        // TODO: restore original onBlockActivated logic
-        // Original used: world.getBlockMetadata(x,y,z), player.inventory, MinecraftForge.EVENT_BUS.post(AMTBlockRightClickEvent)
-        // Migration: use state, level.getBlockEntity(pos), player.getItemInHand(hand), Component
-        return InteractionResult.PASS;
+        if (level.isClientSide) return InteractionResult.SUCCESS;
+        ItemStack held = player.getItemInHand(hand);
+        // TODO: restore original bowl/cocktail logic (meta, contents, spawn ItemEntity, place Placeable entity)
+        return InteractionResult.SUCCESS;
     }
 
     @Nullable
