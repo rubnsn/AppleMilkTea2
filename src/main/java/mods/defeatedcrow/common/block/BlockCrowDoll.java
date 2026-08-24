@@ -45,12 +45,9 @@ public class BlockCrowDoll extends Block implements EntityBlock {
         return getShape(state, level, pos, ctx);
     }
 
-    // 1.7.10 onBlockActivated -> 1.20.1 use (BlockPos + BlockHitResult)
+    // 1.20.1 use: no inventory - decorative, pass through to item
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        // TODO: restore original onBlockActivated logic
-        // Original used: world.getBlockMetadata(x,y,z), player.inventory, MinecraftForge.EVENT_BUS.post(AMTBlockRightClickEvent)
-        // Migration: use state, level.getBlockEntity(pos), player.getItemInHand(hand), Component
         return InteractionResult.PASS;
     }
 

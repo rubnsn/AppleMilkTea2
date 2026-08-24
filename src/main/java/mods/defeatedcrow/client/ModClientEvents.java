@@ -1,5 +1,6 @@
 package mods.defeatedcrow.client;
 
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -8,8 +9,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
+import mods.defeatedcrow.client.gui.GuiAdvProcessor;
+import mods.defeatedcrow.client.gui.GuiBatBox;
+import mods.defeatedcrow.client.gui.GuiEvaporator;
+import mods.defeatedcrow.client.gui.GuiIceMaker;
+import mods.defeatedcrow.client.gui.GuiProcessor;
 import mods.defeatedcrow.common.DCsAppleMilk;
 import mods.defeatedcrow.common.registry.ModBlocks;
+import mods.defeatedcrow.common.registry.ModMenuTypes;
 
 /**
  * 1.20.1 client registration  Ereplaces ClientProxy ISBRH/TESR/EntityRenderer.
@@ -52,6 +59,12 @@ public class ModClientEvents {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            // 1.20.1 GUI screens for appliance/energy menus (fix Failed to create screen)
+            MenuScreens.register(ModMenuTypes.ICE_MAKER.get(), GuiIceMaker::new);
+            MenuScreens.register(ModMenuTypes.PROCESSOR.get(), GuiProcessor::new);
+            MenuScreens.register(ModMenuTypes.ADV_PROCESSOR.get(), GuiAdvProcessor::new);
+            MenuScreens.register(ModMenuTypes.EVAPORATOR.get(), GuiEvaporator::new);
+            MenuScreens.register(ModMenuTypes.BAT_BOX.get(), GuiBatBox::new);
             // WT-A 1.20.1 fix: sapling cross models must use cutout (vanilla oak_sapling parity)
             // Prevents black quad background & ensures correct transparency for tea/yuzu saplings
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.SAPLING_TEA.get(), RenderType.cutout());

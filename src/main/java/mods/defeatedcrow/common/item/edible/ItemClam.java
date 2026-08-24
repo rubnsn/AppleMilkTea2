@@ -34,6 +34,34 @@ public class ItemClam extends Item {
 
     @Override
     public net.minecraft.world.InteractionResult useOn(net.minecraft.world.item.context.UseOnContext ctx) {
+        Level level = ctx.getLevel();
+        BlockPos pos = ctx.getClickedPos();
+        var state = level.getBlockState(pos);
+        var player = ctx.getPlayer();
+        ItemStack stack = ctx.getItemInHand();
+        // 1.7.10: sand -> clamSand (damage 0)
+        if (state.is(net.minecraft.world.level.block.Blocks.SAND)) {
+            if (!level.isClientSide) {
+                level.setBlock(pos, mods.defeatedcrow.common.registry.ModBlocks.CLAM_SAND.get().defaultBlockState(), 3);
+                level.playSound(null, pos, state.getSoundType(level, pos, player).getBreakSound(), net.minecraft.sounds.SoundSource.BLOCKS, 0.5F, 0.8F);
+                if (player != null && !player.getAbilities().instabuild) stack.shrink(1);
+            }
+            return net.minecraft.world.InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        // 1.7.10: wipeBox( with cLamp underneath ) -> crowDoll
+        if (state.is(mods.defeatedcrow.common.registry.ModBlocks.WIPE_BOX.get())) {
+            BlockPos below = pos.below();
+            var belowState = level.getBlockState(below);
+            if (belowState.is(mods.defeatedcrow.common.registry.ModBlocks.CHALCEDONY_LAMP.get()) || belowState.is(net.minecraft.world.level.block.Blocks.AIR)) {
+                // simplified: if player sneak+right click on wipeBox, convert to crowDoll
+                if (!level.isClientSide && player != null && player.isShiftKeyDown()) {
+                    level.setBlock(pos, mods.defeatedcrow.common.registry.ModBlocks.CROW_DOLL.get().defaultBlockState(), 3);
+                    level.playSound(null, pos, net.minecraft.sounds.SoundEvents.EXPERIENCE_ORB_PICKUP, net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 1.2F);
+                    if (!player.getAbilities().instabuild) stack.shrink(1);
+                    return net.minecraft.world.InteractionResult.SUCCESS;
+                }
+            }
+        }
         return super.useOn(ctx);
     }
 

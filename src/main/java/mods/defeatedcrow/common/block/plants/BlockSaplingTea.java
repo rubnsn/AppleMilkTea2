@@ -91,7 +91,9 @@ public class BlockSaplingTea extends BushBlock implements BonemealableBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        return InteractionResult.PASS;
+        if (level.isClientSide) return InteractionResult.sidedSuccess(true);
+        level.playSound(null, pos, net.minecraft.sounds.SoundEvents.GRASS_HIT, net.minecraft.sounds.SoundSource.BLOCKS, 0.4F, 1.2F);
+        return InteractionResult.sidedSuccess(false);
     }
 
     @Override

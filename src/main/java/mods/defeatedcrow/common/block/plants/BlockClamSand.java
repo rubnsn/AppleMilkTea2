@@ -41,13 +41,12 @@ public class BlockClamSand extends Block {
         return getShape(state, level, pos, ctx);
     }
 
-    // 1.7.10 onBlockActivated -> 1.20.1 use (BlockPos + BlockHitResult)
+    // 1.20.1 use: no inventory - just handle right-click success
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        // TODO: restore original onBlockActivated logic
-        // Original used: world.getBlockMetadata(x,y,z), player.inventory, MinecraftForge.EVENT_BUS.post(AMTBlockRightClickEvent)
-        // Migration: use state, level.getBlockEntity(pos), player.getItemInHand(hand), Component
-        return InteractionResult.PASS;
+        if (level.isClientSide) return InteractionResult.sidedSuccess(true);
+        level.playSound(null, pos, net.minecraft.sounds.SoundEvents.WOOD_PLACE, net.minecraft.sounds.SoundSource.BLOCKS, 0.4F, 1.2F);
+        return InteractionResult.sidedSuccess(false);
     }
 
     @Override

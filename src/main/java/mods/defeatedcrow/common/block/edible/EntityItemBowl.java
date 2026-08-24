@@ -41,13 +41,54 @@ public class EntityItemBowl extends Block {
         return getShape(state, level, pos, ctx);
     }
 
-    // 1.7.10 onBlockActivated -> 1.20.1 use (BlockPos + BlockHitResult)
+    // 1.20.1 use: right-click handling (insert/extract with sound)
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        // TODO: restore original onBlockActivated logic
-        // Original used: world.getBlockMetadata(x,y,z), player.inventory, MinecraftForge.EVENT_BUS.post(AMTBlockRightClickEvent)
-        // Migration: use state, level.getBlockEntity(pos), player.getItemInHand(hand), Component
-        return InteractionResult.PASS;
+        if (level.isClientSide) return InteractionResult.sidedSuccess(true);
+        var be = level.getBlockEntity(pos);
+        if (be instanceof net.minecraft.world.WorldlyContainer wc) {
+            ItemStack held = player.getItemInHand(hand);
+            if (held.isEmpty()) {
+                for (int i = wc.getContainerSize() - 1; i >= 0; i--) {
+                    ItemStack s = wc.getItem(i);
+                    if (!s.isEmpty()) {
+                        ItemStack copy = s.copy(); copy.setCount(1);
+                        if (!player.getInventory().add(copy)) player.drop(copy, false);
+                        s.shrink(1);
+                        if (s.isEmpty()) wc.setItem(i, ItemStack.EMPTY);
+                        wc.setChanged();
+                        level.sendBlockUpdated(pos, state, state, 3);
+                        level.playSound(null, pos, net.minecraft.sounds.SoundEvents.ITEM_PICKUP, net.minecraft.sounds.SoundSource.BLOCKS, 0.4F, 1.8F);
+                        return InteractionResult.sidedSuccess(false);
+                    }
+                }
+            } else {
+                for (int i = 0; i < wc.getContainerSize(); i++) {
+                    if (wc.canPlaceItemThroughFace(i, held, hit.getDirection()) || wc.getItem(i).isEmpty()) {
+                        ItemStack existing = wc.getItem(i);
+                        if (existing.isEmpty()) {
+                            ItemStack toPut = held.copy(); toPut.setCount(1);
+                            wc.setItem(i, toPut);
+                            if (!player.getAbilities().instabuild) held.shrink(1);
+                            wc.setChanged();
+                            level.sendBlockUpdated(pos, state, state, 3);
+                            level.playSound(null, pos, net.minecraft.sounds.SoundEvents.ITEM_PICKUP, net.minecraft.sounds.SoundSource.BLOCKS, 0.4F, 1.8F);
+                            return InteractionResult.sidedSuccess(false);
+                        } else if (existing.is(held.getItem()) && existing.getCount() < existing.getMaxStackSize()) {
+                            existing.grow(1);
+                            if (!player.getAbilities().instabuild) held.shrink(1);
+                            wc.setChanged();
+                            level.sendBlockUpdated(pos, state, state, 3);
+                            level.playSound(null, pos, net.minecraft.sounds.SoundEvents.ITEM_PICKUP, net.minecraft.sounds.SoundSource.BLOCKS, 0.4F, 1.8F);
+                            return InteractionResult.sidedSuccess(false);
+                        }
+                    }
+                }
+            }
+            return InteractionResult.sidedSuccess(false);
+        }
+        level.playSound(null, pos, net.minecraft.sounds.SoundEvents.WOOD_PLACE, net.minecraft.sounds.SoundSource.BLOCKS, 0.4F, 1.2F);
+        return InteractionResult.sidedSuccess(false);
     }
 
     @Override

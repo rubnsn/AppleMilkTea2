@@ -24,6 +24,11 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import mods.defeatedcrow.common.tile.appliance.TileProcessor;
 import mods.defeatedcrow.common.registry.ModBlockEntities;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraftforge.network.NetworkHooks;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockProcessor.
@@ -49,12 +54,21 @@ public class BlockProcessor extends Block implements EntityBlock {
         return getShape(state, level, pos, ctx);
     }
 
-    // 1.7.10 onBlockActivated -> 1.20.1 use (BlockPos + BlockHitResult)
+    // 1.7.10 onBlockActivated -> 1.20.1 use: openGui processor
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        // TODO: restore original onBlockActivated logic
-        // Original used: world.getBlockMetadata(x,y,z), player.inventory, MinecraftForge.EVENT_BUS.post(AMTBlockRightClickEvent)
-        // Migration: use state, level.getBlockEntity(pos), player.getItemInHand(hand), Component
+        if (level.isClientSide) return InteractionResult.sidedSuccess(true);
+        var be = level.getBlockEntity(pos);
+        if (be instanceof TileProcessor tile) {
+            if (player instanceof ServerPlayer sp) {
+                MenuProvider provider = new MenuProvider() {
+                    @Override public Component getDisplayName() { return Component.translatable("container.defeatedcrow.processor"); }
+                    @Override public AbstractContainerMenu createMenu(int id, Inventory inv, Player p) { return new mods.defeatedcrow.common.tile.appliance.ContainerProcessor(id, inv, tile); }
+                };
+                NetworkHooks.openScreen(sp, provider, pos);
+            }
+            return InteractionResult.sidedSuccess(false);
+        }
         return InteractionResult.PASS;
     }
 
