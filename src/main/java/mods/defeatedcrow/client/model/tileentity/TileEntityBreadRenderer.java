@@ -31,11 +31,10 @@ public class TileEntityBreadRenderer implements BlockEntityRenderer<TileBread> {
         pose.pushPose();
         pose.translate(0.5, 1.5, 0.5);
         pose.scale(1.0F, -1.0F, -1.0F);
-        // Bread loaves - simple dish + few breads as per original (ModelBreads + basket)
+        // Simple dish + few breads : only bread loaves from ModelBreads, dish is basket model
         VertexConsumer vcBread = buffers.getBuffer(RenderType.entityCutout(BREAD_TEX));
-        this.breadModel.renderToBuffer(pose, vcBread, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+        this.breadModel.renderBreadOnly(pose, vcBread, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
         VertexConsumer vcBasket = buffers.getBuffer(RenderType.entityCutout(BASKET_TEX));
-        // Render both basket variants for simple representation - dish shape
         this.basketL.renderToBuffer(pose, vcBasket, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
         pose.popPose();
     }
