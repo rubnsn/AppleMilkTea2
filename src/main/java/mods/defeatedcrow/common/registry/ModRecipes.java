@@ -50,19 +50,19 @@ public class ModRecipes {
     public static final RegistryObject<RecipeType<?>> CHOCOLATE_TYPE = RECIPE_TYPES.register("chocolate", () -> new RecipeType<>() {});
     public static final RegistryObject<RecipeType<?>> CHARGE_TYPE = RECIPE_TYPES.register("charge", () -> new RecipeType<>() {});
 
-    // Serializers - dummy implementations until each recipe class provides its own Serializer.
+    // Serializers - P1 real implementations (WT-E)
     // 1.20.1 uses fromJson/fromNetwork/toNetwork; MapCodec is 1.20.5+.
-    public static final RegistryObject<RecipeSerializer<?>> TEA_SERIALIZER = RECIPE_SERIALIZERS.register("tea", DummySerializer::new);
-    public static final RegistryObject<RecipeSerializer<?>> ICE_SERIALIZER = RECIPE_SERIALIZERS.register("ice", DummySerializer::new);
-    public static final RegistryObject<RecipeSerializer<?>> PAN_SERIALIZER = RECIPE_SERIALIZERS.register("pan", DummySerializer::new);
-    public static final RegistryObject<RecipeSerializer<?>> PLATE_SERIALIZER = RECIPE_SERIALIZERS.register("plate", DummySerializer::new);
-    public static final RegistryObject<RecipeSerializer<?>> PROCESSOR_SERIALIZER = RECIPE_SERIALIZERS.register("processor", DummySerializer::new);
-    public static final RegistryObject<RecipeSerializer<?>> ADV_PROCESSOR_SERIALIZER = RECIPE_SERIALIZERS.register("adv_processor", DummySerializer::new);
-    public static final RegistryObject<RecipeSerializer<?>> EVAPORATOR_SERIALIZER = RECIPE_SERIALIZERS.register("evaporator", DummySerializer::new);
-    public static final RegistryObject<RecipeSerializer<?>> BREWING_SERIALIZER = RECIPE_SERIALIZERS.register("brewing", DummySerializer::new);
-    public static final RegistryObject<RecipeSerializer<?>> FONDUE_SERIALIZER = RECIPE_SERIALIZERS.register("fondue", DummySerializer::new);
-    public static final RegistryObject<RecipeSerializer<?>> CHOCOLATE_SERIALIZER = RECIPE_SERIALIZERS.register("chocolate", DummySerializer::new);
-    public static final RegistryObject<RecipeSerializer<?>> CHARGE_SERIALIZER = RECIPE_SERIALIZERS.register("charge", DummySerializer::new);
+    public static final RegistryObject<RecipeSerializer<?>> TEA_SERIALIZER = RECIPE_SERIALIZERS.register("tea", mods.defeatedcrow.recipe.TeaRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<?>> ICE_SERIALIZER = RECIPE_SERIALIZERS.register("ice", mods.defeatedcrow.recipe.IceRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<?>> PAN_SERIALIZER = RECIPE_SERIALIZERS.register("pan", mods.defeatedcrow.recipe.PanRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<?>> PLATE_SERIALIZER = RECIPE_SERIALIZERS.register("plate", mods.defeatedcrow.recipe.PlateRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<?>> PROCESSOR_SERIALIZER = RECIPE_SERIALIZERS.register("processor", mods.defeatedcrow.recipe.ProcessorRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<?>> ADV_PROCESSOR_SERIALIZER = RECIPE_SERIALIZERS.register("adv_processor", mods.defeatedcrow.recipe.AdvProcessorRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<?>> EVAPORATOR_SERIALIZER = RECIPE_SERIALIZERS.register("evaporator", mods.defeatedcrow.recipe.EvaporatorRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<?>> BREWING_SERIALIZER = RECIPE_SERIALIZERS.register("brewing", mods.defeatedcrow.recipe.BrewingRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<?>> FONDUE_SERIALIZER = RECIPE_SERIALIZERS.register("fondue", mods.defeatedcrow.recipe.FondueRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<?>> CHOCOLATE_SERIALIZER = RECIPE_SERIALIZERS.register("chocolate", mods.defeatedcrow.recipe.ChocolateRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<?>> CHARGE_SERIALIZER = RECIPE_SERIALIZERS.register("charge", mods.defeatedcrow.recipe.ChargeRecipe.Serializer::new);
 
     public static void register(IEventBus bus) {
         RECIPE_TYPES.register(bus);
