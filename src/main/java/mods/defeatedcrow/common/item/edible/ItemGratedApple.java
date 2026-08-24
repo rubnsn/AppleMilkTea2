@@ -21,7 +21,6 @@ public class ItemGratedApple extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Level level, java.util.List<Component> tooltip, TooltipFlag flag) {
-        // TODO: restore addInformation logic
         super.appendHoverText(stack, level, tooltip, flag);
     }
 
