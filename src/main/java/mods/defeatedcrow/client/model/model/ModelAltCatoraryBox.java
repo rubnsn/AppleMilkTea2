@@ -25,11 +25,11 @@ public class ModelAltCatoraryBox {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 21).addBox(-6F, 7F, -2F, 12, 1, 4), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("sideL", CubeListBuilder.create().texOffs(12, 12).addBox(6F, 4F, -2F, 1, 4, 4), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("sideR", CubeListBuilder.create().texOffs(0, 12).addBox(-7F, 4F, -2F, 1, 4, 4), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("sideF", CubeListBuilder.create().texOffs(0, 0).addBox(-7F, 4F, -3F, 14, 4, 1), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("sideB", CubeListBuilder.create().texOffs(0, 6).addBox(-7F, 4F, 2F, 14, 4, 1), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 21).mirror().addBox(-6F, 7F, -2F, 12, 1, 4), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("sideL", CubeListBuilder.create().texOffs(12, 12).mirror().addBox(6F, 4F, -2F, 1, 4, 4), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("sideR", CubeListBuilder.create().texOffs(0, 12).mirror().addBox(-7F, 4F, -2F, 1, 4, 4), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("sideF", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-7F, 4F, -3F, 14, 4, 1), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("sideB", CubeListBuilder.create().texOffs(0, 6).mirror().addBox(-7F, 4F, 2F, 14, 4, 1), PartPose.offset(0F, 16F, 0F));
         return LayerDefinition.create(mesh, 64, 32);
     }
 

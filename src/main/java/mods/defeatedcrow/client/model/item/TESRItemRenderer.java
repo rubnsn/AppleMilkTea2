@@ -222,7 +222,7 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
         cocktailModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
     }
     private void renderCLamp(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
-        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/charger.png")));
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/x32/lamp_R13A.png")));
         cLampModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
     }
     private void renderCordial(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {

@@ -47,22 +47,22 @@ public class ModelJawCrusher {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -1F, 10, 8, 4), PartPose.offset(0F, 15F, 0F));
-        root.addOrReplaceChild("body2", CubeListBuilder.create().texOffs(28, 0).addBox(-5F, 0F, 6F, 10, 8, 1), PartPose.offset(0F, 15F, 0F));
-        root.addOrReplaceChild("body3", CubeListBuilder.create().texOffs(32, 21).addBox(4F, 0F, 3F, 1, 8, 3), PartPose.offset(0F, 15F, 0F));
-        root.addOrReplaceChild("body4", CubeListBuilder.create().texOffs(32, 21).addBox(-5F, 0F, 3F, 1, 8, 3), PartPose.offset(0F, 15F, 0F));
-        root.addOrReplaceChild("body5", CubeListBuilder.create().texOffs(40, 20).addBox(-4F, 0F, -2F, 8, 8, 4), PartPose.offset(0F, 14.5F, 0F));
-        root.addOrReplaceChild("blade", CubeListBuilder.create().texOffs(16, 15).addBox(-4F, 0F, 3F, 8, 7, 1), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("lod", CubeListBuilder.create().texOffs(0, 12).addBox(-6F, 0F, 0F, 12, 1, 1), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("gear1", CubeListBuilder.create().texOffs(0, 14).addBox(6F, 0F, -2F, 1, 5, 5), PartPose.offset(0F, 14F, 0F));
-        root.addOrReplaceChild("gear2", CubeListBuilder.create().texOffs(0, 14).addBox(-7F, 0F, -2F, 1, 5, 5), PartPose.offset(0F, 14F, 0F));
-        root.addOrReplaceChild("base2", CubeListBuilder.create().texOffs(0, 17).addBox(-5F, 0F, -7F, 1, 1, 14), PartPose.offset(0F, 23F, 0F));
-        root.addOrReplaceChild("motor", CubeListBuilder.create().texOffs(38, 13).addBox(-5F, 0F, -7F, 10, 3, 3), PartPose.offset(0F, 20F, 0F));
-        root.addOrReplaceChild("lod2", CubeListBuilder.create().texOffs(0, 12).addBox(5F, 0F, -6F, 1, 1, 1), PartPose.offset(0F, 21F, 0F));
-        root.addOrReplaceChild("gear3", CubeListBuilder.create().texOffs(0, 24).addBox(6F, 0F, -7F, 1, 3, 3), PartPose.offset(0F, 20F, 0F));
-        root.addOrReplaceChild("belt1", CubeListBuilder.create().texOffs(43, 4).addBox(6F, 0F, -10F, 1, 0, 8), PartPose.offset(0F, 12.5F, 0F));
-        root.addOrReplaceChild("belt2", CubeListBuilder.create().texOffs(43, 4).addBox(6F, 0F, -5.5F, 1, 0, 8), PartPose.offset(0F, 20F, 0F));
-        root.addOrReplaceChild("base", CubeListBuilder.create().texOffs(0, 17).addBox(4F, 0F, -7F, 1, 1, 14), PartPose.offset(0F, 23F, 0F));
+        root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -1F, 10, 8, 4), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("body2", CubeListBuilder.create().texOffs(28, 0).mirror().addBox(-5F, 0F, 6F, 10, 8, 1), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("body3", CubeListBuilder.create().texOffs(32, 21).mirror().addBox(4F, 0F, 3F, 1, 8, 3), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("body4", CubeListBuilder.create().texOffs(32, 21).mirror().addBox(-5F, 0F, 3F, 1, 8, 3), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("body5", CubeListBuilder.create().texOffs(40, 20).mirror().addBox(-4F, 0F, -2F, 8, 8, 4), PartPose.offsetAndRotation(0F, 14.5F, 0F, 0.1396263F, 0F, 0F));
+        root.addOrReplaceChild("blade", CubeListBuilder.create().texOffs(16, 15).mirror().addBox(-4F, 0F, 3F, 8, 7, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0.1745329F, 0F, 0F));
+        root.addOrReplaceChild("lod", CubeListBuilder.create().texOffs(0, 12).mirror().addBox(-6F, 0F, 0F, 12, 1, 1), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("gear1", CubeListBuilder.create().texOffs(0, 14).mirror().addBox(6F, 0F, -2F, 1, 5, 5), PartPose.offset(0F, 14F, 0F));
+        root.addOrReplaceChild("gear2", CubeListBuilder.create().texOffs(0, 14).mirror().addBox(-7F, 0F, -2F, 1, 5, 5), PartPose.offset(0F, 14F, 0F));
+        root.addOrReplaceChild("base2", CubeListBuilder.create().texOffs(0, 17).mirror().addBox(-5F, 0F, -7F, 1, 1, 14), PartPose.offset(0F, 23F, 0F));
+        root.addOrReplaceChild("motor", CubeListBuilder.create().texOffs(38, 13).mirror().addBox(-5F, 0F, -7F, 10, 3, 3), PartPose.offset(0F, 20F, 0F));
+        root.addOrReplaceChild("lod2", CubeListBuilder.create().texOffs(0, 12).mirror().addBox(5F, 0F, -6F, 1, 1, 1), PartPose.offset(0F, 21F, 0F));
+        root.addOrReplaceChild("gear3", CubeListBuilder.create().texOffs(0, 24).mirror().addBox(6F, 0F, -7F, 1, 3, 3), PartPose.offset(0F, 20F, 0F));
+        root.addOrReplaceChild("belt1", CubeListBuilder.create().texOffs(43, 4).mirror().addBox(6F, 0F, -10F, 1, 0, 8), PartPose.offsetAndRotation(0F, 12.5F, 0F, 0.8726646F, 0F, 0F));
+        root.addOrReplaceChild("belt2", CubeListBuilder.create().texOffs(43, 4).mirror().addBox(6F, 0F, -5.5F, 1, 0, 8), PartPose.offsetAndRotation(0F, 20F, 0F, 0.6108652F, 0F, 0F));
+        root.addOrReplaceChild("base", CubeListBuilder.create().texOffs(0, 17).mirror().addBox(4F, 0F, -7F, 1, 1, 14), PartPose.offset(0F, 23F, 0F));
         return LayerDefinition.create(mesh, 64, 32);
     }
 

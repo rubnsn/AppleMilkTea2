@@ -17,7 +17,7 @@ public class ModelWipeBox2 {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("paperbox", CubeListBuilder.create().texOffs(0, 0).addBox(-6F, 0F, -7.5F, 12, 9, 15), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("paperbox", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 0F, -7.5F, 12, 9, 15), PartPose.offset(0F, 15F, 0F));
         return LayerDefinition.create(mesh, 64, 32);
     }
 

@@ -27,7 +27,7 @@ public class ModelAutoMaker {
         root.addOrReplaceChild("Shape2", CubeListBuilder.create().texOffs(0, 16).addBox(-2F, 0F, -2F, 4, 1, 4), PartPose.offset(0F, 22F, 0F));
         root.addOrReplaceChild("Shape3", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, -3F, 6, 3, 6), PartPose.offset(0F, 19F, 0F));
         root.addOrReplaceChild("Shape4", CubeListBuilder.create().texOffs(0, 9).addBox(-3F, 0F, -5F, 6, 1, 6), PartPose.offset(0F, 18F, 2F));
-        return LayerDefinition.create(mesh, 64, 32);
+        return LayerDefinition.create(mesh, 32, 32);
     }
 
     public void renderToBuffer(com.mojang.blaze3d.vertex.PoseStack pose, com.mojang.blaze3d.vertex.VertexConsumer buf, int light, int overlay, float r, float g, float b, float a) {

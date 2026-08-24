@@ -57,27 +57,27 @@ public class ModelTart {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("plate", CubeListBuilder.create().texOffs(0, 0).addBox(-7F, 0F, -7F, 14, 1, 14), PartPose.offset(0F, 23F, 0F));
-        root.addOrReplaceChild("sideB", CubeListBuilder.create().texOffs(0, 0).addBox(-6F, 0F, -5F, 1, 5, 10), PartPose.offset(0F, 18F, 0F));
-        root.addOrReplaceChild("sideF", CubeListBuilder.create().texOffs(0, 0).addBox(-6F, 0F, -5F, 1, 5, 10), PartPose.offset(0F, 18F, 0F));
-        root.addOrReplaceChild("sideL", CubeListBuilder.create().texOffs(0, 0).addBox(-6F, 0F, -5F, 1, 5, 10), PartPose.offset(0F, 18F, 0F));
-        root.addOrReplaceChild("sideR", CubeListBuilder.create().texOffs(0, 0).addBox(-6F, 0F, -5F, 1, 5, 10), PartPose.offset(0F, 18F, 0F));
-        root.addOrReplaceChild("main", CubeListBuilder.create().texOffs(24, 0).addBox(-5F, 0F, -5F, 10, 3, 10), PartPose.offset(0F, 19F, 0F));
-        root.addOrReplaceChild("main2", CubeListBuilder.create().texOffs(24, 13).addBox(-5F, 0F, -5F, 10, 3, 10), PartPose.offset(0F, 19F, 0F));
-        root.addOrReplaceChild("crop1", CubeListBuilder.create().texOffs(0, 0).addBox(0.5F, 0F, 0F, 1, 1, 1), PartPose.offset(0F, 18F, 0F));
-        root.addOrReplaceChild("crop2", CubeListBuilder.create().texOffs(0, 0).addBox(-1F, 0F, -1.5F, 1, 1, 1), PartPose.offset(0F, 18F, 0F));
-        root.addOrReplaceChild("crop3", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0F, 0.5F, 1, 1, 1), PartPose.offset(0F, 18F, 0F));
-        root.addOrReplaceChild("moussebase", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 21F, 0F));
-        root.addOrReplaceChild("mousse1", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 22F, 0F));
-        root.addOrReplaceChild("mousse2", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 20F, 0F));
-        root.addOrReplaceChild("mousse3", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 19F, 0F));
-        root.addOrReplaceChild("mousse4", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 18F, 0F));
-        root.addOrReplaceChild("moussetop", CubeListBuilder.create().texOffs(0, 11).addBox(0F, 0F, 0F, 10, 0, 10), PartPose.offset(-5F, 17.9F, -5F));
-        root.addOrReplaceChild("moussetop2", CubeListBuilder.create().texOffs(30, 11).addBox(0F, 0F, 0F, 10, 0, 10), PartPose.offset(-5F, 17.9F, -5F));
-        root.addOrReplaceChild("moussetop3", CubeListBuilder.create().texOffs(0, 21).addBox(0F, 0F, 0F, 10, 0, 10), PartPose.offset(-5F, 17.9F, -5F));
-        root.addOrReplaceChild("crop4", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0.5F, 1, 1, 1), PartPose.offset(0F, 17F, 0F));
-        root.addOrReplaceChild("crop5", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0F, -1F, 1, 1, 1), PartPose.offset(0F, 17F, 0F));
-        root.addOrReplaceChild("crop6", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, -1.5F, 1, 1, 1), PartPose.offset(0F, 17F, 0F));
+        root.addOrReplaceChild("plate", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-7F, 0F, -7F, 14, 1, 14), PartPose.offset(0F, 23F, 0F));
+        root.addOrReplaceChild("sideB", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 0F, -5F, 1, 5, 10), PartPose.offsetAndRotation(0F, 18F, 0F, 0F, 1.570796F, -0.0F));
+        root.addOrReplaceChild("sideF", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 0F, -5F, 1, 5, 10), PartPose.offsetAndRotation(0F, 18F, 0F, 0F, -1.570796F, -0.0F));
+        root.addOrReplaceChild("sideL", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 0F, -5F, 1, 5, 10), PartPose.offset(0F, 18F, 0F));
+        root.addOrReplaceChild("sideR", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 0F, -5F, 1, 5, 10), PartPose.offsetAndRotation(0F, 18F, 0F, 0F, 3.141593F, -0.0F));
+        root.addOrReplaceChild("main", CubeListBuilder.create().texOffs(24, 0).mirror().addBox(-5F, 0F, -5F, 10, 3, 10), PartPose.offset(0F, 19F, 0F));
+        root.addOrReplaceChild("main2", CubeListBuilder.create().texOffs(24, 13).mirror().addBox(-5F, 0F, -5F, 10, 3, 10), PartPose.offset(0F, 19F, 0F));
+        root.addOrReplaceChild("crop1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0.5F, 0F, 0F, 1, 1, 1), PartPose.offset(0F, 18F, 0F));
+        root.addOrReplaceChild("crop2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1F, 0F, -1.5F, 1, 1, 1), PartPose.offsetAndRotation(0F, 18F, 0F, 0F, 0.5205006F, 0F));
+        root.addOrReplaceChild("crop3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1.5F, 0F, 0.5F, 1, 1, 1), PartPose.offsetAndRotation(0F, 18F, 0F, 0F, 0.2602503F, 0F));
+        root.addOrReplaceChild("moussebase", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 21F, 0F));
+        root.addOrReplaceChild("mousse1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 22F, 0F));
+        root.addOrReplaceChild("mousse2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 20F, 0F));
+        root.addOrReplaceChild("mousse3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 19F, 0F));
+        root.addOrReplaceChild("mousse4", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 18F, 0F));
+        root.addOrReplaceChild("moussetop", CubeListBuilder.create().texOffs(0, 11).mirror().addBox(0F, 0F, 0F, 10, 0, 10), PartPose.offset(-5F, 17.9F, -5F));
+        root.addOrReplaceChild("moussetop2", CubeListBuilder.create().texOffs(30, 11).mirror().addBox(0F, 0F, 0F, 10, 0, 10), PartPose.offset(-5F, 17.9F, -5F));
+        root.addOrReplaceChild("moussetop3", CubeListBuilder.create().texOffs(0, 21).mirror().addBox(0F, 0F, 0F, 10, 0, 10), PartPose.offset(-5F, 17.9F, -5F));
+        root.addOrReplaceChild("crop4", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0.5F, 1, 1, 1), PartPose.offset(0F, 17F, 0F));
+        root.addOrReplaceChild("crop5", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1.5F, 0F, -1F, 1, 1, 1), PartPose.offsetAndRotation(0F, 17F, 0F, 0F, 0.2792527F, 0F));
+        root.addOrReplaceChild("crop6", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, -1.5F, 1, 1, 1), PartPose.offsetAndRotation(0F, 17F, 0F, 0F, -0.1745329F, 0F));
         return LayerDefinition.create(mesh, 64, 32);
     }
 

@@ -23,10 +23,10 @@ public class ModelKinoko {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("base", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, -3F, 6, 2, 6), PartPose.offset(0F, 22F, 0F));
-        root.addOrReplaceChild("base2", CubeListBuilder.create().texOffs(24, 0).addBox(-2F, 0F, -2F, 4, 5, 4), PartPose.offset(0F, 17F, 0F));
-        root.addOrReplaceChild("head1", CubeListBuilder.create().texOffs(0, 17).addBox(-6F, 0F, -6F, 12, 3, 12), PartPose.offset(0F, 14F, 0F));
-        root.addOrReplaceChild("head2", CubeListBuilder.create().texOffs(4, 19).addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("base", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3F, 0F, -3F, 6, 2, 6), PartPose.offset(0F, 22F, 0F));
+        root.addOrReplaceChild("base2", CubeListBuilder.create().texOffs(24, 0).mirror().addBox(-2F, 0F, -2F, 4, 5, 4), PartPose.offset(0F, 17F, 0F));
+        root.addOrReplaceChild("head1", CubeListBuilder.create().texOffs(0, 17).mirror().addBox(-6F, 0F, -6F, 12, 3, 12), PartPose.offset(0F, 14F, 0F));
+        root.addOrReplaceChild("head2", CubeListBuilder.create().texOffs(4, 19).mirror().addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 13F, 0F));
         return LayerDefinition.create(mesh, 64, 32);
     }
 

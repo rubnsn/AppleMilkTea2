@@ -25,11 +25,11 @@ public class ModelHandleEngine {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("base", CubeListBuilder.create().texOffs(9, 0).addBox(-2F, 7F, -2F, 4, 1, 4), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("shaft1", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 1F, -0.5F, 1, 6, 1), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("shaft2", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 1F, 0.5F, 1, 1, 3), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("shaft3", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0F, 3.5F, 1, 2, 1), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("handle", CubeListBuilder.create().texOffs(0, 8).addBox(-1F, -4F, 3F, 2, 4, 2), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("base", CubeListBuilder.create().texOffs(9, 0).mirror().addBox(-2F, 7F, -2F, 4, 1, 4), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("shaft1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-0.5F, 1F, -0.5F, 1, 6, 1), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("shaft2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-0.5F, 1F, 0.5F, 1, 1, 3), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("shaft3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-0.5F, 0F, 3.5F, 1, 2, 1), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("handle", CubeListBuilder.create().texOffs(0, 8).mirror().addBox(-1F, -4F, 3F, 2, 4, 2), PartPose.offset(0F, 16F, 0F));
         return LayerDefinition.create(mesh, 64, 32);
     }
 

@@ -33,15 +33,15 @@ public class ModelRotaryDial {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 0).addBox(-4.5F, 0F, -5F, 9, 4, 10), PartPose.offset(0F, 20F, 0F));
-        root.addOrReplaceChild("middle", CubeListBuilder.create().texOffs(0, 0).addBox(-4.5F, 0F, -5F, 9, 4, 9), PartPose.offset(0F, 18F, 0F));
-        root.addOrReplaceChild("back", CubeListBuilder.create().texOffs(0, 0).addBox(-4.5F, 0F, 3F, 9, 7, 4), PartPose.offset(0F, 17F, 0F));
-        root.addOrReplaceChild("leg1", CubeListBuilder.create().texOffs(0, 0).addBox(2F, 0F, 4F, 1, 1, 2), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("leg2", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, 4F, 1, 1, 2), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("handle", CubeListBuilder.create().texOffs(0, 15).addBox(-5F, 0F, 4F, 10, 1, 2), PartPose.offset(0F, 15F, 0F));
-        root.addOrReplaceChild("handle2", CubeListBuilder.create().texOffs(0, 0).addBox(5F, 0F, 3F, 3, 4, 4), PartPose.offset(0F, 15F, 0F));
-        root.addOrReplaceChild("handle3", CubeListBuilder.create().texOffs(0, 0).addBox(-8F, 0F, 3F, 3, 4, 4), PartPose.offset(0F, 15F, 0F));
-        root.addOrReplaceChild("plate", CubeListBuilder.create().texOffs(0, 19).addBox(-4F, 0.5F, -5F, 8, 0, 8), PartPose.offset(0F, 17F, 0F));
+        root.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4.5F, 0F, -5F, 9, 4, 10), PartPose.offset(0F, 20F, 0F));
+        root.addOrReplaceChild("middle", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4.5F, 0F, -5F, 9, 4, 9), PartPose.offsetAndRotation(0F, 18F, 0F, 0.418879F, 0F, 0F));
+        root.addOrReplaceChild("back", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4.5F, 0F, 3F, 9, 7, 4), PartPose.offset(0F, 17F, 0F));
+        root.addOrReplaceChild("leg1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(2F, 0F, 4F, 1, 1, 2), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("leg2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3F, 0F, 4F, 1, 1, 2), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("handle", CubeListBuilder.create().texOffs(0, 15).mirror().addBox(-5F, 0F, 4F, 10, 1, 2), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("handle2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(5F, 0F, 3F, 3, 4, 4), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("handle3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-8F, 0F, 3F, 3, 4, 4), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("plate", CubeListBuilder.create().texOffs(0, 19).mirror().addBox(-4F, 0.5F, -5F, 8, 0, 8), PartPose.offsetAndRotation(0F, 17F, 0F, 0.418879F, 0F, 0F));
         return LayerDefinition.create(mesh, 64, 32);
     }
 

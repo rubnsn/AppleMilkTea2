@@ -17,7 +17,7 @@ public class ModelMelonBomb {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("Shape1", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 12, 12, 12), PartPose.offset(-6F, -5F, -6F));
+        root.addOrReplaceChild("Shape1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 12, 12, 12), PartPose.offset(-6F, -5F, -6F));
         return LayerDefinition.create(mesh, 64, 32);
     }
 

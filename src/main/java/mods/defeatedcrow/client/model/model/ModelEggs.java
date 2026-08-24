@@ -47,23 +47,23 @@ public class ModelEggs {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("bottom1", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(-6.5F, 21F, -5F));
-        root.addOrReplaceChild("bottom2", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(-1.5F, 21F, -5F));
-        root.addOrReplaceChild("bottom3", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(3.5F, 21F, -5F));
-        root.addOrReplaceChild("bottom4", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(-4F, 21F, -1F));
-        root.addOrReplaceChild("bottom5", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(1F, 21F, -1F));
-        root.addOrReplaceChild("bottom6", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(-1.5F, 21F, 3F));
-        root.addOrReplaceChild("bottom7", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(3.5F, 21F, 3F));
-        root.addOrReplaceChild("bottom8", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(-6.5F, 21F, 3F));
-        root.addOrReplaceChild("top1", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-6F, 20F, -4.5F));
-        root.addOrReplaceChild("top2", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-1F, 20F, -4.5F));
-        root.addOrReplaceChild("top3", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(4F, 20F, -4.5F));
-        root.addOrReplaceChild("top4", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-3.5F, 20F, -0.5F));
-        root.addOrReplaceChild("top5", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(1.5F, 20F, -0.5F));
-        root.addOrReplaceChild("top6", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-6F, 20F, 3.5F));
-        root.addOrReplaceChild("top7", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-1F, 20F, 3.5F));
-        root.addOrReplaceChild("top8", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(4F, 20F, 3.5F));
-        return LayerDefinition.create(mesh, 64, 32);
+        root.addOrReplaceChild("bottom1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(-6.5F, 21F, -5F));
+        root.addOrReplaceChild("bottom2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(-1.5F, 21F, -5F));
+        root.addOrReplaceChild("bottom3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(3.5F, 21F, -5F));
+        root.addOrReplaceChild("bottom4", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(-4F, 21F, -1F));
+        root.addOrReplaceChild("bottom5", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(1F, 21F, -1F));
+        root.addOrReplaceChild("bottom6", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(-1.5F, 21F, 3F));
+        root.addOrReplaceChild("bottom7", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(3.5F, 21F, 3F));
+        root.addOrReplaceChild("bottom8", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 3, 3, 3), PartPose.offset(-6.5F, 21F, 3F));
+        root.addOrReplaceChild("top1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-6F, 20F, -4.5F));
+        root.addOrReplaceChild("top2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-1F, 20F, -4.5F));
+        root.addOrReplaceChild("top3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(4F, 20F, -4.5F));
+        root.addOrReplaceChild("top4", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-3.5F, 20F, -0.5F));
+        root.addOrReplaceChild("top5", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(1.5F, 20F, -0.5F));
+        root.addOrReplaceChild("top6", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-6F, 20F, 3.5F));
+        root.addOrReplaceChild("top7", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(-1F, 20F, 3.5F));
+        root.addOrReplaceChild("top8", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(0F, 0F, 0F, 2, 1, 2), PartPose.offset(4F, 20F, 3.5F));
+        return LayerDefinition.create(mesh, 16, 16);
     }
 
     public void renderToBuffer(com.mojang.blaze3d.vertex.PoseStack pose, com.mojang.blaze3d.vertex.VertexConsumer buf, int light, int overlay, float r, float g, float b, float a) {

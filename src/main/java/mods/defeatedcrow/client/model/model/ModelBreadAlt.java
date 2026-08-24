@@ -25,11 +25,11 @@ public class ModelBreadAlt {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("bread1", CubeListBuilder.create().texOffs(0, 0).addBox(-1F, -10F, 1.5F, 4, 16, 3), PartPose.offsetAndRotation(0F, 16F, 0F, -0.2617994F, 0.3490659F, 0F));
-        root.addOrReplaceChild("bread2", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, -10F, 1.5F, 4, 16, 3), PartPose.offsetAndRotation(0F, 16F, 0F, -0.3396263F, -1.308997F, 0.2094395F));
-        root.addOrReplaceChild("bread3", CubeListBuilder.create().texOffs(16, 0).addBox(-2F, -8F, -2F, 3, 14, 3), PartPose.offsetAndRotation(0F, 16F, 0F, -0.0872665F, -0.122173F, 0F));
-        root.addOrReplaceChild("bread4", CubeListBuilder.create().texOffs(16, 0).addBox(0F, -8F, 1.5F, 3, 14, 3), PartPose.offsetAndRotation(0F, 16F, 0F, -0.2792527F, 1.919862F, 0.0872665F));
-        root.addOrReplaceChild("bread5", CubeListBuilder.create().texOffs(16, 0).addBox(-0.5F, -7F, -5F, 3, 14, 3), PartPose.offsetAndRotation(0F, 16F, 0F, 0.0698132F, 1.047198F, 0F));
+        root.addOrReplaceChild("bread1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1F, -10F, 1.5F, 4, 16, 3), PartPose.offsetAndRotation(0F, 16F, 0F, -0.2617994F, 0.3490659F, 0F));
+        root.addOrReplaceChild("bread2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-0.5F, -10F, 1.5F, 4, 16, 3), PartPose.offsetAndRotation(0F, 16F, 0F, -0.3396263F, -1.308997F, 0.2094395F));
+        root.addOrReplaceChild("bread3", CubeListBuilder.create().texOffs(16, 0).mirror().addBox(-2F, -8F, -2F, 3, 14, 3), PartPose.offsetAndRotation(0F, 16F, 0F, -0.0872665F, -0.122173F, 0F));
+        root.addOrReplaceChild("bread4", CubeListBuilder.create().texOffs(16, 0).mirror().addBox(0F, -8F, 1.5F, 3, 14, 3), PartPose.offsetAndRotation(0F, 16F, 0F, -0.2792527F, 1.919862F, 0.0872665F));
+        root.addOrReplaceChild("bread5", CubeListBuilder.create().texOffs(16, 0).mirror().addBox(-0.5F, -7F, -5F, 3, 14, 3), PartPose.offsetAndRotation(0F, 16F, 0F, 0.0698132F, 1.047198F, 0F));
         return LayerDefinition.create(mesh, 32, 32);
     }
 

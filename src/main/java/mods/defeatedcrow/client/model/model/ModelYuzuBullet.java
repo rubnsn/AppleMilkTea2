@@ -17,7 +17,7 @@ public class ModelYuzuBullet {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("Shape1", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, -1F, -1.5F, 3, 3, 3), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("Shape1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1.5F, -1F, -1.5F, 3, 3, 3), PartPose.offset(0F, 16F, 0F));
         return LayerDefinition.create(mesh, 32, 32);
     }
 

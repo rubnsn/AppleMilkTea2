@@ -39,18 +39,18 @@ public class ModelCordial {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 23F, 0F));
-        root.addOrReplaceChild("side1", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -5F, 10, 10, 1), PartPose.offset(0F, 13F, 0F));
-        root.addOrReplaceChild("side2", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, 4F, 10, 10, 1), PartPose.offset(0F, 13F, 0F));
-        root.addOrReplaceChild("side3", CubeListBuilder.create().texOffs(0, 0).addBox(4F, 0F, -4F, 1, 10, 8), PartPose.offset(0F, 13F, 0F));
-        root.addOrReplaceChild("side4", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -4F, 1, 10, 8), PartPose.offset(0F, 13F, 0F));
-        root.addOrReplaceChild("top1", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, -1F, -4F, 8, 1, 8), PartPose.offset(0F, 13F, 0F));
-        root.addOrReplaceChild("top2", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, -3F, 6, 1, 6), PartPose.offset(0F, 11F, 0F));
-        root.addOrReplaceChild("cap", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, -4F, 8, 1, 8), PartPose.offset(0F, 10F, 0F));
-        root.addOrReplaceChild("inner", CubeListBuilder.create().texOffs(0, 0).addBox(-3.5F, 0F, -3.5F, 7, 3, 7), PartPose.offset(0F, 20F, 0F));
-        root.addOrReplaceChild("drink1", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, -4F, 8, 9, 8), PartPose.offset(0F, 14F, 0F));
-        root.addOrReplaceChild("drink2", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, -4F, 8, 6, 8), PartPose.offset(0F, 17F, 0F));
-        root.addOrReplaceChild("drink3", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, -4F, 8, 4, 8), PartPose.offset(0F, 19F, 0F));
+        root.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 23F, 0F));
+        root.addOrReplaceChild("side1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -5F, 10, 10, 1), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("side2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, 4F, 10, 10, 1), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("side3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(4F, 0F, -4F, 1, 10, 8), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("side4", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -4F, 1, 10, 8), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("top1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4F, -1F, -4F, 8, 1, 8), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("top2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3F, 0F, -3F, 6, 1, 6), PartPose.offset(0F, 11F, 0F));
+        root.addOrReplaceChild("cap", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4F, 0F, -4F, 8, 1, 8), PartPose.offset(0F, 10F, 0F));
+        root.addOrReplaceChild("inner", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3.5F, 0F, -3.5F, 7, 3, 7), PartPose.offset(0F, 20F, 0F));
+        root.addOrReplaceChild("drink1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4F, 0F, -4F, 8, 9, 8), PartPose.offset(0F, 14F, 0F));
+        root.addOrReplaceChild("drink2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4F, 0F, -4F, 8, 6, 8), PartPose.offset(0F, 17F, 0F));
+        root.addOrReplaceChild("drink3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4F, 0F, -4F, 8, 4, 8), PartPose.offset(0F, 19F, 0F));
         return LayerDefinition.create(mesh, 64, 32);
     }
 

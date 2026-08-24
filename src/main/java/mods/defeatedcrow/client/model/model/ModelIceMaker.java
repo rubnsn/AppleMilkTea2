@@ -47,22 +47,22 @@ public class ModelIceMaker {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 23F, 0F));
-        root.addOrReplaceChild("leg1", CubeListBuilder.create().texOffs(0, 0).addBox(-4.5F, -6F, -4.5F, 1, 8, 1), PartPose.offsetAndRotation(0F, 23F, 0F, -0.1396263F, 0F, 0.1396263F));
-        root.addOrReplaceChild("leg2", CubeListBuilder.create().texOffs(0, 0).addBox(3.5F, -6F, -4.5F, 1, 8, 1), PartPose.offsetAndRotation(0F, 23F, 0F, -0.1396263F, 0F, -0.1396263F));
-        root.addOrReplaceChild("leg3", CubeListBuilder.create().texOffs(0, 0).addBox(-4.5F, -6F, 3.5F, 1, 8, 1), PartPose.offsetAndRotation(0F, 23F, 0F, 0.1396263F, 0F, 0.1396263F));
-        root.addOrReplaceChild("leg4", CubeListBuilder.create().texOffs(0, 0).addBox(3.5F, -6F, 3.5F, 1, 8, 1), PartPose.offsetAndRotation(0F, 23F, 0F, 0.1396263F, 0F, -0.1396263F));
-        root.addOrReplaceChild("boad1", CubeListBuilder.create().texOffs(0, 11).addBox(-4F, 0F, -4F, 8, 1, 8), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("boad2", CubeListBuilder.create().texOffs(0, 11).addBox(-4F, 0F, -4F, 8, 1, 8), PartPose.offset(0F, 11F, 0F));
-        root.addOrReplaceChild("middle", CubeListBuilder.create().texOffs(0, 20).addBox(-4F, 0F, -4F, 8, 4, 8), PartPose.offset(0F, 12F, 0F));
-        root.addOrReplaceChild("ice", CubeListBuilder.create().texOffs(32, 0).addBox(-2F, 0F, -2F, 4, 4, 4), PartPose.offset(0F, 12F, 0F));
-        root.addOrReplaceChild("axle", CubeListBuilder.create().texOffs(32, 12).addBox(-0.5F, 0F, -0.5F, 1, 5, 1), PartPose.offset(0F, 8F, 0F));
-        root.addOrReplaceChild("handle1", CubeListBuilder.create().texOffs(36, 12).addBox(-2F, 0F, -3F, 4, 1, 1), PartPose.offset(0F, 8F, 0F));
-        root.addOrReplaceChild("handle2", CubeListBuilder.create().texOffs(36, 12).addBox(-2F, 0F, 2F, 4, 1, 1), PartPose.offset(0F, 8F, 0F));
-        root.addOrReplaceChild("handle3", CubeListBuilder.create().texOffs(36, 12).addBox(2F, 0F, -2F, 1, 1, 4), PartPose.offset(0F, 8F, 0F));
-        root.addOrReplaceChild("handle4", CubeListBuilder.create().texOffs(36, 12).addBox(-3F, 0F, -2F, 1, 1, 4), PartPose.offset(0F, 8F, 0F));
-        root.addOrReplaceChild("handle5", CubeListBuilder.create().texOffs(36, 12).addBox(-0.5F, 0F, -2F, 1, 1, 4), PartPose.offset(0F, 8F, 0F));
-        root.addOrReplaceChild("handle6", CubeListBuilder.create().texOffs(36, 12).addBox(-2F, 0F, -0.5F, 4, 1, 1), PartPose.offset(0F, 8F, 0F));
+        root.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -5F, 10, 1, 10), PartPose.offset(0F, 23F, 0F));
+        root.addOrReplaceChild("leg1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4.5F, -6F, -4.5F, 1, 8, 1), PartPose.offsetAndRotation(0F, 23F, 0F, -0.1396263F, 0F, 0.1396263F));
+        root.addOrReplaceChild("leg2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(3.5F, -6F, -4.5F, 1, 8, 1), PartPose.offsetAndRotation(0F, 23F, 0F, -0.1396263F, 0F, -0.1396263F));
+        root.addOrReplaceChild("leg3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4.5F, -6F, 3.5F, 1, 8, 1), PartPose.offsetAndRotation(0F, 23F, 0F, 0.1396263F, 0F, 0.1396263F));
+        root.addOrReplaceChild("leg4", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(3.5F, -6F, 3.5F, 1, 8, 1), PartPose.offsetAndRotation(0F, 23F, 0F, 0.1396263F, 0F, -0.1396263F));
+        root.addOrReplaceChild("boad1", CubeListBuilder.create().texOffs(0, 11).mirror().addBox(-4F, 0F, -4F, 8, 1, 8), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("boad2", CubeListBuilder.create().texOffs(0, 11).mirror().addBox(-4F, 0F, -4F, 8, 1, 8), PartPose.offset(0F, 11F, 0F));
+        root.addOrReplaceChild("middle", CubeListBuilder.create().texOffs(0, 20).mirror().addBox(-4F, 0F, -4F, 8, 4, 8), PartPose.offset(0F, 12F, 0F));
+        root.addOrReplaceChild("ice", CubeListBuilder.create().texOffs(32, 0).mirror().addBox(-2F, 0F, -2F, 4, 4, 4), PartPose.offset(0F, 12F, 0F));
+        root.addOrReplaceChild("axle", CubeListBuilder.create().texOffs(32, 12).mirror().addBox(-0.5F, 0F, -0.5F, 1, 5, 1), PartPose.offset(0F, 8F, 0F));
+        root.addOrReplaceChild("handle1", CubeListBuilder.create().texOffs(36, 12).mirror().addBox(-2F, 0F, -3F, 4, 1, 1), PartPose.offset(0F, 8F, 0F));
+        root.addOrReplaceChild("handle2", CubeListBuilder.create().texOffs(36, 12).mirror().addBox(-2F, 0F, 2F, 4, 1, 1), PartPose.offset(0F, 8F, 0F));
+        root.addOrReplaceChild("handle3", CubeListBuilder.create().texOffs(36, 12).mirror().addBox(2F, 0F, -2F, 1, 1, 4), PartPose.offset(0F, 8F, 0F));
+        root.addOrReplaceChild("handle4", CubeListBuilder.create().texOffs(36, 12).mirror().addBox(-3F, 0F, -2F, 1, 1, 4), PartPose.offset(0F, 8F, 0F));
+        root.addOrReplaceChild("handle5", CubeListBuilder.create().texOffs(36, 12).mirror().addBox(-0.5F, 0F, -2F, 1, 1, 4), PartPose.offset(0F, 8F, 0F));
+        root.addOrReplaceChild("handle6", CubeListBuilder.create().texOffs(36, 12).mirror().addBox(-2F, 0F, -0.5F, 4, 1, 1), PartPose.offset(0F, 8F, 0F));
         return LayerDefinition.create(mesh, 64, 32);
     }
 

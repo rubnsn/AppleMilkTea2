@@ -35,16 +35,16 @@ public class ModelAltCatorarys {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("Shape1", CubeListBuilder.create().texOffs(0, 0).addBox(-6F, 0F, -0.5F, 10, 1, 1), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0.0523599F));
-        root.addOrReplaceChild("Shape2", CubeListBuilder.create().texOffs(0, 0).addBox(4F, 0F, -1.5F, 4, 1, 3), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0.0523599F));
-        root.addOrReplaceChild("Shape3", CubeListBuilder.create().texOffs(0, 0).addBox(-6F, -1F, -2F, 10, 1, 1), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.0698132F, -0.0349066F));
-        root.addOrReplaceChild("Shape4", CubeListBuilder.create().texOffs(0, 0).addBox(4F, -1F, -2.5F, 1, 1, 2), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.0698132F, -0.0349066F));
-        root.addOrReplaceChild("Shape5", CubeListBuilder.create().texOffs(0, 0).addBox(5F, -1F, -2.7F, 3, 1, 1), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.0698132F, -0.0349066F));
-        root.addOrReplaceChild("Shape6", CubeListBuilder.create().texOffs(0, 0).addBox(5F, -1F, -1.2F, 3, 1, 1), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.0698132F, -0.0349066F));
-        root.addOrReplaceChild("Shape7", CubeListBuilder.create().texOffs(0, 0).addBox(2.5F, 0F, -4F, 4, 1, 3), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0.0872665F, 0F));
-        root.addOrReplaceChild("Shape8", CubeListBuilder.create().texOffs(0, 0).addBox(-7.5F, 0F, -3F, 10, 1, 1), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0.0872665F, 0F));
-        root.addOrReplaceChild("Shape9", CubeListBuilder.create().texOffs(0, 0).addBox(-1F, -0.5F, 0F, 8, 1, 2), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.0174533F, -0.0523599F));
-        root.addOrReplaceChild("Shape10", CubeListBuilder.create().texOffs(0, 0).addBox(-8F, -0.5F, 1F, 7, 1, 1), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.0174533F, -0.0523599F));
+        root.addOrReplaceChild("Shape1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 0F, -0.5F, 10, 1, 1), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0.0523599F));
+        root.addOrReplaceChild("Shape2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(4F, 0F, -1.5F, 4, 1, 3), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0.0523599F));
+        root.addOrReplaceChild("Shape3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, -1F, -2F, 10, 1, 1), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.0698132F, -0.0349066F));
+        root.addOrReplaceChild("Shape4", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(4F, -1F, -2.5F, 1, 1, 2), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.0698132F, -0.0349066F));
+        root.addOrReplaceChild("Shape5", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(5F, -1F, -2.7F, 3, 1, 1), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.0698132F, -0.0349066F));
+        root.addOrReplaceChild("Shape6", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(5F, -1F, -1.2F, 3, 1, 1), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.0698132F, -0.0349066F));
+        root.addOrReplaceChild("Shape7", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(2.5F, 0F, -4F, 4, 1, 3), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0.0872665F, 0F));
+        root.addOrReplaceChild("Shape8", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-7.5F, 0F, -3F, 10, 1, 1), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0.0872665F, 0F));
+        root.addOrReplaceChild("Shape9", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1F, -0.5F, 0F, 8, 1, 2), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.0174533F, -0.0523599F));
+        root.addOrReplaceChild("Shape10", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-8F, -0.5F, 1F, 7, 1, 1), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, -0.0174533F, -0.0523599F));
         return LayerDefinition.create(mesh, 64, 32);
     }
 

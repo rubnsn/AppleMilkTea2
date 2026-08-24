@@ -35,16 +35,16 @@ public class ModelFlowerPot {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("bagF", CubeListBuilder.create().texOffs(0, 0).addBox(-6F, 2F, 0F, 12, 6, 1), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("bagB", CubeListBuilder.create().texOffs(0, 0).addBox(-6F, 2F, 5F, 12, 6, 1), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("bagL", CubeListBuilder.create().texOffs(0, 7).addBox(5F, 2F, 1F, 1, 6, 4), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("bagR", CubeListBuilder.create().texOffs(0, 7).addBox(-6F, 2F, 1F, 1, 6, 4), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("dirt", CubeListBuilder.create().texOffs(7, 13).addBox(-5F, 3F, 1F, 10, 4, 4), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("chain", CubeListBuilder.create().texOffs(0, 22).addBox(-6.5F, 3F, -0.5F, 13, 1, 8), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("flower1", CubeListBuilder.create().texOffs(36, 16).addBox(-7F, -8F, 3F, 14, 10, 0), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("flower2", CubeListBuilder.create().texOffs(36, 16).addBox(-4F, -6F, 1F, 14, 10, 0), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("flower3", CubeListBuilder.create().texOffs(36, 16).addBox(-10F, -6F, 1F, 14, 10, 0), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("base", CubeListBuilder.create().texOffs(32, 0).addBox(-8F, -8F, 7.9F, 16, 16, 0), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("bagF", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 2F, 0F, 12, 6, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2617994F, 0F, 0F));
+        root.addOrReplaceChild("bagB", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 2F, 5F, 12, 6, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2617994F, 0F, 0F));
+        root.addOrReplaceChild("bagL", CubeListBuilder.create().texOffs(0, 7).mirror().addBox(5F, 2F, 1F, 1, 6, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2617994F, 0F, 0F));
+        root.addOrReplaceChild("bagR", CubeListBuilder.create().texOffs(0, 7).mirror().addBox(-6F, 2F, 1F, 1, 6, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2617994F, 0F, 0F));
+        root.addOrReplaceChild("dirt", CubeListBuilder.create().texOffs(7, 13).mirror().addBox(-5F, 3F, 1F, 10, 4, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2617994F, 0F, 0F));
+        root.addOrReplaceChild("chain", CubeListBuilder.create().texOffs(0, 22).mirror().addBox(-6.5F, 3F, -0.5F, 13, 1, 8), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2617994F, 0F, 0F));
+        root.addOrReplaceChild("flower1", CubeListBuilder.create().texOffs(36, 16).mirror().addBox(-7F, -8F, 3F, 14, 10, 0), PartPose.offsetAndRotation(0F, 16F, 0F, -0.2617994F, 0F, 0F));
+        root.addOrReplaceChild("flower2", CubeListBuilder.create().texOffs(36, 16).mirror().addBox(-4F, -6F, 1F, 14, 10, 0), PartPose.offsetAndRotation(0F, 16F, 0F, 0.3490659F, -0.3490659F, 0F));
+        root.addOrReplaceChild("flower3", CubeListBuilder.create().texOffs(36, 16).mirror().addBox(-10F, -6F, 1F, 14, 10, 0), PartPose.offsetAndRotation(0F, 16F, 0F, 0.3490659F, 0.3490659F, 0F));
+        root.addOrReplaceChild("base", CubeListBuilder.create().texOffs(32, 0).mirror().addBox(-8F, -8F, 7.9F, 16, 16, 0), PartPose.offset(0F, 16F, 0F));
         return LayerDefinition.create(mesh, 64, 32);
     }
 

@@ -33,15 +33,15 @@ public class ModelCanister {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("bottomC", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -5F, 10, 2, 10), PartPose.offset(0F, 22F, 0F));
-        root.addOrReplaceChild("side1C", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -5F, 10, 10, 1), PartPose.offset(0F, 12F, 0F));
-        root.addOrReplaceChild("side2C", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, 4F, 10, 10, 1), PartPose.offset(0F, 12F, 0F));
-        root.addOrReplaceChild("side3C", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -4F, 1, 10, 8), PartPose.offset(0F, 12F, 0F));
-        root.addOrReplaceChild("side4C", CubeListBuilder.create().texOffs(0, 0).addBox(4F, 0F, -4F, 1, 10, 8), PartPose.offset(0F, 12F, 0F));
-        root.addOrReplaceChild("top1C", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, -4F, 8, 2, 8), PartPose.offset(0F, 11F, 0F));
-        root.addOrReplaceChild("top2C", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, -3F, 6, 1, 6), PartPose.offset(0F, 10F, 0F));
-        root.addOrReplaceChild("woodcap", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, -4F, 8, 1, 8), PartPose.offset(0F, 9F, 0F));
-        root.addOrReplaceChild("contents", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, -4F, 8, 8, 8), PartPose.offset(0F, 14F, 0F));
+        root.addOrReplaceChild("bottomC", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -5F, 10, 2, 10), PartPose.offset(0F, 22F, 0F));
+        root.addOrReplaceChild("side1C", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -5F, 10, 10, 1), PartPose.offset(0F, 12F, 0F));
+        root.addOrReplaceChild("side2C", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, 4F, 10, 10, 1), PartPose.offset(0F, 12F, 0F));
+        root.addOrReplaceChild("side3C", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -4F, 1, 10, 8), PartPose.offset(0F, 12F, 0F));
+        root.addOrReplaceChild("side4C", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(4F, 0F, -4F, 1, 10, 8), PartPose.offset(0F, 12F, 0F));
+        root.addOrReplaceChild("top1C", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4F, 0F, -4F, 8, 2, 8), PartPose.offset(0F, 11F, 0F));
+        root.addOrReplaceChild("top2C", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3F, 0F, -3F, 6, 1, 6), PartPose.offset(0F, 10F, 0F));
+        root.addOrReplaceChild("woodcap", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4F, 0F, -4F, 8, 1, 8), PartPose.offset(0F, 9F, 0F));
+        root.addOrReplaceChild("contents", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-4F, 0F, -4F, 8, 8, 8), PartPose.offset(0F, 14F, 0F));
         return LayerDefinition.create(mesh, 32, 32);
     }
 

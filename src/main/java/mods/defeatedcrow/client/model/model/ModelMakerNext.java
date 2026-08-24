@@ -17,8 +17,8 @@ public class ModelMakerNext {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("contents", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, -3F, 6, 7, 6), PartPose.offset(0F, 13F, 0F));
-        return LayerDefinition.create(mesh, 64, 32);
+        root.addOrReplaceChild("contents", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-3F, 0F, -3F, 6, 7, 6), PartPose.offset(0F, 13F, 0F));
+        return LayerDefinition.create(mesh, 16, 16);
     }
 
     public void renderToBuffer(com.mojang.blaze3d.vertex.PoseStack pose, com.mojang.blaze3d.vertex.VertexConsumer buf, int light, int overlay, float r, float g, float b, float a) {

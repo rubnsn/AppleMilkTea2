@@ -27,7 +27,7 @@ public class ModelPanHandle {
         root.addOrReplaceChild("handlea2", CubeListBuilder.create().texOffs(0, 0).addBox(-8F, 0F, -1.5F, 2, 1, 3), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("handlea3", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0F, 6F, 3, 1, 2), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("handlea4", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0F, -8F, 3, 1, 2), PartPose.offset(0F, 16F, 0F));
-        return LayerDefinition.create(mesh, 64, 32);
+        return LayerDefinition.create(mesh, 32, 32);
     }
 
     public void renderToBuffer(com.mojang.blaze3d.vertex.PoseStack pose, com.mojang.blaze3d.vertex.VertexConsumer buf, int light, int overlay, float r, float g, float b, float a) {

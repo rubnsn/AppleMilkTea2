@@ -27,12 +27,12 @@ public class ModelLargeBottle {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 7).addBox(-3F, 0F, -3F, 6, 7, 6), PartPose.offset(0F, 17F, 0F));
-        root.addOrReplaceChild("middle1", CubeListBuilder.create().texOffs(0, 0).addBox(-2.5F, 0F, -2.5F, 5, 2, 5), PartPose.offset(0F, 15F, 0F));
-        root.addOrReplaceChild("middle2", CubeListBuilder.create().texOffs(0, 0).addBox(-2F, 0F, -2F, 4, 1, 4), PartPose.offset(0F, 14F, 0F));
-        root.addOrReplaceChild("middle3", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0F, -1.5F, 3, 1, 3), PartPose.offset(0F, 13F, 0F));
-        root.addOrReplaceChild("top", CubeListBuilder.create().texOffs(0, 0).addBox(-1F, 0F, -1F, 2, 2, 2), PartPose.offset(0F, 11F, 0F));
-        root.addOrReplaceChild("cap", CubeListBuilder.create().texOffs(20, 0).addBox(-1F, 0F, -1F, 2, 2, 2), PartPose.offset(0F, 9F, 0F));
+        root.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 7).mirror().addBox(-3F, 0F, -3F, 6, 7, 6), PartPose.offset(0F, 17F, 0F));
+        root.addOrReplaceChild("middle1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-2.5F, 0F, -2.5F, 5, 2, 5), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("middle2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-2F, 0F, -2F, 4, 1, 4), PartPose.offset(0F, 14F, 0F));
+        root.addOrReplaceChild("middle3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1.5F, 0F, -1.5F, 3, 1, 3), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("top", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1F, 0F, -1F, 2, 2, 2), PartPose.offset(0F, 11F, 0F));
+        root.addOrReplaceChild("cap", CubeListBuilder.create().texOffs(20, 0).mirror().addBox(-1F, 0F, -1F, 2, 2, 2), PartPose.offset(0F, 9F, 0F));
         return LayerDefinition.create(mesh, 32, 32);
     }
 

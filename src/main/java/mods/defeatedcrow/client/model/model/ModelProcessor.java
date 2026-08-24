@@ -35,16 +35,16 @@ public class ModelProcessor {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("leg1", CubeListBuilder.create().texOffs(0, 0).addBox(-6F, 0F, -6F, 2, 1, 2), PartPose.offset(0F, 23F, 0F));
-        root.addOrReplaceChild("leg2", CubeListBuilder.create().texOffs(0, 0).addBox(4F, 0F, -6F, 2, 1, 2), PartPose.offset(0F, 23F, 0F));
-        root.addOrReplaceChild("leg3", CubeListBuilder.create().texOffs(0, 0).addBox(-6F, 0F, 4F, 2, 1, 2), PartPose.offset(0F, 23F, 0F));
-        root.addOrReplaceChild("leg4", CubeListBuilder.create().texOffs(0, 0).addBox(4F, 0F, 4F, 2, 1, 2), PartPose.offset(0F, 23F, 0F));
-        root.addOrReplaceChild("base", CubeListBuilder.create().texOffs(0, 0).addBox(-6F, 0F, -6F, 12, 2, 12), PartPose.offset(0F, 21F, 0F));
-        root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 14).addBox(-6.5F, 0F, -6.5F, 13, 5, 13), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("brade1", CubeListBuilder.create().texOffs(0, 3).addBox(-1F, 0F, -1F, 2, 3, 2), PartPose.offset(0F, 13F, 0F));
-        root.addOrReplaceChild("brade2", CubeListBuilder.create().texOffs(40, 0).addBox(-3F, 0F, -3F, 6, 0, 6), PartPose.offset(0F, 14.5F, 0F));
-        root.addOrReplaceChild("glass", CubeListBuilder.create().texOffs(0, 0).addBox(-5F, 0F, -5F, 10, 6, 10), PartPose.offset(0F, 10F, 0F));
-        root.addOrReplaceChild("top", CubeListBuilder.create().texOffs(10, 23).addBox(-4F, 0F, -4F, 8, 1, 8), PartPose.offset(0F, 9F, 0F));
+        root.addOrReplaceChild("leg1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 0F, -6F, 2, 1, 2), PartPose.offset(0F, 23F, 0F));
+        root.addOrReplaceChild("leg2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(4F, 0F, -6F, 2, 1, 2), PartPose.offset(0F, 23F, 0F));
+        root.addOrReplaceChild("leg3", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 0F, 4F, 2, 1, 2), PartPose.offset(0F, 23F, 0F));
+        root.addOrReplaceChild("leg4", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(4F, 0F, 4F, 2, 1, 2), PartPose.offset(0F, 23F, 0F));
+        root.addOrReplaceChild("base", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-6F, 0F, -6F, 12, 2, 12), PartPose.offset(0F, 21F, 0F));
+        root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 14).mirror().addBox(-6.5F, 0F, -6.5F, 13, 5, 13), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("brade1", CubeListBuilder.create().texOffs(0, 3).mirror().addBox(-1F, 0F, -1F, 2, 3, 2), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("brade2", CubeListBuilder.create().texOffs(40, 0).mirror().addBox(-3F, 0F, -3F, 6, 0, 6), PartPose.offset(0F, 14.5F, 0F));
+        root.addOrReplaceChild("glass", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5F, 0F, -5F, 10, 6, 10), PartPose.offset(0F, 10F, 0F));
+        root.addOrReplaceChild("top", CubeListBuilder.create().texOffs(10, 23).mirror().addBox(-4F, 0F, -4F, 8, 1, 8), PartPose.offset(0F, 9F, 0F));
         return LayerDefinition.create(mesh, 64, 32);
     }
 

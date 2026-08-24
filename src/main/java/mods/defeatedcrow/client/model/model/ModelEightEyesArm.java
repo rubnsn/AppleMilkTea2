@@ -49,23 +49,23 @@ public class ModelEightEyesArm {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("hand", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 2F, -6F, 3, 4, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.0523599F, 0F));
-        root.addOrReplaceChild("fingar1", CubeListBuilder.create().texOffs(0, 9).addBox(-4.5F, 5F, -6F, 3, 1, 3), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.5235988F, 0F));
-        root.addOrReplaceChild("fingar2", CubeListBuilder.create().texOffs(0, 9).addBox(-4.5F, 4F, -6F, 3, 1, 3), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.5585054F, 0F));
-        root.addOrReplaceChild("fingar3", CubeListBuilder.create().texOffs(0, 9).addBox(-4.5F, 3F, -6F, 3, 1, 3), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.5759587F, 0F));
-        root.addOrReplaceChild("fingar4", CubeListBuilder.create().texOffs(0, 9).addBox(-4.5F, 2F, -6F, 3, 1, 3), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.6108652F, 0F));
-        root.addOrReplaceChild("thumb1", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 1F, -5.5F, 2, 2, 3), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 0.2443461F, 0F));
-        root.addOrReplaceChild("thumb2", CubeListBuilder.create().texOffs(0, 0).addBox(-2.5F, 2F, -5F, 1, 3, 1), PartPose.offsetAndRotation(0F, 16F, 0F, -0.2617994F, 0F, 0F));
-        root.addOrReplaceChild("wrist", CubeListBuilder.create().texOffs(0, 15).addBox(-1.5F, 0F, -3F, 3, 3, 2), PartPose.offsetAndRotation(0F, 18F, 0F, 0F, 0.0872665F, 0F));
-        root.addOrReplaceChild("arm1", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 2F, -1F, 3, 3, 4), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("arm2", CubeListBuilder.create().texOffs(0, 0).addBox(-1F, 2F, 3F, 3, 3, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.1396263F, 0F));
-        root.addOrReplaceChild("armor1", CubeListBuilder.create().texOffs(32, 0).addBox(-1F, 1F, -2F, 4, 5, 5), PartPose.offsetAndRotation(0F, 16F, 0F, 0.1396263F, 0.4363323F, 0F));
-        root.addOrReplaceChild("armor2", CubeListBuilder.create().texOffs(32, 11).addBox(-2.5F, 1.5F, 0.5F, 4, 5, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0.1570796F, 0.4363323F, 0F));
-        root.addOrReplaceChild("armor3", CubeListBuilder.create().texOffs(32, 11).addBox(-3.5F, 2F, 2.5F, 4, 5, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0.1745329F, 0.4363323F, 0F));
-        root.addOrReplaceChild("armor4", CubeListBuilder.create().texOffs(32, 21).addBox(-5F, 2.5F, 3F, 5, 5, 5), PartPose.offsetAndRotation(0F, 16F, 0F, 0.1919862F, 0.4363323F, 0.0174533F));
-        root.addOrReplaceChild("armor5", CubeListBuilder.create().texOffs(0, 22).addBox(-2F, 1.5F, -1F, 2, 4, 2), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.2094395F, 0F));
-        root.addOrReplaceChild("armor6", CubeListBuilder.create().texOffs(0, 22).addBox(-1.5F, 1.5F, 1F, 2, 4, 2), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.3141593F, 0F));
-        root.addOrReplaceChild("armor7", CubeListBuilder.create().texOffs(0, 22).addBox(-1F, 1.5F, 3F, 2, 4, 2), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.3141593F, 0F));
+        root.addOrReplaceChild("hand", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1.5F, 2F, -6F, 3, 4, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.0523599F, 0F));
+        root.addOrReplaceChild("fingar1", CubeListBuilder.create().texOffs(0, 9).mirror().addBox(-4.5F, 5F, -6F, 3, 1, 3), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.5235988F, 0F));
+        root.addOrReplaceChild("fingar2", CubeListBuilder.create().texOffs(0, 9).mirror().addBox(-4.5F, 4F, -6F, 3, 1, 3), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.5585054F, 0F));
+        root.addOrReplaceChild("fingar3", CubeListBuilder.create().texOffs(0, 9).mirror().addBox(-4.5F, 3F, -6F, 3, 1, 3), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.5759587F, 0F));
+        root.addOrReplaceChild("fingar4", CubeListBuilder.create().texOffs(0, 9).mirror().addBox(-4.5F, 2F, -6F, 3, 1, 3), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.6108652F, 0F));
+        root.addOrReplaceChild("thumb1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1.5F, 1F, -5.5F, 2, 2, 3), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 0.2443461F, 0F));
+        root.addOrReplaceChild("thumb2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-2.5F, 2F, -5F, 1, 3, 1), PartPose.offsetAndRotation(0F, 16F, 0F, -0.2617994F, 0F, 0F));
+        root.addOrReplaceChild("wrist", CubeListBuilder.create().texOffs(0, 15).mirror().addBox(-1.5F, 0F, -3F, 3, 3, 2), PartPose.offsetAndRotation(0F, 18F, 0F, 0F, 0.0872665F, 0F));
+        root.addOrReplaceChild("arm1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1.5F, 2F, -1F, 3, 3, 4), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("arm2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1F, 2F, 3F, 3, 3, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.1396263F, 0F));
+        root.addOrReplaceChild("armor1", CubeListBuilder.create().texOffs(32, 0).mirror().addBox(-1F, 1F, -2F, 4, 5, 5), PartPose.offsetAndRotation(0F, 16F, 0F, 0.1396263F, 0.4363323F, 0F));
+        root.addOrReplaceChild("armor2", CubeListBuilder.create().texOffs(32, 11).mirror().addBox(-2.5F, 1.5F, 0.5F, 4, 5, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0.1570796F, 0.4363323F, 0F));
+        root.addOrReplaceChild("armor3", CubeListBuilder.create().texOffs(32, 11).mirror().addBox(-3.5F, 2F, 2.5F, 4, 5, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0.1745329F, 0.4363323F, 0F));
+        root.addOrReplaceChild("armor4", CubeListBuilder.create().texOffs(32, 21).mirror().addBox(-5F, 2.5F, 3F, 5, 5, 5), PartPose.offsetAndRotation(0F, 16F, 0F, 0.1919862F, 0.4363323F, 0.0174533F));
+        root.addOrReplaceChild("armor5", CubeListBuilder.create().texOffs(0, 22).mirror().addBox(-2F, 1.5F, -1F, 2, 4, 2), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.2094395F, 0F));
+        root.addOrReplaceChild("armor6", CubeListBuilder.create().texOffs(0, 22).mirror().addBox(-1.5F, 1.5F, 1F, 2, 4, 2), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.3141593F, 0F));
+        root.addOrReplaceChild("armor7", CubeListBuilder.create().texOffs(0, 22).mirror().addBox(-1F, 1.5F, 3F, 2, 4, 2), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, -0.3141593F, 0F));
         return LayerDefinition.create(mesh, 64, 32);
     }
 
