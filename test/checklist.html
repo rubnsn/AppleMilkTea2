@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AppleMilkTea2 1.20.1 手動チェックリスト</title>
+<style>
+  :root {
+    --bg: #1e1f24; --card: #2a2c33; --text: #e8e6e3; --muted: #9a9891;
+    --accent: #d4895a; --pass: #4caf7d; --fail: #e05a5a; --warn: #e0b34d; --skip: #777;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: "Segoe UI", "Meiryo", sans-serif; margin: 0; padding: 1rem 1rem 6rem; }
+  header { max-width: 900px; margin: 0 auto 1rem; }
+  h1 { font-size: 1.4rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .sub { color: var(--muted); font-size: 0.85rem; }
+  .progress-bar { position: fixed; top: 0; left: 0; height: 4px; background: var(--accent); width: 0%; z-index: 10; transition: width 0.2s; }
+  .summary { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); padding: 0.75rem 1rem; display: flex; gap: 1.5rem; align-items: center; border-top: 1px solid #3b3d45; z-index: 9; flex-wrap: wrap; }
+  .summary b { font-size: 1.1rem; }
+  main { max-width: 900px; margin: 0 auto; }
+  section { margin-bottom: 2rem; }
+  h2 { font-size: 1.1rem; border-left: 4px solid var(--accent); padding-left: 0.6rem; cursor: pointer; user-select: none; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; background: var(--card); border-radius: 6px; overflow: hidden; }
+  th, td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid #3b3d45; vertical-align: top; }
+  th { background: #33363e; color: var(--muted); font-weight: 600; white-space: nowrap; }
+  td.id { white-space: nowrap; font-family: monospace; color: var(--accent); }
+  td.act { min-width: 280px; }
+  td.exp { color: var(--muted); min-width: 220px; }
+  select { background: #1e1f24; color: var(--text); border: 1px solid #4a4d57; border-radius: 4px; padding: 0.15rem 0.35rem; font-size: 0.85rem; }
+  input.note { width: 100%; background: #1e1f24; border: none; border-bottom: 1px solid #4a4d57; color: var(--text); padding: 0.15rem; font-size: 0.82rem; }
+  tr[data-status="PASS"] td.id { color: var(--pass); }
+  tr[data-status="FAIL"] td.id { color: var(--fail); }
+  tr[data-status="WARN"] td.id { color: var(--warn); }
+  tr[data-status="SKIP"] td.id { color: var(--skip); }
+  .btns button { background: var(--card); color: var(--text); border: 1px solid #4a4d57; border-radius: 4px; padding: 0.3rem 0.8rem; margin-right: 0.4rem; cursor: pointer; }
+  .btns button:hover { border-color: var(--accent); }
+  .cnt-PASS { color: var(--pass); } .cnt-FAIL { color: var(--fail); } .cnt-WARN { color: var(--warn); } .cnt-SKIP { color: var(--skip); }
+  details.export { max-width: 900px; margin: 0 auto; }
+  textarea#exportArea { width: 100%; height: 180px; background: #14151a; color: #cde; border: 1px solid #3b3d45; font-family: monospace; font-size: 0.78rem; }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+
+<header>
+  <h1>AppleMilkTea2 — 1.20.1 移植版 手動チェックリスト</h1>
+  <div class="sub">
+    元ネタ: <a href="https://defeatedcrow.wiki.fc2.com/wiki/AppleMilkTea%20ver2" target="_blank">AppleMilkTea ver2 (公式wiki)</a><br>
+    使い方: <code>gradlew runClient</code> でゲームを起動し、各項目を実施して結果を選択。メモは自由記述。
+    進捗はブラウザに自動保存 (localStorage)。最下部の「エクスポート」でMarkdown結果をコピー可能。<br>
+    判定基準: <b>PASS</b>=wiki通り / <b>FAIL</b>=期待外れ・クラッシュ / <b>WARN</b>=動くが仕様差異 / <b>SKIP</b>=環境上未確認
+  </div>
+</header>
+
+<main>
+
+<!-- ================= A 新しい作物 ================= -->
+<section id="sec-A">
+<h2 onclick="toggle('A')">A. 新しい作物（椿・柚子）</h2>
+<table data-cat="A">
+<thead><tr><th>ID</th><th>操作手順</th><th>期待結果 (wiki準拠)</th><th>判定</th><th>メモ</th></tr></thead>
+<tbody>
+<tr><td class="id">A-M01</td><td class="act">椿の実を植えて骨粉使用、成長段階モデルが変わるか確認</td><td class="exp">段階ごとに異なるテクスチャ/モデルが表示される</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">A-M02</td><td class="act">柚子の木を成長させ、葉に柚子の実がつくか確認</td><td class="exp">成長した柚子の木の葉ブロックに柚子の実が描画される</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">A-M03</td><td class="act">柚子の実を右クリック収穫</td><td class="exp">柚子アイテム入手、実だけ消える（葉は残る）</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">A-M04</td><td class="act">茶の木・ミント等 ver1からの続投作物の生育確認</td><td class="exp">1.20.1でも通常の作物と同様に育つ</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+</tbody></table>
+</section>
+
+<!-- ================= B 食べ物Entity化 ================= -->
+<section id="sec-B">
+<h2 onclick="toggle('B')">B. 食べ物のEntity化・設置できる食べ物</h2>
+<table data-cat="B">
+<thead><tr><th>ID</th><th>操作手順</th><th>期待結果 (wiki準拠)</th><th>判定</th><th>メモ</th></tr></thead>
+<tbody>
+<tr><td class="id">B-M01</td><td class="act">皿/ボウル系食べ物を地面・階段等に設置</td><td class="exp">設置可能で接地面に合わせて正しく置ける</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">B-M02</td><td class="act">設置した食べ物を右クリックして食べる</td><td class="exp">空腹度回復し、空容器（皿/ボウル）が返るまたはドロップする</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">B-M03</td><td class="act">ケーキ型・カクテル・ティーカップなど新規モデル食べ物の見た目確認</td><td class="exp">BER/BESモデルが崩れず、複数設置時に重ならない</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">B-M04</td><td class="act">食べ物エンティティ（キノコブロックEntity等）を出す/壊す</td><td class="exp">エンティティとして表示され、破壊時対応アイテムをドロップ</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">B-M05</td><td class="act">飲食物のポーション効果付き飲用（カクテル等）</td><td class="exp">効果が付与され、画面演出（酔い等）が再生される</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+</tbody></table>
+</section>
+
+<!-- ================= C 調理装置 ================= -->
+<section id="sec-C">
+<h2 onclick="toggle('C')">C. 調理装置（ティーメーカー/鍋/鉄板/プロセッサー/蒸留器）</h2>
+<table data-cat="C">
+<thead><tr><th>ID</th><th>操作手順</th><th>期待結果 (wiki準拠)</th><th>判定</th><th>メモ</th></tr></thead>
+<tbody>
+<tr><td class="id">C-M01</td><td class="act">新型ティーメーカーGUIを開き、茶葉+水+燃料で紅茶を製造</td><td class="exp">プログレスバーが進み、完成品が出る／ミルク投入でミルクティー分岐</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">C-M02</td><td class="act">ティーメーカーの矢印・ゲージ描画を確認</td><td class="exp">進行に応じて矢印/炎ゲージが滑らかに変化</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">C-M03</td><td class="act">新しい鍋（EmptyPanGaiden）でレシピ調理</td><td class="exp">panRecipe通りに完成品が得られる。火にかける向き/設置条件も確認</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">C-M04</td><td class="act">新しい鉄板（TeppanII）で生地→焼き上がり→焦げの遷移確認</td><td class="exp">段階ごとの見た目変化（生→焼き→焦げ）が描画される</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">C-M05</td><td class="act">フードプロセッサー/上位版で粉砕・副産物ありレシピ実行</td><td class="exp">主生成物＋副産物がスロットに入る。タグ指定材料も受理される</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">C-M06</td><td class="act">減圧蒸留器（Evaporator）に液体を入れて蒸留</td><td class="exp">液体タンクUIが表示され、完成品（液体またはアイテム）が出る</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">C-M07</td><td class="act">流体タンクの液面表示（蒸留器・醸造器）を確認</td><td class="exp">流体の色/量に応じた液面アニメーションが正しい</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">C-M08</td><td class="act">ジョークラッシャーを動かす</td><td class="exp">ネタ通りの動作・出力。クラッシュしない</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">C-M09</td><td class="act">レッドストーン信号で装置停止→解除で再開することを確認</td><td class="exp">RS入力中は進行停止、切断で再開</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+</tbody></table>
+</section>
+
+<!-- ================= D 酒造 ================= -->
+<section id="sec-D">
+<h2 onclick="toggle('D')">D. 酒造システム（醸造樽・果実酒・カクテル）</h2>
+<table data-cat="D">
+<thead><tr><th>ID</th><th>操作手順</th><th>期待結果 (wiki準拠)</th><th>判定</th><th>メモ</th></tr></thead>
+<tbody>
+<tr><td class="id">D-M01</td><td class="act">醸造樽に素材+瓶を入れて醸造開始</td><td class="exp">経過時間後に果実酒（Cordial/LargeBottle系）が完成</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">D-M02</td><td class="act">樽の蓋開閉・中身確認の操作</td><td class="exp">GUIまたは覗き見で醸造進行がわかる</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">D-M03</td><td class="act">新カクテルを飲んで効果確認</td><td class="exp">wiki記載のポーション効果が付く（追加効果含む）</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">D-M04</td><td class="act">醸造流体16種のバケツ/タンク表示色確認</td><td class="exp">流体ごとに固有の色・テクスチャで表示される</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+</tbody></table>
+</section>
+
+<!-- ================= E エネルギー ================= -->
+<section id="sec-E">
+<h2 onclick="toggle('E')">E. 柚子電池と充電システム</h2>
+<table data-cat="E">
+<thead><tr><th>ID</th><th>操作手順</th><th>期待結果 (wiki準拠)</th><th>判定</th><th>メモ</th></tr></thead>
+<tbody>
+<tr><td class="id">E-M01</td><td class="act">柚子電池をBatBoxにセットして充電</td><td class="exp">電池の残量バー/ツールチップが増加する</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">E-M02</td><td class="act">HandleEngine（ハンドルエンジン）を回して発電→充電</td><td class="exp">回転アニメーション表示、隣接装置へ充電される</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">E-M03</td><td class="act">赤石ジェル/柚子ジェルの設置と反応確認</td><td class="exp">ジェルブロックが正しく設置され、仕様通りの反応（燃焼/帯電）</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">E-M04</td><td class="act">電池駆動装置（電池で動く新装置）の稼働確認</td><td class="exp">電池装填で動作、切れると停止</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">E-M05</td><td class="act">Forge Energy連携（他MODエネルギー）の受入/供給 — 1.20.1移植分</td><td class="exp">Capability経由でFE授受できる（RF/EU/GF換算は旧仕様）</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+</tbody></table>
+</section>
+
+<!-- ================= F お香 ================= -->
+<section id="sec-F">
+<h2 onclick="toggle('F')">F. 魔法のお香立て（インセンス）</h2>
+<table data-cat="F">
+<thead><tr><th>ID</th><th>操作手順</th><th>期待結果 (wiki準拠)</th><th>判定</th><th>メモ</th></tr></thead>
+<tbody>
+<tr><td class="id">F-M01</td><td class="act">香立てに精油+お香をセットして着火</td><td class="exp">煙パーティクルが出て、効果範囲内プレイヤーに効果発動</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">F-M02</td><td class="act">11種のお香それぞれの効果を確認</td><td class="exp">種類ごとに wiki 通りの効果（治癒/採掘速度/幻覚等）</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">F-M03</td><td class="act">香立てのモデル・燃焼中の見た目確認</td><td class="exp">玉髄香立てのモデルが崩れず、燃焼状態が視覚的に判別可能</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+</tbody></table>
+</section>
+
+<!-- ================= G 圧縮 ================= -->
+<section id="sec-G">
+<h2 onclick="toggle('G')">G. 圧縮ブロック・大量収納</h2>
+<table data-cat="G">
+<thead><tr><th>ID</th><th>操作手順</th><th>期待結果 (wiki準拠)</th><th>判定</th><th>メモ</th></tr></thead>
+<tbody>
+<tr><td class="id">G-M01</td><td class="act">圧縮箱（WoodBox/VegiBag/CharcoalBox等）への格納と取り出し</td><td class="exp">右クリックで開閉し、中身が保持される</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">G-M02</td><td class="act">圧縮シルクメロン（MelonBomb）を設置・起爆</td><td class="exp">爆発せずメロン展開（または仕様通り挙動）、破片ドロップ確認</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">G-M03</td><td class="act">キノコブロックEntityの配置と破壊</td><td class="exp">エンティティとして設置され、壊すと対応アイテム回収</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+</tbody></table>
+</section>
+
+<!-- ================= H 玉髄 ================= -->
+<section id="sec-H">
+<h2 onclick="toggle('H')">H. 玉髄（カルセドニー）新要素</h2>
+<table data-cat="H">
+<thead><tr><th>ID</th><th>操作手順</th><th>期待結果 (wiki準拠)</th><th>判定</th><th>メモ</th></tr></thead>
+<tbody>
+<tr><td class="id">H-M01</td><td class="act">カルセドニー新色ブロックの作成・設置・見た目確認</td><td class="exp">新色が正しいテクスチャで表示される</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">H-M02</td><td class="act">カルセドニーランプ（GlassLamp）の点灯/消灯</td><td class="exp">RS入力やクリックで明滅し、光源レベルも切り替わる</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">H-M03</td><td class="act">玉髄のモノクル装備中に鉱石を見る</td><td class="exp">名前（鉱石辞書名→1.20ではタグ/ID）がオーバーレイ表示される</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">H-M04</td><td class="act">オニキスの剣で攻撃</td><td class="exp">特殊効果（wiki記載の追加ダメージ/効果）が発動</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">H-M05</td><td class="act">高枝切りバサミで高い位置の葉を採取</td><td class="exp">リーチ内の葉が刈られ、苗木等がドロップする</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">H-M06</td><td class="act">玉髄の感圧板を踏む</td><td class="exp">RS信号が出力される</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+</tbody></table>
+</section>
+
+<!-- ================= I 村人・世界生成 ================= -->
+<section id="sec-I">
+<h2 onclick="toggle('I')">I. 村人・自然生成</h2>
+<table data-cat="I">
+<thead><tr><th>ID</th><th>操作手順</th><th>期待結果 (wiki準拠)</th><th>判定</th><th>メモ</th></tr></thead>
+<tbody>
+<tr><td class="id">I-M01</td><td class="act">Cafe村人（喫茶店員）の取引UI確認</td><td class="exp">取引一覧が表示され、AMT食材を売買できる</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">I-M02</td><td class="act">Yome村人（嫁）の特殊機能確認</td><td class="exp">wiki通りの特殊インタラクションが機能する</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">I-M03</td><td class="act">村にCafe建物が生成するか（新規チャンク探索）</td><td class="exp">Village Component由来の構造物が生成される（1.20.1はJigsaw/構造置換）</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">I-M04</td><td class="act">砂浜バイオームでハマグリ（Clam）生成確認</td><td class="exp">砂浜にハマグリが自然生成される</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">I-M05</td><td class="act">丘バイオームで茶の木自然生成確認</td><td class="exp">TeaTreeが適正バイオームに生成される</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+</tbody></table>
+</section>
+
+<!-- ================= J UI・その他 ================= -->
+<section id="sec-J">
+<h2 onclick="toggle('J')">J. クリエイティブタブ・実績・その他UI</h2>
+<table data-cat="J">
+<thead><tr><th>ID</th><th>操作手順</th><th>期待結果 (wiki準拠)</th><th>判定</th><th>メモ</th></tr></thead>
+<tbody>
+<tr><td class="id">J-M01</td><td class="act">クリエイティブタブ5種（一般/Food/Magic/Material等）の中身確認</td><td class="exp">タブアイコン・名称・並びが正しく、欠落アイテムがない</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">J-M02</td><td class="act">主要な実績（紅茶製造・柚子電池等）の達成トースト表示</td><td class="exp">条件達成で Advancement トーストが出る</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">J-M03</td><td class="act">ja_JP ロケールでの翻訳表示確認</td><td class="exp">アイテム名/GUIラベルが日本語で表示される（欠落キーなし）</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">J-M04</td><td class="act">コンフィグ値変更（例: 機械速度）→ 再起動 → 反映確認</td><td class="exp">ForgeConfigSpec(TOML) の変更がゲーム内に反映される</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+<tr><td class="id">J-M05</td><td class="act">単体環境（他MOD無し）での起動〜終了、ログエラー確認</td><td class="exp">Omit済みPlugin参照でエラー/警告が出ない</td><td><select><option></option><option>PASS</option><option>FAIL</option><option>WARN</option><option>SKIP</option></select></td><td><input class="note"></td></tr>
+</tbody></table>
+</section>
+
+<details class="export">
+<summary style="cursor:pointer;color:var(--muted)">エクスポート（Markdown形式で結果を出力）</summary><br>
+<button class="btns" onclick="doExport()">Markdown生成</button>
+<textarea id="exportArea" readonly placeholder="ここに結果が出ます"></textarea>
+</details>
+
+</main>
+
+<div class="summary">
+  <span>進捗: <b id="doneCount">0</b> / <b id="totalCount">0</b></span>
+  <span class="cnt-PASS">PASS: <b id="cntPASS">0</b></span>
+  <span class="cnt-FAIL">FAIL: <b id="cntFAIL">0</b></span>
+  <span class="cnt-WARN">WARN: <b id="cntWARN">0</b></span>
+  <span class="cnt-SKIP">SKIP: <b id="cntSKIP">0</b></span>
+  <span class="btns"><button onclick="resetAll()">全リセット</button><button onclick="exportFile()">ファイル保存</button></span>
+</div>
+
+<script>
+const KEY = 'amt2-checklist-v1';
+function allRows() { return [...document.querySelectorAll('table[data-cat] tbody tr')]; }
+
+function load() {
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e) {}
+  allRows().forEach(tr => {
+    const id = tr.querySelector('.id').textContent.trim();
+    const sel = tr.querySelector('select'), note = tr.querySelector('.note');
+    if (saved[id]) {
+      if (sel) sel.value = saved[id].status || '';
+      if (note && saved[id].note) note.value = saved[id].note;
+    }
+    if (sel) sel.addEventListener('change', save);
+    if (note) note.addEventListener('input', save);
+  });
+  update();
+}
+
+function save() {
+  const data = {};
+  allRows().forEach(tr => {
+    data[tr.querySelector('.id').textContent.trim()] = {
+      status: tr.querySelector('select').value,
+      note: tr.querySelector('.note').value
+    };
+  });
+  localStorage.setItem(KEY, JSON.stringify(data));
+  update();
+}
+
+function update() {
+  const counts = { PASS: 0, FAIL: 0, WARN: 0, SKIP: 0 };
+  let done = 0;
+  allRows().forEach(tr => {
+    const v = tr.querySelector('select').value;
+    tr.dataset.status = v;
+    if (v) { done++; counts[v]++; }
+  });
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('totalCount').textContent = allRows().length;
+  ['PASS','FAIL','WARN','SKIP'].forEach(k =>
+    document.getElementById('cnt'+k).textContent = counts[k]);
+  document.getElementById('progressBar').style.width =
+    (100 * done / Math.max(1, allRows().length)) + '%';
+}
+
+function toggle(sec) {
+  const t = document.getElementById('sec-'+sec).querySelector('table');
+  t.style.display = t.style.display === 'none' ? '' : 'none';
+}
+
+function resetAll() {
+  if (!confirm('すべてのチェック結果を消去しますか？')) return;
+  localStorage.removeItem(KEY);
+  location.reload();
+}
+
+function doExport() {
+  let md = '# AMT2 1.20.1 手動チェック結果\n\n日時: ' + new Date().toLocaleString() + '\n\n';
+  document.querySelectorAll('section').forEach(sec => {
+    const rows = sec.querySelectorAll('tbody tr');
+    if (!rows.length) return;
+    md += '## ' + sec.querySelector('h2').textContent + '\n\n';
+    md += '| ID | 結果 | メモ |\n|---|---|---|\n';
+    rows.forEach(tr => {
+      const id = tr.querySelector('.id').textContent.trim();
+      const st = tr.querySelector('select').value || '未';
+      const note = (tr.querySelector('.note').value || '').replace(/\|/g, '/');
+      md += `| ${id} | ${st} | ${note} |\n`;
+    });
+    md += '\n';
+  });
+  document.getElementById('exportArea').value = md;
+}
+
+function exportFile() {
+  doExport();
+  const blob = new Blob([document.getElementById('exportArea').value], {type:'text/markdown'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'amt2-manual-test-result.md';
+  a.click();
+}
+
+load();
+</script>
+</body>
+</html>
