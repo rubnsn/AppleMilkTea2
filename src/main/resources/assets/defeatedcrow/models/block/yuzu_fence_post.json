@@ -1,0 +1,15 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "fence": "defeatedcrow:block/yuzufence",
+    "bottom": "minecraft:block/stone",
+    "particle": "defeatedcrow:block/yuzufence"
+  },
+  "elements": [
+    { "from": [6, 0, 6], "to": [10, 2, 10], "faces": { "down": {"uv":[0,0,16,16], "texture":"#bottom"}, "up": {"uv":[0,0,16,16], "texture":"#bottom"}, "north": {"uv":[0,0,16,16], "texture":"#bottom"}, "south": {"uv":[0,0,16,16], "texture":"#bottom"}, "west": {"uv":[0,0,16,16], "texture":"#bottom"}, "east": {"uv":[0,0,16,16], "texture":"#bottom"} } },
+    { "from": [7.5, 0, 7.5], "to": [8.5, 16, 16], "faces": { "down": {"uv":[0,0,16,16], "texture":"#fence"}, "up": {"uv":[0,0,16,16], "texture":"#fence"}, "north": {"uv":[0,0,16,16], "texture":"#fence"}, "south": {"uv":[0,0,16,16], "texture":"#fence"}, "west": {"uv":[0,0,16,16], "texture":"#fence"}, "east": {"uv":[0,0,16,16], "texture":"#fence"} } },
+    { "from": [7.5, 0, 0], "to": [8.5, 16, 7.5], "faces": { "down": {"uv":[0,0,16,16], "texture":"#fence"}, "up": {"uv":[0,0,16,16], "texture":"#fence"}, "north": {"uv":[0,0,16,16], "texture":"#fence"}, "south": {"uv":[0,0,16,16], "texture":"#fence"}, "west": {"uv":[0,0,16,16], "texture":"#fence"}, "east": {"uv":[0,0,16,16], "texture":"#fence"} } },
+    { "from": [0, 0, 7.5], "to": [7.5, 16, 8.5], "faces": { "down": {"uv":[0,0,16,16], "texture":"#fence"}, "up": {"uv":[0,0,16,16], "texture":"#fence"}, "north": {"uv":[0,0,16,16], "texture":"#fence"}, "south": {"uv":[0,0,16,16], "texture":"#fence"}, "west": {"uv":[0,0,16,16], "texture":"#fence"}, "east": {"uv":[0,0,16,16], "texture":"#fence"} } },
+    { "from": [8.5, 0, 7.5], "to": [16, 16, 8.5], "faces": { "down": {"uv":[0,0,16,16], "texture":"#fence"}, "up": {"uv":[0,0,16,16], "texture":"#fence"}, "north": {"uv":[0,0,16,16], "texture":"#fence"}, "south": {"uv":[0,0,16,16], "texture":"#fence"}, "west": {"uv":[0,0,16,16], "texture":"#fence"}, "east": {"uv":[0,0,16,16], "texture":"#fence"} } }
+  ]
+}
