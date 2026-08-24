@@ -16,8 +16,9 @@ public class TileHasRemain2 extends BlockEntity {
     // NBT
     @Override
     public void load(CompoundTag tag) {
+        if (tag == null) return;
         super.load(tag);
-        this.remain = tag.getShort("Remaining");
+        if (tag.contains("Remaining")) this.remain = tag.getShort("Remaining");
     }
 
     /**
@@ -38,7 +39,8 @@ public class TileHasRemain2 extends BlockEntity {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) this.load(tag);
     }
 
     public short getRemainShort() {

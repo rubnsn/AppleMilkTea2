@@ -10,7 +10,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class TileChargerDevice extends BlockEntity {
     public TileChargerDevice(BlockPos pos, BlockState state){ super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_CHARGER_DEVICE.get(), pos, state); }
-    @Override public void load(CompoundTag tag){ super.load(tag); }
+    @Override public void load(CompoundTag tag) {
+        if (tag == null) return;
+        super.load(tag); }
     @Override public void saveAdditional(CompoundTag tag){ super.saveAdditional(tag); }
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){ return ClientboundBlockEntityDataPacket.create(this); }
     

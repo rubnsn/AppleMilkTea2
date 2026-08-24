@@ -12,6 +12,7 @@ public class TileLargeBottle extends TileHasRemain2 {
 
     @Override
     public void load(CompoundTag tag) {
+        if (tag == null) return;
         super.load(tag);
         this.side = tag.getBoolean("Side");
     }

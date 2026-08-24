@@ -16,8 +16,9 @@ public class TileHasDirection extends BlockEntity {
     // NBT
     @Override
     public void load(CompoundTag tag) {
+        if (tag == null) return;
         super.load(tag);
-        this.direction = tag.getByte("Direction");
+        if (tag.contains("Direction")) this.direction = tag.getByte("Direction");
     }
 
     /**
@@ -38,7 +39,8 @@ public class TileHasDirection extends BlockEntity {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) this.load(tag);
     }
 
     public byte getDirectionByte() {

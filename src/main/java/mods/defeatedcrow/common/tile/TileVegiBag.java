@@ -15,6 +15,7 @@ public class TileVegiBag extends TileHasDirection {
     // NBT
     @Override
     public void load(CompoundTag tag) {
+        if (tag == null) return;
         super.load(tag);
         this.sneak = tag.getBoolean("Sneaking");
     }
@@ -34,7 +35,8 @@ public class TileVegiBag extends TileHasDirection {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) this.load(tag);
     }
 
     public boolean getSneaking() {

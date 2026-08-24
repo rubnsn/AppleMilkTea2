@@ -13,7 +13,9 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileFilledSoupPan extends BlockEntity implements WorldlyContainer {
     public TileFilledSoupPan(BlockPos pos, BlockState state){ super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_FILLED_SOUP_PAN.get(), pos, state); java.util.Arrays.fill(items, ItemStack.EMPTY); }
     public ItemStack[] items = new ItemStack[2];
-    @Override public void load(CompoundTag tag){ super.load(tag); }
+    @Override public void load(CompoundTag tag) {
+        if (tag == null) return;
+        super.load(tag); }
     @Override public void saveAdditional(CompoundTag tag){ super.saveAdditional(tag); }
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){ return ClientboundBlockEntityDataPacket.create(this); }
     

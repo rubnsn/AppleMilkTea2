@@ -18,7 +18,9 @@ public class TileTeppanII extends BlockEntity implements WorldlyContainer {
     public TileTeppanII(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_TEPPAN_II.get(), pos, state); }
     public ItemStack[] plateItems = new ItemStack[4];
     { java.util.Arrays.fill(plateItems, ItemStack.EMPTY); }
-    @Override public void load(CompoundTag tag) { super.load(tag); }
+    @Override public void load(CompoundTag tag) {
+        if (tag == null) return;
+        super.load(tag); }
     @Override public void saveAdditional(CompoundTag tag) { super.saveAdditional(tag); }
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket() { return ClientboundBlockEntityDataPacket.create(this); }
     public static void tick(Level level, BlockPos pos, BlockState state, TileTeppanII be) { if (level.isClientSide) return; be.setChanged(); }

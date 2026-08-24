@@ -17,6 +17,7 @@ public class TileGelBat extends BlockEntity {
 
     @Override
     public void load(CompoundTag tag) {
+        if (tag == null) return;
         super.load(tag);
 
         this.chargeAmount = tag.getShort("ChargeAmount");
@@ -40,7 +41,8 @@ public class TileGelBat extends BlockEntity {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) this.load(tag);
     }
 
     public void setChargeAmount(int chargeAmount) {

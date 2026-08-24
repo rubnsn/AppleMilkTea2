@@ -52,6 +52,8 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
     private final ModelCrowDoll crowDollModel;
     private final ModelAltBowl altBowlModel;
     private final ModelPanHandle panHandleModel;
+    private final ModelBasketL basketLModel;
+    private final ModelBasketT basketTModel;
 
     public TESRItemRenderer(Minecraft mc, EntityModelSet modelSet) {
         super(mc.getBlockEntityRenderDispatcher(), modelSet);
@@ -82,6 +84,8 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
         this.crowDollModel = new ModelCrowDoll(ModelCrowDoll.createBodyLayer().bakeRoot());
         this.altBowlModel = new ModelAltBowl(ModelAltBowl.createBodyLayer().bakeRoot());
         this.panHandleModel = new ModelPanHandle(ModelPanHandle.createBodyLayer().bakeRoot());
+        this.basketLModel = new ModelBasketL(ModelBasketL.createBodyLayer().bakeRoot());
+        this.basketTModel = new ModelBasketT(ModelBasketT.createBodyLayer().bakeRoot());
     }
 
     @Override
@@ -257,8 +261,11 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
         steakModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
     }
     private void renderBreads(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
-        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/breads.png")));
-        breadsModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+        // Dish + few breads simple - as per original TileEntityBreadRenderer (ModelBreads/breads.png + basket)
+        VertexConsumer vcBread = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/breads.png")));
+        breadsModel.renderToBuffer(pose, vcBread, light, overlay, 1, 1, 1, 1);
+        VertexConsumer vcBasket = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/baskets.png")));
+        basketLModel.renderToBuffer(pose, vcBasket, light, overlay, 1, 1, 1, 1);
     }
     private void renderTart(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
         VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/tart.png")));
