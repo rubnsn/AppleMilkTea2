@@ -1,7 +1,8 @@
 # AMT2 スタブ解消・機能実装マスタープラン（WT-E）
 
-> 作成日: 2026-08-24
-> Worktree: `E:/AMT2-WT-E` / ブランチ: `feature/stub-impl`（ベース: dev @9a7ac88）
+> 作成日: 2026-08-24 / 最終更新: 2026-08-24 23:50
+> Worktree: `E:/AMT2-WT-E` / ブランチ: `feature/stub-impl`（ベース: dev @9a7ac88 → dev:6221d0f を 2回マージ 94070ce / merge 6221d0f）
+> 現状: `feature/stub-impl:767051f` + P7-BEWLR WIP（Fluid BERは未接触、devの cup/soup/CLamp 3件をマージ済み）
 >
 > **役割分担**:
 > - メイン (`E:/AppleMilkTea2` on `dev`): BER描画修正を継続（ユーザー作業中）
@@ -179,6 +180,26 @@ gantt
     P6 村人・構造物          :p6, after p5, 5d
     P7 描画仕上げ(rebase後)  :p7, after p4, 3d
 ```
+
+## 8. 進捗 2026-08-24 23:50 時点（`feature/stub-impl:767051f + BEWLR WIP`）
+
+> **dev マージ**: `9a7ac88` → `176f7cf`（tea maker/yuzu 4件 + cup 2件）を `94070ce` で統合、さらに `6221d0f`（cup porcelain/soup pan/CLamp 青3-pass）13 files `+219/-142` を再マージ。Fluid `BlockOilFluid/ModFluids/ModFluidTypes` は未接触のまま（`git diff dev HEAD -- fluid` 0件）。
+
+| Phase | 状態 | 最終コミット | 検証 |
+|---|---|---|---|
+| **P0 掃除** | ✅ 完了 | `77d68c3` 6 no-op削除 / `5f49ad6` 4 tooltip復元 / `659fe59` 54 bulk清掃 / `17b583c` Dummy設計 | `BUILD SUCCESSFUL` |
+| **P1 レシピ11** | ✅ 完了 | `b1dcc64` `AMTRecipeBase+11 Serializer` / `d9a428c` `empty` nbt+`customRecipesLoaded` 6 tests | `Loaded 18 recipes` 6 GREEN |
+| **P2 機械Tile 13** | ✅ 完了 | `4517e2c` NBT `ContainerHelper` / `092baec` 8 tick `RecipeManager` / `5e9ad29` barrel/cordial/incense / `cd45b55` 6 Appliance tests | 12→16 GREEN |
+| **P3 置き食べ13** | ✅ 完了 | `dcc9d8d` `PlaceableFoods` base+13 / `1e3fdc2` `EdibleEntityItem` 3foods / `98cc4a5` 4 Placeable tests | 16 GREEN |
+| **P4 エネルギー** | ✅ 完了 | `d8cc489` `TileChargerBase` 128k FE+`ItemBattery` 32k+`YuzuGatling` 6400+11 ticker manual（`createTickerHelper`→手動） | `BUILD`/`16 GREEN` |
+| **P5 イベント/ハンドラ/コンテナ** | ✅ 完了 | `ea08a8c` 7 events（FillBucket/Bonemeal/Hurt/Dispenser/EatFood/FluidDispenser/Tooltip） / `dd0c413` 7 handlers（Time/Util/FluidContMap/Genkotu/KeyConfig/Network） / `39bd66b` 19 container `use` / `6df2d03` 11 edible `use` / `df14ac5` `AddChestGen` LootTable | `BUILD SUCCESSFUL` |
+| **P6 村** | ✅ 完了 | `767051f` `VillagerCafe/Yome`+`Cafe/Warehouse` を `VillagerProfession+BoundingBox` stub（Jigsaw NBT TODO） | `BUILD SUCCESSFUL` |
+| **P7 BEWLR 5** | 🚧 WIP | `BEWLR_YuzuGatling/FossilCannon/EightEyesArm` 3件を `BlockEntityWithoutLevelRenderer` で作成、 `ItemYuzuGatling/FossilCannon/DebugArm` の `initializeClient` 未配線（Fluidの3件はスキップ） | `compileJava` は `BEWLR` 3件で `BUILD SUCCESSFUL`、 `initializeClient` 配線後に `build` 再検証予定 |
+
+**残タスク（パート終わりまで）**
+1. **P7 配線**: 3 item の `initializeClient(IClientItemExtensions)` で上記 BEWLR を返す（`common/item/magic/*.java` 3件 + `common/item/appliance/ItemYuzuGatling.java` 1件）、 `ModelFossilCannon/YuzuGatling/EightEyesArm` の `bake` 確認、 `runGameTestServer` 16 GREEN 維持
+2. **P7 残**: `HandleEngine/CocktailSP` は `TESRItemRenderer` で既対応のためスキップ、 `ModParticles`/`fluid` は dev 側 Fluid BER との競合を避け未着手のまま
+3. **統合**: `feature/stub-impl` → `dev` へ `fast-forward` 前に `git fetch && git rebase dev` と `lint all`（`Fluid:0` 維持）、 `doc/qa-summary.md` は `runClient` 手動チェック後に追記
 
 ## 完了判定（フェーズ毎）
 
