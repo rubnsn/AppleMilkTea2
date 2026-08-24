@@ -191,10 +191,11 @@ public class ModItems {
         () -> new ItemDummyForTeppan(new Item.Properties()));
 
     // --- WT-A: BLOCK-ITEMS (teaMakerNext, woodBox, etc. - BlockItem wrappers) ---
+    // Fix inventory broken: tea_maker world uses ISBRH JSON (frame+glass) + BER contents; inventory should use block JSON (ISBRH-faithful) not BEWLR contents-only (was tiny 6x7x6 box via ModelMakerNext)
     public static final RegistryObject<Item> TEA_MAKER_NEXT_ITEM = ITEMS.register("tea_maker_next",
-        () -> new TESRBlockItem(ModBlocks.TEA_MAKER_NEXT.get(), new Item.Properties()));
+        () -> new BlockItem(ModBlocks.TEA_MAKER_NEXT.get(), new Item.Properties()));
     public static final RegistryObject<Item> TEA_MAKER_BLACK_ITEM = ITEMS.register("tea_maker_black",
-        () -> new TESRBlockItem(ModBlocks.TEA_MAKER_BLACK.get(), new Item.Properties()));
+        () -> new BlockItem(ModBlocks.TEA_MAKER_BLACK.get(), new Item.Properties()));
     public static final RegistryObject<Item> EMPTY_CUP_ITEM = ITEMS.register("empty_cup",
         () -> new TESRBlockItem(ModBlocks.EMPTY_CUP.get(), new Item.Properties()));
     public static final RegistryObject<Item> EMPTY_PAN_G_ITEM = ITEMS.register("empty_pan_g",
