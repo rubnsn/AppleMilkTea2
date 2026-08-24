@@ -1,8 +1,33 @@
 package mods.defeatedcrow.client.model.tileentity;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.world.level.block.entity.BlockEntity;
-public class TileEntityCupHandleRenderer implements BlockEntityRenderer<BlockEntity> {
-    public TileEntityCupHandleRenderer(BlockEntityRendererProvider.Context c){}
-    @Override public void render(BlockEntity be, float f, com.mojang.blaze3d.vertex.PoseStack ps, net.minecraft.client.renderer.MultiBufferSource s, int i, int j){}
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
+
+import mods.defeatedcrow.common.tile.TileCupHandle;
+import mods.defeatedcrow.client.model.model.ModelCupHandle;
+
+public class TileEntityCupHandleRenderer implements BlockEntityRenderer<TileCupHandle> {
+    private final ModelCupHandle model;
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/cuphandle.png");
+
+    public TileEntityCupHandleRenderer(BlockEntityRendererProvider.Context ctx) {
+        // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)
+        this.model = new ModelCupHandle(ModelCupHandle.createBodyLayer().bakeRoot());
+    }
+
+    @Override
+    public void render(TileCupHandle be, float partialTicks, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        pose.pushPose();
+        pose.translate(0.5, 1.5, 0.5);
+        pose.scale(1.0F, -1.0F, -1.0F);
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(TEX));
+        // Fallback to entityCutout if texture missing, will show missing but compile
+        this.model.renderToBuffer(pose, vc, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+        pose.popPose();
+    }
 }
