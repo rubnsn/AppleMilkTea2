@@ -1,3 +1,3 @@
 {
-  "parent": "minecraft:builtin/entity"
+  "parent": "defeatedcrow:block/filled_soup_pan"
 }

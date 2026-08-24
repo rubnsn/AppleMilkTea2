@@ -233,7 +233,8 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
         cocktailModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
     }
     private void renderCLamp(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
-        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/x32/lamp_r13a.png")));
+        // WT0 fix: blue chalcedony lamp is b0=8 -> DTex lamp_embrion.png (was r13a red, and ModelCLamp was all-parts). Use blue texture and let ModelCLamp.renderToBuffer delegate to b0=8 (lucent+glow).
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/x32/lamp_embrion.png")));
         cLampModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
     }
     private void renderCordial(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {

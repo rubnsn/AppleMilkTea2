@@ -240,80 +240,107 @@ public class ModelCLamp {
         return LayerDefinition.create(mesh, 64, 32);
     }
 
+    // Original 1.7.10 conditional rendering restored: only render parts for given b0
+    public void render(com.mojang.blaze3d.vertex.PoseStack pose, com.mojang.blaze3d.vertex.VertexConsumer buf, int light, int overlay, float r, float g, float b, float a, byte b0, float rad) {
+        if (b0 == 9) {
+            arm1.render(pose, buf, light, overlay, r, g, b, a);
+            arm2.render(pose, buf, light, overlay, r, g, b, a);
+            arm3.render(pose, buf, light, overlay, r, g, b, a);
+            blade1.render(pose, buf, light, overlay, r, g, b, a);
+            blade2.render(pose, buf, light, overlay, r, g, b, a);
+            blade3.render(pose, buf, light, overlay, r, g, b, a);
+            blade21.render(pose, buf, light, overlay, r, g, b, a);
+            blade22.render(pose, buf, light, overlay, r, g, b, a);
+            blade23.render(pose, buf, light, overlay, r, g, b, a);
+        } else if (b0 == 11) {
+            top.render(pose, buf, light, overlay, r, g, b, a);
+            head1.render(pose, buf, light, overlay, r, g, b, a);
+            head2.render(pose, buf, light, overlay, r, g, b, a);
+            head3.render(pose, buf, light, overlay, r, g, b, a);
+            head4.render(pose, buf, light, overlay, r, g, b, a);
+            head6.render(pose, buf, light, overlay, r, g, b, a);
+            head7.render(pose, buf, light, overlay, r, g, b, a);
+            head8.render(pose, buf, light, overlay, r, g, b, a);
+            head9.render(pose, buf, light, overlay, r, g, b, a);
+            cover1.render(pose, buf, light, overlay, r, g, b, a);
+            cover2.render(pose, buf, light, overlay, r, g, b, a);
+            lod1a.render(pose, buf, light, overlay, r, g, b, a);
+            lod1b.render(pose, buf, light, overlay, r, g, b, a);
+            lod1c.render(pose, buf, light, overlay, r, g, b, a);
+            lod2a.render(pose, buf, light, overlay, r, g, b, a);
+            lod2b.render(pose, buf, light, overlay, r, g, b, a);
+            lod2c.render(pose, buf, light, overlay, r, g, b, a);
+            lod3a.render(pose, buf, light, overlay, r, g, b, a);
+            lod3b.render(pose, buf, light, overlay, r, g, b, a);
+            lod3c.render(pose, buf, light, overlay, r, g, b, a);
+            lod4a.render(pose, buf, light, overlay, r, g, b, a);
+            lod4b.render(pose, buf, light, overlay, r, g, b, a);
+            lod4c.render(pose, buf, light, overlay, r, g, b, a);
+            wingb1.render(pose, buf, light, overlay, r, g, b, a);
+            wingb2.render(pose, buf, light, overlay, r, g, b, a);
+        }
+    }
+
+    public void renderLucent(com.mojang.blaze3d.vertex.PoseStack pose, com.mojang.blaze3d.vertex.VertexConsumer buf, int light, int overlay, float r, float g, float b, float a, byte b0, float rad) {
+        if (b0 == 8) {
+            body.render(pose, buf, light, overlay, r, g, b, a);
+            head.render(pose, buf, light, overlay, r, g, b, a);
+            ear1.render(pose, buf, light, overlay, r, g, b, a);
+            ear2.render(pose, buf, light, overlay, r, g, b, a);
+            wing1.render(pose, buf, light, overlay, r, g, b, a);
+            wing2.render(pose, buf, light, overlay, r, g, b, a);
+            tail1.render(pose, buf, light, overlay, r, g, b, a);
+            tail2.render(pose, buf, light, overlay, r, g, b, a);
+        } else if (b0 == 9) {
+            sphere.render(pose, buf, light, overlay, r, g, b, a);
+        } else if (b0 == 10) {
+            inner1.render(pose, buf, light, overlay, r, g, b, a);
+        } else if (b0 == 11) {
+            glow2.render(pose, buf, light, overlay, r, g, b, a);
+        }
+    }
+
+    public void renderGlow(com.mojang.blaze3d.vertex.PoseStack pose, com.mojang.blaze3d.vertex.VertexConsumer buf, int light, int overlay, float r, float g, float b, float a, byte b0) {
+        if (b0 == 8) {
+            core1.render(pose, buf, light, overlay, r, g, b, a);
+            core2.render(pose, buf, light, overlay, r, g, b, a);
+        } else if (b0 == 9) {
+            sphere2.render(pose, buf, light, overlay, r, g, b, a);
+        } else if (b0 == 10) {
+            inner2.render(pose, buf, light, overlay, r, g, b, a);
+            side1.render(pose, buf, light, overlay, r, g, b, a);
+            side2.render(pose, buf, light, overlay, r, g, b, a);
+            side3.render(pose, buf, light, overlay, r, g, b, a);
+            side4.render(pose, buf, light, overlay, r, g, b, a);
+            barB1.render(pose, buf, light, overlay, r, g, b, a);
+            barB2.render(pose, buf, light, overlay, r, g, b, a);
+            barB3.render(pose, buf, light, overlay, r, g, b, a);
+            barB4.render(pose, buf, light, overlay, r, g, b, a);
+            barF1.render(pose, buf, light, overlay, r, g, b, a);
+            barF2.render(pose, buf, light, overlay, r, g, b, a);
+            barF3.render(pose, buf, light, overlay, r, g, b, a);
+            barF4.render(pose, buf, light, overlay, r, g, b, a);
+            barL1.render(pose, buf, light, overlay, r, g, b, a);
+            barL2.render(pose, buf, light, overlay, r, g, b, a);
+            barL3.render(pose, buf, light, overlay, r, g, b, a);
+            barL4.render(pose, buf, light, overlay, r, g, b, a);
+            barB5.render(pose, buf, light, overlay, r, g, b, a);
+            barB6.render(pose, buf, light, overlay, r, g, b, a);
+            barR1.render(pose, buf, light, overlay, r, g, b, a);
+            barR2.render(pose, buf, light, overlay, r, g, b, a);
+            barR3.render(pose, buf, light, overlay, r, g, b, a);
+            barR4.render(pose, buf, light, overlay, r, g, b, a);
+            barF5.render(pose, buf, light, overlay, r, g, b, a);
+            barF6.render(pose, buf, light, overlay, r, g, b, a);
+        } else if (b0 == 11) {
+            glow1.render(pose, buf, light, overlay, r, g, b, a);
+        }
+    }
+
+    // Legacy single-pass for old callers (renders all) - keep for compatibility but now delegates to b0=8 (blue default)
     public void renderToBuffer(com.mojang.blaze3d.vertex.PoseStack pose, com.mojang.blaze3d.vertex.VertexConsumer buf, int light, int overlay, float r, float g, float b, float a) {
-        body.render(pose, buf, light, overlay, r, g, b, a);
-        head.render(pose, buf, light, overlay, r, g, b, a);
-        ear1.render(pose, buf, light, overlay, r, g, b, a);
-        ear2.render(pose, buf, light, overlay, r, g, b, a);
-        tail1.render(pose, buf, light, overlay, r, g, b, a);
-        tail2.render(pose, buf, light, overlay, r, g, b, a);
-        core1.render(pose, buf, light, overlay, r, g, b, a);
-        core2.render(pose, buf, light, overlay, r, g, b, a);
-        wing1.render(pose, buf, light, overlay, r, g, b, a);
-        wing2.render(pose, buf, light, overlay, r, g, b, a);
-        sphere.render(pose, buf, light, overlay, r, g, b, a);
-        sphere2.render(pose, buf, light, overlay, r, g, b, a);
-        arm1.render(pose, buf, light, overlay, r, g, b, a);
-        arm2.render(pose, buf, light, overlay, r, g, b, a);
-        arm3.render(pose, buf, light, overlay, r, g, b, a);
-        blade1.render(pose, buf, light, overlay, r, g, b, a);
-        blade2.render(pose, buf, light, overlay, r, g, b, a);
-        blade3.render(pose, buf, light, overlay, r, g, b, a);
-        blade21.render(pose, buf, light, overlay, r, g, b, a);
-        blade22.render(pose, buf, light, overlay, r, g, b, a);
-        blade23.render(pose, buf, light, overlay, r, g, b, a);
-        side1.render(pose, buf, light, overlay, r, g, b, a);
-        side2.render(pose, buf, light, overlay, r, g, b, a);
-        side3.render(pose, buf, light, overlay, r, g, b, a);
-        side4.render(pose, buf, light, overlay, r, g, b, a);
-        inner1.render(pose, buf, light, overlay, r, g, b, a);
-        inner2.render(pose, buf, light, overlay, r, g, b, a);
-        barL1.render(pose, buf, light, overlay, r, g, b, a);
-        barL2.render(pose, buf, light, overlay, r, g, b, a);
-        barL3.render(pose, buf, light, overlay, r, g, b, a);
-        barL4.render(pose, buf, light, overlay, r, g, b, a);
-        barR1.render(pose, buf, light, overlay, r, g, b, a);
-        barR2.render(pose, buf, light, overlay, r, g, b, a);
-        barR3.render(pose, buf, light, overlay, r, g, b, a);
-        barR4.render(pose, buf, light, overlay, r, g, b, a);
-        barF1.render(pose, buf, light, overlay, r, g, b, a);
-        barF2.render(pose, buf, light, overlay, r, g, b, a);
-        barF3.render(pose, buf, light, overlay, r, g, b, a);
-        barF4.render(pose, buf, light, overlay, r, g, b, a);
-        barF5.render(pose, buf, light, overlay, r, g, b, a);
-        barF6.render(pose, buf, light, overlay, r, g, b, a);
-        barB1.render(pose, buf, light, overlay, r, g, b, a);
-        barB2.render(pose, buf, light, overlay, r, g, b, a);
-        barB3.render(pose, buf, light, overlay, r, g, b, a);
-        barB4.render(pose, buf, light, overlay, r, g, b, a);
-        barB5.render(pose, buf, light, overlay, r, g, b, a);
-        barB6.render(pose, buf, light, overlay, r, g, b, a);
-        head1.render(pose, buf, light, overlay, r, g, b, a);
-        head2.render(pose, buf, light, overlay, r, g, b, a);
-        head3.render(pose, buf, light, overlay, r, g, b, a);
-        head4.render(pose, buf, light, overlay, r, g, b, a);
-        cover1.render(pose, buf, light, overlay, r, g, b, a);
-        head6.render(pose, buf, light, overlay, r, g, b, a);
-        head7.render(pose, buf, light, overlay, r, g, b, a);
-        head8.render(pose, buf, light, overlay, r, g, b, a);
-        head9.render(pose, buf, light, overlay, r, g, b, a);
-        cover2.render(pose, buf, light, overlay, r, g, b, a);
-        glow1.render(pose, buf, light, overlay, r, g, b, a);
-        glow2.render(pose, buf, light, overlay, r, g, b, a);
-        top.render(pose, buf, light, overlay, r, g, b, a);
-        lod1a.render(pose, buf, light, overlay, r, g, b, a);
-        lod1b.render(pose, buf, light, overlay, r, g, b, a);
-        lod1c.render(pose, buf, light, overlay, r, g, b, a);
-        lod2a.render(pose, buf, light, overlay, r, g, b, a);
-        lod2b.render(pose, buf, light, overlay, r, g, b, a);
-        lod2c.render(pose, buf, light, overlay, r, g, b, a);
-        lod3a.render(pose, buf, light, overlay, r, g, b, a);
-        lod3b.render(pose, buf, light, overlay, r, g, b, a);
-        lod3c.render(pose, buf, light, overlay, r, g, b, a);
-        lod4a.render(pose, buf, light, overlay, r, g, b, a);
-        lod4b.render(pose, buf, light, overlay, r, g, b, a);
-        lod4c.render(pose, buf, light, overlay, r, g, b, a);
-        wingb1.render(pose, buf, light, overlay, r, g, b, a);
-        wingb2.render(pose, buf, light, overlay, r, g, b, a);
+        // Default to blue lamp (b0=8) lucent+glow to avoid monster
+        renderLucent(pose, buf, light, overlay, r, g, b, a, (byte)8, 0);
+        renderGlow(pose, buf, light, overlay, r, g, b, a, (byte)8);
     }
 }
