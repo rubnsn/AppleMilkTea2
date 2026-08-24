@@ -148,4 +148,13 @@ public class ModelBreads {
         top8.render(pose, buf, light, overlay, r, g, b, a);
         top9.render(pose, buf, light, overlay, r, g, b, a);
     }
+
+    /** Bread basket simple: dish + few breads (without bottle parts) */
+    public void renderBreadOnly(com.mojang.blaze3d.vertex.PoseStack pose, com.mojang.blaze3d.vertex.VertexConsumer buf, int light, int overlay, float r, float g, float b, float a) {
+        bread1.render(pose, buf, light, overlay, r, g, b, a);
+        bread2.render(pose, buf, light, overlay, r, g, b, a);
+        bread3.render(pose, buf, light, overlay, r, g, b, a);
+        bread4.render(pose, buf, light, overlay, r, g, b, a);
+        bread5.render(pose, buf, light, overlay, r, g, b, a);
+    }
 }

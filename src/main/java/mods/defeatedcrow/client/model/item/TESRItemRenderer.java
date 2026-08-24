@@ -261,9 +261,9 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
         steakModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
     }
     private void renderBreads(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
-        // Dish + few breads simple - as per original TileEntityBreadRenderer (ModelBreads/breads.png + basket)
+        // Dish + few breads simple - only bread loaves, dish is basket
         VertexConsumer vcBread = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/breads.png")));
-        breadsModel.renderToBuffer(pose, vcBread, light, overlay, 1, 1, 1, 1);
+        breadsModel.renderBreadOnly(pose, vcBread, light, overlay, 1, 1, 1, 1);
         VertexConsumer vcBasket = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/baskets.png")));
         basketLModel.renderToBuffer(pose, vcBasket, light, overlay, 1, 1, 1, 1);
     }

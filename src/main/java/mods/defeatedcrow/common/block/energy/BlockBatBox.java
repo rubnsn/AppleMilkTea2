@@ -57,7 +57,7 @@ public class BlockBatBox extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new mods.defeatedcrow.common.tile.energy.TileChargerBase(pos, state);
+        return new mods.defeatedcrow.common.tile.energy.TileChargerDevice(pos, state);
     }
 
     @Override
