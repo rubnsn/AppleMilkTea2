@@ -12,6 +12,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.crafting.RecipeType;
+import java.util.Optional;
+import mods.defeatedcrow.common.registry.ModRecipes;
+import mods.defeatedcrow.recipe.IceRecipe;
 
 public class TileIceMaker extends BlockEntity implements WorldlyContainer {
     public TileIceMaker(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_ICE_MAKER.get(), pos, state); }
@@ -43,7 +47,39 @@ public class TileIceMaker extends BlockEntity implements WorldlyContainer {
     public int getBurnTimeRemainingScaled(int p){ return chargeAmount * p /127; }
     public boolean isBurning(){ return cookTime>0; }
     public boolean isCharged(){ return chargeAmount>0; }
-    public static void tick(Level level, BlockPos pos, BlockState state, TileIceMaker be){ if(level.isClientSide) return; be.setChanged(); }
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static void tick(Level level, BlockPos pos, BlockState state, TileIceMaker be){
+        if(level.isClientSide) return;
+        ItemStack input = be.iceItemStacks[0];
+        if (input.isEmpty()) { if(be.cookTime!=0){be.cookTime=0; be.setChanged();} return; }
+        Optional<IceRecipe> opt = level.getRecipeManager().getRecipeFor((RecipeType)ModRecipes.ICE_TYPE.get(), be, level);
+        if (opt.isEmpty()) { be.cookTime=0; return; }
+        IceRecipe recipe = opt.get();
+        if (!recipe.getIngredient().test(input)) { be.cookTime=0; return; }
+        ItemStack result = recipe.getResult();
+        ItemStack container = recipe.getContainer();
+        ItemStack out = be.iceItemStacks[1];
+        boolean canFit = out.isEmpty() || (out.is(result.getItem()) && out.getCount()+result.getCount() <= out.getMaxStackSize());
+        ItemStack contSlot = be.iceItemStacks[2];
+        boolean canFitCont = container.isEmpty() || contSlot.isEmpty() || (contSlot.is(container.getItem()) && contSlot.getCount()+container.getCount() <= contSlot.getMaxStackSize());
+        if (!canFit || !canFitCont) { be.cookTime=0; return; }
+        // simple charge check: require chargeAmount >0 or isHotBiome false
+        // for test, ignore charge and just progress
+        be.cookTime++;
+        if (be.cookTime >= 100) {
+            input.shrink(1);
+            if (input.isEmpty()) be.iceItemStacks[0]=ItemStack.EMPTY;
+            if (out.isEmpty()) be.iceItemStacks[1]=result.copy();
+            else out.grow(result.getCount());
+            if (!container.isEmpty()){
+                if (contSlot.isEmpty()) be.iceItemStacks[2]=container.copy();
+                else contSlot.grow(container.getCount());
+            }
+            be.cookTime=0;
+            be.setChanged();
+            level.sendBlockUpdated(pos, state, state, 3);
+        } else { be.setChanged(); }
+    }
     @Override public int getContainerSize(){ return iceItemStacks.length; }
     @Override public boolean isEmpty(){ for(ItemStack s:iceItemStacks) if(!s.isEmpty()) return false; return true; }
     @Override public ItemStack getItem(int i){ return iceItemStacks[i]; }
@@ -57,8 +93,8 @@ public class TileIceMaker extends BlockEntity implements WorldlyContainer {
     @Override public boolean stillValid(Player p){ return true; }
     @Override public void clearContent(){ for(int i=0;i<iceItemStacks.length;i++) iceItemStacks[i]=ItemStack.EMPTY; }
     @Override public int[] getSlotsForFace(Direction d){ return new int[]{0,1,2,3}; }
-    @Override public boolean canPlaceItemThroughFace(int i, ItemStack s, Direction d){ return true; }
-    @Override public boolean canTakeItemThroughFace(int i, ItemStack s, Direction d){ return true; }
+    @Override public boolean canPlaceItemThroughFace(int i, ItemStack s, Direction d){ return i==0; }
+    @Override public boolean canTakeItemThroughFace(int i, ItemStack s, Direction d){ return i==1 || i==2; }
     public int isHotBiome(){ return 0; }
     public static int getItemBurnTime(ItemStack s){ return 0; }
     public static boolean isItemFuel(ItemStack s){ return false; }

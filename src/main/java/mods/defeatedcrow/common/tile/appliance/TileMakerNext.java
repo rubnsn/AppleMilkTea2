@@ -12,6 +12,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.crafting.RecipeType;
+import java.util.Optional;
+import mods.defeatedcrow.common.registry.ModRecipes;
+import mods.defeatedcrow.recipe.TeaRecipe;
 
 public class TileMakerNext extends BlockEntity implements WorldlyContainer {
     public TileMakerNext(BlockPos pos, BlockState state){ super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_MAKER_NEXT.get(), pos, state); java.util.Arrays.fill(items, ItemStack.EMPTY); }
@@ -32,14 +36,34 @@ public class TileMakerNext extends BlockEntity implements WorldlyContainer {
         tag.putInt("CookTime", cookTime);
         tag.putInt("Charge", chargeAmount);
     }
-    @Override public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
-        return tag;
-    }
+    @Override public CompoundTag getUpdateTag(){ CompoundTag tag=super.getUpdateTag(); saveAdditional(tag); return tag; }
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){ return ClientboundBlockEntityDataPacket.create(this); }
-
-    public static void tick(Level level, BlockPos pos, BlockState state, TileMakerNext be){ if(level.isClientSide) return; be.setChanged(); }
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static void tick(Level level, BlockPos pos, BlockState state, TileMakerNext be){
+        if(level.isClientSide) return;
+        ItemStack input = be.items[0];
+        if (input.isEmpty()) { if(be.cookTime!=0){be.cookTime=0; be.setChanged();} return; }
+        Optional<TeaRecipe> opt = level.getRecipeManager().getRecipeFor((RecipeType)ModRecipes.TEA_TYPE.get(), be, level);
+        if (opt.isEmpty()) { be.cookTime=0; return; }
+        TeaRecipe recipe = opt.get();
+        if (!recipe.getIngredient().test(input)) { be.cookTime=0; return; }
+        ItemStack result = recipe.getResult();
+        ItemStack out = be.items[1];
+        boolean canFit = out.isEmpty() || (out.is(result.getItem()) && out.getCount()+result.getCount() <= out.getMaxStackSize());
+        if (!canFit) { be.cookTime=0; return; }
+        be.cookTime++;
+        if (be.cookTime >= 100) {
+            input.shrink(1);
+            if (input.isEmpty()) be.items[0]=ItemStack.EMPTY;
+            if (out.isEmpty()) be.items[1]=result.copy();
+            else out.grow(result.getCount());
+            be.cookTime=0;
+            be.setChanged();
+            level.sendBlockUpdated(pos, state, state, 3);
+        } else {
+            be.setChanged();
+        }
+    }
     public int getChargeAmount(){ return chargeAmount; }
     public void setChargeAmount(int v){ chargeAmount=v; }
     public static boolean isItemFuel(ItemStack s){ return false; }
@@ -49,13 +73,13 @@ public class TileMakerNext extends BlockEntity implements WorldlyContainer {
     @Override public ItemStack removeItem(int i,int count){
         if (items[i].isEmpty()) return ItemStack.EMPTY;
         if (items[i].getCount() <= count) { ItemStack s=items[i]; items[i]=ItemStack.EMPTY; setChanged(); return s; }
-        else { ItemStack s=items[i].split(count); if (items[i].isEmpty()) items[i]=ItemStack.EMPTY; setChanged(); return s; }
+        else { ItemStack s=items[i].split(count); setChanged(); return s; }
     }
     @Override public ItemStack removeItemNoUpdate(int i){ ItemStack s=items[i]; items[i]=ItemStack.EMPTY; return s; }
-    @Override public void setItem(int i, ItemStack s){ items[i]=s; if (s.getCount() > getMaxStackSize()) s.setCount(getMaxStackSize()); setChanged(); }
+    @Override public void setItem(int i, ItemStack s){ items[i]=s; if (!s.isEmpty() && s.getCount() > getMaxStackSize()) s.setCount(getMaxStackSize()); setChanged(); }
     @Override public boolean stillValid(Player p){ return true; }
     @Override public void clearContent(){ for(int i=0;i<items.length;i++) items[i]=ItemStack.EMPTY; }
     @Override public int[] getSlotsForFace(Direction d){ return new int[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13}; }
-    @Override public boolean canPlaceItemThroughFace(int i, ItemStack s, Direction d){ return true; }
-    @Override public boolean canTakeItemThroughFace(int i, ItemStack s, Direction d){ return true; }
+    @Override public boolean canPlaceItemThroughFace(int i, ItemStack s, Direction d){ return i==0; }
+    @Override public boolean canTakeItemThroughFace(int i, ItemStack s, Direction d){ return i==1; }
 }
