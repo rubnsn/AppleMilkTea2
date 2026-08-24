@@ -1,7 +1,163 @@
 package mods.defeatedcrow.client.model.model;
+
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+
 public class ModelAlcoholCup {
-    public ModelAlcoholCup(ModelPart root) {}
-    public static LayerDefinition createBodyLayer() { return LayerDefinition.create(new net.minecraft.client.model.geom.builders.MeshDefinition(), 64, 64); }
+    private final ModelPart lemon;
+    private final ModelPart lime;
+    private final ModelPart pine;
+    private final ModelPart bottom;
+    private final ModelPart Aleg;
+    private final ModelPart Aleg2;
+    private final ModelPart Aside1;
+    private final ModelPart Aside2;
+    private final ModelPart Aside3;
+    private final ModelPart Aside4;
+    private final ModelPart Bside1;
+    private final ModelPart Bside2;
+    private final ModelPart Bside3;
+    private final ModelPart Bside4;
+    private final ModelPart Cside1;
+    private final ModelPart Cside2;
+    private final ModelPart Cside3;
+    private final ModelPart Cside4;
+    private final ModelPart icecube;
+    private final ModelPart icecube2;
+    private final ModelPart inner1;
+    private final ModelPart inner2;
+    private final ModelPart obon1;
+    private final ModelPart obon2;
+    private final ModelPart obon3;
+    private final ModelPart chokobottom;
+    private final ModelPart choko1;
+    private final ModelPart chokoside1;
+    private final ModelPart chokoside2;
+    private final ModelPart chokoside3;
+    private final ModelPart chokoside4;
+    private final ModelPart tokkuri1;
+    private final ModelPart tokkuri2;
+    private final ModelPart tokkuri3;
+    private final ModelPart tokkuri4;
+
+    public ModelAlcoholCup(ModelPart root) {
+        this.lemon = root.getChild("lemon");
+        this.lime = root.getChild("lime");
+        this.pine = root.getChild("pine");
+        this.bottom = root.getChild("bottom");
+        this.Aleg = root.getChild("Aleg");
+        this.Aleg2 = root.getChild("Aleg2");
+        this.Aside1 = root.getChild("Aside1");
+        this.Aside2 = root.getChild("Aside2");
+        this.Aside3 = root.getChild("Aside3");
+        this.Aside4 = root.getChild("Aside4");
+        this.Bside1 = root.getChild("Bside1");
+        this.Bside2 = root.getChild("Bside2");
+        this.Bside3 = root.getChild("Bside3");
+        this.Bside4 = root.getChild("Bside4");
+        this.Cside1 = root.getChild("Cside1");
+        this.Cside2 = root.getChild("Cside2");
+        this.Cside3 = root.getChild("Cside3");
+        this.Cside4 = root.getChild("Cside4");
+        this.icecube = root.getChild("icecube");
+        this.icecube2 = root.getChild("icecube2");
+        this.inner1 = root.getChild("inner1");
+        this.inner2 = root.getChild("inner2");
+        this.obon1 = root.getChild("obon1");
+        this.obon2 = root.getChild("obon2");
+        this.obon3 = root.getChild("obon3");
+        this.chokobottom = root.getChild("chokobottom");
+        this.choko1 = root.getChild("choko1");
+        this.chokoside1 = root.getChild("chokoside1");
+        this.chokoside2 = root.getChild("chokoside2");
+        this.chokoside3 = root.getChild("chokoside3");
+        this.chokoside4 = root.getChild("chokoside4");
+        this.tokkuri1 = root.getChild("tokkuri1");
+        this.tokkuri2 = root.getChild("tokkuri2");
+        this.tokkuri3 = root.getChild("tokkuri3");
+        this.tokkuri4 = root.getChild("tokkuri4");
+    }
+
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition root = mesh.getRoot();
+        root.addOrReplaceChild("lemon", CubeListBuilder.create().texOffs(32, 0).addBox(2F, -1F, 0F, 5, 4, 1), PartPose.offset(0F, 14F, 0F));
+        root.addOrReplaceChild("lime", CubeListBuilder.create().texOffs(32, 5).addBox(2F, 0F, 0F, 5, 4, 1), PartPose.offset(0F, 14F, 0F));
+        root.addOrReplaceChild("pine", CubeListBuilder.create().texOffs(32, 10).addBox(2F, 0F, 0F, 5, 4, 1), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, -3F, 6, 1, 6), PartPose.offset(0F, 23F, 0F));
+        root.addOrReplaceChild("Aleg", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0F, -0.5F, 1, 4, 1), PartPose.offset(0F, 19F, 0F));
+        root.addOrReplaceChild("Aleg2", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, -3F, 6, 2, 6), PartPose.offset(0F, 18F, 0F));
+        root.addOrReplaceChild("Aside1", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, -4F, 8, 3, 1), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("Aside2", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, 3F, 8, 3, 1), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("Aside3", CubeListBuilder.create().texOffs(0, 0).addBox(3F, 0F, -3F, 1, 3, 6), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("Aside4", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, -3F, 1, 3, 6), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("Bside1", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, -4F, 8, 9, 1), PartPose.offset(0F, 14F, 0F));
+        root.addOrReplaceChild("Bside2", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, -1F, 3F, 8, 9, 1), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("Bside3", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, -3F, 1, 9, 6), PartPose.offset(0F, 14F, 0F));
+        root.addOrReplaceChild("Bside4", CubeListBuilder.create().texOffs(0, 0).addBox(3F, 0F, -3F, 1, 9, 6), PartPose.offset(0F, 14F, 0F));
+        root.addOrReplaceChild("Cside1", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, -4F, 8, 6, 1), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("Cside2", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, 3F, 8, 6, 1), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("Cside3", CubeListBuilder.create().texOffs(0, 0).addBox(3F, 0F, -3F, 1, 6, 6), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("Cside4", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, -3F, 1, 6, 6), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("icecube", CubeListBuilder.create().texOffs(0, 16).addBox(-1F, 0F, -1F, 3, 3, 3), PartPose.offset(0F, 20F, 0F));
+        root.addOrReplaceChild("icecube2", CubeListBuilder.create().texOffs(0, 17).addBox(-2F, 0F, -2F, 3, 3, 3), PartPose.offset(0F, 18F, 0F));
+        root.addOrReplaceChild("inner1", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, -3F, 6, 7, 6), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("inner2", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, -3F, 6, 3, 6), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("obon1", CubeListBuilder.create().texOffs(0, 14).addBox(-7F, 0F, -7F, 14, 1, 14), PartPose.offset(0F, 23F, 0F));
+        root.addOrReplaceChild("obon2", CubeListBuilder.create().texOffs(0, 29).addBox(-7F, 0F, -8F, 14, 2, 1), PartPose.offset(0F, 22F, 0F));
+        root.addOrReplaceChild("obon3", CubeListBuilder.create().texOffs(0, 29).addBox(-7F, 0F, -8F, 14, 2, 1), PartPose.offset(0F, 22F, 0F));
+        root.addOrReplaceChild("chokobottom", CubeListBuilder.create().texOffs(0, 0).addBox(2F, 0F, -3.5F, 2, 1, 2), PartPose.offset(0F, 22F, 0F));
+        root.addOrReplaceChild("choko1", CubeListBuilder.create().texOffs(0, 3).addBox(1.5F, 0F, -4F, 3, 1, 3), PartPose.offset(0F, 21F, 0F));
+        root.addOrReplaceChild("chokoside1", CubeListBuilder.create().texOffs(0, 7).addBox(1.5F, 0F, -4F, 3, 1, 1), PartPose.offset(0F, 20F, 0F));
+        root.addOrReplaceChild("chokoside2", CubeListBuilder.create().texOffs(0, 9).addBox(1.5F, 0F, -2F, 3, 1, 1), PartPose.offset(0F, 20F, 0F));
+        root.addOrReplaceChild("chokoside3", CubeListBuilder.create().texOffs(8, 0).addBox(1.5F, 0F, -3F, 1, 1, 1), PartPose.offset(0F, 20F, 0F));
+        root.addOrReplaceChild("chokoside4", CubeListBuilder.create().texOffs(12, 0).addBox(3.5F, 0F, -3F, 1, 1, 1), PartPose.offset(0F, 20F, 0F));
+        root.addOrReplaceChild("tokkuri1", CubeListBuilder.create().texOffs(32, 0).addBox(-3F, 0F, 0F, 4, 6, 4), PartPose.offset(0F, 17F, 0F));
+        root.addOrReplaceChild("tokkuri2", CubeListBuilder.create().texOffs(34, 1).addBox(-2.5F, 0F, 0.5F, 3, 1, 3), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("tokkuri3", CubeListBuilder.create().texOffs(36, 4).addBox(-2F, 0F, 1F, 2, 2, 2), PartPose.offset(0F, 14F, 0F));
+        root.addOrReplaceChild("tokkuri4", CubeListBuilder.create().texOffs(48, 0).addBox(-2.5F, 0F, 0.5F, 3, 1, 3), PartPose.offset(0F, 13F, 0F));
+        return LayerDefinition.create(mesh, 64, 32);
+    }
+
+    public void renderToBuffer(com.mojang.blaze3d.vertex.PoseStack pose, com.mojang.blaze3d.vertex.VertexConsumer buf, int light, int overlay, float r, float g, float b, float a) {
+        lemon.render(pose, buf, light, overlay, r, g, b, a);
+        lime.render(pose, buf, light, overlay, r, g, b, a);
+        pine.render(pose, buf, light, overlay, r, g, b, a);
+        bottom.render(pose, buf, light, overlay, r, g, b, a);
+        Aleg.render(pose, buf, light, overlay, r, g, b, a);
+        Aleg2.render(pose, buf, light, overlay, r, g, b, a);
+        Aside1.render(pose, buf, light, overlay, r, g, b, a);
+        Aside2.render(pose, buf, light, overlay, r, g, b, a);
+        Aside3.render(pose, buf, light, overlay, r, g, b, a);
+        Aside4.render(pose, buf, light, overlay, r, g, b, a);
+        Bside1.render(pose, buf, light, overlay, r, g, b, a);
+        Bside2.render(pose, buf, light, overlay, r, g, b, a);
+        Bside3.render(pose, buf, light, overlay, r, g, b, a);
+        Bside4.render(pose, buf, light, overlay, r, g, b, a);
+        Cside1.render(pose, buf, light, overlay, r, g, b, a);
+        Cside2.render(pose, buf, light, overlay, r, g, b, a);
+        Cside3.render(pose, buf, light, overlay, r, g, b, a);
+        Cside4.render(pose, buf, light, overlay, r, g, b, a);
+        icecube.render(pose, buf, light, overlay, r, g, b, a);
+        icecube2.render(pose, buf, light, overlay, r, g, b, a);
+        inner1.render(pose, buf, light, overlay, r, g, b, a);
+        inner2.render(pose, buf, light, overlay, r, g, b, a);
+        obon1.render(pose, buf, light, overlay, r, g, b, a);
+        obon2.render(pose, buf, light, overlay, r, g, b, a);
+        obon3.render(pose, buf, light, overlay, r, g, b, a);
+        chokobottom.render(pose, buf, light, overlay, r, g, b, a);
+        choko1.render(pose, buf, light, overlay, r, g, b, a);
+        chokoside1.render(pose, buf, light, overlay, r, g, b, a);
+        chokoside2.render(pose, buf, light, overlay, r, g, b, a);
+        chokoside3.render(pose, buf, light, overlay, r, g, b, a);
+        chokoside4.render(pose, buf, light, overlay, r, g, b, a);
+        tokkuri1.render(pose, buf, light, overlay, r, g, b, a);
+        tokkuri2.render(pose, buf, light, overlay, r, g, b, a);
+        tokkuri3.render(pose, buf, light, overlay, r, g, b, a);
+        tokkuri4.render(pose, buf, light, overlay, r, g, b, a);
+    }
 }

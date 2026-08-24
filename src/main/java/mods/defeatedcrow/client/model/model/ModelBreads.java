@@ -1,7 +1,151 @@
 package mods.defeatedcrow.client.model.model;
+
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+
 public class ModelBreads {
-    public ModelBreads(ModelPart root) {}
-    public static LayerDefinition createBodyLayer() { return LayerDefinition.create(new net.minecraft.client.model.geom.builders.MeshDefinition(), 64, 64); }
+    private final ModelPart bread1;
+    private final ModelPart bread2;
+    private final ModelPart bread3;
+    private final ModelPart bread4;
+    private final ModelPart bread5;
+    private final ModelPart bottom1;
+    private final ModelPart bottom2;
+    private final ModelPart bottom3;
+    private final ModelPart bottom4;
+    private final ModelPart bottom5;
+    private final ModelPart bottom6;
+    private final ModelPart bottom7;
+    private final ModelPart bottom8;
+    private final ModelPart bottom9;
+    private final ModelPart middle1;
+    private final ModelPart middle2;
+    private final ModelPart middle3;
+    private final ModelPart middle4;
+    private final ModelPart middle5;
+    private final ModelPart middle6;
+    private final ModelPart middle7;
+    private final ModelPart middle8;
+    private final ModelPart middle9;
+    private final ModelPart top1;
+    private final ModelPart top2;
+    private final ModelPart top3;
+    private final ModelPart top4;
+    private final ModelPart top5;
+    private final ModelPart top6;
+    private final ModelPart top7;
+    private final ModelPart top8;
+    private final ModelPart top9;
+
+    public ModelBreads(ModelPart root) {
+        this.bread1 = root.getChild("bread1");
+        this.bread2 = root.getChild("bread2");
+        this.bread3 = root.getChild("bread3");
+        this.bread4 = root.getChild("bread4");
+        this.bread5 = root.getChild("bread5");
+        this.bottom1 = root.getChild("bottom1");
+        this.bottom2 = root.getChild("bottom2");
+        this.bottom3 = root.getChild("bottom3");
+        this.bottom4 = root.getChild("bottom4");
+        this.bottom5 = root.getChild("bottom5");
+        this.bottom6 = root.getChild("bottom6");
+        this.bottom7 = root.getChild("bottom7");
+        this.bottom8 = root.getChild("bottom8");
+        this.bottom9 = root.getChild("bottom9");
+        this.middle1 = root.getChild("middle1");
+        this.middle2 = root.getChild("middle2");
+        this.middle3 = root.getChild("middle3");
+        this.middle4 = root.getChild("middle4");
+        this.middle5 = root.getChild("middle5");
+        this.middle6 = root.getChild("middle6");
+        this.middle7 = root.getChild("middle7");
+        this.middle8 = root.getChild("middle8");
+        this.middle9 = root.getChild("middle9");
+        this.top1 = root.getChild("top1");
+        this.top2 = root.getChild("top2");
+        this.top3 = root.getChild("top3");
+        this.top4 = root.getChild("top4");
+        this.top5 = root.getChild("top5");
+        this.top6 = root.getChild("top6");
+        this.top7 = root.getChild("top7");
+        this.top8 = root.getChild("top8");
+        this.top9 = root.getChild("top9");
+    }
+
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition root = mesh.getRoot();
+        root.addOrReplaceChild("bread1", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 10, 3, 4), PartPose.offset(-4F, 20F, 3F));
+        root.addOrReplaceChild("bread2", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 10, 3, 4), PartPose.offset(4F, 20F, -7F));
+        root.addOrReplaceChild("bread3", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 10, 3, 4), PartPose.offset(-3F, 20F, -4F));
+        root.addOrReplaceChild("bread4", CubeListBuilder.create().texOffs(0, 8).addBox(0F, 0F, 0F, 5, 3, 5), PartPose.offset(-6F, 19F, -6F));
+        root.addOrReplaceChild("bread5", CubeListBuilder.create().texOffs(0, 8).addBox(0F, 0F, 0F, 5, 3, 5), PartPose.offset(0F, 17F, -6F));
+        root.addOrReplaceChild("bottom1", CubeListBuilder.create().texOffs(0, 0).addBox(-7F, 0F, -7F, 4, 7, 4), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("bottom2", CubeListBuilder.create().texOffs(0, 0).addBox(-2F, 0F, -7F, 4, 7, 4), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("bottom3", CubeListBuilder.create().texOffs(0, 0).addBox(3F, 0F, -7F, 4, 7, 4), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("bottom4", CubeListBuilder.create().texOffs(0, 0).addBox(-7F, 0F, -2F, 4, 7, 4), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("bottom5", CubeListBuilder.create().texOffs(0, 0).addBox(-2F, 0F, -2F, 4, 7, 4), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("bottom6", CubeListBuilder.create().texOffs(0, 0).addBox(3F, 0F, -2F, 4, 7, 4), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("bottom7", CubeListBuilder.create().texOffs(0, 0).addBox(-7F, 0F, 3F, 4, 7, 4), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("bottom8", CubeListBuilder.create().texOffs(0, 0).addBox(-2F, 0F, 3F, 4, 7, 4), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("bottom9", CubeListBuilder.create().texOffs(0, 0).addBox(3F, 0F, 3F, 4, 7, 4), PartPose.offset(0F, 15F, 0F));
+        root.addOrReplaceChild("middle1", CubeListBuilder.create().texOffs(0, 0).addBox(-6.5F, 0F, -6.5F, 3, 2, 3), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("middle2", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, -6.5F, 3, 2, 3), PartPose.offset(-1.5F, 13F, 0F));
+        root.addOrReplaceChild("middle3", CubeListBuilder.create().texOffs(0, 0).addBox(3.5F, 0F, -6.5F, 3, 2, 3), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("middle4", CubeListBuilder.create().texOffs(0, 0).addBox(-6.5F, 0F, -1.5F, 3, 2, 3), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("middle5", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0F, -1.5F, 3, 2, 3), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("middle6", CubeListBuilder.create().texOffs(0, 0).addBox(3.5F, 0F, -1.5F, 3, 2, 3), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("middle7", CubeListBuilder.create().texOffs(0, 0).addBox(-6.5F, 0F, 3.5F, 3, 2, 3), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("middle8", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0F, 3.5F, 3, 2, 3), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("middle9", CubeListBuilder.create().texOffs(0, 0).addBox(3.5F, 0F, 3.5F, 3, 2, 3), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("top1", CubeListBuilder.create().texOffs(16, 0).addBox(-6F, 0F, -6F, 2, 4, 2), PartPose.offset(0F, 9F, 0F));
+        root.addOrReplaceChild("top2", CubeListBuilder.create().texOffs(16, 0).addBox(-1F, 0F, -6F, 2, 4, 2), PartPose.offset(0F, 9F, 0F));
+        root.addOrReplaceChild("top3", CubeListBuilder.create().texOffs(16, 0).addBox(4F, 0F, -6F, 2, 4, 2), PartPose.offset(0F, 9F, 0F));
+        root.addOrReplaceChild("top4", CubeListBuilder.create().texOffs(16, 0).addBox(-6F, 0F, -1F, 2, 4, 2), PartPose.offset(0F, 9F, 0F));
+        root.addOrReplaceChild("top5", CubeListBuilder.create().texOffs(16, 0).addBox(-1F, 0F, -1F, 2, 4, 2), PartPose.offset(0F, 9F, 0F));
+        root.addOrReplaceChild("top6", CubeListBuilder.create().texOffs(16, 0).addBox(4F, 0F, -1F, 2, 4, 2), PartPose.offset(0F, 9F, 0F));
+        root.addOrReplaceChild("top7", CubeListBuilder.create().texOffs(16, 0).addBox(-6F, 0F, 4F, 2, 4, 2), PartPose.offset(0F, 9F, 0F));
+        root.addOrReplaceChild("top8", CubeListBuilder.create().texOffs(16, 0).addBox(-1F, 0F, 4F, 2, 4, 2), PartPose.offset(0F, 9F, 0F));
+        root.addOrReplaceChild("top9", CubeListBuilder.create().texOffs(16, 0).addBox(4F, 0F, 4F, 2, 4, 2), PartPose.offset(0F, 9F, 0F));
+        return LayerDefinition.create(mesh, 64, 32);
+    }
+
+    public void renderToBuffer(com.mojang.blaze3d.vertex.PoseStack pose, com.mojang.blaze3d.vertex.VertexConsumer buf, int light, int overlay, float r, float g, float b, float a) {
+        bread1.render(pose, buf, light, overlay, r, g, b, a);
+        bread2.render(pose, buf, light, overlay, r, g, b, a);
+        bread3.render(pose, buf, light, overlay, r, g, b, a);
+        bread4.render(pose, buf, light, overlay, r, g, b, a);
+        bread5.render(pose, buf, light, overlay, r, g, b, a);
+        bottom1.render(pose, buf, light, overlay, r, g, b, a);
+        bottom2.render(pose, buf, light, overlay, r, g, b, a);
+        bottom3.render(pose, buf, light, overlay, r, g, b, a);
+        bottom4.render(pose, buf, light, overlay, r, g, b, a);
+        bottom5.render(pose, buf, light, overlay, r, g, b, a);
+        bottom6.render(pose, buf, light, overlay, r, g, b, a);
+        bottom7.render(pose, buf, light, overlay, r, g, b, a);
+        bottom8.render(pose, buf, light, overlay, r, g, b, a);
+        bottom9.render(pose, buf, light, overlay, r, g, b, a);
+        middle1.render(pose, buf, light, overlay, r, g, b, a);
+        middle2.render(pose, buf, light, overlay, r, g, b, a);
+        middle3.render(pose, buf, light, overlay, r, g, b, a);
+        middle4.render(pose, buf, light, overlay, r, g, b, a);
+        middle5.render(pose, buf, light, overlay, r, g, b, a);
+        middle6.render(pose, buf, light, overlay, r, g, b, a);
+        middle7.render(pose, buf, light, overlay, r, g, b, a);
+        middle8.render(pose, buf, light, overlay, r, g, b, a);
+        middle9.render(pose, buf, light, overlay, r, g, b, a);
+        top1.render(pose, buf, light, overlay, r, g, b, a);
+        top2.render(pose, buf, light, overlay, r, g, b, a);
+        top3.render(pose, buf, light, overlay, r, g, b, a);
+        top4.render(pose, buf, light, overlay, r, g, b, a);
+        top5.render(pose, buf, light, overlay, r, g, b, a);
+        top6.render(pose, buf, light, overlay, r, g, b, a);
+        top7.render(pose, buf, light, overlay, r, g, b, a);
+        top8.render(pose, buf, light, overlay, r, g, b, a);
+        top9.render(pose, buf, light, overlay, r, g, b, a);
+    }
 }
