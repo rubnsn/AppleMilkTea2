@@ -79,11 +79,11 @@ public class ModelBreads {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("bread1", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 10, 3, 4), PartPose.offset(-4F, 20F, 3F));
-        root.addOrReplaceChild("bread2", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 10, 3, 4), PartPose.offset(4F, 20F, -7F));
-        root.addOrReplaceChild("bread3", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 10, 3, 4), PartPose.offset(-3F, 20F, -4F));
-        root.addOrReplaceChild("bread4", CubeListBuilder.create().texOffs(0, 8).addBox(0F, 0F, 0F, 5, 3, 5), PartPose.offset(-6F, 19F, -6F));
-        root.addOrReplaceChild("bread5", CubeListBuilder.create().texOffs(0, 8).addBox(0F, 0F, 0F, 5, 3, 5), PartPose.offset(0F, 17F, -6F));
+        root.addOrReplaceChild("bread1", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 10, 3, 4), PartPose.offsetAndRotation(-4F, 20F, 3F, 0.3490659F, 0.418879F, 0F));
+        root.addOrReplaceChild("bread2", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 10, 3, 4), PartPose.offsetAndRotation(4F, 20F, -7F, 1.3174533F, -1.02173F, -1.3759587F));
+        root.addOrReplaceChild("bread3", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 10, 3, 4), PartPose.offsetAndRotation(-3F, 20F, -4F, 0.6174533F, -0.7726646F, -1.0457718F));
+        root.addOrReplaceChild("bread4", CubeListBuilder.create().texOffs(0, 8).addBox(0F, 0F, 0F, 5, 3, 5), PartPose.offsetAndRotation(-6F, 19F, -6F, 0.5235988F, 0.2094395F, -0.5585054F));
+        root.addOrReplaceChild("bread5", CubeListBuilder.create().texOffs(0, 8).addBox(0F, 0F, 0F, 5, 3, 5), PartPose.offsetAndRotation(0F, 17F, -6F, 0.5061455F, 0.1745329F, -0.2268928F));
         root.addOrReplaceChild("bottom1", CubeListBuilder.create().texOffs(0, 0).addBox(-7F, 0F, -7F, 4, 7, 4), PartPose.offset(0F, 15F, 0F));
         root.addOrReplaceChild("bottom2", CubeListBuilder.create().texOffs(0, 0).addBox(-2F, 0F, -7F, 4, 7, 4), PartPose.offset(0F, 15F, 0F));
         root.addOrReplaceChild("bottom3", CubeListBuilder.create().texOffs(0, 0).addBox(3F, 0F, -7F, 4, 7, 4), PartPose.offset(0F, 15F, 0F));

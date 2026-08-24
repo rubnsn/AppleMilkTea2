@@ -85,8 +85,8 @@ public class ModelCocktail {
         root.addOrReplaceChild("Cside2", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, 3F, 8, 6, 1), PartPose.offset(0F, 13F, 0F));
         root.addOrReplaceChild("Cside3", CubeListBuilder.create().texOffs(0, 0).addBox(3F, 0F, -3F, 1, 6, 6), PartPose.offset(0F, 13F, 0F));
         root.addOrReplaceChild("Cside4", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, -3F, 1, 6, 6), PartPose.offset(0F, 13F, 0F));
-        root.addOrReplaceChild("icecube", CubeListBuilder.create().texOffs(0, 16).addBox(-1F, 0F, -1F, 3, 3, 3), PartPose.offset(0F, 20F, 0F));
-        root.addOrReplaceChild("icecube2", CubeListBuilder.create().texOffs(0, 17).addBox(-2F, 0F, -2F, 3, 3, 3), PartPose.offset(0F, 18F, 0F));
+        root.addOrReplaceChild("icecube", CubeListBuilder.create().texOffs(0, 16).addBox(-1F, 0F, -1F, 3, 3, 3), PartPose.offsetAndRotation(0F, 20F, 0F, 0.4560576F, 0F, -0.1319841F));
+        root.addOrReplaceChild("icecube2", CubeListBuilder.create().texOffs(0, 17).addBox(-2F, 0F, -2F, 3, 3, 3), PartPose.offsetAndRotation(0F, 18F, 0F, -0.1745329F, 0.2648976F, -0.8922867F));
         root.addOrReplaceChild("inner1", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, -3F, 6, 7, 6), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("inner2", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, -3F, 6, 2, 6), PartPose.offset(0F, 16.5F, 0F));
         root.addOrReplaceChild("inner3", CubeListBuilder.create().texOffs(0, 0).addBox(-2F, 0F, -2F, 4, 1, 4), PartPose.offset(0F, 15.5F, 0F));

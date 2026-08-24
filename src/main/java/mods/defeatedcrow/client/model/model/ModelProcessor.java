@@ -57,10 +57,7 @@ public class ModelProcessor {
         body.render(pose, buf, light, overlay, r, g, b, a);
         brade1.render(pose, buf, light, overlay, r, g, b, a);
         brade2.render(pose, buf, light, overlay, r, g, b, a);
-        top.render(pose, buf, light, overlay, r, g, b, a);
-    }
-
-    public void renderGlassToBuffer(com.mojang.blaze3d.vertex.PoseStack pose, com.mojang.blaze3d.vertex.VertexConsumer buf, int light, int overlay, float r, float g, float b, float a) {
         glass.render(pose, buf, light, overlay, r, g, b, a);
+        top.render(pose, buf, light, overlay, r, g, b, a);
     }
 }

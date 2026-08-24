@@ -44,10 +44,10 @@ public class ModelCrowDoll {
         root.addOrReplaceChild("neck", CubeListBuilder.create().texOffs(0, 10).addBox(-3F, 2F, -2.7F, 6, 1, 5), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 20).addBox(-2.5F, -1F, -2.5F, 5, 3, 4), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("hip", CubeListBuilder.create().texOffs(0, 10).addBox(-3F, 3F, 3F, 6, 2, 1), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(20, 20).addBox(-2F, 4F, 2F, 4, 1, 4), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(20, 20).addBox(-2F, 4F, 2F, 4, 1, 4), PartPose.offsetAndRotation(0F, 16F, 0F, 0.2268928F, 0F, 0F));
         root.addOrReplaceChild("top", CubeListBuilder.create().texOffs(0, 10).addBox(-2F, 2.5F, -2F, 4, 1, 3), PartPose.offset(0F, 12F, 0F));
-        root.addOrReplaceChild("wingL", CubeListBuilder.create().texOffs(0, 10).addBox(-2F, 0F, 0F, 4, 1, 3), PartPose.offset(3.5F, 18F, -0.5F));
-        root.addOrReplaceChild("wingR", CubeListBuilder.create().texOffs(0, 10).addBox(-2F, 0F, 0F, 4, 1, 3), PartPose.offset(-3.5F, 18F, -0.5F));
+        root.addOrReplaceChild("wingL", CubeListBuilder.create().texOffs(0, 10).addBox(-2F, 0F, 0F, 4, 1, 3), PartPose.offsetAndRotation(3.5F, 18F, -0.5F, -1.396263F, 1.570796F, 0F));
+        root.addOrReplaceChild("wingR", CubeListBuilder.create().texOffs(0, 10).addBox(-2F, 0F, 0F, 4, 1, 3), PartPose.offsetAndRotation(-3.5F, 18F, -0.5F, -1.396263F, -1.570796F, 0F));
         root.addOrReplaceChild("mouth", CubeListBuilder.create().texOffs(34, 0).addBox(-1F, 1F, -3.5F, 2, 1, 1), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("legL", CubeListBuilder.create().texOffs(34, 3).addBox(0.5F, 6F, -1F, 1, 1, 1), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("legR", CubeListBuilder.create().texOffs(34, 3).addBox(-1.5F, 6F, -1F, 1, 1, 1), PartPose.offset(0F, 16F, 0F));

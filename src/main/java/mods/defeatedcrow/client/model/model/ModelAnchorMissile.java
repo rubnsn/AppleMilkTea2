@@ -47,15 +47,15 @@ public class ModelAnchorMissile {
         root.addOrReplaceChild("head2", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, -1F, -4F, 3, 2, 2), PartPose.offset(0F, 16F, -4F));
         root.addOrReplaceChild("head3", CubeListBuilder.create().texOffs(0, 0).addBox(-1F, -0.5F, -5F, 2, 1, 1), PartPose.offset(0F, 16F, -4F));
         root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(36, 10).addBox(-1.5F, -1F, 2F, 3, 2, 10), PartPose.offset(0F, 16F, -4F));
-        root.addOrReplaceChild("tail1", CubeListBuilder.create().texOffs(28, 0).addBox(-2F, -1F, 12F, 4, 1, 3), PartPose.offset(0F, 16F, -4F));
-        root.addOrReplaceChild("tail2", CubeListBuilder.create().texOffs(28, 0).addBox(-2F, 0F, 12F, 4, 1, 3), PartPose.offset(0F, 16F, -4F));
-        root.addOrReplaceChild("tail3", CubeListBuilder.create().texOffs(43, 0).addBox(0F, -1F, 12F, 1, 2, 3), PartPose.offset(0F, 16F, -4F));
-        root.addOrReplaceChild("tail4", CubeListBuilder.create().texOffs(43, 0).addBox(-1F, -1F, 12F, 1, 2, 3), PartPose.offset(0F, 16F, -4F));
+        root.addOrReplaceChild("tail1", CubeListBuilder.create().texOffs(28, 0).addBox(-2F, -1F, 12F, 4, 1, 3), PartPose.offsetAndRotation(0F, 16F, -4F, 0.0523599F, 0F, 0F));
+        root.addOrReplaceChild("tail2", CubeListBuilder.create().texOffs(28, 0).addBox(-2F, 0F, 12F, 4, 1, 3), PartPose.offsetAndRotation(0F, 16F, -4F, -0.0523599F, 0F, 0F));
+        root.addOrReplaceChild("tail3", CubeListBuilder.create().texOffs(43, 0).addBox(0F, -1F, 12F, 1, 2, 3), PartPose.offsetAndRotation(0F, 16F, -4F, 0F, 0.0872665F, 0F));
+        root.addOrReplaceChild("tail4", CubeListBuilder.create().texOffs(43, 0).addBox(-1F, -1F, 12F, 1, 2, 3), PartPose.offsetAndRotation(0F, 16F, -4F, 0F, -0.0872665F, 0F));
         root.addOrReplaceChild("wingL1", CubeListBuilder.create().texOffs(0, 8).addBox(-1F, 0F, 1F, 3, 1, 10), PartPose.offset(0F, 16F, -4F));
         root.addOrReplaceChild("wingL2", CubeListBuilder.create().texOffs(28, 24).addBox(-2.5F, 0F, 11F, 5, 1, 2), PartPose.offset(0F, 16F, -4F));
         root.addOrReplaceChild("wingR1", CubeListBuilder.create().texOffs(0, 20).addBox(-2F, 0F, 1F, 3, 1, 10), PartPose.offset(0F, 16F, -4F));
         root.addOrReplaceChild("wingR2", CubeListBuilder.create().texOffs(28, 28).addBox(-2.5F, 0F, 11F, 5, 1, 2), PartPose.offset(0F, 16F, -4F));
-        root.addOrReplaceChild("wing3", CubeListBuilder.create().texOffs(28, 5).addBox(-0.5F, 3F, 7F, 1, 2, 4), PartPose.offset(0F, 16F, -4F));
+        root.addOrReplaceChild("wing3", CubeListBuilder.create().texOffs(28, 5).addBox(-0.5F, 3F, 7F, 1, 2, 4), PartPose.offsetAndRotation(0F, 16F, -4F, 0.5235988F, 0F, 0F));
         root.addOrReplaceChild("burn", CubeListBuilder.create().texOffs(52, 0).addBox(-1.5F, -1F, 13F, 3, 2, 1), PartPose.offset(0F, 16F, -4F));
         return LayerDefinition.create(mesh, 64, 32);
     }

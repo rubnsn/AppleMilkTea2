@@ -30,12 +30,12 @@ public class ModelChopsticks {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
         root.addOrReplaceChild("cup", CubeListBuilder.create().texOffs(5, 0).addBox(0F, 0F, 0F, 4, 5, 4), PartPose.offset(-2F, 19F, -2F));
-        root.addOrReplaceChild("stick1", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 1, 8, 1), PartPose.offset(1F, 14F, 0F));
-        root.addOrReplaceChild("stick2", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 1, 8, 1), PartPose.offset(1F, 14F, -2F));
-        root.addOrReplaceChild("stick3", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 1, 8, 1), PartPose.offset(0F, 14F, 1.5F));
-        root.addOrReplaceChild("stick4", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 1, 8, 1), PartPose.offset(-2F, 14F, 2F));
-        root.addOrReplaceChild("stick5", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 1, 8, 1), PartPose.offset(-2.5F, 15F, -2.5F));
-        root.addOrReplaceChild("stick6", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 1, 8, 1), PartPose.offset(-1F, 14F, -1F));
+        root.addOrReplaceChild("stick1", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 1, 8, 1), PartPose.offsetAndRotation(1F, 14F, 0F, 0F, 0F, 0.2094395F));
+        root.addOrReplaceChild("stick2", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 1, 8, 1), PartPose.offsetAndRotation(1F, 14F, -2F, 0.1745329F, 0F, 0.0872665F));
+        root.addOrReplaceChild("stick3", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 1, 8, 1), PartPose.offsetAndRotation(0F, 14F, 1.5F, -0.2617994F, 0F, 0F));
+        root.addOrReplaceChild("stick4", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 1, 8, 1), PartPose.offsetAndRotation(-2F, 14F, 2F, -0.2617994F, 0F, -0.1745329F));
+        root.addOrReplaceChild("stick5", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 1, 8, 1), PartPose.offsetAndRotation(-2.5F, 15F, -2.5F, 0.2617994F, 0F, -0.2617994F));
+        root.addOrReplaceChild("stick6", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 0F, 1, 8, 1), PartPose.offsetAndRotation(-1F, 14F, -1F, 0.0523599F, 0F, 0F));
         return LayerDefinition.create(mesh, 64, 32);
     }
 

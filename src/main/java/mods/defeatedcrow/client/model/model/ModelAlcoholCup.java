@@ -85,9 +85,9 @@ public class ModelAlcoholCup {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("lemon", CubeListBuilder.create().texOffs(32, 0).addBox(2F, -1F, 0F, 5, 4, 1), PartPose.offset(0F, 14F, 0F));
-        root.addOrReplaceChild("lime", CubeListBuilder.create().texOffs(32, 5).addBox(2F, 0F, 0F, 5, 4, 1), PartPose.offset(0F, 14F, 0F));
-        root.addOrReplaceChild("pine", CubeListBuilder.create().texOffs(32, 10).addBox(2F, 0F, 0F, 5, 4, 1), PartPose.offset(0F, 13F, 0F));
+        root.addOrReplaceChild("lemon", CubeListBuilder.create().texOffs(32, 0).addBox(2F, -1F, 0F, 5, 4, 1), PartPose.offsetAndRotation(0F, 14F, 0F, 0F, 0F, -0.2094395F));
+        root.addOrReplaceChild("lime", CubeListBuilder.create().texOffs(32, 5).addBox(2F, 0F, 0F, 5, 4, 1), PartPose.offsetAndRotation(0F, 14F, 0F, 0F, 0F, -0.2094395F));
+        root.addOrReplaceChild("pine", CubeListBuilder.create().texOffs(32, 10).addBox(2F, 0F, 0F, 5, 4, 1), PartPose.offsetAndRotation(0F, 13F, 0F, 0F, 0F, -0.2094395F));
         root.addOrReplaceChild("bottom", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, -3F, 6, 1, 6), PartPose.offset(0F, 23F, 0F));
         root.addOrReplaceChild("Aleg", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0F, -0.5F, 1, 4, 1), PartPose.offset(0F, 19F, 0F));
         root.addOrReplaceChild("Aleg2", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, -3F, 6, 2, 6), PartPose.offset(0F, 18F, 0F));
@@ -103,8 +103,8 @@ public class ModelAlcoholCup {
         root.addOrReplaceChild("Cside2", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, 3F, 8, 6, 1), PartPose.offset(0F, 13F, 0F));
         root.addOrReplaceChild("Cside3", CubeListBuilder.create().texOffs(0, 0).addBox(3F, 0F, -3F, 1, 6, 6), PartPose.offset(0F, 13F, 0F));
         root.addOrReplaceChild("Cside4", CubeListBuilder.create().texOffs(0, 0).addBox(-4F, 0F, -3F, 1, 6, 6), PartPose.offset(0F, 13F, 0F));
-        root.addOrReplaceChild("icecube", CubeListBuilder.create().texOffs(0, 16).addBox(-1F, 0F, -1F, 3, 3, 3), PartPose.offset(0F, 20F, 0F));
-        root.addOrReplaceChild("icecube2", CubeListBuilder.create().texOffs(0, 17).addBox(-2F, 0F, -2F, 3, 3, 3), PartPose.offset(0F, 18F, 0F));
+        root.addOrReplaceChild("icecube", CubeListBuilder.create().texOffs(0, 16).addBox(-1F, 0F, -1F, 3, 3, 3), PartPose.offsetAndRotation(0F, 20F, 0F, 0.4560576F, 0F, -0.1319841F));
+        root.addOrReplaceChild("icecube2", CubeListBuilder.create().texOffs(0, 17).addBox(-2F, 0F, -2F, 3, 3, 3), PartPose.offsetAndRotation(0F, 18F, 0F, -0.1745329F, 0.2648976F, -0.8922867F));
         root.addOrReplaceChild("inner1", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, -3F, 6, 7, 6), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("inner2", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, 0F, -3F, 6, 3, 6), PartPose.offset(0F, 15F, 0F));
         root.addOrReplaceChild("obon1", CubeListBuilder.create().texOffs(0, 14).addBox(-7F, 0F, -7F, 14, 1, 14), PartPose.offset(0F, 23F, 0F));

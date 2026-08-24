@@ -37,15 +37,15 @@ public class ModelYuzuGatling {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("muz1", CubeListBuilder.create().texOffs(0, 4).addBox(3F, -0.5F, -0.5F, 12, 1, 1), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("muz2", CubeListBuilder.create().texOffs(0, 0).addBox(3F, -2F, 0.5F, 17, 2, 2), PartPose.offset(0F, 17F, 0F));
-        root.addOrReplaceChild("muz3", CubeListBuilder.create().texOffs(0, 0).addBox(3F, -1F, -2.5F, 17, 2, 2), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("muz1", CubeListBuilder.create().texOffs(0, 4).addBox(3F, -0.5F, -0.5F, 12, 1, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 1.570796F, 0F));
+        root.addOrReplaceChild("muz2", CubeListBuilder.create().texOffs(0, 0).addBox(3F, -2F, 0.5F, 17, 2, 2), PartPose.offsetAndRotation(0F, 17F, 0F, 0F, 1.570796F, 0F));
+        root.addOrReplaceChild("muz3", CubeListBuilder.create().texOffs(0, 0).addBox(3F, -1F, -2.5F, 17, 2, 2), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 1.570796F, 0F));
         root.addOrReplaceChild("syl1", CubeListBuilder.create().texOffs(0, 8).addBox(-1.5F, -1F, -3F, 3, 2, 2), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("syl2", CubeListBuilder.create().texOffs(0, 12).addBox(-2.5F, -1F, -1F, 5, 3, 3), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("bod1", CubeListBuilder.create().texOffs(0, 22).addBox(-3F, 0F, 2F, 6, 2, 8), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("bod2", CubeListBuilder.create().texOffs(38, 0).addBox(-2F, -0.5F, 2F, 4, 1, 5), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("bod3", CubeListBuilder.create().texOffs(54, 0).addBox(-1F, -2F, 2F, 2, 1, 2), PartPose.offset(0F, 17F, 0F));
-        root.addOrReplaceChild("she1", CubeListBuilder.create().texOffs(32, 16).addBox(-3.5F, 0F, 7F, 7, 1, 8), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("she1", CubeListBuilder.create().texOffs(32, 16).addBox(-3.5F, 0F, 7F, 7, 1, 8), PartPose.offsetAndRotation(0F, 16F, 0F, -0.2617994F, 0F, 0F));
         root.addOrReplaceChild("base1", CubeListBuilder.create().texOffs(0, 21).addBox(-3.5F, 4F, 1F, 7, 4, 7), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("base2", CubeListBuilder.create().texOffs(32, 25).addBox(-2F, 3F, 2F, 4, 2, 5), PartPose.offset(0F, 15F, 0F));
         return LayerDefinition.create(mesh, 64, 32);

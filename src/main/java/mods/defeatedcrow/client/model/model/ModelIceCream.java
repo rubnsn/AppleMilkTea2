@@ -60,10 +60,10 @@ public class ModelIceCream {
         root.addOrReplaceChild("dish1", CubeListBuilder.create().texOffs(0, 0).addBox(-2F, 0F, -2F, 4, 1, 4), PartPose.offset(0F, 23F, 0F));
         root.addOrReplaceChild("dish2", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0F, -0.5F, 1, 3, 1), PartPose.offset(0F, 20F, 0F));
         root.addOrReplaceChild("dish3", CubeListBuilder.create().texOffs(0, 0).addBox(-2.5F, 0F, -2.5F, 5, 1, 5), PartPose.offset(0F, 19F, 0F));
-        root.addOrReplaceChild("dish4", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, -3F, -3F, 6, 3, 1), PartPose.offset(0F, 19F, 0F));
-        root.addOrReplaceChild("dish5", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, -3F, 2F, 6, 3, 1), PartPose.offset(0F, 19F, 0F));
-        root.addOrReplaceChild("dish6", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, -3F, -3F, 1, 3, 6), PartPose.offset(0F, 19F, 0F));
-        root.addOrReplaceChild("dish7", CubeListBuilder.create().texOffs(0, 0).addBox(2F, -3F, -3F, 1, 3, 6), PartPose.offset(0F, 19F, 0F));
+        root.addOrReplaceChild("dish4", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, -3F, -3F, 6, 3, 1), PartPose.offsetAndRotation(0F, 19F, 0F, 0.5235988F, 0F, 0F));
+        root.addOrReplaceChild("dish5", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, -3F, 2F, 6, 3, 1), PartPose.offsetAndRotation(0F, 19F, 0F, -0.5235988F, 0F, 0F));
+        root.addOrReplaceChild("dish6", CubeListBuilder.create().texOffs(0, 0).addBox(-3F, -3F, -3F, 1, 3, 6), PartPose.offsetAndRotation(0F, 19F, 0F, 0F, 0F, -0.5235988F));
+        root.addOrReplaceChild("dish7", CubeListBuilder.create().texOffs(0, 0).addBox(2F, -3F, -3F, 1, 3, 6), PartPose.offsetAndRotation(0F, 19F, 0F, 0F, 0F, 0.5235988F));
         root.addOrReplaceChild("white", CubeListBuilder.create().texOffs(0, 9).addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("pink", CubeListBuilder.create().texOffs(0, 16).addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("orange", CubeListBuilder.create().texOffs(0, 23).addBox(-2F, 0F, -2F, 4, 3, 4), PartPose.offset(0F, 16F, 0F));

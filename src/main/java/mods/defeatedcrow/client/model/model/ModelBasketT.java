@@ -28,8 +28,8 @@ public class ModelBasketT {
         root.addOrReplaceChild("base", CubeListBuilder.create().texOffs(0, 36).addBox(-5F, 7F, -5F, 10, 1, 10), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("sideF", CubeListBuilder.create().texOffs(0, 48).addBox(-5F, -1F, -5F, 10, 8, 1), PartPose.offset(0F, 16F, 0F));
         root.addOrReplaceChild("sideB", CubeListBuilder.create().texOffs(0, 48).addBox(-5F, -1F, 4F, 10, 8, 1), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("sideR", CubeListBuilder.create().texOffs(32, 48).addBox(-4F, -1F, -5F, 8, 8, 1), PartPose.offset(0F, 16F, 0F));
-        root.addOrReplaceChild("sideL", CubeListBuilder.create().texOffs(32, 48).addBox(-4F, -1F, 4F, 8, 8, 1), PartPose.offset(0F, 16F, 0F));
+        root.addOrReplaceChild("sideR", CubeListBuilder.create().texOffs(32, 48).addBox(-4F, -1F, -5F, 8, 8, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 1.570796F, 0F));
+        root.addOrReplaceChild("sideL", CubeListBuilder.create().texOffs(32, 48).addBox(-4F, -1F, 4F, 8, 8, 1), PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 1.570796F, 0F));
         return LayerDefinition.create(mesh, 64, 64);
     }
 
