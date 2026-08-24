@@ -40,6 +40,14 @@
         "edit": "allow",
         "bash": "allow"
       }
+    },
+    "wt-e": {
+      "description": "WT-E StubImpl+Fluid — post A-D integration, owns BEWLR wiring, fluid IClientFluidTypeExtensions, remaining stubs (block/item/tile/entity/world/event/handler). May edit all files after dev:a99cc2c.",
+      "mode": "subagent",
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      }
     }
   }
 }

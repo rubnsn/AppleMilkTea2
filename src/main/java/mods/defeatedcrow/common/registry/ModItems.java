@@ -327,6 +327,14 @@ public class ModItems {
     public static final RegistryObject<Item> HANDLE_ENGINE_ITEM = ITEMS.register("handle_engine",
         () -> new TESRBlockItem(ModBlocks.HANDLE_ENGINE.get(), new Item.Properties()));
 
+    // --- WT-B: FLUID BUCKETS (vegi_oil, camellia_oil) ---
+    public static final RegistryObject<Item> BUCKET_VEGIOIL = ITEMS.register("bucket_vegioil",
+        () -> new mods.defeatedcrow.common.fluid.ItemBucketVegiOil(() -> (net.minecraft.world.level.material.Fluid) net.minecraftforge.registries.ForgeRegistries.FLUIDS.getValue(new net.minecraft.resources.ResourceLocation("defeatedcrow", "vegitable_oil"))));
+    public static final RegistryObject<Item> BUCKET_CAMOIL = ITEMS.register("bucket_camoil",
+        () -> new mods.defeatedcrow.common.fluid.ItemBucketCamOil(() -> (net.minecraft.world.level.material.Fluid) net.minecraftforge.registries.ForgeRegistries.FLUIDS.getValue(new net.minecraft.resources.ResourceLocation("defeatedcrow", "camellia_oil"))));
+    public static final RegistryObject<Item> BUCKET_YOUNGALCOHOL = ITEMS.register("bucket_youngalcohol",
+        () -> new mods.defeatedcrow.common.fluid.ItemBucketYoungAlcohol(() -> net.minecraft.world.level.material.Fluids.WATER));
+
     // --- WT-A: BREWING ITEMS (itemLargeBottle, itemCordial, etc.) ---
     public static final RegistryObject<Item> LARGE_BOTTLE = ITEMS.register("large_bottle",
         () -> new TESRBlockItem(ModBlocks.LARGE_BOTTLE.get(), new Item.Properties().stacksTo(1)));

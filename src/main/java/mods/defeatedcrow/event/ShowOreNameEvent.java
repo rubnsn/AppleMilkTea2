@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * 1.20.1 ItemTooltipEvent - monocle shows ore tags / fluid.
- * Original 1.7.10 used player.inventory.armorInventory[3] + OreDictionary + FluidContainerRegistry, now TagKey + Capability.
+ * Original 1.7.10 used player armor slot + ore dict + fluid registry, now TagKey + Capability.
  * See doc/events/migration-guide.md:40
  */
 public class ShowOreNameEvent {

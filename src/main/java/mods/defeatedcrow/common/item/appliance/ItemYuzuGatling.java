@@ -20,6 +20,10 @@ import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+
+import java.util.function.Consumer;
 
 /**
  * 1.20.1 Yuzu Gatling - ForgeEnergy gun, 6400 FE, shoots YuzuBullet.
@@ -71,6 +75,20 @@ public class ItemYuzuGatling extends Item {
             }
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            private mods.defeatedcrow.client.item.BEWLR_YuzuGatling renderer;
+            @Override
+            public net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                if (renderer == null) {
+                    renderer = new mods.defeatedcrow.client.item.BEWLR_YuzuGatling(Minecraft.getInstance(), Minecraft.getInstance().getEntityModels());
+                }
+                return renderer;
+            }
+        });
     }
 
     @Override

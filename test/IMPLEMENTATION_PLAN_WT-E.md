@@ -1,8 +1,8 @@
 # AMT2 スタブ解消・機能実装マスタープラン（WT-E）
 
-> 作成日: 2026-08-24 / 最終更新: 2026-08-24 23:50
+> 作成日: 2026-08-24 / 最終更新: 2026-08-25
 > Worktree: `E:/AMT2-WT-E` / ブランチ: `feature/stub-impl`（ベース: dev @9a7ac88 → dev:6221d0f を 2回マージ 94070ce / merge 6221d0f）
-> 現状: `feature/stub-impl:767051f` + P7-BEWLR WIP（Fluid BERは未接触、devの cup/soup/CLamp 3件をマージ済み）
+> 現状: `feature/stub-impl:fdb9323` + P7-BEWLR WIP（Fluid BERは未接触、devの cup/soup/CLamp 3件をマージ済み）→ 本コミットで JDK17誤記修正 + P7配線 + Fluid対応
 >
 > **役割分担**:
 > - メイン (`E:/AppleMilkTea2` on `dev`): BER描画修正を継続（ユーザー作業中）
@@ -149,7 +149,7 @@
 1. **コミット粒度**: タスク単位（P0-1, P0-2...）。メッセージ先頭に `[P0-1]` 等のタスクIDを付与
 2. **検証コマンド** (各コミット前):
    ```
-   $env:JAVA_HOME = "E:\AppleMilkTea2\.jdk\jdk-25.0.4.1+1"
+   $env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-17.0.20.8-hotspot"
    cmd /c ".\gradlew.bat build --console=plain"
    cmd /c ".\gradlew.bat compileTestJava --console=plain"   # GameTest含む
    ```
@@ -212,4 +212,4 @@ gantt
 - **P1が最大のボトルネック**: DummySerializer 11種が全機械の前置き。ここが動かないと P2 以降の検証が不可能。
 - **メイン側との並行作業**: BER描画系(P3-3/P4-3/P7)は最後に回し、rebase して競合最小化。
 - **外部MOD連携**は plan.md Omit 分類に従い Forge Energy 統一のみ。Bamboo連携は保留。
-- JDK: `.jdk/jdk-25.0.4.1+1` を JAVA_HOME に設定（toolchain要件）。
+- JDK: `C:/Program Files/Eclipse Adoptium/jdk-17.0.20.8-hotspot` を JAVA_HOME に設定（toolchain要件, `gradle.properties:5` と一致）。

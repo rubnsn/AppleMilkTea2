@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 1.20.1 FluidContMap - fluid container mapping (replaces FluidContainerRegistry).
- * Original 1.7.10 used FluidContainerRegistry.FluidContainerData + OreDictionary, now FluidStack + TagKey.
+ * 1.20.1 FluidContMap - fluid container mapping (replaces old fluid container registry).
+ * Original 1.7.10 used registry FluidContainerData + ore dict, now FluidStack + TagKey.
  */
 public class FluidContMap {
 

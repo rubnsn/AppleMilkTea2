@@ -11,8 +11,8 @@ import mods.defeatedcrow.common.registry.ModItems;
 import mods.defeatedcrow.common.registry.ModBlocks;
 
 /**
- * 1.20.1 AddChestGen - chest loot via LootTableLoadEvent (replaces ChestGenHooks).
- * Original 1.7.10 used ChestGenHooks.addItem with WeightedRandomChestContent, now GlobalLootModifier/datapack or LootTableLoadEvent.
+ * 1.20.1 AddChestGen - chest loot via LootTableLoadEvent (replaces old chest hooks).
+ * Original 1.7.10 used chest hooks addItem with WeightedRandomChestContent, now GlobalLootModifier/datapack or LootTableLoadEvent.
  * See doc/worldgen/migration-guide.md
  */
 public class AddChestGen {
