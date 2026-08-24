@@ -16,19 +16,19 @@ public class TileGelBat extends BlockEntity {
     private int chargeAmount = 0;
 
     @Override
-    public void load(CompoundTag par1CompoundTag) {
-        super.load(par1CompoundTag);
+    public void load(CompoundTag tag) {
+        super.load(tag);
 
-        this.chargeAmount = par1CompoundTag.getShort("ChargeAmount");
+        this.chargeAmount = tag.getShort("ChargeAmount");
     }
 
     @Override
-    public void saveAdditional(CompoundTag par1CompoundTag) {
-        super.saveAdditional(par1CompoundTag);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
 
         ListTag nbttaglist = new ListTag();
 
-        par1CompoundTag.putShort("ChargeAmount", (short) this.chargeAmount);
+        tag.putShort("ChargeAmount", (short) this.chargeAmount);
     }
 
     @Override
@@ -43,8 +43,8 @@ public class TileGelBat extends BlockEntity {
         this.load(pkt.getTag());
     }
 
-    public void setChargeAmount(int par1) {
-        this.chargeAmount = par1;
+    public void setChargeAmount(int chargeAmount) {
+        this.chargeAmount = chargeAmount;
     }
 
     public int getChargeAmount() {

@@ -6,6 +6,41 @@ param(
 $ErrorActionPreference = "Continue"
 $failed = $false
 
+function Lint-GrepFiltered {
+  param([string]$Pattern, [string[]]$Paths, [string]$Label, [bool]$ExpectZero = $true)
+  $hits = @()
+  foreach ($p in $Paths) {
+    $files = @()
+    if ($p.Contains("**")) {
+      $base = ($p -split "\*\*")[0].TrimEnd('/','\')
+      if ([string]::IsNullOrWhiteSpace($base)) { $base = "src" }
+      $ext = [System.IO.Path]::GetExtension($p)
+      if ([string]::IsNullOrWhiteSpace($ext)) { $ext = ".java" }
+      $files = @(Get-ChildItem -LiteralPath $base -Recurse -Filter "*$ext" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName)
+    } else {
+      $files = @(Get-ChildItem -Path $p -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName)
+      if ($files.Count -eq 0 -and (Test-Path -LiteralPath $p)) { $files = @($p) }
+    }
+    foreach ($f in $files) {
+      $raw = @(Select-String -Pattern $Pattern -LiteralPath $f -ErrorAction SilentlyContinue)
+      # Exclude lines that are inside preserved 1.7.10 reference block comments (start with '*' or '//')
+      $filtered = $raw | Where-Object { $t=$_.Line.TrimStart(); -not ($t.StartsWith("*") -or $t.StartsWith("//")) }
+      $hits += @($filtered)
+    }
+  }
+  $count = $hits.Count
+  if ($ExpectZero -and $count -gt 0) {
+    Write-Host "FAIL: $Label — $Pattern : $count hits" -ForegroundColor Red
+    $hits | Select-Object -First 5 | ForEach-Object { Write-Host "  $($_.Path):$($_.LineNumber): $($_.Line.Trim())" }
+    $script:failed = $true
+  } elseif (-not $ExpectZero -and $count -eq 0) {
+    Write-Host "FAIL: $Label — $Pattern : expected >=1 but 0" -ForegroundColor Red
+    $script:failed = $true
+  } else {
+    Write-Host "PASS: $Label — $Pattern : $count"
+  }
+}
+
 function Lint-Grep {
   param([string]$Pattern, [string[]]$Paths, [string]$Label, [bool]$ExpectZero = $true)
   $hits = @()
@@ -87,6 +122,10 @@ if ($Check -eq "wtb" -or $Check -eq "all") {
   Lint-Grep -Pattern "\.xCoord\b|\.yCoord\b|\.zCoord\b" -Paths $owned -Label "WT-B xCoord/yCoord/zCoord (use BlockPos / Vec3)"
   Lint-Grep -Pattern "IWorldGenerator|ChestGenHooks" -Paths $owned -Label "WT-B IWorldGenerator/ChestGenHooks (use BiomeModifier)"
 }
+# Readability: MCP obfuscated / low-readability vars must be 0 in active code (exclude preserved '*'-comment lines)
+Lint-GrepFiltered -Pattern "\bpar\d+\b" -Paths $owned -Label "MCP parN var (use mojmap: tag/amount/direction)"
+Lint-GrepFiltered -Pattern "\bvar\d+\b" -Paths $owned -Label "MCP varN var (use descriptive name)"
+Lint-GrepFiltered -Pattern "func_\d+|field_\d+|p_\d+_" -Paths $owned -Label "MCP SRG func_/field_/p_N (use mojmap)"
 # Positive checks (should exist after bootstrap)
 if ($Check -eq "bootstrap" -or $Check -eq "all") {
   Lint-Grep -Pattern "DeferredRegister" -Paths @("src/main/java/mods/defeatedcrow/common/registry/*.java") -Label "DeferredRegister exists" -ExpectZero:$false

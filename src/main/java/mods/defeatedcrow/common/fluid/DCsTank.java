@@ -39,15 +39,15 @@ public class DCsTank extends FluidTank {
         return getFluid().isEmpty() ? "Empty" : net.minecraftforge.registries.ForgeRegistries.FLUIDS.getKey(getFluid().getFluid()).toString();
     }
 
-    public void setAmount(int par1) {
+    public void setAmount(int amount) {
         if (!getFluid().isEmpty()) {
-            getFluid().setAmount(par1);
+            getFluid().setAmount(amount);
         }
     }
 
     // 1.20.1: FluidRegistry.getFluid(int) removed - use ResourceLocation lookup
     @Deprecated
-    public void setFluidById(int par1) {
+    public void setFluidById(int id) {
         // No-op: fluid IDs removed in 1.20.1 (use Registry lookup)
         this.setFluid(FluidStack.EMPTY);
     }

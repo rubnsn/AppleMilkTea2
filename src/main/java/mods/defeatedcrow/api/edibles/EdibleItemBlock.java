@@ -119,7 +119,7 @@ public class EdibleItemBlock extends BlockItem implements IEdibleItem {
     public List<MobEffectInstance> effectOnEaten(Player player, int meta) {
 
         List<MobEffectInstance> ret = new ArrayList<MobEffectInstance>();
-        // 1.7.10: Potion.field_76443_y == Saturation
+        // 1.7.10: Potion.saturation (MCP SRG) == MobEffects.SATURATION in 1.20.1 mojmap
         ret.add(new MobEffectInstance(MobEffects.SATURATION, 2, 2));
         return ret;
     }

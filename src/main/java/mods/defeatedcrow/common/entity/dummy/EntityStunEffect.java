@@ -89,13 +89,13 @@ public class EntityStunEffect extends Entity {
                     }
 
                     if (DCsAppleMilk.debugMode) {
-                        for (int var1 = 0; var1 < 2; ++var1) {
-                            double var2 = this.level().random.nextDouble() * (double) this.getBbWidth() * 2.0D;
-                            double var4 = this.level().random.nextDouble() * Math.PI * 1.0D;
-                            double var6 = this.getX() + var2 * Math.sin(var4);
-                            double var8 = this.getY() + (double) this.getBbHeight() * this.level().random.nextDouble();
-                            double var10 = this.getZ() + var2 * Math.cos(var4);
-                            this.level().addParticle(net.minecraft.core.particles.ParticleTypes.EXPLOSION, var6, var8, var10, 0.0D, 0.0D, 0.0D);
+                        for (int i = 0; i < 2; ++i) {
+                            double radius = this.level().random.nextDouble() * (double) this.getBbWidth() * 2.0D;
+                            double angle = this.level().random.nextDouble() * Math.PI * 1.0D;
+                            double x = this.getX() + radius * Math.sin(angle);
+                            double y = this.getY() + (double) this.getBbHeight() * this.level().random.nextDouble();
+                            double z = this.getZ() + radius * Math.cos(angle);
+                            this.level().addParticle(net.minecraft.core.particles.ParticleTypes.EXPLOSION, x, y, z, 0.0D, 0.0D, 0.0D);
                         }
                     }
                 } else {

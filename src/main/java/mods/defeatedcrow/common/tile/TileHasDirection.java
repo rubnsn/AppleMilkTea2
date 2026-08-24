@@ -14,17 +14,19 @@ public class TileHasDirection extends BlockEntity {
     private byte direction = 0;
 
     // NBT
-    public void load(CompoundTag par1CompoundTag) {
-        super.load(par1CompoundTag);
-        this.direction = par1CompoundTag.getByte("Direction");
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        this.direction = tag.getByte("Direction");
     }
 
     /**
      * Writes a tile entity to NBT.
      */
-    public void saveAdditional(CompoundTag par1CompoundTag) {
-        super.saveAdditional(par1CompoundTag);
-        par1CompoundTag.putByte("Direction", this.direction);
+    @Override
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putByte("Direction", this.direction);
     }
 
     @Override
@@ -43,8 +45,8 @@ public class TileHasDirection extends BlockEntity {
         return this.direction;
     }
 
-    public void setDirectionByte(byte par1) {
-        this.direction = par1;
+    public void setDirectionByte(byte direction) {
+        this.direction = direction;
     }
 
     public int setDirection() {

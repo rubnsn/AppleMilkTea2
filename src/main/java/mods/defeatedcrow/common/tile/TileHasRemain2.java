@@ -14,17 +14,19 @@ public class TileHasRemain2 extends BlockEntity {
     private short remain = 1;
 
     // NBT
-    public void load(CompoundTag par1CompoundTag) {
-        super.load(par1CompoundTag);
-        this.remain = par1CompoundTag.getShort("Remaining");
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        this.remain = tag.getShort("Remaining");
     }
 
     /**
      * Writes a tile entity to NBT.
      */
-    public void saveAdditional(CompoundTag par1CompoundTag) {
-        super.saveAdditional(par1CompoundTag);
-        par1CompoundTag.putShort("Remaining", this.remain);
+    @Override
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putShort("Remaining", this.remain);
     }
 
     @Override
@@ -43,8 +45,8 @@ public class TileHasRemain2 extends BlockEntity {
         return this.remain;
     }
 
-    public void setRemainShort(short par1) {
-        this.remain = par1;
+    public void setRemainShort(short remain) {
+        this.remain = remain;
     }
 
     public int getMetadata() { return 0; }

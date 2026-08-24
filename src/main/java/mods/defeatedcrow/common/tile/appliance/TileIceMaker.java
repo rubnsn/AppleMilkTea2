@@ -17,8 +17,8 @@ public class TileIceMaker extends BlockEntity implements WorldlyContainer {
     public int chargeAmount; public int currentItemCharge; public int cookTime; private int coolTime=8;
     public ItemStack[] iceItemStacks = new ItemStack[4];
     { java.util.Arrays.fill(iceItemStacks, ItemStack.EMPTY); }
-    @Override public void load(CompoundTag t){ super.load(t); }
-    @Override public void saveAdditional(CompoundTag t){ super.saveAdditional(t); }
+    @Override public void load(CompoundTag tag){ super.load(tag); }
+    @Override public void saveAdditional(CompoundTag tag){ super.saveAdditional(tag); }
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){ return ClientboundBlockEntityDataPacket.create(this); }
     
     public int getCookProgressScaled(int p){ return cookTime * p /150; }

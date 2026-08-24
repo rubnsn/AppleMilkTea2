@@ -44,8 +44,8 @@ public class PotionProtectionEX extends MobEffect {
         return this;
     }
 
-    public PotionProtectionEX setPreventSource(DamageSource par1Source) {
-        this.preventSource = par1Source;
+    public PotionProtectionEX setPreventSource(DamageSource source) {
+        this.preventSource = source;
         return this;
     }
 

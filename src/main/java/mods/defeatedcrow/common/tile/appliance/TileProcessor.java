@@ -16,8 +16,8 @@ public class TileProcessor extends BlockEntity implements WorldlyContainer {
     public TileProcessor(BlockPos pos, BlockState state){ super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_PROCESSOR.get(), pos, state); java.util.Arrays.fill(items, ItemStack.EMPTY); }
     public int cookTime; public int chargeAmount;
     public ItemStack[] items = new ItemStack[14];
-    @Override public void load(CompoundTag t){ super.load(t); }
-    @Override public void saveAdditional(CompoundTag t){ super.saveAdditional(t); }
+    @Override public void load(CompoundTag tag){ super.load(tag); }
+    @Override public void saveAdditional(CompoundTag tag){ super.saveAdditional(tag); }
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket(){ return ClientboundBlockEntityDataPacket.create(this); }
     
     public static void tick(Level level, BlockPos pos, BlockState state, TileProcessor be){ if(level.isClientSide) return; be.setChanged(); }

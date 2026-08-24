@@ -10,17 +10,19 @@ public class TileLargeBottle extends TileHasRemain2 {
 
     private boolean side = false;
 
-    public void load(CompoundTag par1CompoundTag) {
-        super.load(par1CompoundTag);
-        this.side = par1CompoundTag.getBoolean("Side");
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        this.side = tag.getBoolean("Side");
     }
 
     /**
      * Writes a tile entity to NBT.
      */
-    public void saveAdditional(CompoundTag par1CompoundTag) {
-        super.saveAdditional(par1CompoundTag);
-        par1CompoundTag.putBoolean("Side", this.side);
+    @Override
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putBoolean("Side", this.side);
     }
 
     public boolean getSide() {

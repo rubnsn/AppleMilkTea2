@@ -16,8 +16,8 @@ public class TileEvaporator extends BlockEntity implements WorldlyContainer {
     public TileEvaporator(BlockPos pos, BlockState state) { super(mods.defeatedcrow.common.registry.ModBlockEntities.TILE_EVAPORATOR.get(), pos, state); }
     public ItemStack[] items = new ItemStack[3];
     { java.util.Arrays.fill(items, ItemStack.EMPTY); }
-    @Override public void load(CompoundTag t) { super.load(t); }
-    @Override public void saveAdditional(CompoundTag t) { super.saveAdditional(t); }
+    @Override public void load(CompoundTag tag) { super.load(tag); }
+    @Override public void saveAdditional(CompoundTag tag) { super.saveAdditional(tag); }
     @Override public ClientboundBlockEntityDataPacket getUpdatePacket() { return ClientboundBlockEntityDataPacket.create(this); }
     public static void tick(Level level, BlockPos pos, BlockState state, TileEvaporator be) { if(level.isClientSide) return; be.setChanged(); }
     @Override public int getContainerSize() { return items.length; }

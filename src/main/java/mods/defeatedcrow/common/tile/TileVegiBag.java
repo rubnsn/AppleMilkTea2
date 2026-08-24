@@ -14,15 +14,15 @@ public class TileVegiBag extends TileHasDirection {
 
     // NBT
     @Override
-    public void load(CompoundTag par1CompoundTag) {
-        super.load(par1CompoundTag);
-        this.sneak = par1CompoundTag.getBoolean("Sneaking");
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        this.sneak = tag.getBoolean("Sneaking");
     }
 
     @Override
-    public void saveAdditional(CompoundTag par1CompoundTag) {
-        super.saveAdditional(par1CompoundTag);
-        par1CompoundTag.putBoolean("Sneaking", this.sneak);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putBoolean("Sneaking", this.sneak);
     }
 
     @Override
