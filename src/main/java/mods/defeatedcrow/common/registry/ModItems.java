@@ -323,7 +323,7 @@ public class ModItems {
     public static final RegistryObject<Item> YUZU_BAT_ITEM = ITEMS.register("yuzu_bat",
         () -> new BlockItem(ModBlocks.YUZU_BAT.get(), new Item.Properties()));
     public static final RegistryObject<Item> GEL_BAT_ITEM = ITEMS.register("gel_bat",
-        () -> new TESRBlockItem(ModBlocks.GEL_BAT.get(), new Item.Properties()));
+        () -> new BlockItem(ModBlocks.GEL_BAT.get(), new Item.Properties()));
     public static final RegistryObject<Item> HANDLE_ENGINE_ITEM = ITEMS.register("handle_engine",
         () -> new TESRBlockItem(ModBlocks.HANDLE_ENGINE.get(), new Item.Properties()));
 
