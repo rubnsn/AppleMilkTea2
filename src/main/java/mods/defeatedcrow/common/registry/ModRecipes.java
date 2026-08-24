@@ -17,6 +17,18 @@ import net.minecraftforge.registries.RegistryObject;
  * Uses DeferredRegister for RecipeSerializer and RecipeType.
  * 1.20.1 Forge 47 still uses fromJson/fromNetwork/toNetwork (not MapCodec/StreamCodec).
  * NBT is kept (CompoundTag), DataComponents are 1.20.5+ so not used here.
+ * <p>
+ * P0-4 design decision (WT-E): keep fromJson/fromNetwork/toNetwork for all 11 types.
+ * MapCodec/StreamCodec is 1.20.5+ (NeoForge) and not available in Forge 47.3.
+ * P1 will introduce abstract parent {@code recipe/base/AMTRecipeBase} that implements
+ * {@code Recipe<?>} with common Ingredient List + ItemStack output + ResourceLocation id,
+ * plus a shared abstract Serializer that handles JSON {@code type} field and
+ * FriendlyByteBuf read/write of Ingredient/ItemStack. Each concrete recipe (Tea/Ice/Pan etc.)
+ * extends the base and only overrides {@code getType()}/{@code getSerializer()} and
+ * recipe-specific fields (e.g. Tea has milk flag, Pan has tex/display, Evaporator has fluid).
+ * This unifies 11 DummySerializers into one tested abstract path without MapCodec.
+ * See test/IMPLEMENTATION_PLAN_WT-E.md P1-1/P0-4 and plan.md 7.2 T1/T5.
+ * </p>
  */
 public class ModRecipes {
 
@@ -61,6 +73,10 @@ public class ModRecipes {
      * Temporary dummy serializer - returns null for now.
      * Will be replaced per-recipe with proper fromJson/fromNetwork logic.
      * Keeping it here makes ModRecipes compile on 1.20.1 Forge 47.
+     * P0-4 note: do NOT switch to MapCodec here; Forge 47 RecipeSerializer API is
+     * fromJson(JsonObject)/fromNetwork(FriendlyByteBuf)/toNetwork(...).
+     * The future AMTRecipeBase.Serializer will implement those three and is the only
+     * place that needs to be changed when porting to 1.20.5+.
      */
     @SuppressWarnings("rawtypes")
     public static class DummySerializer implements RecipeSerializer<Recipe<?>> {
