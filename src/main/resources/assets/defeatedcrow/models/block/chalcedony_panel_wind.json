@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/pressure_plate_up",
   "textures": {
-    "texture": "defeatedcrow:block/chalcedony"
+    "texture": "defeatedcrow:block/raden_wing"
   }
 }

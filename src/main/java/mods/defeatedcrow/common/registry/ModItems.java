@@ -309,7 +309,7 @@ public class ModItems {
     public static final RegistryObject<Item> CHALCEDONY_LAMP_OP_ITEM = ITEMS.register("chalcedony_lamp_op",
         () -> new BlockItem(ModBlocks.CHALCEDONY_LAMP_OP.get(), new Item.Properties()));
     public static final RegistryObject<Item> CHALCEDONY_PANEL_ITEM = ITEMS.register("chalcedony_panel",
-        () -> new TESRBlockItem(ModBlocks.CHALCEDONY_PANEL.get(), new Item.Properties()));
+        () -> new BlockItem(ModBlocks.CHALCEDONY_PANEL.get(), new Item.Properties()));
     public static final RegistryObject<Item> ROTARY_DIAL_ITEM = ITEMS.register("rotary_dial",
         () -> new TESRBlockItem(ModBlocks.ROTARY_DIAL.get(), new Item.Properties()));
     public static final RegistryObject<Item> CROW_DOLL_ITEM = ITEMS.register("crow_doll",
