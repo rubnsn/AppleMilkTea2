@@ -1,3 +1,6 @@
 {
-  "parent": "defeatedcrow:block/alcohol_cup"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "defeatedcrow:block/bottle_empty"
+  }
 }

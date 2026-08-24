@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/block",
   "textures": {
-    "all": "defeatedcrow:block/cup_empty"
+    "particle": "defeatedcrow:block/cup_empty"
   }
 }

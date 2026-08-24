@@ -1,3 +1,6 @@
 {
-  "parent": "defeatedcrow:block/bowl_jp"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "defeatedcrow:block/porcelain"
+  }
 }

@@ -1,3 +1,6 @@
 {
-  "parent": "defeatedcrow:block/teppan_ii"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "defeatedcrow:block/teppann"
+  }
 }

@@ -1,3 +1,6 @@
 {
-  "parent": "defeatedcrow:block/bowl_rack"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "defeatedcrow:block/basket_t0"
+  }
 }

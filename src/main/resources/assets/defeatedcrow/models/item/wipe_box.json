@@ -1,3 +1,6 @@
 {
-  "parent": "defeatedcrow:block/wipe_box"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "defeatedcrow:block/wipes_t"
+  }
 }

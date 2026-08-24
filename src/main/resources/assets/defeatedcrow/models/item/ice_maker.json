@@ -1,3 +1,6 @@
 {
-  "parent": "defeatedcrow:block/ice_maker"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "defeatedcrow:block/icemaker_body"
+  }
 }
