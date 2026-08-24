@@ -1,5 +1,6 @@
 package mods.defeatedcrow.common.item.appliance;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -21,8 +22,8 @@ public class ItemSlotPanel extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Level level, java.util.List<Component> tooltip, TooltipFlag flag) {
-        // TODO: restore addInformation logic
-        super.appendHoverText(stack, level, tooltip, flag);
+        tooltip.add(Component.literal("This item is put in the slot of Jaw Crusher.").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.literal("If you do it, this item behaves as the empty slot.").withStyle(ChatFormatting.GRAY));
     }
 
     /*
