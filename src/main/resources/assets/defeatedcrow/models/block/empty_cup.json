@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "cup": "defeatedcrow:block/cup_empty",
-    "particle": "defeatedcrow:block/cup_empty"
+    "cup": "defeatedcrow:block/porcelain",
+    "particle": "defeatedcrow:block/porcelain"
   },
   "elements": [
     { "from": [5, 0, 5], "to": [11, 2, 11], "faces": { "down": {"uv":[0,0,16,16], "texture":"#cup"}, "up": {"uv":[0,0,16,16], "texture":"#cup"}, "north": {"uv":[0,0,16,16], "texture":"#cup"}, "south": {"uv":[0,0,16,16], "texture":"#cup"}, "west": {"uv":[0,0,16,16], "texture":"#cup"}, "east": {"uv":[0,0,16,16], "texture":"#cup"} } },
