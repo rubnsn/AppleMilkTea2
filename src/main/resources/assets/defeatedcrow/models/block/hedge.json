@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "defeatedcrow:block/tealeaf"
+    "all": "defeatedcrow:block/hedge/hedge_boxwood_g"
   }
 }

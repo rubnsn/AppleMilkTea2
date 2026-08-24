@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "defeatedcrow:block/whitepanel"
+    "all": "defeatedcrow:block/blueglass"
   }
 }

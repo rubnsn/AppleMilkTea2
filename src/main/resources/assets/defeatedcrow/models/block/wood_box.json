@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "defeatedcrow:block/woodbox"
+    "all": "defeatedcrow:block/woodbox_oak"
   }
 }
