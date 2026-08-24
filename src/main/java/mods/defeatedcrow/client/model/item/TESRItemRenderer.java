@@ -166,7 +166,16 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
         } else if (item == ModItems.FLOWER_POT_ITEM.get()) {
             renderFlowerPot(pose, buffers, light, overlay);
             rendered = true;
-        } else if (item == ModItems.BAT_BOX_ITEM.get() || item == ModItems.GEL_BAT_ITEM.get()) {
+        } else if (item == ModItems.BAT_BOX_ITEM.get()) {
+            // Charger Block (bat_box) is TESR ModelCharger: like chest, use 0.5,0.5,0.5 center (not 1.5) and normal block scale. Reference: vanilla ChestRenderer uses 0.5,0.5,0.5.
+            pose.pushPose();
+            pose.translate(0, 0.6F, 0); // adjust from 1.5 to 0.5 to match chest (like vanilla chest BEWLR)
+            pose.scale(0.6F, 0.6F, 0.6F);
+            renderCharger(pose, buffers, light, overlay);
+            pose.popPose();
+            rendered = true;
+        } else if (item == ModItems.GEL_BAT_ITEM.get()) {
+            // Gel bat is now BlockItem with frame (ISBRH), not TESR, but keep fallback if still TESR
             renderCharger(pose, buffers, light, overlay);
             rendered = true;
         } else if (item == ModItems.HANDLE_ENGINE_ITEM.get()) {
