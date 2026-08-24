@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "defeatedcrow:block/wipes_t"
-  }
+  "parent": "minecraft:builtin/entity"
 }

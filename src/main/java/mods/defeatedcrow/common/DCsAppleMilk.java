@@ -21,6 +21,7 @@ import mods.defeatedcrow.common.registry.ModEntities;
 import mods.defeatedcrow.common.registry.ModFluidTypes;
 import mods.defeatedcrow.common.registry.ModFluids;
 import mods.defeatedcrow.common.registry.ModItems;
+import mods.defeatedcrow.common.registry.ModLootModifiers;
 import mods.defeatedcrow.common.registry.ModMenuTypes;
 import mods.defeatedcrow.common.registry.ModMobEffects;
 import mods.defeatedcrow.common.registry.ModRecipes;
@@ -52,6 +53,7 @@ public class DCsAppleMilk {
         ModRecipes.RECIPE_TYPES.register(modBus);
         ModRecipes.RECIPE_SERIALIZERS.register(modBus);
         ModBiomeModifiers.MODIFIERS.register(modBus);
+        ModLootModifiers.LOOT_MODIFIERS.register(modBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, DCsConfig.COMMON_SPEC, "defeatedcrow-common.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, DCsConfig.CLIENT_SPEC, "defeatedcrow-client.toml");
@@ -61,6 +63,8 @@ public class DCsAppleMilk {
         MinecraftForge.EVENT_BUS.register(this);
         LOGGER.info("Apple&Milk&Tea! 1.20.1 bootstrap - DeferredRegister wired (Forge 47.3 / FG6 / mojmap / JDK17)");
     }
+
+
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {

@@ -15,12 +15,15 @@ import net.minecraft.world.item.ItemStack;
 
 import mods.defeatedcrow.client.model.model.*;
 import mods.defeatedcrow.common.registry.ModItems;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * BEWLR for TESR BlockItems - renders the same Model as BER in inventory/hand.
  * Textures mapped to existing files in textures/entity (see fix for bread/clamp etc).
  */
 public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
+    private static final Logger LOGGER = LogManager.getLogger("dcsapplemilk");
 
     private final ModelBarrel barrelModel;
     private final ModelProcessor processorModel;
@@ -84,17 +87,12 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
     public void renderByItem(ItemStack stack, ItemDisplayContext context, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
         Item item = stack.getItem();
         pose.pushPose();
-        // Align similarly to BER (BER uses 0.5,1.5,0.5 with -1 scale). For item, center in GUI/hand.
-        // Different contexts need different scale/translate. Use common that works for GUI (centered).
-        // For GUI (inventory) the stack is at 0,0,0 with 16x16, for 3D we need to center.
-        if (context == ItemDisplayContext.GUI || context == ItemDisplayContext.FIXED) {
-            pose.translate(0.5, 0.85, 0.5);
-            pose.scale(0.65F, -0.65F, -0.65F);
-        } else {
-            // FIRST_PERSON, THIRD_PERSON, GROUND etc
-            pose.translate(0.5, 1.0, 0.5);
-            pose.scale(0.8F, -0.8F, -0.8F);
-        }
+        // Vanilla reference: ItemRenderer.handleCameraTransforms already applies ItemDisplayContext (GUI/FIRST_PERSON etc.)
+        // transform for builtin/entity before calling renderByItem. Here we replicate BER pose exactly:
+        // BER does translate(0.5,1.5,0.5) scale(1,-1,-1) (see TileEntityBarrelRenderer.java:26). Same for item
+        // so that hand/GUI size is not double-scaled. Previous 0.65/0.8 scale + ItemRenderer's GUI 0.5 made it tiny.
+        pose.translate(0.5F, 1.5F, 0.5F);
+        pose.scale(1.0F, -1.0F, -1.0F);
 
         boolean rendered = false;
         if (item == ModItems.BARREL_ITEM.get()) {

@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "defeatedcrow:block/cordial_drink"
-  }
+  "parent": "minecraft:builtin/entity"
 }
