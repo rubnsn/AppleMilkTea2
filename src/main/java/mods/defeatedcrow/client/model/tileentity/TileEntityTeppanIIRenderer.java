@@ -9,25 +9,14 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 import mods.defeatedcrow.common.tile.appliance.TileTeppanII;
-import mods.defeatedcrow.client.model.model.ModelBreads;
 
 public class TileEntityTeppanIIRenderer implements BlockEntityRenderer<TileTeppanII> {
-    private final ModelBreads model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/processor.png");
-
-    public TileEntityTeppanIIRenderer(BlockEntityRendererProvider.Context ctx) {
-        // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)
-        this.model = new ModelBreads(ModelBreads.createBodyLayer().bakeRoot());
-    }
+    // 1.7.10 used EntityItem rendering (RenderItem) with cookTime rotation, not a static model
+    // Stub uses no model until item rendering is reimplemented in other worktree
+    public TileEntityTeppanIIRenderer(BlockEntityRendererProvider.Context ctx) {}
 
     @Override
     public void render(TileTeppanII be, float partialTicks, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
-        pose.pushPose();
-        pose.translate(0.5, 1.5, 0.5);
-        pose.scale(1.0F, -1.0F, -1.0F);
-        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(TEX));
-        // Fallback to entityCutout if texture missing, will show missing but compile
-        this.model.renderToBuffer(pose, vc, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
-        pose.popPose();
+        // TODO: restore EntityItem rendering (plateItems[0/1/2] + rotation) – avoid ModelBreads placeholder that caused bread collapse
     }
 }

@@ -13,7 +13,8 @@ import mods.defeatedcrow.client.model.model.ModelEggs;
 
 public class TileEntityEggsRenderer implements BlockEntityRenderer<TileEggs> {
     private final ModelEggs model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/breads.png");
+    private static final ResourceLocation TEX_WHITE = new ResourceLocation("defeatedcrow", "textures/block/whitepanel.png");
+    private static final ResourceLocation TEX_BLACK = new ResourceLocation("defeatedcrow", "textures/block/teppann.png");
 
     public TileEntityEggsRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)
@@ -22,11 +23,16 @@ public class TileEntityEggsRenderer implements BlockEntityRenderer<TileEggs> {
 
     @Override
     public void render(TileEggs be, float partialTicks, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        // 1.7.10 used whitepanel/teppann based on blockMetadata &1
+        ResourceLocation tex = TEX_WHITE;
+        if (be.getLevel() != null) {
+            var state = be.getLevel().getBlockState(be.getBlockPos());
+            // fallback to level check not needed; use BE's remain? For now default white
+        }
         pose.pushPose();
         pose.translate(0.5, 1.5, 0.5);
         pose.scale(1.0F, -1.0F, -1.0F);
-        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(TEX));
-        // Fallback to entityCutout if texture missing, will show missing but compile
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(tex));
         this.model.renderToBuffer(pose, vc, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
         pose.popPose();
     }

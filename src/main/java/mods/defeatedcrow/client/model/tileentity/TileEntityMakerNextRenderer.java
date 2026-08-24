@@ -13,7 +13,9 @@ import mods.defeatedcrow.client.model.model.ModelMakerNext;
 
 public class TileEntityMakerNextRenderer implements BlockEntityRenderer<TileMakerNext> {
     private final ModelMakerNext model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/automaker.png");
+    // 1.7.10: TileMakerNext.getCurrentTexture() returned blocks/contents_*.png dynamically (milk/water/tea etc.)
+    // 1.20.1 stub TileMakerNext has no logic yet (WT-B), so use generic milk contents as fallback until functional migration merges
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/block/contents_milk.png");
 
     public TileEntityMakerNextRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)
@@ -25,9 +27,9 @@ public class TileEntityMakerNextRenderer implements BlockEntityRenderer<TileMake
         pose.pushPose();
         pose.translate(0.5, 1.5, 0.5);
         pose.scale(1.0F, -1.0F, -1.0F);
-        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(TEX));
-        // Fallback to entityCutout if texture missing, will show missing but compile
-        this.model.renderToBuffer(pose, vc, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+        // Restore 1.7.10 blend/color (milked ? 2.0 : 1.2 alpha) – keep simple opaque for now, use translucent for water-like
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityTranslucent(TEX));
+        this.model.renderToBuffer(pose, vc, light, overlay, 1.0F, 1.0F, 1.0F, 0.9F);
         pose.popPose();
     }
 }
