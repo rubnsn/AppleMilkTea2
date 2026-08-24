@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/crop",
   "textures": {
-    "all": "defeatedcrow:block/crop_mint_stage_3"
+    "crop": "defeatedcrow:block/crop_mint_stage_3"
   }
 }

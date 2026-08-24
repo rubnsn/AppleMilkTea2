@@ -34,15 +34,17 @@ public class BlockIncenseBase extends Block implements EntityBlock {
         super(properties);
     }
 
-    // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox
+    // 1.20.1: VoxelShape replaces AxisAlignedBB (master 0.2,0,0.2 - 0.8,0.6,0.8)
+    private static final VoxelShape SHAPE = Block.box(3.2, 0, 3.2, 12.8, 9.6, 12.8);
+
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-        return Shapes.block(); // TODO: restore original bounds via Block.box() per meta/state
+        return SHAPE;
     }
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-        return getShape(state, level, pos, ctx);
+        return SHAPE;
     }
 
     // 1.7.10 onBlockActivated -> 1.20.1 use (BlockPos + BlockHitResult)
@@ -57,8 +59,7 @@ public class BlockIncenseBase extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        // TODO: return new Tile* (pos, state) - requires WT-B BlockEntityType registration
-        return null;
+        return new mods.defeatedcrow.common.tile.TileIncenseBase(pos, state);
     }
 
     @Override

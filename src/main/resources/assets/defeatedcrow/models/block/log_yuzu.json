@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_column",
   "textures": {
-    "all": "defeatedcrow:block/log_yuzu_side"
+    "side": "defeatedcrow:block/log_yuzu_side",
+    "end": "defeatedcrow:block/log_yuzu_top"
   }
 }

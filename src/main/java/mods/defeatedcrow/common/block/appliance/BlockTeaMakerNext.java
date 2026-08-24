@@ -34,15 +34,17 @@ public class BlockTeaMakerNext extends Block implements EntityBlock {
         super(properties);
     }
 
-    // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox
+    // 1.20.1: master TeaMakerBoundingBox 0.1875,0,0.1875 - 0.8125,1,0.8125
+    private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 16, 13);
+
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-        return Shapes.block(); // TODO: restore original bounds via Block.box() per meta/state
+        return SHAPE;
     }
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-        return getShape(state, level, pos, ctx);
+        return SHAPE;
     }
 
     // 1.7.10 onBlockActivated -> 1.20.1 use (BlockPos + BlockHitResult)
@@ -57,8 +59,7 @@ public class BlockTeaMakerNext extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        // TODO: return new Tile* (pos, state) - requires WT-B BlockEntityType registration
-        return null;
+        return new mods.defeatedcrow.common.tile.appliance.TileMakerNext(pos, state);
     }
 
     @Override

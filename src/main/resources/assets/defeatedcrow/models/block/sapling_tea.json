@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cross",
   "textures": {
-    "all": "defeatedcrow:block/sapling_tea"
+    "cross": "defeatedcrow:block/sapling_tea"
   }
 }
