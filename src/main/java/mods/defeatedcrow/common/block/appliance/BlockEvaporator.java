@@ -20,6 +20,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import mods.defeatedcrow.common.tile.appliance.TileEvaporator;
+import mods.defeatedcrow.common.registry.ModBlockEntities;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockEvaporator.
@@ -150,4 +154,12 @@ public class BlockEvaporator extends Block implements EntityBlock {
      *     
      * ... (full original retained in git history: git show HEAD:"src/main/java/mods/defeatedcrow/common/block/appliance/BlockEvaporator.java")
      */
+
+        @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        if (type == ModBlockEntities.TILE_EVAPORATOR.get()) {
+            return (lvl, pos, st, be) -> TileEvaporator.tick(lvl, pos, st, (TileEvaporator)be);
+        }
+        return null;
+    }
 }

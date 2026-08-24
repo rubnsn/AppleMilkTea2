@@ -20,6 +20,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import mods.defeatedcrow.common.tile.appliance.TileTeppanII;
+import mods.defeatedcrow.common.registry.ModBlockEntities;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockTeppanII.
@@ -150,4 +154,12 @@ public class BlockTeppanII extends Block implements EntityBlock {
      *     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
      * ... (full original retained in git history: git show HEAD:"src/main/java/mods/defeatedcrow/common/block/appliance/BlockTeppanII.java")
      */
+
+        @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        if (type == ModBlockEntities.TILE_TEPPAN_II.get()) {
+            return (lvl, pos, st, be) -> TileTeppanII.tick(lvl, pos, st, (TileTeppanII)be);
+        }
+        return null;
+    }
 }

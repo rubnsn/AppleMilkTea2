@@ -20,6 +20,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import mods.defeatedcrow.common.tile.appliance.TileAdvProcessor;
+import mods.defeatedcrow.common.registry.ModBlockEntities;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockAdvProcessor.
@@ -150,4 +154,12 @@ public class BlockAdvProcessor extends Block implements EntityBlock {
      *         TileAdvProcessor tile = (TileAdvProcessor) par1World.getTileEntity(par2, par3, par4);
      * ... (full original retained in git history: git show HEAD:"src/main/java/mods/defeatedcrow/common/block/appliance/BlockAdvProcessor.java")
      */
+
+        @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        if (type == ModBlockEntities.TILE_ADV_PROCESSOR.get()) {
+            return (lvl, pos, st, be) -> TileAdvProcessor.tick(lvl, pos, st, (TileAdvProcessor)be);
+        }
+        return null;
+    }
 }

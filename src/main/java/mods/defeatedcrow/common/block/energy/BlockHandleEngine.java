@@ -20,6 +20,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import mods.defeatedcrow.common.tile.energy.TileHandleEngine;
+import mods.defeatedcrow.common.registry.ModBlockEntities;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockHandleEngine.
@@ -150,4 +154,12 @@ public class BlockHandleEngine extends Block implements EntityBlock {
      *         this.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.75F, 0.875F);
      * ... (full original retained in git history: git show HEAD:"src/main/java/mods/defeatedcrow/common/block/energy/BlockHandleEngine.java")
      */
+
+        @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        if (type == ModBlockEntities.TILE_HANDLE_ENGINE.get()) {
+            return (lvl, pos, st, be) -> TileHandleEngine.tick(lvl, pos, st, (TileHandleEngine)be);
+        }
+        return null;
+    }
 }

@@ -53,4 +53,9 @@ public class TileGelBat extends BlockEntity {
         return this.chargeAmount;
     }
 
+    public static void tick(Level level, BlockPos pos, BlockState state, TileGelBat be) {
+        if (level.isClientSide) return;
+        be.setChanged();
+    }
+
 }
