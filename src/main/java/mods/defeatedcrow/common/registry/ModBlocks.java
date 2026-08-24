@@ -133,7 +133,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> CHARCOAL_BOX = BLOCKS.register("charcoal_box",
         () -> new BlockCharcoalBox(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(1.0F).sound(SoundType.WOOD).noOcclusion()));
     public static final RegistryObject<Block> GUNPOWDER_CONTAINER = BLOCKS.register("gunpowder_container",
-        () -> new BlockGunpowderContainer(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).strength(0.8F).sound(SoundType.SAND).noOcclusion()));
+        () -> new BlockGunpowderContainer(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).strength(0.8F).sound(SoundType.SAND).noOcclusion().randomTicks()));
     public static final RegistryObject<Block> EGG_BASKET = BLOCKS.register("egg_basket",
         () -> new BlockEggBasket(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(0.5F).sound(SoundType.WOOD).noOcclusion()));
     public static final RegistryObject<Block> MUSH_BOX = BLOCKS.register("mushroom_box",

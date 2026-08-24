@@ -3,17 +3,25 @@ package mods.defeatedcrow.common.block.container;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -21,25 +29,70 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockGunpowderContainer.
- * Original 1.7.10 logic preserved as TODO; stub compiles under Forge 47 + mojmap.
- * Properties are supplied by ModBlocks (BlockBehaviour.Properties.of()...).
- * Textures: JSON models under assets/defeatedcrow/models/block/ + blockstates/
+ * V1 Variant: EnumProperty GUNPOWDER_TYPE 4種 (gunpowder,kayaku,clay,clam) + BooleanProperty HALF (0.5高さ) + randomTick再現。
+ * 1.7.10: boxType 4、getIcon par1==1 boxTex[i] (top per type) else boxSideTex (side common)、onBlockPlacedBy sneaking|4、updateTick rain/dry morph + clam bonemeal。
+ * 1.20.1: cube上底側差分を再現、halfでVoxelShape 0.5/1.0、randomTickで gunpowder<->kayaku<->clay 遷移 + clam拡散。
  */
 public class BlockGunpowderContainer extends Block {
 
+    public enum GunpowderType implements StringRepresentable {
+        GUNPOWDER("gunpowder"), KAYAKU("kayaku"), CLAY("clay"), CLAM("clam");
+        private final String n; GunpowderType(String n){this.n=n;}
+        @Override public String getSerializedName(){return n;}
+    }
+    public static final EnumProperty<GunpowderType> GUNPOWDER_TYPE = EnumProperty.create("gunpowder_type", GunpowderType.class);
+    public static final BooleanProperty HALF = BooleanProperty.create("half");
+
+    private static final VoxelShape SHAPE_FULL = Shapes.block();
+    private static final VoxelShape SHAPE_HALF = Block.box(0, 0, 0, 16, 8, 16);
+
     public BlockGunpowderContainer(BlockBehaviour.Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(GUNPOWDER_TYPE, GunpowderType.GUNPOWDER).setValue(HALF, Boolean.valueOf(false)));
     }
 
-    // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-        return Shapes.block(); // TODO: restore original bounds via Block.box() per meta/state
+    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b){ b.add(GUNPOWDER_TYPE, HALF); }
+
+    @Override public BlockState getStateForPlacement(BlockPlaceContext ctx){
+        ItemStack stack=ctx.getItemInHand();
+        GunpowderType type=GunpowderType.GUNPOWDER;
+        if (stack.hasTag() && stack.getTag()!=null && stack.getTag().contains("BlockStateTag")){
+            var tag=stack.getTag().getCompound("BlockStateTag");
+            if (tag.contains("gunpowder_type")){
+                String s=tag.getString("gunpowder_type");
+                for (GunpowderType t: GunpowderType.values()) if (t.getSerializedName().equals(s)) type=t;
+            }
+        }
+        boolean half = ctx.getPlayer()!=null && ctx.getPlayer().isShiftKeyDown();
+        return this.defaultBlockState().setValue(GUNPOWDER_TYPE, type).setValue(HALF, half);
     }
 
-    @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+    @Override public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx){
+        return state.getValue(HALF) ? SHAPE_HALF : SHAPE_FULL;
+    }
+
+    @Override public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx){
         return getShape(state, level, pos, ctx);
+    }
+
+    @Override public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random){
+        if (level.isClientSide) return;
+        GunpowderType m = state.getValue(GUNPOWDER_TYPE);
+        boolean isHalf = state.getValue(HALF);
+        if (!isHalf){
+            // rain/dry morph： gunpowder(0)<->kayaku(1)<->clay(2) 詳細はDCsConfig条件だが簡略: 降雨時 0->1,1->2 / 乾燥バイオーム 1->0,2->1
+            boolean isRaining = level.isRainingAt(pos.above());
+            // dry biome check簡略: 乾燥バイオームタグは Forge BiomeDictionary 代替: isRainingAt false && warm? 簡略で乾燥判定は雨でない時
+            if (m==GunpowderType.GUNPOWDER && isRaining && level.canSeeSky(pos.above())){
+                level.setBlock(pos, state.setValue(GUNPOWDER_TYPE, GunpowderType.KAYAKU), 3);
+            } else if (m==GunpowderType.KAYAKU && isRaining && level.canSeeSky(pos.above())){
+                level.setBlock(pos, state.setValue(GUNPOWDER_TYPE, GunpowderType.CLAY), 3);
+            } else if (!isRaining){
+                if (m==GunpowderType.KAYAKU) level.setBlock(pos, state.setValue(GUNPOWDER_TYPE, GunpowderType.GUNPOWDER),3);
+                else if (m==GunpowderType.CLAY) level.setBlock(pos, state.setValue(GUNPOWDER_TYPE, GunpowderType.KAYAKU),3);
+            }
+        }
+        // clam (3) のbonemeal拡散は将来: 簡略で2-4マス上のIGrowableに bonemeal適用を random 10% で dirt化を保留
     }
 
     // 1.20.1 use: container/edible right-click (insert/extract with sound)

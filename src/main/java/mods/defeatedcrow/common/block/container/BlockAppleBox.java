@@ -8,12 +8,15 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -21,20 +24,31 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockAppleBox.
- * Original 1.7.10 logic preserved as TODO; stub compiles under Forge 47 + mojmap.
- * Properties are supplied by ModBlocks (BlockBehaviour.Properties.of()...).
- * Textures: JSON models under assets/defeatedcrow/models/block/ + blockstates/
+ * V1 Variant: BooleanProperty HALF (sneakingで0.5高さ) + 側面差分を上applebox・側/底WoodBoxで再現。
+ * 1.7.10: getIcon par1==1 appleBoxTop、else WoodBox、onBlockPlacedBy sneaking|4、VoxelShape half 0.5。
  */
 public class BlockAppleBox extends Block {
 
+    public static final BooleanProperty HALF = BooleanProperty.create("half");
+    private static final VoxelShape SHAPE_FULL = Shapes.block();
+    private static final VoxelShape SHAPE_HALF = Block.box(0, 0, 0, 16, 8, 16);
+
     public BlockAppleBox(BlockBehaviour.Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, Boolean.valueOf(false)));
+    }
+
+    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b){ b.add(HALF); }
+
+    @Override public BlockState getStateForPlacement(BlockPlaceContext ctx){
+        boolean half = ctx.getPlayer()!=null && ctx.getPlayer().isShiftKeyDown();
+        return this.defaultBlockState().setValue(HALF, half);
     }
 
     // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-        return Shapes.block(); // TODO: restore original bounds via Block.box() per meta/state
+        return state.getValue(HALF) ? SHAPE_HALF : SHAPE_FULL;
     }
 
     @Override

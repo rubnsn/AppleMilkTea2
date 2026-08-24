@@ -3,11 +3,13 @@ package mods.defeatedcrow.common.block.container;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -15,6 +17,9 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -23,21 +28,49 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockCardboard.
- * Original 1.7.10 logic preserved as TODO; stub compiles under Forge 47 + mojmap.
- * Properties are supplied by ModBlocks (BlockBehaviour.Properties.of()...).
- * Former BlockContainer/TileEntity logic: see Tile* migration (WT-B).
- * Textures: JSON models under assets/defeatedcrow/models/block/ + blockstates/
+ * V1 Variant: EnumProperty CARDBOARD_TYPE 8種 (_mint.._grape) + BooleanProperty FRONT_NS + 側面差分を上/底/前/側で再現。
+ * 1.7.10: bagVegi 8、texTop cardboard_T、texBottom cardboard_B、texFront cardboard_F、texSide[i] cardboard_S_{type}
+ *         getIcon par1==1 top, 0 bottom, 2/3 flag?front:side[i], else flag?side:front、flag=par2>7、damageDropped &7
+ *         onBlockPlacedBy yaw 0/2 -> meta|8 (flag true = front north/south), 1/3 -> meta (front east/west) + TileCardBoard directionByte 0/1/2/4。
  */
 public class BlockCardboard extends Block implements EntityBlock {
 
+    public enum CardboardType implements StringRepresentable {
+        MINT("mint"), CASSIS("cassis"), YUZU("yuzu"), CAMELLIA("camellia"), COFFEE("coffee"), BAMBOO("bamboo"), TOMATO("tomato"), GRAPE("grape");
+        private final String n; CardboardType(String n){this.n=n;}
+        @Override public String getSerializedName(){return n;}
+    }
+    public static final EnumProperty<CardboardType> CARDBOARD_TYPE = EnumProperty.create("cardboard_type", CardboardType.class);
+    public static final BooleanProperty FRONT_NS = BooleanProperty.create("front_ns");
+
     public BlockCardboard(BlockBehaviour.Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(CARDBOARD_TYPE, CardboardType.MINT).setValue(FRONT_NS, Boolean.valueOf(true)));
+    }
+
+    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b){ b.add(CARDBOARD_TYPE, FRONT_NS); }
+
+    @Override public BlockState getStateForPlacement(BlockPlaceContext ctx){
+        ItemStack stack = ctx.getItemInHand();
+        CardboardType type = CardboardType.MINT;
+        if (stack.hasTag() && stack.getTag()!=null && stack.getTag().contains("BlockStateTag")){
+            var tag=stack.getTag().getCompound("BlockStateTag");
+            if (tag.contains("cardboard_type")){
+                String s=tag.getString("cardboard_type");
+                for (CardboardType t: CardboardType.values()) if (t.getSerializedName().equals(s)) type=t;
+            }
+        } else {
+            // fallback from ItemStack damage? not needed
+        }
+        int l = net.minecraft.util.Mth.floor(ctx.getRotation() * 4.0F / 360.0F + 0.5D) & 3;
+        boolean frontNs = (l==0 || l==2);
+        return this.defaultBlockState().setValue(CARDBOARD_TYPE, type).setValue(FRONT_NS, frontNs);
     }
 
     // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-        return Shapes.block(); // TODO: restore original bounds via Block.box() per meta/state
+        return Shapes.block();
     }
 
     @Override

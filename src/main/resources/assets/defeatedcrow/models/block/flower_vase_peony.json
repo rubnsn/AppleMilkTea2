@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "defeatedcrow:block/flowers/flower_peony_b",
+    "north": "defeatedcrow:block/flowers/flower_rose_b",
+    "south": "defeatedcrow:block/flowers/flower_rose_b",
+    "east": "defeatedcrow:block/flowers/flower_rose_b",
+    "west": "defeatedcrow:block/flowers/flower_rose_b",
+    "up": "defeatedcrow:block/flowers/flower_peony_b",
+    "down": "defeatedcrow:block/flowers/flower_peony_t"
+  }
+}

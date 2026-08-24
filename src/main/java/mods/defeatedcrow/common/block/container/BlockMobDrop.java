@@ -3,17 +3,21 @@ package mods.defeatedcrow.common.block.container;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -21,14 +25,34 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockMobDrop.
- * Original 1.7.10 logic preserved as TODO; stub compiles under Forge 47 + mojmap.
- * Properties are supplied by ModBlocks (BlockBehaviour.Properties.of()...).
- * Textures: JSON models under assets/defeatedcrow/models/block/ + blockstates/
+ * V1 Variant: EnumProperty MOB 5種 (_rotten,_bone,_spider,_ender,_slime) cube_all。
  */
 public class BlockMobDrop extends Block {
 
+    public enum MobType implements StringRepresentable {
+        ROTTEN("rotten"), BONE("bone"), SPIDER("spider"), ENDER("ender"), SLIME("slime");
+        private final String n; MobType(String n){this.n=n;}
+        @Override public String getSerializedName(){return n;}
+    }
+    public static final EnumProperty<MobType> MOB_TYPE = EnumProperty.create("mob_type", MobType.class);
+
     public BlockMobDrop(BlockBehaviour.Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(MOB_TYPE, MobType.ROTTEN));
+    }
+
+    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b){ b.add(MOB_TYPE); }
+
+    @Override public BlockState getStateForPlacement(BlockPlaceContext ctx){
+        ItemStack stack = ctx.getItemInHand();
+        if (stack.hasTag() && stack.getTag()!=null && stack.getTag().contains("BlockStateTag")){
+            var tag = stack.getTag().getCompound("BlockStateTag");
+            if (tag.contains("mob_type")){
+                String s=tag.getString("mob_type");
+                for (MobType t: MobType.values()) if (t.getSerializedName().equals(s)) return this.defaultBlockState().setValue(MOB_TYPE,t);
+            }
+        }
+        return this.defaultBlockState();
     }
 
     // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox

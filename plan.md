@@ -322,3 +322,30 @@ Test-Path src/main/resources/data/defeatedcrow/forge/biome_modifier/add_tea_tree
 * `opencode.json:44` に `wt-e` agent追加、`CODEOWNERS:62` に `wt-e` 併記（`ModFluidTypes/ModFluids/ModItems` 等）。
 * JDKは `gradle.properties:5` の `17.0.20` に統一（`test/IMPLEMENTATION_PLAN_WT-E.md:152,215` の JDK25記述は誤記修正）。
 * 次は `feature/stub-impl` → `dev` へ `fast-forward` 前に `git fetch && git rebase dev` と `lint all` 再走。
+
+---
+
+## 12. WT-E 機能実装割当 — GUI垂直スライス（2026-08-25 追補）
+
+> 割当先: WT-E / ブランチ `feature/stub-impl` 継続（or `feature/gui-functional` 新設）  
+> 決定: GUIテクスチャは `src/main/resources/assets/defeatedcrow/textures/gui/*` 5枚を `GuiGraphics.blit` で流用 / 村 `ComponentVillageCafe.java:19` は今後に回す / 醸造16種は `LiquidBlock` 不要（樽+瓶で封じる）  
+> 詳細: `doc/wt-e-assignment.md` を正本とする。`test/IMPLEMENTATION_PLAN_WT-E.md:35` の P0-P7 は `dev:a99cc2c` で `P0-P6` まで完了、`P7 BEWLR+Fluid` は `c9a2af6` で統合済み。本節は残る **G1 GUI 5 + G3 Tile 13 + G6 Recipe 11** の垂直スライスを WT-E に再割当。
+
+### 12.1 割当（約90 files, 非スコープは村と LiquidBlock）
+
+* **G6 Recipe 12** — `ModRecipes.java:41` `DummySerializer` → `AMTRecipeBase` + `AMTRecipeProvider.java:75` に `Tea/Ice` 10件。WT-D とは `advancements` で分離
+* **G3 Tile 13** — `TileBread.java:5` 等10件の `load/saveAdditional` `ContainerHelper` 化 + `TilePanG/TeppanII/BrewingBarrel` の `tick` を `RecipeManager` 化
+* **G1 Container/Gui 10** — `ContainerIceMaker.java:6` 雛形に `Slot` 4/12/13/6/10 + `SimpleContainerData(2)` + `GuiIceMaker.java:6` の `blit(TEX,176x166)` 流用。`ModClientEvents.java:58` の `MenuScreens.register` 5件は済
+* **G2 Block use 41** — `BlockBasket.java:40` `BowlRack.java:50` 等の `Shapes.block()`/`PASS` を `BlockCPanel.java:46` 雛形で `sidedSuccess` 化
+* **G4 Item 15** — `ItemClam.java:24` 等 `appendHoverText` / `EdibleEntityItem.java:97` `useOn` 残15件
+
+### 12.2 フェーズ（7d）
+
+* **E1 2d**: `AMTRecipeBase.java` 新設 → `Tea/Ice` 2種先行
+* **E2 3d**: `TileIceMaker` 1種で `Container(56,17/56,53/112,35/140,35)` + `Gui(icemaker)` を垂直に通し、残4種を横展開
+* **E3 2d**: `Block use` 41件 + `Item use` 15件を `BlockCPanel:194` 雛形で横展開
+
+### 12.3 検証
+
+* `lint all PASS` / `build + runGameTestServer` 16→17 GREEN / `runClient` で `test/checklist.html` C群3項目を `doc/qa-summary.md:7` に追記
+* 本節は `doc/wt-e-assignment.md:1` に詳細を委譲

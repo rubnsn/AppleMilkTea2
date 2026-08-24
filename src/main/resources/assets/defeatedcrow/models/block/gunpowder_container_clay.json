@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "defeatedcrow:block/container_S",
+    "bottom": "defeatedcrow:block/container_S",
+    "top": "defeatedcrow:block/container_clay_t"
+  }
+}

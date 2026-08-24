@@ -3,16 +3,20 @@ package mods.defeatedcrow.common.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -20,14 +24,35 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockChalcedony.
- * Original 1.7.10 logic preserved as TODO; stub compiles under Forge 47 + mojmap.
- * Properties are supplied by ModBlocks (BlockBehaviour.Properties.of()...).
- * Textures: JSON models under assets/defeatedcrow/models/block/ + blockstates/
+ * V1 Variant: EnumProperty COLOR 4種 (0 default chalcedony, 1 orange, 2 white, 3 black) + translucent。
+ * 1.7.10: color[4] getIcon MathHelper.clamp_int(par2 0-3), registerIcon chalcedony / _orange / _white / _black。
  */
 public class BlockChalcedony extends Block {
 
+    public enum ChalcedonyColor implements StringRepresentable {
+        DEFAULT("default"), ORANGE("orange"), WHITE("white"), BLACK("black");
+        private final String name; ChalcedonyColor(String n){this.name=n;}
+        @Override public String getSerializedName(){return name;}
+    }
+    public static final EnumProperty<ChalcedonyColor> COLOR = EnumProperty.create("color", ChalcedonyColor.class);
+
     public BlockChalcedony(BlockBehaviour.Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(COLOR, ChalcedonyColor.DEFAULT));
+    }
+
+    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b){ b.add(COLOR); }
+
+    @Override public BlockState getStateForPlacement(BlockPlaceContext ctx){
+        ItemStack stack = ctx.getItemInHand();
+        if (stack.hasTag() && stack.getTag()!=null && stack.getTag().contains("BlockStateTag")){
+            var tag = stack.getTag().getCompound("BlockStateTag");
+            if (tag.contains("color")){
+                String s = tag.getString("color");
+                for (ChalcedonyColor c: ChalcedonyColor.values()) if (c.getSerializedName().equals(s)) return this.defaultBlockState().setValue(COLOR, c);
+            }
+        }
+        return this.defaultBlockState();
     }
 
     // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox

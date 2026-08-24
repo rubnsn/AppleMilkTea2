@@ -3,11 +3,13 @@ package mods.defeatedcrow.common.block.container;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -15,6 +17,8 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -23,15 +27,39 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockVegiBag.
- * Original 1.7.10 logic preserved as TODO; stub compiles under Forge 47 + mojmap.
- * Properties are supplied by ModBlocks (BlockBehaviour.Properties.of()...).
- * Former BlockContainer/TileEntity logic: see Tile* migration (WT-B).
- * Textures: JSON models under assets/defeatedcrow/models/block/ + blockstates/
+ * V1 Variant: EnumProperty VEGI_TYPE 10種 + 側面差分を上/側/底で忠実再現。
+ * 1.7.10: bagVegi 10 _leaves.._sugar、wheatBagTop[i]が上、wheatBagSideが側、bottomは bag_wheat_b。
+ * 1.20.1: vegi_type 10 variants、上のみ可変、側/底は共通で cube 上下面差分を再現。
  */
 public class BlockVegiBag extends Block implements EntityBlock {
 
+    public enum VegiType implements StringRepresentable {
+        LEAVES("leaves"), POTATO("potato"), CARROT("carrot"), PUMPKIN("pumpkin"), SEED("seed"),
+        REED("reed"), CACTUS("cactus"), COCOA("cocoa"), WART("wart"), SUGAR("sugar");
+        private final String name; VegiType(String n){this.name=n;}
+        @Override public String getSerializedName(){return name;}
+    }
+    public static final EnumProperty<VegiType> VEGI_TYPE = EnumProperty.create("vegi_type", VegiType.class);
+
     public BlockVegiBag(BlockBehaviour.Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(VEGI_TYPE, VegiType.LEAVES));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b){ b.add(VEGI_TYPE); }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext ctx){
+        ItemStack stack = ctx.getItemInHand();
+        if (stack.hasTag() && stack.getTag()!=null && stack.getTag().contains("BlockStateTag")){
+            var tag = stack.getTag().getCompound("BlockStateTag");
+            if (tag.contains("vegi_type")){
+                String s = tag.getString("vegi_type");
+                for (VegiType t: VegiType.values()) if (t.getSerializedName().equals(s)) return this.defaultBlockState().setValue(VEGI_TYPE, t);
+            }
+        }
+        return this.defaultBlockState();
     }
 
     // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox

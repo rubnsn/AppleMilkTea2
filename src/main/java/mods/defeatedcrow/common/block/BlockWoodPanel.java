@@ -8,11 +8,15 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -20,20 +24,41 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockWoodPanel.
- * Original 1.7.10 logic preserved as TODO; stub compiles under Forge 47 + mojmap.
- * Properties are supplied by ModBlocks (BlockBehaviour.Properties.of()...).
- * Textures: JSON models under assets/defeatedcrow/models/block/ + blockstates/
+ * V1 Variant: DirectionProperty FACING (horizontal 4) + 薄板 VoxelShape 0.5厚 + 側面差分は cube 内側テクスチャで再現可能だが Panelは単一テクスチャ woodpanel。
+ * 1.7.10: meta 0-3 -> ForgeDirection N/S/W/E, f=0.5 half-panel: NORTH 0,0,f→1,1,1 / SOUTH 0,0,0→1,1,f / WEST 0,0,0→f,1,1 / EAST f,0,0→1,1,1。
  */
 public class BlockWoodPanel extends Block {
 
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+
+    private static final VoxelShape SHAPE_NORTH = Block.box(0, 0, 8, 16, 16, 16);
+    private static final VoxelShape SHAPE_SOUTH = Block.box(0, 0, 0, 16, 16, 8);
+    private static final VoxelShape SHAPE_WEST = Block.box(8, 0, 0, 16, 16, 16);
+    private static final VoxelShape SHAPE_EAST = Block.box(0, 0, 0, 8, 16, 16);
+
     public BlockWoodPanel(BlockBehaviour.Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
+
+    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b){ b.add(FACING); }
+
+    @Override public BlockState getStateForPlacement(BlockPlaceContext ctx){ return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite()); }
+
+    @Override public BlockState rotate(BlockState state, net.minecraft.world.level.block.Rotation r){ return state.setValue(FACING, r.rotate(state.getValue(FACING))); }
+
+    @Override public BlockState mirror(BlockState state, net.minecraft.world.level.block.Mirror m){ return state.rotate(m.getRotation(state.getValue(FACING))); }
 
     // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-        return Shapes.block(); // TODO: restore original bounds via Block.box() per meta/state
+        Direction dir = state.getValue(FACING);
+        return switch (dir) {
+            case SOUTH -> SHAPE_SOUTH;
+            case WEST -> SHAPE_WEST;
+            case EAST -> SHAPE_EAST;
+            default -> SHAPE_NORTH;
+        };
     }
 
     @Override

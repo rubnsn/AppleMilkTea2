@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "defeatedcrow:block/cardboard_t",
+    "north": "defeatedcrow:block/cardboard_f",
+    "south": "defeatedcrow:block/cardboard_f",
+    "east": "defeatedcrow:block/cardboard_s_yuzu",
+    "west": "defeatedcrow:block/cardboard_s_yuzu",
+    "up": "defeatedcrow:block/cardboard_t",
+    "down": "defeatedcrow:block/cardboard_b"
+  }
+}

@@ -1,6 +1,21 @@
 {
   "variants": {
-    "": {
+    "facing=down": {
+      "model": "defeatedcrow:block/yuzu_light"
+    },
+    "facing=up": {
+      "model": "defeatedcrow:block/yuzu_light"
+    },
+    "facing=north": {
+      "model": "defeatedcrow:block/yuzu_light"
+    },
+    "facing=south": {
+      "model": "defeatedcrow:block/yuzu_light"
+    },
+    "facing=west": {
+      "model": "defeatedcrow:block/yuzu_light"
+    },
+    "facing=east": {
       "model": "defeatedcrow:block/yuzu_light"
     }
   }

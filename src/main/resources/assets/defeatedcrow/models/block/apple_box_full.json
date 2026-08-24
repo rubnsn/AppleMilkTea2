@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "defeatedcrow:block/woodbox",
+    "bottom": "defeatedcrow:block/woodbox",
+    "top": "defeatedcrow:block/applebox"
+  }
+}

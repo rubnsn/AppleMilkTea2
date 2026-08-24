@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "defeatedcrow:block/bag_pumpkin_t",
+    "north": "defeatedcrow:block/bag_wheat_s",
+    "south": "defeatedcrow:block/bag_wheat_s",
+    "east": "defeatedcrow:block/bag_wheat_s",
+    "west": "defeatedcrow:block/bag_wheat_s",
+    "up": "defeatedcrow:block/bag_pumpkin_t",
+    "down": "defeatedcrow:block/bag_wheat_b"
+  }
+}

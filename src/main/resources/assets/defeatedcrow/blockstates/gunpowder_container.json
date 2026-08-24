@@ -1,7 +1,28 @@
 {
   "variants": {
-    "": {
-      "model": "defeatedcrow:block/gunpowder_container"
+    "gunpowder_type=gunpowder,half=false": {
+      "model": "defeatedcrow:block/gunpowder_container_gunpowder"
+    },
+    "gunpowder_type=gunpowder,half=true": {
+      "model": "defeatedcrow:block/gunpowder_container_gunpowder_half"
+    },
+    "gunpowder_type=kayaku,half=false": {
+      "model": "defeatedcrow:block/gunpowder_container_kayaku"
+    },
+    "gunpowder_type=kayaku,half=true": {
+      "model": "defeatedcrow:block/gunpowder_container_kayaku_half"
+    },
+    "gunpowder_type=clay,half=false": {
+      "model": "defeatedcrow:block/gunpowder_container_clay"
+    },
+    "gunpowder_type=clay,half=true": {
+      "model": "defeatedcrow:block/gunpowder_container_clay_half"
+    },
+    "gunpowder_type=clam,half=false": {
+      "model": "defeatedcrow:block/gunpowder_container_clam"
+    },
+    "gunpowder_type=clam,half=true": {
+      "model": "defeatedcrow:block/gunpowder_container_clam_half"
     }
   }
 }

@@ -8,11 +8,17 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -20,25 +26,62 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockYuzuLight.
- * Original 1.7.10 logic preserved as TODO; stub compiles under Forge 47 + mojmap.
- * Properties are supplied by ModBlocks (BlockBehaviour.Properties.of()...).
- * Textures: JSON models under assets/defeatedcrow/models/block/ + blockstates/
+ * V1 Variant: DirectionProperty FACING 6方向 + 薄型 VoxelShape 0.375-0.625 / 厚さ 0.0625 を忠実再現。
+ * 1.7.10: setThisBound(meta&7)で UP 6,15,6→10,16,10 / DOWN 6,0,6→10,1,10 / NORTH 6,6,0→10,10,1 etc、onBlockPlacedで side opposite。
  */
 public class BlockYuzuLight extends Block {
 
+    public static final DirectionProperty FACING = BlockStateProperties.FACING;
+
+    private static final VoxelShape SHAPE_UP = Block.box(6, 15, 6, 10, 16, 10);
+    private static final VoxelShape SHAPE_DOWN = Block.box(6, 0, 6, 10, 1, 10);
+    private static final VoxelShape SHAPE_NORTH = Block.box(6, 6, 0, 10, 10, 1);
+    private static final VoxelShape SHAPE_SOUTH = Block.box(6, 6, 15, 10, 10, 16);
+    private static final VoxelShape SHAPE_WEST = Block.box(0, 6, 6, 1, 10, 10);
+    private static final VoxelShape SHAPE_EAST = Block.box(15, 6, 6, 16, 10, 10);
+
     public BlockYuzuLight(BlockBehaviour.Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.DOWN));
+    }
+
+    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b){ b.add(FACING); }
+
+    @Override public BlockState getStateForPlacement(BlockPlaceContext ctx){
+        Direction dir = ctx.getClickedFace().getOpposite();
+        // 1.7.10 onBlockPlaced logic: side opposite -> newMeta 0 DOWN,1 UP,2 NORTH,3 SOUTH,4 WEST,5 EAST
+        // Map directly to Direction
+        return this.defaultBlockState().setValue(FACING, dir);
+    }
+
+    @Override public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos){
+        Direction dir = state.getValue(FACING);
+        Direction attach = dir.getOpposite();
+        BlockPos nb = pos.relative(attach);
+        BlockState ns = level.getBlockState(nb);
+        return ns.isFaceSturdy(level, nb, dir);
+    }
+
+    @Override public BlockState updateShape(BlockState state, Direction dir, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos){
+        return dir == state.getValue(FACING).getOpposite() && !state.canSurvive(level, pos) ? net.minecraft.world.level.block.Blocks.AIR.defaultBlockState() : super.updateShape(state, dir, neighborState, level, pos, neighborPos);
     }
 
     // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-        return Shapes.block(); // TODO: restore original bounds via Block.box() per meta/state
+        return switch (state.getValue(FACING)) {
+            case UP -> SHAPE_UP;
+            case DOWN -> SHAPE_DOWN;
+            case NORTH -> SHAPE_NORTH;
+            case SOUTH -> SHAPE_SOUTH;
+            case WEST -> SHAPE_WEST;
+            case EAST -> SHAPE_EAST;
+        };
     }
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-        return getShape(state, level, pos, ctx);
+        return Shapes.empty();
     }
 
     // 1.20.1 use: no inventory - just handle right-click success

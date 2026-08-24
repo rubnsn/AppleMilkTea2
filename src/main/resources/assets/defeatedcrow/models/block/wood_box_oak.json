@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "defeatedcrow:block/woodbox_oak",
+    "north": "defeatedcrow:block/woodbox_oak",
+    "south": "defeatedcrow:block/woodbox_oak",
+    "east": "defeatedcrow:block/woodboxside_oak",
+    "west": "defeatedcrow:block/woodboxside_oak",
+    "up": "defeatedcrow:block/woodbox_oak",
+    "down": "defeatedcrow:block/woodbox_oak"
+  }
+}

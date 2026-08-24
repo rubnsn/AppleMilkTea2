@@ -1,7 +1,17 @@
 {
   "variants": {
-    "": {
-      "model": "defeatedcrow:block/wood_box"
-    }
+    "wood_type=oak": { "model": "defeatedcrow:block/wood_box_oak" },
+    "wood_type=spruse": { "model": "defeatedcrow:block/wood_box_spruse" },
+    "wood_type=birch": { "model": "defeatedcrow:block/wood_box_birch" },
+    "wood_type=jungle": { "model": "defeatedcrow:block/wood_box_jungle" },
+    "wood_type=rubber": { "model": "defeatedcrow:block/wood_box_rubber" },
+    "wood_type=great": { "model": "defeatedcrow:block/wood_box_great" },
+    "wood_type=silver": { "model": "defeatedcrow:block/wood_box_silver" },
+    "wood_type=force": { "model": "defeatedcrow:block/wood_box_force" },
+    "wood_type=sakura": { "model": "defeatedcrow:block/wood_box_sakura" },
+    "wood_type=momizi": { "model": "defeatedcrow:block/wood_box_momizi" },
+    "wood_type=jpcedar": { "model": "defeatedcrow:block/wood_box_jpcedar" },
+    "wood_type=darkoak": { "model": "defeatedcrow:block/wood_box_darkoak" },
+    "wood_type=acacia": { "model": "defeatedcrow:block/wood_box_acacia" }
   }
 }

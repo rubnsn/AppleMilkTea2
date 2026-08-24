@@ -1,6 +1,15 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
+      "model": "defeatedcrow:block/wood_panel"
+    },
+    "facing=south": {
+      "model": "defeatedcrow:block/wood_panel"
+    },
+    "facing=west": {
+      "model": "defeatedcrow:block/wood_panel"
+    },
+    "facing=east": {
       "model": "defeatedcrow:block/wood_panel"
     }
   }

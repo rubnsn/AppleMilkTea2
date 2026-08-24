@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
-      "model": "defeatedcrow:block/charcoal_box"
+    "half=false": {
+      "model": "defeatedcrow:block/charcoal_box_full"
+    },
+    "half=true": {
+      "model": "defeatedcrow:block/charcoal_box_half"
     }
   }
 }

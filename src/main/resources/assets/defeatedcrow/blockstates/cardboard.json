@@ -1,7 +1,52 @@
 {
   "variants": {
-    "": {
-      "model": "defeatedcrow:block/cardboard"
+    "cardboard_type=mint,front_ns=true": {
+      "model": "defeatedcrow:block/cardboard_mint_ns"
+    },
+    "cardboard_type=mint,front_ns=false": {
+      "model": "defeatedcrow:block/cardboard_mint_ew"
+    },
+    "cardboard_type=cassis,front_ns=true": {
+      "model": "defeatedcrow:block/cardboard_cassis_ns"
+    },
+    "cardboard_type=cassis,front_ns=false": {
+      "model": "defeatedcrow:block/cardboard_cassis_ew"
+    },
+    "cardboard_type=yuzu,front_ns=true": {
+      "model": "defeatedcrow:block/cardboard_yuzu_ns"
+    },
+    "cardboard_type=yuzu,front_ns=false": {
+      "model": "defeatedcrow:block/cardboard_yuzu_ew"
+    },
+    "cardboard_type=camellia,front_ns=true": {
+      "model": "defeatedcrow:block/cardboard_camellia_ns"
+    },
+    "cardboard_type=camellia,front_ns=false": {
+      "model": "defeatedcrow:block/cardboard_camellia_ew"
+    },
+    "cardboard_type=coffee,front_ns=true": {
+      "model": "defeatedcrow:block/cardboard_coffee_ns"
+    },
+    "cardboard_type=coffee,front_ns=false": {
+      "model": "defeatedcrow:block/cardboard_coffee_ew"
+    },
+    "cardboard_type=bamboo,front_ns=true": {
+      "model": "defeatedcrow:block/cardboard_bamboo_ns"
+    },
+    "cardboard_type=bamboo,front_ns=false": {
+      "model": "defeatedcrow:block/cardboard_bamboo_ew"
+    },
+    "cardboard_type=tomato,front_ns=true": {
+      "model": "defeatedcrow:block/cardboard_tomato_ns"
+    },
+    "cardboard_type=tomato,front_ns=false": {
+      "model": "defeatedcrow:block/cardboard_tomato_ew"
+    },
+    "cardboard_type=grape,front_ns=true": {
+      "model": "defeatedcrow:block/cardboard_grape_ns"
+    },
+    "cardboard_type=grape,front_ns=false": {
+      "model": "defeatedcrow:block/cardboard_grape_ew"
     }
   }
 }

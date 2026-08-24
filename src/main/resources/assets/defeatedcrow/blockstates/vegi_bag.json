@@ -1,7 +1,34 @@
 {
   "variants": {
-    "": {
-      "model": "defeatedcrow:block/vegi_bag"
+    "vegi_type=leaves": {
+      "model": "defeatedcrow:block/vegi_bag_leaves"
+    },
+    "vegi_type=potato": {
+      "model": "defeatedcrow:block/vegi_bag_potato"
+    },
+    "vegi_type=carrot": {
+      "model": "defeatedcrow:block/vegi_bag_carrot"
+    },
+    "vegi_type=pumpkin": {
+      "model": "defeatedcrow:block/vegi_bag_pumpkin"
+    },
+    "vegi_type=seed": {
+      "model": "defeatedcrow:block/vegi_bag_seed"
+    },
+    "vegi_type=reed": {
+      "model": "defeatedcrow:block/vegi_bag_reed"
+    },
+    "vegi_type=cactus": {
+      "model": "defeatedcrow:block/vegi_bag_cactus"
+    },
+    "vegi_type=cocoa": {
+      "model": "defeatedcrow:block/vegi_bag_cocoa"
+    },
+    "vegi_type=wart": {
+      "model": "defeatedcrow:block/vegi_bag_wart"
+    },
+    "vegi_type=sugar": {
+      "model": "defeatedcrow:block/vegi_bag_sugar"
     }
   }
 }

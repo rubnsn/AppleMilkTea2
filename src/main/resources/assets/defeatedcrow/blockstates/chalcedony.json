@@ -1,7 +1,16 @@
 {
   "variants": {
-    "": {
-      "model": "defeatedcrow:block/chalcedony"
+    "color=default": {
+      "model": "defeatedcrow:block/chalcedony_default"
+    },
+    "color=orange": {
+      "model": "defeatedcrow:block/chalcedony_orange"
+    },
+    "color=white": {
+      "model": "defeatedcrow:block/chalcedony_white"
+    },
+    "color=black": {
+      "model": "defeatedcrow:block/chalcedony_black"
     }
   }
 }

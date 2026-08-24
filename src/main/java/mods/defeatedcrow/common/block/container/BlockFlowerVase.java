@@ -3,17 +3,21 @@ package mods.defeatedcrow.common.block.container;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -21,14 +25,36 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockFlowerVase.
- * Original 1.7.10 logic preserved as TODO; stub compiles under Forge 47 + mojmap.
- * Properties are supplied by ModBlocks (BlockBehaviour.Properties.of()...).
- * Textures: JSON models under assets/defeatedcrow/models/block/ + blockstates/
+ * V1 Variant: EnumProperty FLOWER 4種 rose/peony/lilac/sun + 側面差分を上/底/側で再現。
+ * 1.7.10: getIcon par1==0 leafTex[i] (bottom flower_*_t), par1==1 baseTex[i] (top flower_*_b), else baseTex[0] (side flower_rose_b)。
+ * 1.20.1: cube上底側テクスチャをVariantで差分、側は全種 rose_b 固定で fidility。
  */
 public class BlockFlowerVase extends Block {
 
+    public enum FlowerType implements StringRepresentable {
+        ROSE("rose"), PEONY("peony"), LILAC("lilac"), SUN("sun");
+        private final String n; FlowerType(String n){this.n=n;}
+        @Override public String getSerializedName(){return n;}
+    }
+    public static final EnumProperty<FlowerType> FLOWER = EnumProperty.create("flower", FlowerType.class);
+
     public BlockFlowerVase(BlockBehaviour.Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(FLOWER, FlowerType.ROSE));
+    }
+
+    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b){ b.add(FLOWER); }
+
+    @Override public BlockState getStateForPlacement(BlockPlaceContext ctx){
+        ItemStack stack=ctx.getItemInHand();
+        if (stack.hasTag() && stack.getTag()!=null && stack.getTag().contains("BlockStateTag")){
+            var tag=stack.getTag().getCompound("BlockStateTag");
+            if (tag.contains("flower")){
+                String s=tag.getString("flower");
+                for (FlowerType f: FlowerType.values()) if (f.getSerializedName().equals(s)) return this.defaultBlockState().setValue(FLOWER,f);
+            }
+        }
+        return this.defaultBlockState();
     }
 
     // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox

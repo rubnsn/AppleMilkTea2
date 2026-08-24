@@ -1,7 +1,16 @@
 {
   "variants": {
-    "": {
-      "model": "defeatedcrow:block/flower_vase"
+    "flower=rose": {
+      "model": "defeatedcrow:block/flower_vase_rose"
+    },
+    "flower=peony": {
+      "model": "defeatedcrow:block/flower_vase_peony"
+    },
+    "flower=lilac": {
+      "model": "defeatedcrow:block/flower_vase_lilac"
+    },
+    "flower=sun": {
+      "model": "defeatedcrow:block/flower_vase_sun"
     }
   }
 }

@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
-      "model": "defeatedcrow:block/mob_block"
+    "mob_type=rotten": {
+      "model": "defeatedcrow:block/mob_block_rotten"
+    },
+    "mob_type=bone": {
+      "model": "defeatedcrow:block/mob_block_bone"
+    },
+    "mob_type=spider": {
+      "model": "defeatedcrow:block/mob_block_spider"
+    },
+    "mob_type=ender": {
+      "model": "defeatedcrow:block/mob_block_ender"
+    },
+    "mob_type=slime": {
+      "model": "defeatedcrow:block/mob_block_slime"
     }
   }
 }

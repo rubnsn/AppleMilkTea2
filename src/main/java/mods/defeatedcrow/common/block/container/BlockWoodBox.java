@@ -3,17 +3,21 @@ package mods.defeatedcrow.common.block.container;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -21,20 +25,66 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * WT-A 1.20.1 mojmap migration for BlockWoodBox.
- * Original 1.7.10 logic preserved as TODO; stub compiles under Forge 47 + mojmap.
- * Properties are supplied by ModBlocks (BlockBehaviour.Properties.of()...).
- * Textures: JSON models under assets/defeatedcrow/models/block/ + blockstates/
+ * V1 Variant: EnumProperty WOOD_TYPE 13種 + 側面差分を cube 6面テクスチャで忠実再現。
+ * 1.7.10: boxType 13 _oak.._acacia, boxTex/boxSideTex 2配列、getBlockTexture par1==4||5で側面差分。
+ * 1.20.1: wood_type=oak..acacia 13 variants、blockstates variants + models/block/wood_box_*.json で
+ *        east/west=WoodBoxside_* その他=WoodBox_* を cube (north/south/east/west/up/down) に割当て側面差分再現。
+ *        単一インスタンス(ModBlocks.WOOD_BOX) で13種を保持、見た目のみ分岐のためEnumPropertyが効率的。
  */
 public class BlockWoodBox extends Block {
 
+    public enum WoodType implements StringRepresentable {
+        OAK("oak"),
+        SPRUSE("spruse"), // 1.7.10 typo _spruse を維持 (boxType[1])
+        BIRCH("birch"),
+        JUNGLE("jungle"),
+        RUBBER("rubber"),
+        GREAT("great"),
+        SILVER("silver"),
+        FORCE("force"),
+        SAKURA("sakura"),
+        MOMIZI("momizi"),
+        JP_CEDAR("jpcedar"), // _JPcedar -> texture woodbox_jpcedar
+        DARK_OAK("darkoak"), // _darkoak -> woodbox_darkoak
+        ACACIA("acacia");
+
+        private final String name;
+        WoodType(String n) { this.name = n; }
+        @Override public String getSerializedName() { return name; }
+    }
+
+    public static final EnumProperty<WoodType> WOOD_TYPE = EnumProperty.create("wood_type", WoodType.class);
+
     public BlockWoodBox(BlockBehaviour.Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(WOOD_TYPE, WoodType.OAK));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(WOOD_TYPE);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        // VariantはBlockStateTag(BlockStateTag:{wood_type:"xxx"})経由で配置時に復元。
+        // 通常置きはOAK、クリエタブや /setblock/give のBlockStateTagで13種を切替。
+        ItemStack stack = ctx.getItemInHand();
+        if (stack.hasTag() && stack.getTag() != null && stack.getTag().contains("BlockStateTag")) {
+            var tag = stack.getTag().getCompound("BlockStateTag");
+            if (tag.contains("wood_type")) {
+                String s = tag.getString("wood_type");
+                for (WoodType t : WoodType.values()) if (t.getSerializedName().equals(s))
+                    return this.defaultBlockState().setValue(WOOD_TYPE, t);
+            }
+        }
+        return this.defaultBlockState();
     }
 
     // 1.20.1: VoxelShape replaces AxisAlignedBB / setBlockBounds / getSelectedBoundingBox
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-        return Shapes.block(); // TODO: restore original bounds via Block.box() per meta/state
+        return Shapes.block();
     }
 
     @Override

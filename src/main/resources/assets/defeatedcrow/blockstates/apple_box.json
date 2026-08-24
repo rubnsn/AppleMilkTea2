@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
-      "model": "defeatedcrow:block/apple_box"
+    "half=false": {
+      "model": "defeatedcrow:block/apple_box_full"
+    },
+    "half=true": {
+      "model": "defeatedcrow:block/apple_box_half"
     }
   }
 }
