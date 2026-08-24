@@ -12,22 +12,15 @@ import mods.defeatedcrow.common.tile.TileCupHandle;
 import mods.defeatedcrow.client.model.model.ModelCupHandle;
 
 public class TileEntityCupHandleRenderer implements BlockEntityRenderer<TileCupHandle> {
+    // WT0 fix: cup body+handle now via JSON (empty_cup/filled_cup) - BER disabled to avoid double (was 4 handles + sides, texture jpcup). Keep no-op to prevent duplicate handle over JSON.
     private final ModelCupHandle model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/jpcup.png");
 
     public TileEntityCupHandleRenderer(BlockEntityRendererProvider.Context ctx) {
-        // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)
         this.model = new ModelCupHandle(ModelCupHandle.createBodyLayer().bakeRoot());
     }
 
     @Override
     public void render(TileCupHandle be, float partialTicks, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
-        pose.pushPose();
-        pose.translate(0.5, 1.5, 0.5);
-        pose.scale(1.0F, -1.0F, -1.0F);
-        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(TEX));
-        // Fallback to entityCutout if texture missing, will show missing but compile
-        this.model.renderToBuffer(pose, vc, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
-        pose.popPose();
+        // No-op: JSON handles world/inventory. If summer rendering needed, re-enable with correct single-handle + porcelain texture + direction byte.
     }
 }

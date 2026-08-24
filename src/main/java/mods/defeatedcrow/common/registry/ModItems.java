@@ -197,7 +197,7 @@ public class ModItems {
     public static final RegistryObject<Item> TEA_MAKER_BLACK_ITEM = ITEMS.register("tea_maker_black",
         () -> new BlockItem(ModBlocks.TEA_MAKER_BLACK.get(), new Item.Properties()));
     public static final RegistryObject<Item> EMPTY_CUP_ITEM = ITEMS.register("empty_cup",
-        () -> new TESRBlockItem(ModBlocks.EMPTY_CUP.get(), new Item.Properties()));
+        () -> new BlockItem(ModBlocks.EMPTY_CUP.get(), new Item.Properties()));
     public static final RegistryObject<Item> EMPTY_PAN_G_ITEM = ITEMS.register("empty_pan_g",
         () -> new TESRBlockItem(ModBlocks.EMPTY_PAN_G.get(), new Item.Properties()));
     public static final RegistryObject<Item> FILLED_SOUP_PAN_ITEM = ITEMS.register("filled_soup_pan",
@@ -251,9 +251,9 @@ public class ModItems {
     public static final RegistryObject<Item> CONTAINER_SADDLE_ITEM = ITEMS.register("container_saddle",
         () -> new BlockItem(ModBlocks.CONTAINER_SADDLE.get(), new Item.Properties()));
     public static final RegistryObject<Item> FILLED_CUP_ITEM = ITEMS.register("filled_cup",
-        () -> new TESRBlockItem(ModBlocks.FILLED_CUP.get(), new Item.Properties()));
+        () -> new BlockItem(ModBlocks.FILLED_CUP.get(), new Item.Properties()));
     public static final RegistryObject<Item> FILLED_CUP2_ITEM = ITEMS.register("filled_cup2",
-        () -> new TESRBlockItem(ModBlocks.FILLED_CUP2.get(), new Item.Properties()));
+        () -> new BlockItem(ModBlocks.FILLED_CUP2.get(), new Item.Properties()));
     public static final RegistryObject<Item> ICE_CREAM_ITEM = ITEMS.register("ice_cream_block",
         () -> new TESRBlockItem(ModBlocks.ICE_CREAM.get(), new Item.Properties()));
     public static final RegistryObject<Item> COCKTAIL_ITEM = ITEMS.register("cocktail",
