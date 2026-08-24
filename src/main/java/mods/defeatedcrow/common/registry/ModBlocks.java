@@ -1,10 +1,15 @@
 package mods.defeatedcrow.common.registry;
 
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -190,7 +195,7 @@ public class ModBlocks {
 
     // --- WT-A: PLANTS (saplingTea, teaTree, cassisTree, clamSand, cropMint, saplingYuzu, logYuzu, leavesYuzu) ---
     public static final RegistryObject<Block> SAPLING_TEA = BLOCKS.register("sapling_tea",
-        () -> new BlockSaplingTea(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).strength(0.0F).sound(SoundType.GRASS).noOcclusion().noCollission().randomTicks().instabreak()));
+        () -> new BlockSaplingTea(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).strength(0.0F).sound(SoundType.GRASS).noOcclusion().noCollission().randomTicks().instabreak().pushReaction(PushReaction.DESTROY)));
     public static final RegistryObject<Block> TEA_TREE = BLOCKS.register("tea_tree",
         () -> new BlockTeaTree(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(0.8F).sound(SoundType.GRASS).noOcclusion().randomTicks()));
     public static final RegistryObject<Block> CASSIS_TREE = BLOCKS.register("cassis_tree",
@@ -200,11 +205,13 @@ public class ModBlocks {
     public static final RegistryObject<Block> CROP_MINT = BLOCKS.register("crop_mint",
         () -> new BlockMintCrop(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).strength(0.0F).sound(SoundType.CROP).noOcclusion().noCollission().randomTicks().instabreak()));
     public static final RegistryObject<Block> SAPLING_YUZU = BLOCKS.register("sapling_yuzu",
-        () -> new BlockYuzuSapling(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).strength(0.0F).sound(SoundType.GRASS).noOcclusion().noCollission().randomTicks().instabreak()));
+        () -> new BlockYuzuSapling(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).strength(0.0F).sound(SoundType.GRASS).noOcclusion().noCollission().randomTicks().instabreak().pushReaction(PushReaction.DESTROY)));
     public static final RegistryObject<Block> LOG_YUZU = BLOCKS.register("log_yuzu",
-        () -> new BlockYuzuLog(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F).sound(SoundType.WOOD)));
+        () -> new BlockYuzuLog(BlockBehaviour.Properties.of().mapColor((state) -> {
+            return state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? MapColor.WOOD : MapColor.PODZOL;
+        }).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).ignitedByLava()));
     public static final RegistryObject<Block> LEAVES_YUZU = BLOCKS.register("leaves_yuzu",
-        () -> new BlockYuzuLeaves(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).strength(0.2F).sound(SoundType.GRASS).noOcclusion()));
+        () -> new BlockYuzuLeaves(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn((state, level, pos, type) -> false).isSuffocating((state, level, pos) -> false).isViewBlocking((state, level, pos) -> false).ignitedByLava().pushReaction(PushReaction.DESTROY).isRedstoneConductor((state, level, pos) -> false)));
 
     // --- WT-A: DECORATIVE (bowlRack, Basket, chopsticksBox, woodPanel, flintBlock, chalcedony, cLamp, rotaryDial, chalcenonyPanel, cLampOpaque, crowDoll) ---
     public static final RegistryObject<Block> BOWL_RACK = BLOCKS.register("bowl_rack",

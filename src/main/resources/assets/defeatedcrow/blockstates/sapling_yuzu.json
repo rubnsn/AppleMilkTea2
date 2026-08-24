@@ -1,6 +1,9 @@
 {
   "variants": {
-    "": {
+    "stage=0": {
+      "model": "defeatedcrow:block/sapling_yuzu"
+    },
+    "stage=1": {
       "model": "defeatedcrow:block/sapling_yuzu"
     }
   }
