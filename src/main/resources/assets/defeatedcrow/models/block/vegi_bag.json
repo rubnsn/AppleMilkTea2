@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "defeatedcrow:block/bag_wheat_T"
+    "all": "defeatedcrow:block/bag_wheat_t"
   }
 }

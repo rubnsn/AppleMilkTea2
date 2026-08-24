@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "defeatedcrow:camellia_oil_bottle"
+    {
+      "id": "defeatedcrow:camellia_oil_bottle",
+      "required": false
+    }
   ]
 }

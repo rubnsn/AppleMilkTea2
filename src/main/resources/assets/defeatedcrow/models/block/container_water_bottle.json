@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "defeatedcrow:block/containeritem_bottleW"
+    "all": "defeatedcrow:block/containeritem_bottlew"
   }
 }

@@ -24,7 +24,7 @@ public final class RenderItemCocktailSP {
 
     /** Kept for the future BEWLR port; same textures as 1.7.10. */
     public static final ResourceLocation TEXTURE_GLASS = new ResourceLocation("defeatedcrow", "textures/entity/cocktail.png");
-    public static final ResourceLocation TEXTURE_INNER = new ResourceLocation("defeatedcrow", "textures/blocks/contents_cocktailbase.png");
+    public static final ResourceLocation TEXTURE_INNER = new ResourceLocation("defeatedcrow", "textures/block/contents_cocktailbase.png");
 
     private RenderItemCocktailSP() {}
 }

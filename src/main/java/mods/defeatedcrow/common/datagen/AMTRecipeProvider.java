@@ -125,8 +125,8 @@ public class AMTRecipeProvider extends RecipeProvider {
         JsonObject res = new JsonObject(); res.addProperty("item", "defeatedcrow:filled_cup"); res.addProperty("count", 1);
         json.add("ingredient", ing); json.add("result", res);
         com.google.gson.JsonArray tex = new com.google.gson.JsonArray();
-        tex.add("defeatedcrow:textures/blocks/contents_greentea.png");
-        tex.add("defeatedcrow:textures/blocks/contents_greentea_milk.png");
+        tex.add("defeatedcrow:textures/block/contents_greentea.png");
+        tex.add("defeatedcrow:textures/block/contents_greentea_milk.png");
         json.add("textures", tex); json.addProperty("canMilk", true);
         return json;
     }

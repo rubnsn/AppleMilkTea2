@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "defeatedcrow:vegetable_oil_bucket"
+    {
+      "id": "defeatedcrow:vegitable_oil_bucket",
+      "required": false
+    }
   ]
 }

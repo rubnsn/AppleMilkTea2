@@ -29,7 +29,7 @@ public interface ITeaRecipeRegister {
      * @param output
      *               (ItemStack) ティーメーカーから得られるアイテム
      * @param tex
-     *               (String) テクスチャへのパス 例："applemilk:textures/blocks/contents_milk.png"
+     *               (String) テクスチャへのパス 例："applemilk:textures/block/contents_milk.png"
      */
     void register(ItemStack input, ItemStack output, String tex);
 
@@ -44,7 +44,7 @@ public interface ITeaRecipeRegister {
      * @param output2
      *                (ItemStack) ミルク追加時に得られるアイテム
      * @param tex
-     *                (String) テクスチャへのパス 例："applemilk:textures/blocks/contents_milk.png"
+     *                (String) テクスチャへのパス 例："applemilk:textures/block/contents_milk.png"
      */
     void registerCanMilk(ItemStack input, ItemStack output, ItemStack output2, String tex);
 
@@ -61,9 +61,9 @@ public interface ITeaRecipeRegister {
      * @param output2
      *                (ItemStack) ミルク追加時に得られるアイテム
      * @param tex
-     *                (String) テクスチャへのパス 例："applemilk:textures/blocks/contents_tea.png"
+     *                (String) テクスチャへのパス 例："applemilk:textures/block/contents_tea.png"
      * @param milktex
-     *                (String) テクスチャへのパス 例："applemilk:textures/blocks/contents_tea_milk.png"
+     *                (String) テクスチャへのパス 例："applemilk:textures/block/contents_tea_milk.png"
      */
     void registerCanMilk(ItemStack input, ItemStack output, ItemStack output2, String tex, String milktex);
 

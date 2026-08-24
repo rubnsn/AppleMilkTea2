@@ -43,7 +43,7 @@ public class ReceivingIMCEvent {
                 outputMilk = ItemStack.of(tag.getCompound("outputMilk"));
             }
             String texture = tag.getString("texture");
-            String textureMilk = "defeatedcrow:textures/blocks/contents_water.png";
+            String textureMilk = "defeatedcrow:textures/block/contents_water.png";
             if (tag.contains("textureMilk", 8)) {
                 textureMilk = tag.getString("textureMilk");
             }

@@ -125,10 +125,21 @@ if [ -n "$JAVA_HOME" ] ; then
         JAVACMD=$JAVA_HOME/bin/java
     fi
     if [ ! -x "$JAVACMD" ] ; then
-        die "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME
+        # Try org.gradle.java.home from gradle.properties (WT0 JDK17 fix)
+        GRADLE_JAVA_HOME=$(grep '^org.gradle.java.home' "$APP_HOME/gradle.properties" 2>/dev/null | cut -d= -f2- | sed 's/^ *//; s/\\:/:/g')
+        if [ -n "$GRADLE_JAVA_HOME" ] && [ -x "$GRADLE_JAVA_HOME/bin/java" ]; then
+            JAVACMD="$GRADLE_JAVA_HOME/bin/java"
+        else
+            JAVACMD=java
+            if ! command -v java >/dev/null 2>&1
+            then
+                die "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME
+and no 'java' command could be found in your PATH (and org.gradle.java.home fallback failed).
 
 Please set the JAVA_HOME variable in your environment to match the
 location of your Java installation."
+            fi
+        fi
     fi
 else
     JAVACMD=java

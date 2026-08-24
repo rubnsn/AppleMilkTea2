@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "defeatedcrow:camellia_oil_bucket"
+    {
+      "id": "defeatedcrow:camellia_oil_bucket",
+      "required": false
+    }
   ]
 }

@@ -59,8 +59,33 @@ set JAVA_EXE=%JAVA_HOME%/bin/java.exe
 
 if exist "%JAVA_EXE%" goto execute
 
+REM -- Fallback 1: try org.gradle.java.home from gradle.properties (WT0 JDK17 fix) --
+for /f "tokens=1,* delims==" %%a in ('findstr /b "org.gradle.java.home" "%APP_HOME%\gradle.properties" 2^>NUL') do (
+    set "GRADLE_JAVA_HOME=%%b"
+)
+if defined GRADLE_JAVA_HOME (
+    REM Remove leading space if present (gradle.properties may have " = ")
+    for /f "tokens=*" %%c in ("%GRADLE_JAVA_HOME%") do set "GRADLE_JAVA_HOME=%%c"
+    REM Unescape \: -> : and \\ -> \ for gradle.properties escaping
+    set "GRADLE_JAVA_HOME=%GRADLE_JAVA_HOME:\:=:%"
+    if exist "%GRADLE_JAVA_HOME%\bin\java.exe" (
+        set "JAVA_EXE=%GRADLE_JAVA_HOME%\bin\java.exe"
+        goto execute
+    )
+    REM Also try forward-slash variant (C:/...)
+    if exist "%GRADLE_JAVA_HOME%/bin/java.exe" (
+        set "JAVA_EXE=%GRADLE_JAVA_HOME%/bin/java.exe"
+        goto execute
+    )
+)
+REM -- Fallback 2: try java on PATH (handles stale opencode env) --
+set JAVA_EXE=java.exe
+%JAVA_EXE% -version >NUL 2>&1
+if %ERRORLEVEL% equ 0 goto execute
+
 echo. 1>&2
 echo ERROR: JAVA_HOME is set to an invalid directory: %JAVA_HOME% 1>&2
+echo ERROR: and no 'java' command could be found in your PATH (and org.gradle.java.home fallback failed). 1>&2
 echo. 1>&2
 echo Please set the JAVA_HOME variable in your environment to match the 1>&2
 echo location of your Java installation. 1>&2

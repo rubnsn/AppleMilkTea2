@@ -40,7 +40,7 @@ public interface IPanRecipeRegister {
      * @param output
      *               (ItemStack) 鍋から得られるアイテム
      * @param tex
-     *               (String) テクスチャへのパス 例："applemilk:textures/blocks/contents_milk.png"
+     *               (String) テクスチャへのパス 例："applemilk:textures/block/contents_milk.png"
      */
     void register(ItemStack input, ItemStack output, String tex, String disp);
 
@@ -56,7 +56,7 @@ public interface IPanRecipeRegister {
      * @param outputJP
      *                 (ItemStack) 竹カゴを使って得られるアイテム
      * @param tex
-     *                 (String) テクスチャへのパス 例："applemilk:textures/blocks/contents_milk.png"
+     *                 (String) テクスチャへのパス 例："applemilk:textures/block/contents_milk.png"
      */
     void register(ItemStack input, ItemStack output, ItemStack outputJP, String tex, String disp);
 

@@ -5,16 +5,16 @@ package mods.defeatedcrow.api.appliance;
  */
 public enum SoupType {
 
-    EMPTY(0, "Empty", "defeatedcrow:textures/blocks/contents/water.png", "defeatedcrow:contents/water"),
-    WATER(1, "Water", "defeatedcrow:textures/blocks/contents/water.png", "defeatedcrow:contents/water"),
-    CHOCO(2, "Chocolate Fondue", "defeatedcrow:textures/blocks/contents/choco.png", "defeatedcrow:contents/choco"),
-    OIL(3, "Oil", "defeatedcrow:textures/blocks/contents/oil.png", "defeatedcrow:contents/oil"),
-    DASHI(4, "Dashi Soup", "defeatedcrow:textures/blocks/contents/dashi.png", "defeatedcrow:contents/dashi"),
-    TONKOTU(5, "Tonkotu Soup", "defeatedcrow:textures/blocks/contents/tonkotu.png", "defeatedcrow:contents/tonkotu"),
-    SHOYU(6, "Shoyu Soup", "defeatedcrow:textures/blocks/contents/shoyu.png", "defeatedcrow:contents/shoyu"),
-    BLOOD(7, "Blood", "defeatedcrow:textures/blocks/contents/blood.png", "defeatedcrow:contents/blood"),
-    PURPLE(8, "Darkness", "defeatedcrow:textures/blocks/contents/purple.png", "defeatedcrow:contents/purple"),
-    CHEESE(9, "Cheese", "defeatedcrow:textures/blocks/contents/cheese.png", "defeatedcrow:contents/cheese");
+    EMPTY(0, "Empty", "defeatedcrow:textures/block/contents/water.png", "defeatedcrow:contents/water"),
+    WATER(1, "Water", "defeatedcrow:textures/block/contents/water.png", "defeatedcrow:contents/water"),
+    CHOCO(2, "Chocolate Fondue", "defeatedcrow:textures/block/contents/choco.png", "defeatedcrow:contents/choco"),
+    OIL(3, "Oil", "defeatedcrow:textures/block/contents/oil.png", "defeatedcrow:contents/oil"),
+    DASHI(4, "Dashi Soup", "defeatedcrow:textures/block/contents/dashi.png", "defeatedcrow:contents/dashi"),
+    TONKOTU(5, "Tonkotu Soup", "defeatedcrow:textures/block/contents/tonkotu.png", "defeatedcrow:contents/tonkotu"),
+    SHOYU(6, "Shoyu Soup", "defeatedcrow:textures/block/contents/shoyu.png", "defeatedcrow:contents/shoyu"),
+    BLOOD(7, "Blood", "defeatedcrow:textures/block/contents/blood.png", "defeatedcrow:contents/blood"),
+    PURPLE(8, "Darkness", "defeatedcrow:textures/block/contents/purple.png", "defeatedcrow:contents/purple"),
+    CHEESE(9, "Cheese", "defeatedcrow:textures/block/contents/cheese.png", "defeatedcrow:contents/cheese");
 
     public final int id;
     public final String texture;
