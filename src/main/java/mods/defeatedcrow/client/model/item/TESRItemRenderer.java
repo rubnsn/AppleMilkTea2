@@ -50,6 +50,7 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
     private final ModelJawCrusher jawCrusherModel;
     private final ModelLargeBottle largeBottleModel;
     private final ModelCrowDoll crowDollModel;
+    private final ModelAltBowl altBowlModel;
 
     public TESRItemRenderer(Minecraft mc, EntityModelSet modelSet) {
         super(mc.getBlockEntityRenderDispatcher(), modelSet);
@@ -78,6 +79,7 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
         this.jawCrusherModel = new ModelJawCrusher(ModelJawCrusher.createBodyLayer().bakeRoot());
         this.largeBottleModel = new ModelLargeBottle(ModelLargeBottle.createBodyLayer().bakeRoot());
         this.crowDollModel = new ModelCrowDoll(ModelCrowDoll.createBodyLayer().bakeRoot());
+        this.altBowlModel = new ModelAltBowl(ModelAltBowl.createBodyLayer().bakeRoot());
     }
 
     @Override
@@ -143,8 +145,11 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
         } else if (item == ModItems.FOOD_PLATE_ITEM.get()) {
             renderSteak(pose, buffers, light, overlay);
             rendered = true;
-        } else if (item == ModItems.BASKET_ITEM.get() || item == ModItems.VEGI_BAG_ITEM.get() || item == ModItems.BOWL_RACK_ITEM.get()) {
+        } else if (item == ModItems.BASKET_ITEM.get() || item == ModItems.VEGI_BAG_ITEM.get()) {
             renderBreads(pose, buffers, light, overlay);
+            rendered = true;
+        } else if (item == ModItems.BOWL_RACK_ITEM.get()) {
+            renderAltBowl(pose, buffers, light, overlay);
             rendered = true;
         } else if (item == ModItems.CHOCO_BLOCK_ITEM.get()) {
             renderTart(pose, buffers, light, overlay);
@@ -284,5 +289,10 @@ public class TESRItemRenderer extends BlockEntityWithoutLevelRenderer {
     private void renderCrowDoll(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
         VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/crowdoll.png")));
         crowDollModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
+    }
+
+    private void renderAltBowl(PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+        VertexConsumer vc = buffers.getBuffer(RenderType.entityCutout(new ResourceLocation("defeatedcrow", "textures/entity/x32alt/bowlrack_alt.png")));
+        altBowlModel.renderToBuffer(pose, vc, light, overlay, 1, 1, 1, 1);
     }
 }

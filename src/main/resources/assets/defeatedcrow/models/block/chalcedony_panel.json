@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "defeatedcrow:block/chalcedony_panel"
+    "particle": "defeatedcrow:block/chalcedony"
   }
 }

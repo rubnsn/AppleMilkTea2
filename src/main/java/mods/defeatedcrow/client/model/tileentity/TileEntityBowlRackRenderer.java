@@ -9,15 +9,15 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 import mods.defeatedcrow.common.tile.TileBowlRack;
-import mods.defeatedcrow.client.model.model.ModelBreads;
+import mods.defeatedcrow.client.model.model.ModelAltBowl;
 
 public class TileEntityBowlRackRenderer implements BlockEntityRenderer<TileBowlRack> {
-    private final ModelBreads model;
-    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/baskets.png");
+    private final ModelAltBowl model;
+    private static final ResourceLocation TEX = new ResourceLocation("defeatedcrow", "textures/entity/x32alt/bowlrack_alt.png");
 
     public TileEntityBowlRackRenderer(BlockEntityRendererProvider.Context ctx) {
         // Use LayerDefinition bakeRoot directly for minimal implementation (no ModModelLayers)
-        this.model = new ModelBreads(ModelBreads.createBodyLayer().bakeRoot());
+        this.model = new ModelAltBowl(ModelAltBowl.createBodyLayer().bakeRoot());
     }
 
     @Override
